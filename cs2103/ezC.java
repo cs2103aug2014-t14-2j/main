@@ -13,7 +13,7 @@ public class ezC {
 	
 	// YUI WEI
 	public static Date determineDate(String dateString) {
-		
+		return null;
 	}
 	
 	// NATALIE
