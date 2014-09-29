@@ -46,7 +46,7 @@ public class ezC {
 	// Print a message to user indicating task X was added
 	public static void confirmAddTask(Task addedTaskToPrintToUser) {
 		
-		System.out.println(addedTaskToPrintToUser.name() + " has been added to your task list.");	// Should I throw this to a specific print funtion? Seems retarded
+		System.out.println(addedTaskToPrintToUser.getName() + " has been added to your task list.");	// Should I throw this to a specific print funtion? Seems retarded
 		
 	}
 	
@@ -59,11 +59,11 @@ public class ezC {
 	public static Task doEditTask(Task toEdit, String editedContent) {
 		
 		if(totalTaskList.contains(toEdit)) {
-			Task editedTask = totalTaskList.get(indexOf(toEdit));	// Gets the task that we want to edit from the task list
+			Task editedTask = totalTaskList.get(totalTaskList.indexOf(toEdit));	// Gets the task that we want to edit from the task list
 			// What am I editing here?
 		}
 		else {
-			System.out.println("The task \"" + toEdit.name + "\" that you are trying to edit does not exist in the task list.");	// Should this be in a separate method too?
+			System.out.println("The task \"" + toEdit.getName() + "\" that you are trying to edit does not exist in the task list.");	// Should this be in a separate method too?
 		}
 		
 	}
@@ -72,7 +72,7 @@ public class ezC {
 	// Prints the task that got edited
 	public static void confirmEditTask(Task oldTask, Task newTask) {
 		
-		System.out.println("Your task \"" + newTask.name() + "\" has been edited.");
+		System.out.println("Your task \"" + newTask.getName() + "\" has been edited.");
 		
 	}
 	
