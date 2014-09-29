@@ -8,7 +8,7 @@ public class ezC {
 	// NATALIE - FileIoStream relies on your pre-written FileIoStream Class?
 	static List<Task> totalTaskList;
 	String fileName;
-	FileIoStream fileStream (given fileName)
+	TextIoStream fileStream (given fileName)
 	List<String> Read();
 	
 	// YUI WEI
@@ -18,7 +18,8 @@ public class ezC {
 	
 	// NATALIE
 	public static List<Task> decipherFileContents(List<String> fileContent) {
-		
+		List<Task> taskList = TaskFileReader.getAllTasks(fileContent);
+		return taskList;
 	}
 	
 	// VERNON
