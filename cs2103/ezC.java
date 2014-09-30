@@ -1,16 +1,19 @@
 package cs2103;
 
-import java.util.Date;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+//import java.util.Date;
 import java.util.List;
 
 public class ezC {
 	
 	private static List<Task> totalTaskList;
-	private String fileName = "ezCTasks.txt";
+	private static String fileName = "ezCTasks.txt";
 	private static TextIoStream fileStream;
-	private List<String> read;	// what is this for?
 	
 	// YUI WEI
+	// note from Nat: Could we put this in a separate class so other functions
+	// can call it? Kinda like TaskFactory?
 	public static Date determineDate(String dateString) {
 		String month, day, year;
 		int mm, dd, yyyy;
@@ -153,7 +156,7 @@ public class ezC {
 	
 	// YUI WEI
 	public static void confirmDeleteTask(Task deletedTaskToPrintToUser) {
-				System.out.println(deleted.toString + "has been deleted.");	// do you mean deletedTaskToPrintToUser
+				System.out.println(deleted.toString + "has been deleted.");	// do you mean deletedTaskToPrintToUser?
 	}
 	
 	// VERNON
@@ -164,5 +167,23 @@ public class ezC {
 	// VERNON
 	public static void doShowToday() {
 		
+	}
+	
+	public static void main(String[] args) {
+		initializeTaskList();
+	}
+	
+	private static void initializeTaskList() {
+		try {
+			fileStream = new TextIoStream(fileName);
+			List<String> fileContents = fileStream.readFromFile();
+			totalTaskList = decipherFileContents(fileContents);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
