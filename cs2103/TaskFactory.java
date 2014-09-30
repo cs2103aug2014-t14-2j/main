@@ -1,5 +1,7 @@
 package cs2103;
 
+// By Nelson: This should go into the Task Class as overloaded constructors
+
 public class TaskFactory {
 	// expects null arguments if location, note, or endTime are not specified
 	public static Task makeTask(String name, String category, 
