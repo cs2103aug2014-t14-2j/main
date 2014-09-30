@@ -70,27 +70,26 @@ public class TaskFileReader {
 	private static Task createTask() {
 		checkForMissingComponents();
 		
-		String name = taskComponents.get(TASK_COMPONENT.NAME.getIndex());
-		String category = 
-				taskComponents.get(TASK_COMPONENT.CATEGORY.getIndex());
-		String startDateString = taskComponents.get(TASK_COMPONENT.START.getIndex());
-		String endDateString = taskComponents.get(TASK_COMPONENT.END.getIndex());
-		String location = 
-				taskComponents.get(TASK_COMPONENT.LOCATION.getIndex());
-		String note = taskComponents.get(TASK_COMPONENT.NOTE.getIndex());
+		String name = getName();
+		String category = getCategory();
+		String location = getLocation();
+		String note = getNote();
+		String startDateString = getStartDateString();
+		String endDateString = getEndDateString();
 		
 		Date start = determineDate(startDateString);
 		Date end = determineDate(endDateString);
 		
-		Task newTask = new Task(name, category, location, note, start, end);
+		Task newTask = TaskFactory.makeTask(name, category, location, note, 
+				start, end);
 		return newTask;
 	}
 
+	// sets missing components to null, as expected by TaskFactory
 	private static void checkForMissingComponents() {
-		String end = taskComponents.get(TASK_COMPONENT.END.getIndex());
-		String location = 
-				taskComponents.get(TASK_COMPONENT.LOCATION.getIndex());
-		String note = taskComponents.get(TASK_COMPONENT.NOTE.getIndex());
+		String location = getLocation();
+		String note = getNote();
+		String end = getEndDateString();
 		
 		if ( end.equals(MESSAGE_NO_END)) {
 			taskComponents.set(TASK_COMPONENT.END.getIndex(), null);
@@ -114,6 +113,8 @@ public class TaskFileReader {
 		return date;
 	}
 
+	// adds the component from the line to the list of task components, in its
+	// designated location
 	private static void addComponent(String currentLine) {
 		TASK_COMPONENT component = determineComponentType(currentLine);
 		int index = component.getIndex();
@@ -175,6 +176,30 @@ public class TaskFileReader {
 		}
 		
 		return;
+	}
+	
+	private static String getName() {
+		return taskComponents.get(TASK_COMPONENT.NAME.getIndex());
+	}
+	
+	private static String getCategory() {
+		return taskComponents.get(TASK_COMPONENT.CATEGORY.getIndex());
+	}
+	
+	private static String getLocation() {
+		return taskComponents.get(TASK_COMPONENT.LOCATION.getIndex());
+	}
+	
+	private static String getNote() {
+		return taskComponents.get(TASK_COMPONENT.NOTE.getIndex());
+	}
+	
+	private static String getStartDateString() {
+		return taskComponents.get(TASK_COMPONENT.START.getIndex());
+	}
+	
+	private static String getEndDateString() {
+		return taskComponents.get(TASK_COMPONENT.END.getIndex());
 	}
 
 }
