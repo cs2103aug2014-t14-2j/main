@@ -152,13 +152,13 @@ public class Task {
 			answer = answer + "Location: " + this.location + '\n';
 		}
 		if(!hasLocation){
-			answer = answer + "This Task has no specified Location." + '\n';
+			answer = answer + "Location: No Specified Location" + '\n';
 		}
 		if(hasNote){
 			answer = answer + "Note: " + this.note + '\n';
 		}
 		if(!hasNote){
-			answer = answer + "This Task has no specified Note." + '\n';
+			answer = answer + "Note: No Specified Note" + '\n';
 		}
 		return answer;
 	}
