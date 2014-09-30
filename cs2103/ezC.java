@@ -2,14 +2,13 @@ package cs2103;
 
 import java.util.Date;
 import java.util.List;
-//
+
 public class ezC {
 	
-	// NATALIE - FileIoStream relies on your pre-written FileIoStream Class?
-	static List<Task> totalTaskList;
-	String fileName;
-	TextIoStream fileStream (given fileName)
-	List<String> Read();
+	private static List<Task> totalTaskList;
+	private String fileName = "ezCTasks.txt";
+	private static TextIoStream fileStream;
+	private List<String> read;	// what is this for?
 	
 	// YUI WEI
 	public static Date determineDate(String dateString) {
@@ -71,7 +70,7 @@ public class ezC {
 	
 	// VERNON
 	public static Task extractTask(String userInput) {
-		
+		return null;
 	}
 	
 	// NELSON
@@ -86,7 +85,7 @@ public class ezC {
 		totalTaskList.sort();	// Task class needs to implement comparable and do an overriding method
 								// for compareTo() to sort by name/deadline/etc.
 								// Maybe have another method to purely deal with sorting?
-		fileStream.write(totalTaskList);	// Using Natalie's FileIO class to write the task list back
+		fileStream.rewriteFile(totalTaskList);	// Using Natalie's FileIO class to write the task list back
 											// to the file
 	}
 	
@@ -114,6 +113,7 @@ public class ezC {
 			System.out.println("The task \"" + toEdit.getName() + "\" that you are trying to edit does not exist in the task list.");	// Should this be in a separate method too?
 		}
 		
+		return null;
 	}
 	
 	// NELSON
@@ -126,7 +126,7 @@ public class ezC {
 	
 	// YUI WEI
 	public static List<Task> findTask(String taskName) {
-		List<Task> matches = new List<Task>();
+		List<Task> matches = new List<Task>();	// try List = new ArrayList
 		for (int i=0; i<totalTaskList.size(); i++) {
 			Task cur = totalTaskList.get(i);
 			if (cur.getName().contains(taskName)) {
@@ -141,17 +141,19 @@ public class ezC {
 	
 	// VERNON
 	public static Task narrowSearch(List<Task> narrowedTaskList) {
-		
+		return null;
 	}
 	
 	// YUI WEI
 	public static Task doDeleteTask(Task taskToDelete) {
-		totalTaskList.remove(toDelete);
+		totalTaskList.remove(toDelete);	// do you mean taskToDelete?
+		
+		return null;
 	}
 	
 	// YUI WEI
 	public static void confirmDeleteTask(Task deletedTaskToPrintToUser) {
-				System.out.println(deleted.toString + "has been deleted.");
+				System.out.println(deleted.toString + "has been deleted.");	// do you mean deletedTaskToPrintToUser
 	}
 	
 	// VERNON
