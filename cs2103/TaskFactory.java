@@ -1,5 +1,21 @@
 package cs2103;
 
+// By Nelson: This should go into the Task Class as overloaded constructors
+// By Natalie: This is an override. Factory classes are used in industry when
+// programmers want an easy way to deal with multiple constructors at one time.
+
+
+/*
+ * Decides which constructor of Task to call based on which arguments are
+ * available. Expects unavailable data in its arguments to be indicated by
+ * null.
+ * 
+ * Mandatory arguments: name, category, startTime
+ * Optional arguments: location, note, endTime
+ * 
+ * author: Natalie Rawle
+ */
+
 public class TaskFactory {
 	// expects null arguments if location, note, or endTime are not specified
 	public static Task makeTask(String name, String category, 

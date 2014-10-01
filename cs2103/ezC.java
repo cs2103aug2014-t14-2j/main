@@ -2,7 +2,7 @@ package cs2103;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
 //import java.util.Date;
 // test for yui wei
 import java.util.List;
@@ -87,7 +87,7 @@ public class ezC {
 		if(!totalTaskList.contains(toBeAdded)) {	// If the list doesn't contain this task, add it
 			totalTaskList.add(toBeAdded);
 		}
-		totalTaskList.sort();	// Task class needs to implement comparable and do an overriding method
+		Collections.sort(totalTaskList);	// Task class needs to implement comparable and do an overriding method
 								// for compareTo() to sort by name/deadline/etc.
 								// Maybe have another method to purely deal with sorting?
 		fileStream.rewriteFile(totalTaskList);	// Using Natalie's FileIO class to write the task list back
