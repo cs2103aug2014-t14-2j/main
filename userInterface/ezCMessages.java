@@ -1,9 +1,10 @@
-package cs2103;
+package userInterface;
 
 import java.io.PrintStream;
 
 public class ezCMessages {
 	private static final String TAB = "\t";
+	private static final String NEW_LINE = System.getProperty("line.separator");
 	
 	private static final String MESSAGE_WELCOME = "Welcome to ezC. No set-up "
 			+ "required.";
@@ -24,5 +25,9 @@ public class ezCMessages {
 	
 	public static void printHelpMessage(PrintStream os) {
 		os.print(MESSAGE_HELP);
+	}
+	
+	public static void printNewLine(PrintStream os) {
+		os.print(NEW_LINE);
 	}
 }

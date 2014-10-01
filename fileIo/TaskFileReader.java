@@ -1,7 +1,11 @@
-package cs2103;
+package fileIo;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cs2103.Date;
+import cs2103.Task;
+import cs2103.TaskFactory;
 
 /**
  * This class reads the file contents from the ezC task storage file.
@@ -49,6 +53,7 @@ public class TaskFileReader {
 
 	public static List<Task> getAllTasks(List<String> componentsFromFile) {
 		List<Task> taskList = new ArrayList<Task>();
+		clearTaskComponents();
 		
 		for (int i = 0; i < componentsFromFile.size(); ++i) {
 			String currentLine = componentsFromFile.get(i);
@@ -139,7 +144,7 @@ public class TaskFileReader {
 	}
 	
 	// Also by Yui - should be in Date class as an enum
-	static int monthInteger(String month1) {
+	public static int monthInteger(String month1) {
 		int monthNum;
 		switch (month1.toLowerCase()) {
 			case "january" :		
@@ -196,12 +201,14 @@ public class TaskFileReader {
 		return;
 	}
 
+	// made public for testing purposes. May have use outside of this class
 	public static TASK_COMPONENT determineComponentType(String string) {
 		String lineTitle = getFirstWord(string);
 		TASK_COMPONENT lineType = interpretTitle(lineTitle);
 		return lineType;
 	}
 	
+	// made public for testing purposes. May have use outside of this class
 	public static String getComponentData(String currentLine) {
 		String lineTitle = getFirstWord(currentLine) + LINE_TITLE_DELIMITER;
 		
@@ -213,6 +220,7 @@ public class TaskFileReader {
 		return noWhitespaceData;
 	}
 
+	// made public for testing purposes. May have use outside of this class
 	public static String getFirstWord(String string) {
 		String[] stringDividedAtFirstWord = string.split(LINE_TITLE_DELIMITER);
 		
@@ -221,8 +229,9 @@ public class TaskFileReader {
 		return lineTitle;
 	}
 	
+	// made public for testing purposes. May have use outside of this class
 	public static TASK_COMPONENT interpretTitle(String lineTitle) {
-		if (lineTitle.equalsIgnoreCase("name")) {
+		if (lineTitle.equalsIgnoreCase("task")) {
 			return TASK_COMPONENT.NAME;
 		} else if (lineTitle.equalsIgnoreCase("category")) {
 			return TASK_COMPONENT.CATEGORY;
@@ -239,6 +248,7 @@ public class TaskFileReader {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	// resets the task component list to have a space for each component
 	private static void clearTaskComponents() {
 		taskComponents.clear();

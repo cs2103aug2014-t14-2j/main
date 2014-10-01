@@ -2,16 +2,22 @@ package cs2103;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 //import java.util.Date;
 // test for yui wei
 import java.util.List;
 
+import userInterface.UserInterface;
+import userInterface.ezCMessages;
+import fileIo.FileIo;
+import fileIo.TaskFileReader;
+import fileIo.TextIoStream;
+
 public class ezC {
 	
 	private static List<Task> totalTaskList;
-	private static String fileName = "ezCTasks.txt";
-	private static TextIoStream fileStream;
+	private static FileIo IoStream = new FileIo();
 	
 	// YUI WEI
 	// note from Nat: Could we put this in a separate class so other functions
@@ -67,13 +73,6 @@ public class ezC {
 		}
 		return monthNum;
 	}
-
-
-	// NATALIE
-	public static List<Task> decipherFileContents(List<String> fileContent) {
-		List<Task> taskList = TaskFileReader.getAllTasks(fileContent);
-		return taskList;
-	}
 	
 	// VERNON
 	public static Task extractTask(String userInput) {
@@ -89,10 +88,10 @@ public class ezC {
 		if(!totalTaskList.contains(toBeAdded)) {	// If the list doesn't contain this task, add it
 			totalTaskList.add(toBeAdded);
 		}
-		Collections.sort(totalTaskList);	// Task class needs to implement comparable and do an overriding method
+		//Collections.sort(totalTaskList);	// Task class needs to implement comparable and do an overriding method
 								// for compareTo() to sort by name/deadline/etc.
 								// Maybe have another method to purely deal with sorting?
-		fileStream.rewriteFile(totalTaskList);	// Using Natalie's FileIO class to write the task list back
+		IoStream.rewriteFile(totalTaskList);	// Using Natalie's FileIO class to write the task list back
 											// to the file
 	}
 	
@@ -173,28 +172,7 @@ public class ezC {
 	}
 	
 	public static void main(String[] args) {
-		initializeTaskList();
-		ezCMessages.printWelcomeMessage(System.out);
-		ezCMessages.printHelpMessage(System.out);
-		while (true) {
-			input = readUserInput();
-			COMMAND_TYPE command = determineCommandType();
-			String feedback = executeCommand(command);
-			showToUser(feedback);
-		}
-	}
-
-	private static void initializeTaskList() {
-		try {
-			fileStream = new TextIoStream(fileName);
-			List<String> fileContents = fileStream.readFromFile();
-			totalTaskList = decipherFileContents(fileContents);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		FileIo.initializeTaskList(totalTaskList);
+		UserInterface.welcomeUser();
 	}
 }

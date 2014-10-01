@@ -1,4 +1,4 @@
-package cs2103;
+package fileIo;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

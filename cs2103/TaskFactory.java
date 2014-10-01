@@ -6,6 +6,8 @@ package cs2103;
 // By Kaushik: All the necessary constructors have already been added on the Task Class.
 // In fact, you can use some if-else statements and send it to Task Class directly. 
 // However, I like this idea of TaskFactory as well.
+// By Natalie: This is intended to be a portable version of the if statements so we only
+// have to write them once. (I will delete these comments at the next commit to clean it up)
 
 
 /*
