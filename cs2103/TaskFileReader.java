@@ -58,8 +58,8 @@ public class TaskFileReader {
 				if (newTask != null) {
 					taskList.add(newTask);
 				}
-			} else {
 				clearTaskComponents();
+			} else {
 				addComponent(currentLine);
 			}
 		}

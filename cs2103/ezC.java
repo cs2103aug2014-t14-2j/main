@@ -45,7 +45,9 @@ public class ezC {
 		Date userDate = new Date(dd, mm, yyyy);
 		return userDate;
 	}
-	//this should probably be made into method in the Date class.
+	
+	// this should probably be made into method in the Date class.
+	// Nat: Month should also be an enum
 	static int monthInteger(String month1) {
 		int monthNum;
 		switch (month1.toLowerCase()) {
@@ -173,8 +175,16 @@ public class ezC {
 	
 	public static void main(String[] args) {
 		initializeTaskList();
+		ezCMessages.printWelcomeMessage(System.out);
+		ezCMessages.printHelpMessage(System.out);
+		while (true) {
+			input = readUserInput();
+			COMMAND_TYPE command = determineCommandType();
+			String feedback = executeCommand(command);
+			showToUser(feedback);
+		}
 	}
-	
+
 	private static void initializeTaskList() {
 		try {
 			fileStream = new TextIoStream(fileName);
