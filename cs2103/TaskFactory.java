@@ -3,6 +3,9 @@ package cs2103;
 // By Nelson: This should go into the Task Class as overloaded constructors
 // By Natalie: This is an override. Factory classes are used in industry when
 // programmers want an easy way to deal with multiple constructors at one time.
+// By Kaushik: All the necessary constructors have already been added on the Task Class.
+// In fact, you can use some if-else statements and send it to Task Class directly. 
+// However, I like this idea of TaskFactory as well.
 
 
 /*

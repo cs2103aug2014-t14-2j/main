@@ -133,7 +133,7 @@ public class ezC {
 	
 	// YUI WEI
 	public static List<Task> findTask(String taskName) {
-		List<Task> matches = new List<Task>();	// try List = new ArrayList
+		List<Task> matches = new ArrayList<Task>();
 		for (int i=0; i<totalTaskList.size(); i++) {
 			Task cur = totalTaskList.get(i);
 			if (cur.getName().contains(taskName)) {
@@ -153,14 +153,13 @@ public class ezC {
 	
 	// YUI WEI
 	public static Task doDeleteTask(Task taskToDelete) {
-		totalTaskList.remove(toDelete);	// do you mean taskToDelete?
-		
+		totalTaskList.remove(taskToDelete);			
 		return null;
 	}
 	
 	// YUI WEI
 	public static void confirmDeleteTask(Task deletedTaskToPrintToUser) {
-				System.out.println(deleted.toString + "has been deleted.");	// do you mean deletedTaskToPrintToUser?
+				System.out.println(deletedTaskToPrintToUser.toString() + "has been deleted.");	
 	}
 	
 	// VERNON
