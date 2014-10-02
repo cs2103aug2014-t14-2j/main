@@ -1,16 +1,13 @@
 package dataManipulation;
 
-
-import globalClasses.Date;
-import globalClasses.Task;
-import globalClasses.ezC;
+import java.util.ArrayList;
+import globalClasses.*;
 import fileIo.FileIo;
 
 public class TaskRemover {
 	// YUI WEI
 	
-	public static Task doDeleteTask(List<CommandComponents> cc, FileIo IoStream) {
-		Task lookingFor = new Task(cc.get(0), cc.get(1), cc.get(4), cc.get(5), cc.get(2), cc.get(3));
+	public static Task doDeleteTask(Task lookingFor, FileIo IoStream) {
 		boolean flag = false;
 		for (Task t : ezC.totalTaskList) {
 			if (t.equals(lookingFor)) {
