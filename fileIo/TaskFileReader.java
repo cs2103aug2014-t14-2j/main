@@ -1,11 +1,11 @@
 package fileIo;
 
+import globalClasses.Date;
+import globalClasses.Task;
+import globalClasses.TaskFactory;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import cs2103.Date;
-import cs2103.Task;
-import cs2103.TaskFactory;
 
 /**
  * This class reads the file contents from the ezC task storage file.

@@ -1,4 +1,4 @@
-package cs2103;
+package globalClasses;
 
 import java.util.*;
 public class Task {

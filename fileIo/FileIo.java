@@ -1,10 +1,10 @@
 package fileIo;
 
+import globalClasses.Task;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
-
-import cs2103.Task;
 
 /*
  * This class acts as the interface between the File IO component

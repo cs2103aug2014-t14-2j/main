@@ -1,4 +1,4 @@
-package cs2103;
+package globalClasses;
 
 import java.time.*;
 import java.util.*;
