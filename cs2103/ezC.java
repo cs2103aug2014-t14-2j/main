@@ -88,7 +88,7 @@ public class ezC {
 		if(!totalTaskList.contains(toBeAdded)) {	// If the list doesn't contain this task, add it
 			totalTaskList.add(toBeAdded);
 		}
-		//Collections.sort(totalTaskList);	// Task class needs to implement comparable and do an overriding method
+		Collections.sort(totalTaskList, new sortTask());	// Task class needs to implement comparable and do an overriding method
 								// for compareTo() to sort by name/deadline/etc.
 								// Maybe have another method to purely deal with sorting?
 		IoStream.rewriteFile(totalTaskList);	// Using Natalie's FileIO class to write the task list back
@@ -105,21 +105,68 @@ public class ezC {
 	
 	// NELSON
 	// Locate task to be edited within list of tasks
-	// Replace specified parts (How to determine what to edit?)
 	// Need to edit Task Object AND actual file
 	// Returns a copy of edited task (Task Object)
 	// Should REJECT DUPLICATE entries
-	public static Task doEditTask(Task toEdit, String editedContent) {
+	public static void doEditTask(Task toEdit, String editedContent) {
 		
 		if(totalTaskList.contains(toEdit)) {
+			
+			String taskSplit[] = editedContent.split(" ", 2);	//	Splits the string of the content into 2 parts: Which part to edit and the actual new content
+			String editedComponent = taskSplit[0];
+			String actualEditedContent = taskSplit[1];
+			
 			Task editedTask = totalTaskList.get(totalTaskList.indexOf(toEdit));	// Gets the task that we want to edit from the task list
-			// What am I editing here?
+			
+			if(editedComponent.toLowerCase().equals("name")) {
+				editedTask.setName(actualEditedContent);
+				if(isExactMatch(editedTask)) {	// Requires Kash's exact match method
+					printErrorMessage("duplicate task");	//	Throws an error message is duplicate task found, need a separate method for error message printing
+				}
+				else {
+					totalTaskList.remove(toEdit);
+					totalTaskList.add(editedTask);
+					Collections.sort(totalTaskList, new sortTask());
+				}
+			}
+			else if(editedComponent.toLowerCase().equals("location")) {
+				editedTask.setLocation(actualEditedContent);
+				if(isExactMatch(editedTask)) {
+					printErrorMessage("duplicate task");
+				}
+				else {
+					addEditedTask(toEdit, editedTask);
+				}
+			}
+			else if(editedComponent.toLowerCase().equals("notes")) {
+				editedTask.setNote(actualEditedContent);
+				if(isExactMatch(editedTask)) {
+					printErrorMessage("duplicate task");
+				}
+				else {
+					addEditedTask(toEdit, editedTask);
+				}
+			}
+			else if(editedComponent.toLowerCase().equals("category")) {
+				editedTask.setCategory(actualEditedContent);
+				if(isExactMatch(editedTask)) {
+					printErrorMessage("duplicate task");
+				}
+				else {
+					addEditedTask(toEdit, editedTask);
+				}
+			}
+			else if(editedComponent.toLowerCase().equals("markascompleted")) {
+				editedTask.setCompleted(true);
+			}
+			else if(editedComponent.toLowerCase().equals("date")) {
+				
+			}
 		}
 		else {
-			System.out.println("The task \"" + toEdit.getName() + "\" that you are trying to edit does not exist in the task list.");	// Should this be in a separate method too?
+			printErrorMessage("404");
 		}
 		
-		return null;
 	}
 	
 	// NELSON
