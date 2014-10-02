@@ -3,6 +3,7 @@ package dataManipulation;
 import java.util.List;
 
 import fileIo.FileIo;
+import globalClasses.CommandComponent;
 import globalClasses.Task;
 
 public class TaskAdder {
@@ -19,7 +20,7 @@ public class TaskAdder {
 	 * @return the task which was added to the list
 	 */
 	public static Task doAddTask(List<CommandComponent> taskComponent, List<Task> totalTaskList, FileIo IoStream) {
-
+		Task toBeAdded = null;
 		if(!totalTaskList.contains(toBeAdded)) {	// If the list doesn't contain this task, add it
 			totalTaskList.add(toBeAdded);
 		}
