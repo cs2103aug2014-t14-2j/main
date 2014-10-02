@@ -18,7 +18,7 @@ public class TaskAdder {
 	 * @param IoStream The stream to rewrite the file afterwards
 	 * @return the task which was added to the list
 	 */
-	public static Task doAddTask(Task toBeAdded, List<Task> totalTaskList, FileIo IoStream) {
+	public static Task doAddTask(List<CommandComponent> taskComponent, List<Task> totalTaskList, FileIo IoStream) {
 
 		if(!totalTaskList.contains(toBeAdded)) {	// If the list doesn't contain this task, add it
 			totalTaskList.add(toBeAdded);
