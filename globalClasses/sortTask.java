@@ -1,4 +1,4 @@
-package cs2103;
+package globalClasses;
 import java.util.Comparator;
 public class sortTask implements Comparator<Object> {
 	    public int compare(Object o1, Object o2) {

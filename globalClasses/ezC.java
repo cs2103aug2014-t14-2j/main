@@ -16,8 +16,8 @@ import fileIo.TextIoStream;
 
 public class ezC {
 	
-	private static List<Task> totalTaskList;
-	private static FileIo IoStream = new FileIo();
+	public static List<Task> totalTaskList;
+	public static FileIo IoStream = new FileIo();
 	
 	// YUI WEI
 	// note from Nat: Could we put this in a separate class so other functions
@@ -74,6 +74,14 @@ public class ezC {
 		return monthNum;
 	}
 	
+<<<<<<< HEAD
+=======
+	// VERNON
+	public static Task extractTask(String userInput) {
+		return null;
+	}
+	
+>>>>>>> 1645f677f35786e7c0a0aed19e9dbf315505f302
 	// YUI WEI
 	public static List<Task> findTask(String taskName) {
 		List<Task> matches = new ArrayList<Task>();
