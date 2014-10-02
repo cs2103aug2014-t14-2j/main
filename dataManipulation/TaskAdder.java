@@ -18,17 +18,12 @@ public class TaskAdder {
 	 * @param IoStream The stream to rewrite the file afterwards
 	 * @return the task which was added to the list
 	 */
-	public static Task doAddTask(Task toBeAdded, List<Task> totalTaskList, FileIo IoStream) {
-
-		if(!totalTaskList.contains(toBeAdded)) {	// If the list doesn't contain this task, add it
+	public static void doAddTask(String contentsToAdd, FileIo IoStream) {
+		
+		/*Task toBeAdded = new Task();
+		if(!ezC.totalTaskList.contains(toBeAdded)) {	// If the list doesn't contain this task, add it
 			totalTaskList.add(toBeAdded);
 		}
-		//Collections.sort(totalTaskList);	// Task class needs to implement comparable and do an overriding method
-		// for compareTo() to sort by name/deadline/etc.
-		// Maybe have another method to purely deal with sorting?
-		IoStream.rewriteFile(totalTaskList);	// Using Natalie's FileIO class to write the task list back
-		// to the file
-		
-		return null;
+		IoStream.rewriteFile(totalTaskList);*/
 	}
 }
