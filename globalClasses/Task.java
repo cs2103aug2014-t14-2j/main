@@ -9,6 +9,7 @@ public class Task {
 	private boolean hasLocation = false;
 	private String name, location, note, category;
 	private static ArrayList<String> categorylist = new ArrayList<String>();
+	
 	public Task(String name, String first_category, String location, String note, Date startTime, Date endTime) {
 		this.setName(name);
 		categorylist = new ArrayList<String>();
