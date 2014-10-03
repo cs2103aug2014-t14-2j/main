@@ -4,10 +4,11 @@ import java.util.Collections;
 import java.util.List;
 
 import userInterface.ezCMessages;
+import fileIo.FileIo;
 import globalClasses.Date;
 import globalClasses.Task;
 import globalClasses.ezC;
-import globalClasses.sortTask;
+import globalClasses.sortTaskByEndDate;
 
 public class TaskEditor {
 		// NELSON
@@ -15,19 +16,14 @@ public class TaskEditor {
 		// Need to edit Task Object AND actual file
 		// Returns a copy of edited task (Task Object)
 		// Should REJECT DUPLICATE entries
-		public static void doEditTask(String editedContent) {
+		public static void doEditTask(Task toEdit, FileIo IoStream) {
 			
-			// Not sure if taking in a list of command components... Will update later
+			// Exact Match Searcher should throw back a null object if no match found 
 			
-			if(ezC.totalTaskList.contains(toEdit)) {
+			if(toEdit != null) {	// Do a check if the task object is null, if it is => no such task to edit
 				
-				String taskSplit[] = editedContent.split(" ", 2);	//	Splits the string of the content into 2 parts: Which part to edit and the actual new content
-				String editedComponent = taskSplit[0];
-				String actualEditedContent = taskSplit[1];
+				//	Need to determine what to edit again...
 				
-				Task editedTask = ezC.totalTaskList.get(ezC.totalTaskList.indexOf(toEdit));	// Gets the task that we want to edit from the task list
-				
-				if(editedComponent.toLowerCase().equals("name")) {
 					editedTask.setName(actualEditedContent);
 					if(isExactMatch(editedTask)) {	// Requires Kash's exact match method
 						ezCMessages.printErrorMessage("duplicate task");	// Returns the error message string (Need to call the output method)

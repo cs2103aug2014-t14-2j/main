@@ -1,5 +1,3 @@
-package globalClasses;
-
 import java.util.*;
 public class Task {
 	private Date startdate, enddate;
@@ -161,5 +159,20 @@ public class Task {
 			answer = answer + "Note: No Specified Note" + '\n';
 		}
 		return answer;
+	}
+	
+	public boolean isCompleted(){
+		Calendar cal = GregorianCalendar.getInstance();
+		int day = cal.get(Calendar.DATE);
+		int month = cal.get(Calendar.MONTH) + 1;
+		int year = cal.get(Calendar.YEAR);
+		Date today = new Date(day, month, year);
+		if(enddate.isBefore(today))
+			isComplete = true;
+		return isComplete;
+	}
+	
+	public void setComplete(){
+		this.isComplete = true;
 	}
 }

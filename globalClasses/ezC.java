@@ -74,6 +74,14 @@ public class ezC {
 		return monthNum;
 	}
 	
+<<<<<<< HEAD
+=======
+	// VERNON
+	public static Task extractTask(String userInput) {
+		return null;
+	}
+	
+>>>>>>> 4c6edd6eec7d61957f14bb485d6c9745fdbf4272
 	// YUI WEI
 	public static List<Task> findTask(String taskName) {
 		List<Task> matches = new ArrayList<Task>();

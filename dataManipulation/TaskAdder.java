@@ -1,13 +1,14 @@
 package dataManipulation;
 
-import java.util.List;
+import java.util.Collections;
 
+import userInterface.ezCMessages;
 import fileIo.FileIo;
-import globalClasses.CommandComponent;
 import globalClasses.Task;
+import globalClasses.ezC;
 
 public class TaskAdder {
-
+	
 	// NELSON
 	// Add task to overall list
 	// Keep list AND file sorted by deadline
@@ -19,17 +20,17 @@ public class TaskAdder {
 	 * @param IoStream The stream to rewrite the file afterwards
 	 * @return the task which was added to the list
 	 */
-	public static Task doAddTask(List<CommandComponent> taskComponent, List<Task> totalTaskList, FileIo IoStream) {
-		Task toBeAdded = null;
-		if(!totalTaskList.contains(toBeAdded)) {	// If the list doesn't contain this task, add it
-			totalTaskList.add(toBeAdded);
+	public static void doAddTask(Task newTask, FileIo IoStream) {
+		if(!ezC.totalTaskList.contains(newTask)) {	// If the list doesn't contain this task, add it
+			ezC.totalTaskList.add(newTask);
+			Collections.sort(ezC.totalTaskList, new globalClasses.sortTask());
+			IoStream.rewriteFile(ezC.totalTaskList);
 		}
-		//Collections.sort(totalTaskList);	// Task class needs to implement comparable and do an overriding method
-		// for compareTo() to sort by name/deadline/etc.
-		// Maybe have another method to purely deal with sorting?
-		IoStream.rewriteFile(totalTaskList);	// Using Natalie's FileIO class to write the task list back
-		// to the file
 		
-		return null;
+		else {
+			ezCMessages.printErrorMessage("duplicate add task");
+		}
+		
 	}
+	
 }

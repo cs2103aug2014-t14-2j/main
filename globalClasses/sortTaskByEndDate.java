@@ -1,6 +1,8 @@
 package globalClasses;
+
 import java.util.Comparator;
-public class sortTask implements Comparator<Object> {
+
+public class sortTaskByEndDate implements Comparator<Object> {
 	    public int compare(Object o1, Object o2) {
 	        Task s1 = (Task) o1;
 	        Task s2 = (Task) o2;
