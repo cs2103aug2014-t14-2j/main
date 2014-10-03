@@ -12,8 +12,9 @@ public class ezCMessages {
 			"Displays all tasks.";
 	
 	// Task Error Messages
-	private static final String duplicateTask = "ERROR: There already exists a duplicate task with the edits you are trying to make. No edits were made.";
+	private static final String duplicateEditTask = "ERROR: There already exists a duplicate task with the edits you are trying to make. No edits were made.";
 	private static final String taskNotFound = "ERROR: The task you are trying to edit does not exist. No edits were made.";
+	private static final String duplicateAddTask = "ERROR: There already exists a task you are trying to create. No new task was added.";
 	
 	public static String getWelcomeMessage() {
 		return MESSAGE_WELCOME;
@@ -37,12 +38,16 @@ public class ezCMessages {
 	
 	public static void printErrorMessage(String typeOfError) {
 		PrintStream os = null;
-		if(typeOfError.equals("duplicate task")) {
-			os.print(duplicateTask);
+		if(typeOfError.equals("duplicate edit task")) {
+			os.print(duplicateEditTask);
 			os.close();
 		}
 		else if(typeOfError.equals("404")) {
 			os.print(taskNotFound);
+			os.close();
+		}
+		else if(typeOfError.equals("duplicate add task")) {
+			os.print(duplicateAddTask);
 			os.close();
 		}
 	}
@@ -57,4 +62,5 @@ public class ezCMessages {
 		PrintStream os = null;
 		os.print("A new task " + newAddedTask + " has been added.");
 	}
+	
 }
