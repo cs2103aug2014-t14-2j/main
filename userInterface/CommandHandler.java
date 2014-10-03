@@ -10,7 +10,9 @@ import fileIo.FileIo;
 
 import java.util.List;
 
+import powerSearch.ExactMatchSearcher;
 import dataManipulation.TaskAdder;
+import dataManipulation.TaskEditor;
 import dataManipulation.TaskRemover;
 
 public class CommandHandler {
@@ -21,17 +23,20 @@ public class CommandHandler {
 	 * @param command
 	 * @return a string containing the feedback returned by the called method
 	 */
-	public String executeCommand(Command cmd) {
+	public String executeCommand(Command cmd, FileIo IoStream) {
 		COMMAND_TYPE type = cmd.getType();
 		List<CommandComponent> cc = cmd.getComponents();
-		Task workingTask = makeTask(cc);
+		Task searchingTask = makeTask(cc);
+		Task workingTask = ExactMatchSearcher.find(searchingTask);
 		switch (type) {
 		case ADD:
+			TaskAdder.doAddTask(workingTask, IoStream);
 			break;
 		case DELETE:
 			TaskRemover.doDeleteTask(workingTask, IoStream);
 			break;
 		case EDIT:
+			TaskEditor.doEditTask(workingTask, IoStream);
 			break;
 		case SEARCH:
 			break;

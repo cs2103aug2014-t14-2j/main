@@ -63,4 +63,9 @@ public class ezCMessages {
 		os.print("A new task " + newAddedTask + " has been added.");
 	}
 	
+	public static void printConfirmRemoved(String removedTask) {
+		PrintStream os = null;
+		os.print("Your task " + removedTask + " has been removed.");
+	}
+	
 }
