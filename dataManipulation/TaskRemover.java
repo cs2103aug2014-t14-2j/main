@@ -1,6 +1,8 @@
 package dataManipulation;
 
 import java.util.ArrayList;
+
+import userInterface.ezCMessages;
 import globalClasses.*;
 import fileIo.FileIo;
 
@@ -16,17 +18,17 @@ public class TaskRemover {
 				IoStream.rewriteFile(ezC.totalTaskList);
 			}
 		}
-		if(flag = false) {
+		if(flag == false) {
 			//print error message
 			lookingFor = null;
 		}
-
 		return lookingFor;
 	}
 	
 	// YUI WEI
 	public static void confirmDeleteTask(Task deletedTaskToPrintToUser) {
-				System.out.println(deleted.toString + "has been deleted.");
+			String deletedTask = deletedTaskToPrintToUser.toString();
+			ezCMessages.printConfirmRemoved(deletedTask);
 	}
 
 	//other things to maybe add:
