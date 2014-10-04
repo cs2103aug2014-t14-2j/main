@@ -7,7 +7,7 @@ public class Command {
 	private List<CommandComponent> components;
 	
 	public enum COMMAND_TYPE {
-		ADD, DELETE, EDIT, SEARCH
+		ADD, DELETE, EDIT, SEARCH, INVALID
 	}
 	
 	public Command(COMMAND_TYPE commandType, List<CommandComponent> commandComponents) {

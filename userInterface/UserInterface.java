@@ -1,5 +1,10 @@
 package userInterface;
 
+import globalClasses.Command;
+
+import java.io.PrintStream;
+import java.util.Scanner;
+
 /*
  * This class acts as the interface between the User Interface component
  * and the Main, Data Manipulation, and Power Search components. The other
@@ -7,11 +12,27 @@ package userInterface;
  */
 
 public class UserInterface {
+	private static PrintStream outputStream = System.out;
+	private static Scanner inputScanner = new Scanner(System.in);
+	
+	public static void showUser(String information) {
+		outputStream.print(information);
+	}
 	
 	public static void welcomeUser() {
-		ezCMessages.printWelcomeMessage(System.out);
-		ezCMessages.printNewLine(System.out);
-		ezCMessages.printHelpMessage(System.out);
+		String userIntro = ezCMessages.getWelcomeMessage();
+		userIntro = userIntro + ezCMessages.getNewLine();
+		userIntro = userIntro + ezCMessages.getHelpMessage();
+		
+		outputStream.println(userIntro);
 		return;
 	}
+
+	public static Command getUserCommand() {
+		String input = inputScanner.nextLine();
+		Command command = CommandInterpreter.formCommand(input);
+		
+		return command;
+	}
+	
 }

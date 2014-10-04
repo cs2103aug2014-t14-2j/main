@@ -1,18 +1,11 @@
 package globalClasses;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-//import java.util.Date;
-// test for yui wei
 import java.util.List;
 
+import userInterface.CommandHandler;
 import userInterface.UserInterface;
-import userInterface.ezCMessages;
 import fileIo.FileIo;
-import fileIo.TaskFileReader;
-import fileIo.TextIoStream;
 
 public class ezC {
 	
@@ -92,5 +85,10 @@ public class ezC {
 	public static void main(String[] args) {
 		FileIo.initializeTaskList(totalTaskList);
 		UserInterface.welcomeUser();
+		while(true) {
+			Command command = UserInterface.getUserCommand();
+			String feedback = CommandHandler.executeCommand(command, IoStream);
+			UserInterface.showUser(feedback);
+		}
 	}
 }
