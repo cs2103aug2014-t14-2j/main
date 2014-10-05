@@ -1,36 +1,30 @@
 package dataManipulation;
 
-import java.util.ArrayList;
 
-import userInterface.ezCMessages;
+import java.util.*;
+import powerSearch.ExactMatchSearcher;
 import globalClasses.*;
-import fileIo.FileIo;
+import userInterface.ezCMessages;
 
 public class TaskRemover {
 	// YUI WEI
+	private static String nameToRemove; 
+	private static Task taskToRemove;
+	private static Task taskRemoved;
 	
-	public static Task doDeleteTask(Task lookingFor, FileIo IoStream) {
-		boolean flag = false;
-		for (Task t : ezC.totalTaskList) {
-			if (t.equals(lookingFor)) {
-				flag = true;
-				ezC.totalTaskList.remove(t);
-				IoStream.rewriteFile(ezC.totalTaskList);
-			}
-		}
-		if(flag == false) {
-			//print error message
-			lookingFor = null;
-		}
-		return lookingFor;
+	public static Task remove(List<CommandComponent> cc) {
+		assert(cc.size() == 1);
+		nameToRemove = cc.get(0).getContents();
+		taskToRemove = ExactMatchSearcher.find(nameToRemove);
+		taskRemoved = taskToRemove;
+		doDeleteTask(taskToRemove);
+		return taskRemoved;
+		
+	}
+	public static void doDeleteTask(Task toRemove) {
+		ezC.totalTaskList.remove(toRemove);	
 	}
 	
-	// YUI WEI
-	public static void confirmDeleteTask(Task deletedTaskToPrintToUser) {
-			String deletedTask = deletedTaskToPrintToUser.toString();
-			ezCMessages.printConfirmRemoved(deletedTask);
-	}
-
 	//other things to maybe add:
 	//	+ delete by category
 	//	+ delete by keyword
