@@ -23,24 +23,28 @@ public class CommandHandler {
 	 */
 	public static String executeCommand(Command cmd) {
 
-		String toReturn; 
+		String message; 
 		COMMAND_TYPE type = cmd.getType();
 		List<CommandComponent> cc = cmd.getComponents();
 		
 		switch (type) {
 		case ADD:
 			Task added = dataManipulation.add(cc);
+			message = ezCMessages.getAddMessage(added);
 			break;
 		case REMOVE:
 			Task removed = dataManipulation.remove(cc);
+			message = ezCMessages.getDeleteMessage(removed);
 		case EDIT:
-			 editeddataManipulation.edit(cc);
+			 EditedPair<Task> edited = dataManipulation.edit(cc);
+			 message = ezCMessages.getEditMessage(edited.getOld(), edited.getNew());
 			break;
 		case SEARCH:
 			break;
 		default:
 			break;
 		}
+		return message;
 	}
 
 }

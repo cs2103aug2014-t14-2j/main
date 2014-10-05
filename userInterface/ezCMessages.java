@@ -55,8 +55,16 @@ public class ezCMessages {
 		return ERROR_DUPLICATE_ADD;
 	}
 	
-	public static String getAddTaskMessage(Task newTask) {
+	public static String getAddMessage(Task newTask) {
 		String message = "Task Added:" + newTask.toString();
+		return message;
+	}
+	public static String getDeleteMessage(Task deletedTask) {
+		String message = "";
+		return message;
+	}
+	public static String getEditMessage(Task original, Task edited) {
+		String message = "";
 		return message;
 	}
 }
