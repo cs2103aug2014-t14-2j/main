@@ -2,10 +2,11 @@ package fileIo;
 
 import globalClasses.Date;
 import globalClasses.Task;
-import globalClasses.TaskFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import dataManipulation.TaskFactory;
 
 /**
  * This class reads the file contents from the ezC task storage file.
@@ -96,15 +97,15 @@ public class TaskFileReader {
 		String note = getNote();
 		String end = getEndDateString();
 		
-		if ( end.equals(MESSAGE_NO_END)) {
+		if (end.equals(MESSAGE_NO_END)) {
 			taskComponents.set(TASK_COMPONENT.END.getIndex(), null);
 		}
 		
-		if ( location.equals(MESSAGE_NO_LOCATION)) {
+		if (location.equals(MESSAGE_NO_LOCATION)) {
 			taskComponents.set(TASK_COMPONENT.LOCATION.getIndex(), null);
 		}
 		
-		if ( note.equals(MESSAGE_NO_NOTE)) {
+		if (note.equals(MESSAGE_NO_NOTE)) {
 			taskComponents.set(TASK_COMPONENT.NOTE.getIndex(), null);
 		}
 		

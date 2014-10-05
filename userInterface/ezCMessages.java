@@ -1,7 +1,12 @@
 package userInterface;
 
-import java.io.PrintStream;
-
+/**
+ * Holds all of the messages associated with the program.
+ * 
+ * Should not contain any action methods - only access methods
+ * @author Natalie Rawle
+ *
+ */
 public class ezCMessages {
 	private static final String TAB = "\t";
 	private static final String NEW_LINE = System.getProperty("line.separator");
@@ -12,9 +17,21 @@ public class ezCMessages {
 			"Displays all tasks.";
 	
 	// Task Error Messages
-	private static final String duplicateEditTask = "ERROR: There already exists a duplicate task with the edits you are trying to make. No edits were made.";
-	private static final String taskNotFound = "ERROR: The task you are trying to edit does not exist. No edits were made.";
-	private static final String duplicateAddTask = "ERROR: There already exists a task you are trying to create. No new task was added.";
+	private static final String ERROR_DUPLICATE_EDIT = "ERROR: There already "
+			+ "exists a duplicate task with the edits you are trying to make. "
+			+ "No edits were made.";
+	private static final String ERROR_TASK_NOT_FOUND = "ERROR: The task you are trying "
+			+ "to edit does not exist. No edits were made.";
+	private static final String ERROR_DUPLICATE_ADD = "ERROR: There already exists"
+			+ " a task you are trying to create. No new task was added.";
+	
+	public static String getTab() {
+		return TAB;
+	}
+	
+	public static String getNewLine() {
+		return NEW_LINE;
+	}
 	
 	public static String getWelcomeMessage() {
 		return MESSAGE_WELCOME;
@@ -24,48 +41,15 @@ public class ezCMessages {
 		return MESSAGE_HELP;
 	}
 	
-	public static void printWelcomeMessage(PrintStream os) {
-		os.print(MESSAGE_WELCOME);
+	public static String getDuplicateEditErrorMessage() {
+		return ERROR_DUPLICATE_EDIT;
 	}
 	
-	public static void printHelpMessage(PrintStream os) {
-		os.print(MESSAGE_HELP);
+	public static String getTaskNotFoundErrorMessage() {
+		return ERROR_TASK_NOT_FOUND;
 	}
 	
-	public static void printNewLine(PrintStream os) {
-		os.print(NEW_LINE);
+	public static String getDuplicateAddErrorMessage() {
+		return ERROR_DUPLICATE_ADD;
 	}
-	
-	public static void printErrorMessage(String typeOfError) {
-		PrintStream os = null;
-		if(typeOfError.equals("duplicate edit task")) {
-			os.print(duplicateEditTask);
-			os.close();
-		}
-		else if(typeOfError.equals("404")) {
-			os.print(taskNotFound);
-			os.close();
-		}
-		else if(typeOfError.equals("duplicate add task")) {
-			os.print(duplicateAddTask);
-			os.close();
-		}
-	}
-	
-	public static void printConfirmEdited(String newEditedTask) {
-		PrintStream os = null;
-		os.print("Your task " + newEditedTask + " has been edited.");
-		os.close();
-	}
-	
-	public static void printConfirmAdded(String newAddedTask) {
-		PrintStream os = null;
-		os.print("A new task " + newAddedTask + " has been added.");
-	}
-	
-	public static void printConfirmRemoved(String removedTask) {
-		PrintStream os = null;
-		os.print("Your task " + removedTask + " has been removed.");
-	}
-	
 }

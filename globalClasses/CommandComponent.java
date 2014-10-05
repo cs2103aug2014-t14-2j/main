@@ -2,7 +2,7 @@ package globalClasses;
 
 public class CommandComponent {
 	public enum COMPONENT_TYPE {
-		NAME, CATEGORY, START, END, LOCATION, NOTE
+		NAME, NEW_NAME, CATEGORY, START, END, LOCATION, NOTE
 	}
 	
 	private COMPONENT_TYPE type;

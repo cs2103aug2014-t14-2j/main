@@ -1,0 +1,42 @@
+This file is for requests for changes in another person's source files. Until
+they change their code, but make a stub to compile your own (or you can edit
+their code and reverse the edit before you commit.) MAKE SURE NOT TO EDIT
+THE CODE WITHOUT EXPLICIT PERMISSION because otherwise you might edit the same
+area - even in the exact same way - and cause a conflict, which will block
+all but one person from committing anything.
+
+Remember to let the person know that you added a request for them to edit
+something, because we shouldn't expect each other to check here every time.
+This is just so we don't have to clog WhatsApp with requests that will just
+get lost.
+
+-------------------------------------------------------------------------------
+Requests By Natalie
+-------------------------------------------------------------------------------
+
+Everyone
+
+Confirmation messages should be printed within the User Interface package,
+not within AddTask, EditTask, etc. Just return your task and let
+CommandHandler call the correct method to form a confirmation message. I
+only ask this because we need to keep dependencies to a minimum. 
+
+The same goes with error messages - throw an error and let the caller handle 
+telling the user that their request isn't doable.
+
+Yui
+
+In response to our earlier conversation, totally keep passing the
+example task to Editor, etc, but make the task forming methods be
+part of a class in something else. Maybe TaskFactory? I won't be 
+editing that any more, so you can have at it. Nice job coordinating
+that with Nelson, too! You guys are awesome~. I'll admit that my first
+instinct was wrong; I think you had the right idea from the start.
+Sorry for telling you otherwise
+
+Need to make public methods in CommandHandler static since we don't
+need to have an instance of CommandHandler. Also, change its argument
+list to be (Command cmd, FileIo IoStream) so you can pass it as an
+argument to the Data Manipulation methods like you're trying to do.
+(which is what the API says, so you're right in doing so. I think I
+messed up on your API)
