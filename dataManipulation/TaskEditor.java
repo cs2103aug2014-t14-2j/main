@@ -1,14 +1,14 @@
 package dataManipulation;
 
+import globalClasses.CommandComponent;
+import globalClasses.EditedPair;
+import globalClasses.Task;
+import globalClasses.ezC;
+
 import java.util.Collections;
 import java.util.List;
 
-import userInterface.ezCMessages;
-import fileIo.FileIo;
-import globalClasses.Date;
-import globalClasses.Task;
-import globalClasses.ezC;
-import globalClasses.sortTaskByEndDate;
+import powerSearch.ExactMatchSearcher;
 
 public class TaskEditor {
 		// NELSON
@@ -16,80 +16,87 @@ public class TaskEditor {
 		// Need to edit Task Object AND actual file
 		// Returns a copy of edited task (Task Object)
 		// Should REJECT DUPLICATE entries
-		public static void doEditTask(Task toEdit, FileIo IoStream) {
+	
+		/**	For edit() method:
+		 * 
+		 * @param taskAttributes
+		 * @return EditedPair<preEditedTask, postEditedTask>
+		 * @throws Exception if 1) Task to be edited cannot be found or 2) Task is a duplicate after editing
+		 */
+	
+		public static EditedPair edit(List<CommandComponent> taskAttributes) throws Exception {
 			
-			// Exact Match Searcher should throw back a null object if no match found 
+			Task toEdit = searchTask(taskAttributes);
+			Task preEdit = toEdit;
+			Task postEdit = editTask(toEdit, taskAttributes);
 			
-			if(toEdit != null) {	// Do a check if the task object is null, if it is => no such task to edit
-				
-				//	Need to determine what to edit again...
-				
-					editedTask.setName(actualEditedContent);
-					if(isExactMatch(editedTask)) {	// Requires Kash's exact match method
-						ezCMessages.printErrorMessage("duplicate task");	// Returns the error message string (Need to call the output method)
-					}
-					else {
-						addEditedTask(toEdit, editedTask);
-						ezCMessages.printConfirmEdited(editedTask.getName());
-					}
-				}
-				else if(editedComponent.toLowerCase().equals("location")) {
-					editedTask.setLocation(actualEditedContent);
-					if(isExactMatch(editedTask)) {
-						ezCMessages.printErrorMessage("duplicate task");
-					}
-					else {
-						addEditedTask(toEdit, editedTask);
-						ezCMessages.printConfirmEdited(editedTask.getName());
-					}
-				}
-				else if(editedComponent.toLowerCase().equals("notes")) {
-					editedTask.setNote(actualEditedContent);
-					if(isExactMatch(editedTask)) {
-						ezCMessages.printErrorMessage("duplicate task");
-					}
-					else {
-						addEditedTask(toEdit, editedTask);
-						ezCMessages.printConfirmEdited(editedTask.getName());
-					}
-				}
-				else if(editedComponent.toLowerCase().equals("category")) {
-					editedTask.setCategory(actualEditedContent);
-					if(isExactMatch(editedTask)) {
-						ezCMessages.printErrorMessage("duplicate task");
-					}
-					else {
-						addEditedTask(toEdit, editedTask);
-						ezCMessages.printConfirmEdited(editedTask.getName());
-					}
-				}
-				else if(editedComponent.toLowerCase().equals("markascompleted")) {
-					editedTask.setCompleted(true);
-					ezCMessages.printConfirmEdited(editedTask.getName());
-				}
-				else if(editedComponent.toLowerCase().equals("date")) {
-					Date newDate = ezC.determineDate(actualEditedContent);
-					editedTask.setEndDate(newDate);
-					if(isExactMatch(editedTask)) {
-						ezCMessages.printErrorMessage("duplicate task");
-					}
-					else {
-						addEditedTask(toEdit, editedTask);
-						ezCMessages.printConfirmEdited(editedTask.getName());
-					}
-				}
-			}
-			else {
-				ezCMessages.printErrorMessage("404");
-			}
+			addEditedTask(preEdit, postEdit);
 			
+			return new EditedPair(preEdit, postEdit);
 		}
 		
+		private static Task editTask(Task toEdit, List<CommandComponent> taskAttributes) throws Exception {
+			
+			Task afterEdit = setTaskAttributes(toEdit, taskAttributes);
+			
+			if(ExactMatchSearcher.isExactMatch(afterEdit)) {
+				throw new Exception("Duplicate Task Found");
+			}
+			else {
+				return afterEdit;
+			}
+		}
+
+		private static Task setTaskAttributes(Task toEdit, List<CommandComponent> taskAttributes) {
+			
+			for(CommandComponent cc : taskAttributes) {
+
+				switch (cc.getType()) {
+
+				case TITLE:	toEdit.setName(cc.getContents());
+							break;
+
+				case CATEGORY:	toEdit.setCategory(cc.getContents());
+								break;
+
+				case LOCATION:	toEdit.setLocation(cc.getContents());
+								break;
+
+				case END:	toEdit.setEndDate(ezC.determineDate(cc.getContents()));
+							break;
+
+				case NOTE:	toEdit.setNote(cc.getContents());
+							break;
+
+				// case COMPLETE:	toEdit.setComplete(cc.getContents());
+				//					break;
+
+				default:
+					break;
+				}
+			}
+				
+				return toEdit;
+		}
+
+		private static Task searchTask(List<CommandComponent> taskAttributes) throws Exception {
+			
+			for(CommandComponent cc : taskAttributes) {
+				
+				if(cc.getType() == CommandComponent.COMPONENT_TYPE.NAME) {
+					Task toEdit = ExactMatchSearcher.find(cc.getContents());
+					return toEdit;
+				}
+			}
+			
+			throw new Exception("Task Not Found");
+		}
+
 		// Adds the edited task to the total task list
 		public static void addEditedTask(Task oldTask, Task newTask) {
 			ezC.totalTaskList.remove(oldTask);
 			ezC.totalTaskList.add(newTask);
-			Collections.sort(ezC.totalTaskList, new globalClasses.sortTask());
+			Collections.sort(ezC.totalTaskList, new globalClasses.sortTaskByEndDate());
 		}
 		
 }
