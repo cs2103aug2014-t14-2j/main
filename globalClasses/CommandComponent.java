@@ -4,7 +4,11 @@ package globalClasses;
  * The data associated with a particular command. Note that certain component
  * types must match up with certain command types. (not checked in this class)
  * 
- * Note that for certain command component types, there are some 
+ * Note that for certain command component types, there are some restrictions
+ * for component data based on component type, as checked by the program.
+ * 
+ * NAME is the actual name of the Task. TITLE is only used when editing the
+ * task's name.
  * 
  * @author Natalie Rawle
  * 
@@ -12,7 +16,7 @@ package globalClasses;
 
 public class CommandComponent {
 	public enum COMPONENT_TYPE {
-		AND, BEGIN, CATEGORY, DATE, DATE_TYPE, DEADLINE, END, LOCATION, NAME, NONE, NOTE,
+		AND, CATEGORY, DATE, DATE_TYPE, END, LOCATION, NAME, NONE, NOTE,
 		OR, FREQUENCY, START, TITLE,
 		INVALID
 	}

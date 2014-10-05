@@ -13,16 +13,99 @@ public class CommandInterpreter {
 		assert(input != null);
 		assert(!input.isEmpty());
 		
+		if (isSpecialCommand(input)) {
+			Command command = determineSpecialCommand(input);
+			return command;
+		}
+		
 		String commandTypeString = getFirstWord(input);
 		COMMAND_TYPE commandType = determineCommandType(commandTypeString);
 		
 		String commandComponentsString = removeFirstWord(input);
 		List<CommandComponent> components = 
-				getComponents(commandType, commandComponentsString);
+				getComponents(commandComponentsString, commandType);
 		
 		Command command = new Command(commandType, components);
 		
 		return command;
+	}
+
+	private static boolean isSpecialCommand(String input) {
+		input = input.toLowerCase();
+		
+		String[] splitInput = splitString(input);
+		
+		if (isChangeDateType(splitInput)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private static boolean isChangeDateType(String[] splitInput) {
+		String[] changeDateTypeExample = makeChangeDateTypeExample();
+		
+		if(splitInput.length != changeDateTypeExample.length) {
+			return false;
+		}
+		
+		// last element of command is a variable and not the command itself
+		int commandLength = splitInput.length - 1;
+		int lastPosition = splitInput.length - 1;
+		
+		for (int i = 0; i < commandLength; ++i) {
+			if (splitInput[i] != changeDateTypeExample[i]) {
+				return false;
+			}
+		}
+		
+		String firstOption = "d/m";
+		String secondOption = "m/d";
+		String usersOption = splitInput[lastPosition];
+		
+		if (usersOption != firstOption && usersOption != secondOption) {
+			return false;
+		}
+		
+		return true;
+	}
+
+	private static String[] makeChangeDateTypeExample() {
+		int length = 4;	// "change" "date" "type" "D/M", etc
+		String[] example = new String[length];
+		
+		int iterator = 0;
+		
+		example[iterator++] = "change";
+		example[iterator++] = "date";
+		example[iterator++] = "type";
+		example[iterator++] = "d/m";
+		
+		return example;
+	}
+
+	/**
+	 * assumes that input has already been checked to match the special command
+	 * formats. Will only check variables.
+	 * 
+	 * Currently, there is only one special command, so it directly asks for
+	 * "change date type d/m" at "d/m" (position index 3)
+	 * 
+	 * @param input
+	 * @return
+	 */
+	private static Command determineSpecialCommand(String input) {
+		input = input.toLowerCase();
+		
+		String[] splitInput = splitString(input);
+		int lastPosition = splitInput.length - 1;
+		
+		if (splitInput[lastPosition] == "d/m") {
+			CommandComponent component = 
+					new CommandComponent(COMPONENT_TYPE.DATE_TYPE, splitInput[lastPosition]);
+			Command command = new Command(COMMAND_TYPE.CHANGE_DATE_TYPE);
+		}
+		return null;
 	}
 
 	/**
@@ -167,22 +250,51 @@ public class CommandInterpreter {
 				new CommandComponent(componentType, componentData);
 		return component;
 	}
-	
-	//List of CommandComponents: 
-			// list[0]: name
-			// list[1]: category
-			// list[2]: start date
-			// list[3]: end date
-			// list[4]: location
-			// list[5]: note
 
 	private static COMPONENT_TYPE determineComponentType(
 			String componentTypeString) {
 		switch (componentTypeString.toLowerCase()) {
-			case ("name") :
-				return COMPONENT_TYPE.NAME;
+		case ("and") :
+			return COMPONENT_TYPE.AND;
+		case ("&") :
+			return COMPONENT_TYPE.AND;
+		case ("begin") :
+			return COMPONENT_TYPE.START;
+		case ("-b") :
+			return COMPONENT_TYPE.START;
+		case ("category") :
+			return COMPONENT_TYPE.CATEGORY;
+		case ("cat") :
+			return COMPONENT_TYPE.CATEGORY;
+		case ("-c") :
+			return COMPONENT_TYPE.CATEGORY;
+		case ("date") :
+			return COMPONENT_TYPE.DATE;
+		case ("-dt") :
+			return COMPONENT_TYPE.DATE;
+		case ("deadline") :
+			return COMPONENT_TYPE.END;
+		case ("-dl") :
+			return COMPONENT_TYPE.END;
+		case ("end") :
+			return COMPONENT_TYPE.END;
+		case ("-e") :
+			return COMPONENT_TYPE.END;
+		case ("location") :
+			return COMPONENT_TYPE.LOCATION;
+		case ("-l") :
+			return COMPONENT_TYPE.LOCATION;
+		case ("note") :
+			return COMPONENT_TYPE.NOTE;
+		case ("-n") :
+			return COMPONENT_TYPE.NOTE;
+		case ("start") :
+			return COMPONENT_TYPE.START;
+		case ("-s") :
+			return COMPONENT_TYPE.START;
+		default :
+			return COMPONENT_TYPE.INVALID;
 		}
-		return null;
 	}
 
 	private static String getComponentData(String withoutFirstType) {

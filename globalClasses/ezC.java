@@ -87,7 +87,7 @@ public class ezC {
 		UserInterface.welcomeUser();
 		while(true) {
 			Command command = UserInterface.getUserCommand();
-			String feedback = CommandHandler.executeCommand(command, IoStream);
+			String feedback = CommandHandler.executeCommand(command);
 			UserInterface.showUser(feedback);
 		}
 	}

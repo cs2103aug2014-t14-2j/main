@@ -9,36 +9,35 @@ import java.util.List;
  * Note that each command type is associated with specific command component
  * types, as follows:
  *
- * ADD: NAME, BEGIN, CATEGORY, DEADLINE, END, LOCATION, NOTE, START
+ * ADD: NAME, CATEGORY, END, LOCATION, NOTE, START
  * 
  * All: NONE
  * 
  * CATEGORY: CATEGORY
  * 
- * CHANGE_DATE_TYPE: TYPE
+ * CHANGE_DATE_TYPE: DATE_TYPE
  * 
- * Complete: NONE
+ * COMPLETE: NONE
  * 
- * Edit: NAME, BEGIN, CATEGORY, DEADLINE, END, LOCATION, NOTE, START, TITLE
+ * EDIT: NAME, CATEGORY, END, LOCATION, NOTE, START, TITLE
  * 
- * Finish: TITLE
+ * FINISH: NAME
  * 
- * Help: NONE
+ * HELP: NONE
  * 
- * Note: TITLE
+ * NOTE: NAME
  * 
- * Remove: TITLE
+ * REMOVE: NAME
  * 
- * Repeat: TITLE, FREQUENCY
+ * REPEAT: NAME, FREQUENCY
  * 
- * Search: 	AND, NAME, BEGIN, CATEGORY, DATE, DEADLINE, END, LOCATION, NOTE, OR,
- * 			START, TITLE
+ * SEARCH: 	AND, NAME, CATEGORY, DATE, END, LOCATION, NOTE, OR, START
  * 
- * Sort: START or END
+ * SORT: START or END
  * 
- * Today: NONE
+ * TODAY: NONE
  * 
- * Undo: NONE
+ * UNDO: NONE
  * 
  * @author Natalie Rawle
  *
@@ -131,11 +130,7 @@ public class Command {
 			switch (component.getType()) {
 				case NAME :
 					break; // valid
-				case BEGIN :
-					break;
 				case CATEGORY :
-					break;
-				case DEADLINE :
 					break;
 				case END :
 					break;
@@ -182,11 +177,7 @@ public class Command {
 			switch (component.getType()) {
 				case NAME :
 					break; // valid
-				case BEGIN :
-					break;
 				case CATEGORY :
-					break;
-				case DEADLINE :
 					break;
 				case END :
 					break;
@@ -215,13 +206,9 @@ public class Command {
 					break;
 				case NAME :
 					break;
-				case BEGIN :
-					break;
 				case CATEGORY :
 					break;
 				case DATE :
-					break;
-				case DEADLINE :
 					break;
 				case END :
 					break;
@@ -230,8 +217,6 @@ public class Command {
 				case NOTE :
 					break;
 				case START :
-					break;
-				case TITLE :
 					break;
 				default :
 					throw new IllegalArgumentException("invalid subcommand");
