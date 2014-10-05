@@ -1,5 +1,7 @@
 package userInterface;
 
+import globalClasses.Task;
+
 /**
  * Holds all of the messages associated with the program.
  * 
@@ -51,5 +53,10 @@ public class ezCMessages {
 	
 	public static String getDuplicateAddErrorMessage() {
 		return ERROR_DUPLICATE_ADD;
+	}
+	
+	public static String getAddTaskMessage(Task newTask) {
+		String message = "Task Added:" + newTask.toString();
+		return message;
 	}
 }
