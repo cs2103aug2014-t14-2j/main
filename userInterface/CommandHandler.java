@@ -23,18 +23,18 @@ public class CommandHandler {
 	 */
 	public static String executeCommand(Command cmd) {
 
+		String toReturn; 
 		COMMAND_TYPE type = cmd.getType();
 		List<CommandComponent> cc = cmd.getComponents();
 		
 		switch (type) {
 		case ADD:
-			TaskAdder.doAddTask(cc);
+			Task added = dataManipulation.add(cc);
 			break;
 		case REMOVE:
-			dataManipulation.remove(cc);
-			break;
+			Task removed = dataManipulation.remove(cc);
 		case EDIT:
-			TaskEditor.doEditTask(cc);
+			 editeddataManipulation.edit(cc);
 			break;
 		case SEARCH:
 			break;
