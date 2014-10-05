@@ -40,3 +40,13 @@ list to be (Command cmd, FileIo IoStream) so you can pass it as an
 argument to the Data Manipulation methods like you're trying to do.
 (which is what the API says, so you're right in doing so. I think I
 messed up on your API)
+
+-------------------------------------------------------------------------------
+Requests By Nelson
+-------------------------------------------------------------------------------
+
+Kash
+
+Require a follow-up on the isExactSearch method that I've constructed a
+skeleton for, for use in the TaskEditor() method. Basically it should throw a
+true or false boolean for if a task exists in our list already. Thanks a lot man!
