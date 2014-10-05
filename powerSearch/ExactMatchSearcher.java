@@ -10,4 +10,10 @@ public class ExactMatchSearcher extends Searcher {
 		Task foundInTotalTaskList = new Task("name", "date"); //TOTALLY WRONG PLS FIX
 		return foundInTotalTaskList;
 	}
+	
+	public static boolean isExactMatch(Task taskToSearch) {	// Require this method for TaskEditor() method
+		
+		return true;
+		
+	}
 }
