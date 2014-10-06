@@ -22,7 +22,7 @@ public class CommandComponent {
 	}
 	
 	// All possibilities for the frequency keyword
-	private enum FREQUENCY {
+	public enum FREQUENCY {
 		DAILY, WEEKLY, MONTHLY, ANNUALLY, ONCE;
 		
 		@Override
@@ -32,7 +32,7 @@ public class CommandComponent {
 	}
 	
 	// The two possibilities (plus invalid) for the date display/read type
-	private enum DATE_TYPE {
+	public enum DATE_TYPE {
 		DAY_MONTH, MONTH_DAY;
 		
 		@Override
@@ -89,15 +89,15 @@ public class CommandComponent {
 	private void checkFrequencyContents() throws IllegalArgumentException {
 		boolean isValid = false;
 		
-		if (contents == FREQUENCY.DAILY.toString()) {
+		if (contents.equals(FREQUENCY.DAILY.toString())) {
 			isValid = true;
-		} else if (contents == FREQUENCY.WEEKLY.toString()) {
+		} else if (contents.equals(FREQUENCY.WEEKLY.toString())) {
 			isValid = true;
-		} else if (contents == FREQUENCY.MONTHLY.toString()) {
+		} else if (contents.equals(FREQUENCY.MONTHLY.toString())) {
 			isValid = true;
-		} else if (contents == FREQUENCY.ANNUALLY.toString()) {
+		} else if (contents.equals(FREQUENCY.ANNUALLY.toString())) {
 			isValid = true;
-		} else if (contents == FREQUENCY.ONCE.toString()) {
+		} else if (contents.equals(FREQUENCY.ONCE.toString())) {
 			isValid = true;
 		}
 		
@@ -109,14 +109,24 @@ public class CommandComponent {
 	private void checkDateTypeContents() throws IllegalArgumentException {
 		boolean isValid = false;
 		
-		if (contents == DATE_TYPE.DAY_MONTH.toString()) {
+		if (contents.equals(DATE_TYPE.DAY_MONTH.toString())) {
 			isValid = true;
-		} else if (contents == DATE_TYPE.MONTH_DAY.toString()) {
+		} else if (contents.equals(DATE_TYPE.MONTH_DAY.toString())) {
 			isValid = true;
 		}
 		
 		if (!isValid) {
 			throw new IllegalArgumentException("invalid date format specified");
 		}
+	}
+	
+	@Override
+	public String toString() {
+		String formattedType = "Component Type: " + type;
+		String newLine = "\n";
+		String formattedContents = "Contents: " + contents;
+		
+		String total = formattedType + newLine + formattedContents;
+		return total;
 	}
 }

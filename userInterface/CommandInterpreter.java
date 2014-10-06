@@ -20,15 +20,29 @@ public class CommandInterpreter {
 		
 		String commandTypeString = getFirstWord(input);
 		COMMAND_TYPE commandType = determineCommandType(commandTypeString);
+		Command command;
 		
-		String commandComponentsString = removeFirstWord(input);
-		List<CommandComponent> components = 
-				getComponents(commandComponentsString, commandType);
+		if (commandType == COMMAND_TYPE.INVALID) {
+			throw new IllegalArgumentException("unrecognized command type");
+		} 
+
+		List<CommandComponent> components;
 		
-		Command command = new Command(commandType, components);
+		if (isNoComponentCommand(commandType)) {
+			components = getNoCommandComponents(input, commandType);
+		} else {
+			input = removeFirstWord(input);
+			components = getComponents(input, commandType);
+		}
+		
+		command = new Command(commandType, components);
 		
 		return command;
 	}
+	
+//-----------------------------------------------------------------------------
+//---------------- Command Related Methods ------------------------------------
+//-----------------------------------------------------------------------------
 
 	private static boolean isSpecialCommand(String input) {
 		input = input.toLowerCase();
@@ -54,7 +68,7 @@ public class CommandInterpreter {
 		int lastPosition = splitInput.length - 1;
 		
 		for (int i = 0; i < commandLength; ++i) {
-			if (splitInput[i] != changeDateTypeExample[i]) {
+			if (!splitInput[i].equals(changeDateTypeExample[i])) {
 				return false;
 			}
 		}
@@ -63,7 +77,7 @@ public class CommandInterpreter {
 		String secondOption = "m/d";
 		String usersOption = splitInput[lastPosition];
 		
-		if (usersOption != firstOption && usersOption != secondOption) {
+		if (!usersOption.equals(firstOption) && !usersOption.equals(secondOption)) {
 			return false;
 		}
 		
@@ -99,28 +113,16 @@ public class CommandInterpreter {
 		
 		String[] splitInput = splitString(input);
 		int lastPosition = splitInput.length - 1;
-		
-		if (splitInput[lastPosition] == "d/m") {
-			CommandComponent component = 
-					new CommandComponent(COMPONENT_TYPE.DATE_TYPE, splitInput[lastPosition]);
-			Command command = new Command(COMMAND_TYPE.CHANGE_DATE_TYPE);
-		}
-		return null;
-	}
 
-	/**
-	 * Gets the first word from the string
-	 * @param sentence with length > 0
-	 * @return a String of all characters before the first whitespace (or the end)
-	 */
-	private static String getFirstWord(String sentence) {
-		assert(sentence != null);
-		assert(!sentence.isEmpty());
+		CommandComponent component = new CommandComponent(COMPONENT_TYPE.DATE_TYPE, 
+				splitInput[lastPosition]);
 		
-		String[] dividedSentence = splitString(sentence);
-		String commandTypeString = dividedSentence[0];
+		List<CommandComponent> list = new ArrayList<CommandComponent>();
+		list.add(component);
 		
-		return commandTypeString;
+		Command command = new Command(COMMAND_TYPE.CHANGE_DATE_TYPE, list);
+
+		return command;
 	}
 	
 	// ADD, ALL, CATEGORY, CHANGE_DATE_TYPE, COMPLETED, EDIT, FILTER, FINISH, 
@@ -128,6 +130,7 @@ public class CommandInterpreter {
 	// INVALID
 	private static COMMAND_TYPE determineCommandType(String commandTypeString) {
 		assert(commandTypeString != null);
+		commandTypeString = commandTypeString.trim();
 		
 		switch (commandTypeString.toLowerCase()) {
 			case "add" :
@@ -205,22 +208,9 @@ public class CommandInterpreter {
 		}
 	}
 	
-	/**
-	 * Removes the first substring before whitespace, as well as end whitespace
-	 * @param input
-	 * @return
-	 */
-	private static String removeFirstWord(String sentence) {
-		assert(sentence != null);
-		String[] splitSentence = splitString(sentence);
-		
-		String shorterString = new String();
-		for (int i = 1; i < sentence.length(); ++i) {
-			shorterString = shorterString.concat(splitSentence[i]);
-		}
-		
-		return shorterString;
-	}
+//-----------------------------------------------------------------------------
+//------------------ Subcommand Related Methods -------------------------------
+//-----------------------------------------------------------------------------
 	
 	private static List<CommandComponent> getComponents(String string,
 			COMMAND_TYPE commandType) {
@@ -229,8 +219,16 @@ public class CommandInterpreter {
 
 		List<CommandComponent> components = new ArrayList<CommandComponent>();
 		
-		for (int i = 0; i < string.length(); ++i) {
-			CommandComponent component = getNextComponent(string);
+		CommandComponent component;
+		// Search and Sort must label their first subcommands
+		if (commandType != COMMAND_TYPE.SEARCH && commandType != COMMAND_TYPE.SORT) {
+			component = getFirstComponent(commandType, string);
+			string = eraseComponent(component, string);
+			components.add(component);
+		}
+		
+		while (string.length() > 0) {
+			component = getNextComponent(string);
 			string = eraseComponent(component, string);
 			components.add(component);
 		}
@@ -238,13 +236,106 @@ public class CommandInterpreter {
 		return components;
 	}
 	
+	private static List<CommandComponent> getNoCommandComponents(String input,
+			COMMAND_TYPE commandType) {
+		assert(input != null);
+		
+		try {
+			input = removeFirstWord(input);
+		} catch (IllegalArgumentException e) {
+			input = "";
+		}
+		
+		return createNoComponent(input, commandType);
+	}
+	
+	private static List<CommandComponent> createNoComponent(String string,
+			COMMAND_TYPE commandType) {
+		assert(string != null);
+		
+		string = string.trim();
+		
+		if (!string.isEmpty()) {
+			throw new IllegalArgumentException("too many arguments");
+		}
+		
+		List<CommandComponent> componentList = new ArrayList<CommandComponent>();
+		
+		return componentList;
+	}
+
+	private static boolean isNoComponentCommand(COMMAND_TYPE commandType) {
+		switch (commandType) {
+			case ALL :
+				return true;
+			case COMPLETED :
+				return true;
+			case HELP :
+				return true;
+			case TODAY :
+				return true;
+			case UNDO :
+				return true;
+			default :
+				return false;
+		}
+	}
+
+	/**
+	 * The first component should be directly after the command type
+	 * Will be surrounded by quotations if formatted correctly
+	 * 
+	 * Assumes that the command type has already been removed from the string
+	 * 
+	 * @param string
+	 * @return
+	 */
+	private static CommandComponent getFirstComponent(COMMAND_TYPE commandType,
+			String string) {
+		string = string.trim();	// remove whitespace
+		
+		COMPONENT_TYPE componentType = determineFirstComponentType(commandType);
+		
+		String componentData = getComponentData(string, componentType);
+		
+		CommandComponent component = 
+				new CommandComponent(componentType, componentData);
+		return component;
+	}
+
+	private static COMPONENT_TYPE determineFirstComponentType(
+			COMMAND_TYPE commandType) {
+		switch (commandType) {
+			case ADD :
+				return COMPONENT_TYPE.NAME;
+			case CATEGORY :
+				return COMPONENT_TYPE.CATEGORY;
+			case EDIT :
+				return COMPONENT_TYPE.NAME;
+			case FINISH :
+				return COMPONENT_TYPE.NAME;
+			case NOTE :
+				return COMPONENT_TYPE.NAME;
+			case REMOVE :
+				return COMPONENT_TYPE.NAME;
+			case REPEAT :
+				return COMPONENT_TYPE.NAME;
+			default :
+				return COMPONENT_TYPE.INVALID;
+		}
+	}
+	
 	private static CommandComponent getNextComponent(String componentSentence) {
 		String componentTypeString = getFirstWord(componentSentence);
 		COMPONENT_TYPE componentType = 
 				determineComponentType(componentTypeString);
 		
-		String withoutFirstType = removeFirstWord(componentSentence);
-		String componentData = getComponentData(withoutFirstType);
+		if (componentType != COMPONENT_TYPE.FREQUENCY) {
+			componentSentence = removeFirstWord(componentSentence);
+		}
+		
+		String componentData = getComponentData(componentSentence, 
+				componentType);
 		
 		CommandComponent component = 
 				new CommandComponent(componentType, componentData);
@@ -253,11 +344,15 @@ public class CommandInterpreter {
 
 	private static COMPONENT_TYPE determineComponentType(
 			String componentTypeString) {
+		componentTypeString = componentTypeString.trim();
+		
 		switch (componentTypeString.toLowerCase()) {
 		case ("and") :
 			return COMPONENT_TYPE.AND;
 		case ("&") :
 			return COMPONENT_TYPE.AND;
+		case ("annually") :
+			return COMPONENT_TYPE.FREQUENCY;
 		case ("begin") :
 			return COMPONENT_TYPE.START;
 		case ("-b") :
@@ -268,6 +363,8 @@ public class CommandInterpreter {
 			return COMPONENT_TYPE.CATEGORY;
 		case ("-c") :
 			return COMPONENT_TYPE.CATEGORY;
+		case ("daily") :
+			return COMPONENT_TYPE.FREQUENCY;
 		case ("date") :
 			return COMPONENT_TYPE.DATE;
 		case ("-dt") :
@@ -284,22 +381,47 @@ public class CommandInterpreter {
 			return COMPONENT_TYPE.LOCATION;
 		case ("-l") :
 			return COMPONENT_TYPE.LOCATION;
+		case ("monthly") :
+			return COMPONENT_TYPE.FREQUENCY;
 		case ("note") :
 			return COMPONENT_TYPE.NOTE;
 		case ("-n") :
 			return COMPONENT_TYPE.NOTE;
+		case ("once") :
+			return COMPONENT_TYPE.FREQUENCY;
 		case ("start") :
 			return COMPONENT_TYPE.START;
 		case ("-s") :
 			return COMPONENT_TYPE.START;
+		case ("title") :
+			return COMPONENT_TYPE.TITLE;
+		case ("-t") :
+			return COMPONENT_TYPE.TITLE;
+		case ("weekly") :
+			return COMPONENT_TYPE.FREQUENCY;
 		default :
 			return COMPONENT_TYPE.INVALID;
 		}
 	}
 
-	private static String getComponentData(String withoutFirstType) {
-		// TODO Auto-generated method stub
-		return null;
+	
+
+	/**
+	 * Assumes that the String is not between quotation marks (which would
+	 * allow the user to write subcommand keywords)
+	 * 
+	 * @param componentPart
+	 * @return
+	 */
+	private static boolean isSubcommand(String possibleSubcommand) {
+		COMPONENT_TYPE possibleType = 
+				determineComponentType(possibleSubcommand);
+		
+		if (possibleType == COMPONENT_TYPE.INVALID) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	private static String eraseComponent(CommandComponent component,
@@ -312,24 +434,159 @@ public class CommandInterpreter {
 		String emptyString = "";
 		
 		sentence = sentence.replaceFirst(match, emptyString);
+		
+		if (sentence.equals(match)) {
+			return emptyString;	// replaceFirst will not replace the entire string
+		}
+		
 		sentence = sentence.trim();
 				
 		return sentence;
 	}
 
+//-----------------------------------------------------------------------------
+//------------------ Subcommand Data Related Methods --------------------------
+//-----------------------------------------------------------------------------
+
+	private static String getComponentData(String userCommand, 
+			COMPONENT_TYPE componentType) {
+		if (componentType == COMPONENT_TYPE.START ||
+				componentType == COMPONENT_TYPE.END ||
+				componentType == COMPONENT_TYPE.DATE ||
+				componentType == COMPONENT_TYPE.FREQUENCY) {
+			return getDateComponentData(userCommand);
+		}
+		
+		userCommand = userCommand.trim();
+		return getBetweenQuoteData(userCommand);
+	}
+
+	private static String getDateComponentData(String userCommand) {
+		assert(!userCommand.isEmpty());
+		
+		String[] splitCommand = splitString(userCommand);
+		String removedWhitespace = " ";
+		
+		String wholeData = splitCommand[0];
+		String dataPart = new String();
+		for (int i = 1; (i < splitCommand.length) && 
+				(!isSubcommand(dataPart)); ++i) {
+			dataPart = splitCommand[i];
+			if (!isSubcommand(dataPart)) {
+				wholeData = wholeData + removedWhitespace + dataPart;
+			}
+		}
+		wholeData = wholeData.trim();
+		
+		return wholeData;
+	}
+	
+	private static String getBetweenQuoteData(String userCommand) 
+			throws IllegalArgumentException {
+		String emptyString = "";
+		String doubleQuoteMark = "\"";
+		
+		userCommand = userCommand.trim();
+		
+		checkFirstQuotation(userCommand);	// first character should be a quotation
+		userCommand = userCommand.replaceFirst(doubleQuoteMark, emptyString);
+		String commandData = getUntilQuotation(userCommand);
+		
+		return commandData;
+	}
+	
+	private static void checkFirstQuotation(String userCommand) {
+		String doubleQuote = "\"";
+		if (!userCommand.startsWith(doubleQuote)) {
+			throw new IllegalArgumentException("invalid subcommand argument");
+		}
+	}
+	
+	private static String getUntilQuotation(String userCommand) {
+		assert(userCommand != null);
+		if (userCommand.isEmpty()) {
+			throw new IllegalArgumentException("invalid subcommand argument");
+		}
+		
+		String fullString = userCommand.substring(0, 1);
+		String singleChar = new String();
+		String doubleQuote = "\"";
+		
+		for (int i = 1; (i != userCommand.length()) && (!singleChar.equals(doubleQuote)); ++i) {
+			fullString = fullString + singleChar;
+			singleChar = userCommand.substring(i, i+1);
+		}
+		
+		// check to see if it ever saw another quotation mark
+		if (!singleChar.equals(doubleQuote)) {
+			throw new IllegalArgumentException("invalid subcommand argument");
+		}
+		
+		return fullString;
+	}
+	
 	private static String extractComponentMatch(
 			CommandComponent component, String sentence) {
 		String[] splitSentence = splitString(sentence);
 		String matchingString = component.getContents();
 		String growingMatch = splitSentence[0];
+		String space = " ";
 		
 		assert(sentence.contains(matchingString));
 		
-		for (int i = 1; !growingMatch.contains(matchingString); ++i) {
+		for (int i = 1; ((!growingMatch.contains(matchingString)) && 
+				(i < splitSentence.length)); ++i) {
+			growingMatch = growingMatch.concat(space);
 			growingMatch = growingMatch.concat(splitSentence[i]);
 		}
+		growingMatch = growingMatch.trim();
 		
 		return growingMatch;
+	}
+	
+//-----------------------------------------------------------------------------
+//------------------ General Methods ------------------------------------------
+//-----------------------------------------------------------------------------
+	
+	/**
+	 * Gets the first word from the string
+	 * @param sentence with length > 0
+	 * @return a String of all characters before the first whitespace (or the end)
+	 */
+	private static String getFirstWord(String sentence) {
+		assert(sentence != null);
+		assert(!sentence.isEmpty());
+		
+		String[] dividedSentence = splitString(sentence);
+		String commandTypeString = dividedSentence[0];
+		
+		return commandTypeString;
+	}
+	
+	/**
+	 * Removes the first substring before whitespace, as well as end whitespace
+	 * @param input
+	 * @return
+	 */
+	private static String removeFirstWord(String sentence) {
+		assert(sentence != null);
+		
+		String[] splitSentence = splitString(sentence);
+		
+		int minimumSize = 2;	// must be at least 2 words in command;
+		if (splitSentence.length < minimumSize) {
+			throw new IllegalArgumentException("too short of argument");
+		}
+		
+		String shorterString = new String();
+		String space = " ";
+		for (int i = 1; i < splitSentence.length; ++i) {
+			shorterString = shorterString.concat(space);
+			shorterString = shorterString.concat(splitSentence[i]);
+		}
+		shorterString = shorterString.trim();
+		
+		return shorterString;
 	}
 
 	/**
