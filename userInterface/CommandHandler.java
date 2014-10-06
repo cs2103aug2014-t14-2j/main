@@ -21,10 +21,11 @@ public class CommandHandler {
 	 * based on the command type
 	 * @param command
 	 * @return a string containing the feedback returned by the called method
+	 * @throws Exception 
 	 */
-	public static String executeCommand(Command cmd) {
+	public static String executeCommand(Command cmd) throws Exception {
 
-		String message; 
+		String message = new String(); 
 		COMMAND_TYPE type = cmd.getType();
 		List<CommandComponent> cc = cmd.getComponents();
 		
