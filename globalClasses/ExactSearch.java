@@ -1,4 +1,7 @@
-import java.util.*;
+package globalClasses;
+
+import java.util.ArrayList;
+
 public class ExactSearch {
 	private String namesearch = new String();
 	private String datesearch = new String();

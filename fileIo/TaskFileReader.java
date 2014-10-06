@@ -86,7 +86,7 @@ public class TaskFileReader {
 		Date start = determineDate(startDateString);
 		Date end = determineDate(endDateString);
 		
-		Task newTask = TaskFactory.makeTask(name, category, location, note, 
+		Task newTask = dataManipulation.TaskFactory.makeTask(name, category, location, note, 
 				start, end);
 		return newTask;
 	}

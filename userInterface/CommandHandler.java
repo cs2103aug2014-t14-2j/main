@@ -4,6 +4,7 @@ import globalClasses.Command;
 import globalClasses.Command.COMMAND_TYPE;
 import globalClasses.CommandComponent;
 import globalClasses.Date;
+import globalClasses.EditedPair;
 import globalClasses.Task;
 import globalClasses.ezC;
 import fileIo.FileIo;
@@ -11,7 +12,7 @@ import fileIo.FileIo;
 import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
-import dataManipulation.dataManipulation;
+import dataManipulation.DataManipulation;
 
 public class CommandHandler {
 	
@@ -29,14 +30,14 @@ public class CommandHandler {
 		
 		switch (type) {
 		case ADD:
-			Task added = dataManipulation.add(cc);
+			Task added = DataManipulation.add(cc);
 			message = ezCMessages.getAddMessage(added);
 			break;
 		case REMOVE:
-			Task removed = dataManipulation.remove(cc);
+			Task removed = DataManipulation.remove(cc);
 			message = ezCMessages.getDeleteMessage(removed);
 		case EDIT:
-			 EditedPair<Task> edited = dataManipulation.edit(cc);
+			 EditedPair edited = DataManipulation.edit(cc);
 			 message = ezCMessages.getEditMessage(edited.getOld(), edited.getNew());
 			break;
 		case SEARCH:
