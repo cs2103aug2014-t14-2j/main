@@ -15,8 +15,7 @@ public class ezCMessages {
 	
 	private static final String MESSAGE_WELCOME = "Welcome to ezC. No set-up "
 			+ "required.";
-	private static final String MESSAGE_HELP = "Display" + TAB + "-d" + TAB + 
-			"Displays all tasks.";
+	private static final String MESSAGE_HELP = "enter \"exit\" to quit.";
 	
 	// Task Error Messages
 	private static final String ERROR_DUPLICATE_EDIT = "ERROR: There already "
@@ -60,11 +59,19 @@ public class ezCMessages {
 		return message;
 	}
 	public static String getDeleteMessage(Task deletedTask) {
-		String message = "";
+		String message = new String();
 		return message;
 	}
 	public static String getEditMessage(Task original, Task edited) {
-		String message = "";
+		String message = new String();
 		return message;
+	}
+	
+	public static String getErrorMessage(Exception e) {
+		String opening = "error: ";
+		String errorMessage = e.getMessage();
+		String totalMessage = opening + errorMessage + NEW_LINE;
+		
+		return totalMessage;
 	}
 }

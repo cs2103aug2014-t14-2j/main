@@ -9,7 +9,7 @@ import fileIo.FileIo;
 
 public class ezC {
 	
-	public static List<Task> totalTaskList;
+	public static List<Task> totalTaskList = new ArrayList<Task>();
 	public static FileIo IoStream = new FileIo();
 	
 	// YUI WEI

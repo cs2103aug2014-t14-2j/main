@@ -49,11 +49,7 @@ public class UserInterface {
 	}
 
 	public static String getErrorMessage(Exception e) {
-		String opening = "error: ";
-		String errorMessage = e.getMessage();
-		String totalMessage = opening + errorMessage;
-		
-		return totalMessage;
+		return ezCMessages.getErrorMessage(e);
 	}
 	
 }
