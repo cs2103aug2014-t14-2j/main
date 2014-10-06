@@ -30,9 +30,30 @@ public class UserInterface {
 
 	public static Command getUserCommand() {
 		String input = inputScanner.nextLine();
+		
+		if (doesUserWantExit(input)) {
+			System.exit(0);
+		}
+		
 		Command command = CommandInterpreter.formCommand(input);
 		
 		return command;
+	}
+	
+	private static boolean doesUserWantExit(String input) {
+		if (input.equalsIgnoreCase("exit")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public static String getErrorMessage(Exception e) {
+		String opening = "error: ";
+		String errorMessage = e.getMessage();
+		String totalMessage = opening + errorMessage;
+		
+		return totalMessage;
 	}
 	
 }

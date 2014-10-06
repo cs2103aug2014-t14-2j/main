@@ -3,18 +3,6 @@ package dataManipulation;
 import globalClasses.Date;
 import globalClasses.Task;
 
-
-
-// By Nelson: This should go into the Task Class as overloaded constructors
-// By Natalie: This is an override. Factory classes are used in industry when
-// programmers want an easy way to deal with multiple constructors at one time.
-// By Kaushik: All the necessary constructors have already been added on the Task Class.
-// In fact, you can use some if-else statements and send it to Task Class directly. 
-// However, I like this idea of TaskFactory as well.
-// By Natalie: This is intended to be a portable version of the if statements so we only
-// have to write them once. (I will delete these comments at the next commit to clean it up)
-
-
 /*
  * Decides which constructor of Task to call based on which arguments are
  * available. Expects unavailable data in its arguments to be indicated by

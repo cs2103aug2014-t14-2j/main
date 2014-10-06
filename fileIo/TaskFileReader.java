@@ -6,8 +6,6 @@ import globalClasses.Task;
 import java.util.ArrayList;
 import java.util.List;
 
-import dataManipulation.TaskFactory;
-
 /**
  * This class reads the file contents from the ezC task storage file.
  * It does not anticipate incorrect formatting and will throw an exception when

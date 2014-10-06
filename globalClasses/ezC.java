@@ -87,7 +87,14 @@ public class ezC {
 		UserInterface.welcomeUser();
 		while(true) {
 			Command command = UserInterface.getUserCommand();
-			String feedback = CommandHandler.executeCommand(command);
+			String feedback;
+			try {
+				feedback = CommandHandler.executeCommand(command);
+			} catch (IllegalArgumentException e) {
+				feedback = UserInterface.getErrorMessage(e);
+			} catch (Exception e) {
+				feedback = UserInterface.getErrorMessage(e);
+			}
 			UserInterface.showUser(feedback);
 		}
 	}
