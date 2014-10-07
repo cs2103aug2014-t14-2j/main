@@ -21,10 +21,10 @@ public class TaskAdder {
 	 * @throws Exception is returned if duplicate task exists
 	 */
 	
-	private static String taskName = null;
-	private static String taskCategory = null;
-	private static String taskLocation = null;
-	private static String taskNote = null;
+	private static String taskName = "";
+	private static String taskCategory = "";
+	private static String taskLocation = "";
+	private static String taskNote = "";
 	private static Date taskStart = null;
 	private static Date taskEnd = null;
 	
