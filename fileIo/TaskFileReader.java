@@ -121,6 +121,7 @@ public class TaskFileReader {
 			month = dateString.substring(0, space);
 			day = dateString.substring(space + 1, comma);
 			year = dateString.substring(comma);
+			year = cleanUpYear(year);
 			mm = monthInteger(month);
 		} else if (dateString.contains("/")) {
 			String dateStr[] = dateString.split("/", 3);
@@ -142,6 +143,22 @@ public class TaskFileReader {
 		return userDate;
 	}
 	
+	private static String cleanUpYear(String year) {
+		String space = " ";
+		String comma = ",";
+		String emptyString = new String();
+		
+		if (year.contains(space)) {
+			year = year.replace(space, emptyString);
+		}
+		
+		if (year.contains(comma)) {
+			year = year.replace(comma, emptyString);
+		}
+		
+		return year;
+	}
+
 	// Also by Yui - should be in Date class as an enum
 	public static int monthInteger(String month1) {
 		int monthNum;

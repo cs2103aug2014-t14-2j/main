@@ -86,9 +86,9 @@ public class ezC {
 		FileIo.initializeTaskList(totalTaskList);
 		UserInterface.welcomeUser();
 		while(true) {
-			Command command = UserInterface.getUserCommand();
-			String feedback;
+			String feedback = new String();
 			try {
+				Command command = UserInterface.getUserCommand();
 				feedback = CommandHandler.executeCommand(command);
 			} catch (IllegalArgumentException e) {
 				feedback = UserInterface.getErrorMessage(e);

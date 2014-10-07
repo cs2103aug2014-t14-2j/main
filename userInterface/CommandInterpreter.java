@@ -9,7 +9,7 @@ import globalClasses.CommandComponent;
 import globalClasses.CommandComponent.COMPONENT_TYPE;
 
 public class CommandInterpreter {
-	public static Command formCommand(String input) {
+	public static Command formCommand(String input) throws IllegalArgumentException {
 		assert(input != null);
 		assert(!input.isEmpty());
 		
@@ -223,19 +223,27 @@ public class CommandInterpreter {
 		// Search and Sort must label their first subcommands
 		if (commandType != COMMAND_TYPE.SEARCH && commandType != COMMAND_TYPE.SORT) {
 			component = getFirstComponent(commandType, string);
-			string = eraseComponent(component, string);
+			if (isQuotationComponent(component)) {
+				string = eraseQuoteComponent(string);
+			} else {
+				string = eraseNoQuoteComponent(component, string);
+			}
 			components.add(component);
 		}
 		
 		while (string.length() > 0) {
 			component = getNextComponent(string);
-			string = eraseComponent(component, string);
+			if (isQuotationComponent(component)) {
+				string = eraseQuoteComponent(string);
+			} else {
+				string = eraseNoQuoteComponent(component, string);
+			}
 			components.add(component);
 		}
 		
 		return components;
 	}
-	
+
 	private static List<CommandComponent> getNoCommandComponents(String input,
 			COMMAND_TYPE commandType) {
 		assert(input != null);
@@ -404,8 +412,6 @@ public class CommandInterpreter {
 		}
 	}
 
-	
-
 	/**
 	 * Assumes that the String is not between quotation marks (which would
 	 * allow the user to write subcommand keywords)
@@ -424,7 +430,7 @@ public class CommandInterpreter {
 		}
 	}
 
-	private static String eraseComponent(CommandComponent component,
+	private static String eraseNoQuoteComponent(CommandComponent component,
 			String sentence) {
 		assert(sentence != null);
 		assert(component != null);
@@ -442,6 +448,57 @@ public class CommandInterpreter {
 		sentence = sentence.trim();
 				
 		return sentence;
+	}
+	
+	private static String eraseQuoteComponent(String sentence) 
+			throws IndexOutOfBoundsException {
+		assert(sentence != null);
+		char quote = '"';
+		
+		int indexOfNextQuote = sentence.indexOf(quote);
+		if (indexOfNextQuote == -1) {
+			throw new IndexOutOfBoundsException("No double quote found");
+		}
+		
+		String withoutUntilFirstQuote = sentence.substring(indexOfNextQuote + 1);
+		
+		indexOfNextQuote = withoutUntilFirstQuote.indexOf(quote);
+		int indexOfEnd = withoutUntilFirstQuote.length() - 1;
+		// if the component is the last component
+		if (indexOfNextQuote == indexOfEnd) {
+			String emptyString = "";
+			return emptyString;
+		}
+		
+		if (indexOfNextQuote == -1) {
+			throw new IndexOutOfBoundsException("No double quote found");
+		}
+		
+		String withoutUntilSecondQuote = 
+				withoutUntilFirstQuote.substring(indexOfNextQuote + 1);
+
+		withoutUntilSecondQuote = withoutUntilSecondQuote.trim();
+				
+		return withoutUntilSecondQuote;
+	}
+	
+	private static boolean isQuotationComponent(CommandComponent component) {
+		COMPONENT_TYPE type = component.getType();
+		
+		switch (type) {
+			case CATEGORY :
+				return true;
+			case LOCATION :
+				return true;
+			case NAME :
+				return true;
+			case NOTE :
+				return true;
+			case TITLE :
+				return true;
+			default :
+				return false;
+		}
 	}
 
 //-----------------------------------------------------------------------------

@@ -14,7 +14,20 @@ get lost.
 Requests By Natalie
 -------------------------------------------------------------------------------
 
-None for now! Thanks, everyone!
+Yui
+
+There's a bug in the determine date class. If you enter
+
+May 5, 2014
+
+It parses it as
+
+Month: "May"
+Day: "5"
+Year: ", 2014"
+
+I'm fixing it for file reader, but I'm leaving it up to you to fix it for the
+rest of the program (you can copy mine directly)
 
 -------------------------------------------------------------------------------
 Requests By Nelson
