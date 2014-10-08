@@ -6,6 +6,7 @@ import globalClasses.*;
 
 
 public class DataManipulation {
+	
   public static Task add(List<CommandComponent> cc) throws Exception {
     return TaskAdder.add(cc);
   }
@@ -14,5 +15,8 @@ public class DataManipulation {
   }
   public static EditedPair edit(List<CommandComponent> cc) throws Exception {
     return TaskEditor.edit(cc);
+  }
+  public static Task markAsCompleted(List<CommandComponent> cc) throws Exception {
+	  return TaskEditor.markAsCompleted(cc);
   }
 }
