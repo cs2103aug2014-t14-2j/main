@@ -73,11 +73,13 @@ public class ezCMessages {
 	}
 	
 	public static String getAddMessage(Task newTask) {
-		String message = "Task Added:" + newTask.toString();
+		String message = "Task Added:" + NEW_LINE + newTask.toString() + 
+				NEW_LINE;
 		return message;
 	}
 	public static String getDeleteMessage(Task deletedTask) {
-		String message = new String();
+		String message = "Task deleted: " + NEW_LINE + deletedTask.toString() + 
+				NEW_LINE;
 		return message;
 	}
 	public static String getEditMessage(Task original, Task edited) {
