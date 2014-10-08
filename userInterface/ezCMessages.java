@@ -16,8 +16,24 @@ public class ezCMessages {
 	private static final String NEW_LINE = System.getProperty("line.separator");
 	
 	private static final String MESSAGE_WELCOME = "Welcome to ezC. No set-up "
-			+ "required.";
-	private static final String MESSAGE_HELP = "enter \"exit\" to quit.";
+			+ "required.\n";
+	private static final String MESSAGE_HELP = "Enter \"help\" for a list of commands or \"exit\" to quit.";
+	private static final String MESSAGE_USER_HELP = "List of available commands (Not case sensitive): \n"
+			+ "Add (OR) -ad\n"
+			+ "All (OR) -al\n"
+			+ "Category (OR) categories (OR) cat (OR) cats (OR) -ca\n"
+			+ "Complete (OR) comp (OR) -co\n"
+			+ "Edit (OR) -e\n"
+			+ "Filter (OR) -fl\n"
+			+ "Finish (OR) -fn\n"
+			+ "Help (OR) -h\n"
+			+ "Note (OR) notes (OR) -n\n"
+			+ "Remove (OR) -r\n"
+			+ "Search (OR) -se\n"
+			+ "Sort (OR) -se\n"
+			+ "Today (OR) -t\n"
+			+ "Undo (OR) -u\n"
+			+ "View (OR) -v\n";
 	
 	// Task Error Messages
 	private static final String ERROR_DUPLICATE_EDIT = "ERROR: There already "
