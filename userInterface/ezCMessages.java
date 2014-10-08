@@ -91,4 +91,10 @@ public class ezCMessages {
 		
 		return allTasks;
 	}
+	
+	public static String getFinishMessage(Task completed) {
+		String name = completed.getName();
+		String totalMessage = name + " was completed" + NEW_LINE;
+		return totalMessage;
+	}
 }
