@@ -3,15 +3,12 @@ package userInterface;
 import globalClasses.Command;
 import globalClasses.Command.COMMAND_TYPE;
 import globalClasses.CommandComponent;
-import globalClasses.Date;
 import globalClasses.EditedPair;
 import globalClasses.Task;
 import globalClasses.ezC;
-import fileIo.FileIo;
 
 import java.util.List;
 
-import powerSearch.ExactMatchSearcher;
 import dataManipulation.DataManipulation;
 
 public class CommandHandler {
