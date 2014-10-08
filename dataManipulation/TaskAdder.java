@@ -32,9 +32,7 @@ public class TaskAdder {
 
 		Task newTask = buildTask(taskAttributes);
 		
-		if(ezC.totalTaskList == null) {
-			throw new Exception("totalTaskList not populated");
-		}
+		assert ezC.totalTaskList != null;
 
 		if(!ezC.totalTaskList.contains(newTask)) {	// If the list doesn't contain this task, add it
 			ezC.totalTaskList.add(newTask);
