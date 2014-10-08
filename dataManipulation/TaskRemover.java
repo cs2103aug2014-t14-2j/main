@@ -1,21 +1,21 @@
 package dataManipulation;
 
+import globalClasses.CommandComponent;
+import globalClasses.Task;
+import globalClasses.ezC;
 
-import java.util.*;
+import java.util.List;
+
 import powerSearch.ExactMatchSearcher;
-import globalClasses.*;
-import userInterface.ezCMessages;
 
 public class TaskRemover {
 	// YUI WEI
-	private static String nameToRemove; 
 	private static Task taskToRemove;
 	private static Task taskRemoved;
 	
-	public static Task remove(List<CommandComponent> cc) {
+	public static Task remove(List<CommandComponent> cc) throws Exception{
 		assert(cc.size() == 1);
-		nameToRemove = cc.get(0).getContents();
-		taskToRemove = ExactMatchSearcher.find(nameToRemove);
+		taskToRemove = ExactMatchSearcher.simpleSearch(cc.get(0), ezC.totalTaskList);
 		taskRemoved = taskToRemove;
 		doDeleteTask(taskToRemove);
 		return taskRemoved;
