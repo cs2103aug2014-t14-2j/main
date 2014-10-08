@@ -22,7 +22,8 @@ public class TaskRemover {
 		
 	}
 	public static void doDeleteTask(Task toRemove) {
-		ezC.totalTaskList.remove(toRemove);	
+		ezC.totalTaskList.remove(toRemove);
+		
 	}
 	
 	//other things to maybe add:
