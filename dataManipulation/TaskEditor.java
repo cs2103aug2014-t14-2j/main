@@ -47,8 +47,7 @@ public class TaskEditor {
 			}
 		}
 		
-		@SuppressWarnings("unused")
-		private static Task markAsCompleted(List<CommandComponent> taskAttributes) throws Exception {
+		public static Task markAsCompleted(List<CommandComponent> taskAttributes) throws Exception {
 			assert ezC.totalTaskList != null;
 			
 			Task taskToBeMarked = searchTask(taskAttributes);
