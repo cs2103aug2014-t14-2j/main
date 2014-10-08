@@ -153,6 +153,10 @@ public class CommandInterpreter {
 				return COMMAND_TYPE.COMPLETED;
 			case "-co" :
 				return COMMAND_TYPE.COMPLETED;
+			case "delete" :
+				return COMMAND_TYPE.REMOVE;
+			case "de" :
+				return COMMAND_TYPE.REMOVE;
 			case "edit" :
 				return COMMAND_TYPE.EDIT;
 			case "-e" :
@@ -188,9 +192,9 @@ public class CommandInterpreter {
 			case "-se" :
 				return COMMAND_TYPE.SEARCH;
 			case "sort" :
-				return COMMAND_TYPE.SEARCH;
+				return COMMAND_TYPE.SORT;
 			case "-so" :
-				return COMMAND_TYPE.SEARCH;
+				return COMMAND_TYPE.SORT;
 			case "today" :
 				return COMMAND_TYPE.TODAY;
 			case "-t" :
