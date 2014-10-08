@@ -46,6 +46,18 @@ public class TaskEditor {
 				return afterEdit;
 			}
 		}
+		
+		@SuppressWarnings("unused")
+		private static Task markAsCompleted(List<CommandComponent> taskAttributes) throws Exception {
+			assert ezC.totalTaskList != null;
+			
+			Task taskToBeMarked = searchTask(taskAttributes);
+			Task taskMarked = taskToBeMarked;
+			taskMarked.setComplete();
+			addEditedTask(taskToBeMarked, taskMarked);
+			
+			return taskMarked;
+		}
 
 		private static Task setTaskAttributes(Task toEdit, List<CommandComponent> taskAttributes) {
 			
@@ -68,9 +80,6 @@ public class TaskEditor {
 				case NOTE:	toEdit.setNote(cc.getContents());
 							break;
 
-				// case COMPLETE:	toEdit.setComplete(cc.getContents());
-				//					break;
-
 				default:
 					break;
 				}
@@ -84,7 +93,7 @@ public class TaskEditor {
 			for(CommandComponent cc : taskAttributes) {
 				
 				if(cc.getType() == CommandComponent.COMPONENT_TYPE.NAME) {
-					Task toEdit = ExactMatchSearcher.find(cc.getContents());
+					Task toEdit = ExactMatchSearcher.simpleSearch(cc, ezC.totalTaskList);
 					return toEdit;
 				}
 			}
