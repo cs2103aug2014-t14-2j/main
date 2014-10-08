@@ -1,5 +1,6 @@
 package dataManipulation;
 
+import fileIo.FileIo;
 import globalClasses.CommandComponent;
 import globalClasses.EditedPair;
 import globalClasses.Task;
@@ -105,6 +106,8 @@ public class TaskEditor {
 			ezC.totalTaskList.remove(oldTask);
 			ezC.totalTaskList.add(newTask);
 			Collections.sort(ezC.totalTaskList, new globalClasses.sortTaskByEndDate());
+			FileIo IoStream = new FileIo();
+			IoStream.rewriteFile(ezC.totalTaskList);
 		}
 		
 }
