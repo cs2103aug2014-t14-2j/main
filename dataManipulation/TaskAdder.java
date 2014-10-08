@@ -21,10 +21,10 @@ public class TaskAdder {
 	 * @throws Exception is returned if duplicate task exists
 	 */
 	
-	private static String taskName = "";
-	private static String taskCategory = "";
-	private static String taskLocation = "";
-	private static String taskNote = "";
+	private static String taskName = null;
+	private static String taskCategory = null;
+	private static String taskLocation = null;
+	private static String taskNote = null;
 	private static Date taskStart = null;
 	private static Date taskEnd = null;
 	
@@ -33,8 +33,12 @@ public class TaskAdder {
 		Task newTask = buildTask(taskAttributes);
 		
 		assert ezC.totalTaskList != null;
+		
+		if(isDuplicate(newTask)) {	// If the task list already contains this task, throw an error
+			throw new Exception("Duplicate Task Found");
+		}
 
-		if(!ezC.totalTaskList.contains(newTask)) {	// If the list doesn't contain this task, add it
+		else {
 			ezC.totalTaskList.add(newTask);
 			Collections.sort(ezC.totalTaskList, new globalClasses.sortTaskByEndDate());
 			FileIo IoStream = new FileIo();
@@ -42,10 +46,17 @@ public class TaskAdder {
 			return newTask;
 		}
 
-		else {
-			throw new Exception("Duplicate Task Found");
+	}
+	
+	private static boolean isDuplicate(Task toCheck) {
+		
+		for(Task t : ezC.totalTaskList) {
+			if(t.getName().equals(toCheck.getName())) {
+				return true;
+			}
 		}
-
+		
+		return false;
 	}
 	
 	/** For the buildTask method:
@@ -54,7 +65,7 @@ public class TaskAdder {
 	 * @return the task toBeAdded
 	 */
 	
-	public static Task buildTask(List<CommandComponent> taskAttributes) {
+	private static Task buildTask(List<CommandComponent> taskAttributes) {
 		
 		assembleAttributes(taskAttributes);
 		
@@ -69,7 +80,7 @@ public class TaskAdder {
 	 * @param taskAttributes
 	 */
 	
-	public static void assembleAttributes(List<CommandComponent> taskAttributes) {
+	private static void assembleAttributes(List<CommandComponent> taskAttributes) {
 		
 		for(CommandComponent cc : taskAttributes) {
 
