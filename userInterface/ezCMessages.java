@@ -17,8 +17,8 @@ public class ezCMessages {
 	
 	private static final String MESSAGE_WELCOME = "Welcome to ezC. No set-up "
 			+ "required.\n";
-	private static final String MESSAGE_HELP = "Enter \"help\" for a list of commands or \"exit\" to quit.";
-	private static final String MESSAGE_USER_HELP = "List of available commands (Not case sensitive): \n"
+	private static final String MESSAGE_HELP = "Enter \"help\" for a list of commands or \"exit\" to quit.\n";
+	private static final String MESSAGE_USER_HELP = "List of available commands (Not case sensitive): \n\n"
 			+ "Add (OR) -ad\n"
 			+ "All (OR) -al\n"
 			+ "Category (OR) categories (OR) cat (OR) cats (OR) -ca\n"
@@ -33,7 +33,7 @@ public class ezCMessages {
 			+ "Sort (OR) -se\n"
 			+ "Today (OR) -t\n"
 			+ "Undo (OR) -u\n"
-			+ "View (OR) -v\n";
+			+ "View (OR) -v\n\n";
 	
 	// Task Error Messages
 	private static final String ERROR_DUPLICATE_EDIT = "ERROR: There already "
@@ -58,6 +58,10 @@ public class ezCMessages {
 	
 	public static String getHelpMessage() {
 		return MESSAGE_HELP;
+	}
+	
+	public static String getUserHelpMessage() {
+		return MESSAGE_USER_HELP;
 	}
 	
 	public static String getDuplicateEditErrorMessage() {
