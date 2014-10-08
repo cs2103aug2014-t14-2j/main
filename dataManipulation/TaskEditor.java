@@ -38,13 +38,14 @@ public class TaskEditor {
 		
 		private static Task editTask(Task toEdit, List<CommandComponent> taskAttributes) throws Exception {
 			
-			Task afterEdit = setTaskAttributes(toEdit, taskAttributes);
+			Task editTaskExceptName = TaskAdder.buildTask(taskAttributes);
+			Task editTaskIncludingName = setTaskAttributes(editTaskExceptName, taskAttributes);
 			
-			if(ExactMatchSearcher.isExactMatch(afterEdit)) {
+			if(ExactMatchSearcher.isTaskDuplicate(editTaskIncludingName)) {
 				throw new Exception("Duplicate Task Found");
 			}
 			else {
-				return afterEdit;
+				return editTaskIncludingName;
 			}
 		}
 		

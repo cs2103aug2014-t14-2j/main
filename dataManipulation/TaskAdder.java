@@ -65,7 +65,7 @@ public class TaskAdder {
 	 * @return the task toBeAdded
 	 */
 	
-	private static Task buildTask(List<CommandComponent> taskAttributes) {
+	public static Task buildTask(List<CommandComponent> taskAttributes) {
 		
 		assembleAttributes(taskAttributes);
 		
