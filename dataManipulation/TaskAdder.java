@@ -31,6 +31,10 @@ public class TaskAdder {
 	public static Task add(List<CommandComponent> taskAttributes) throws Exception {
 
 		Task newTask = buildTask(taskAttributes);
+		
+		if(ezC.totalTaskList == null) {
+			throw new Exception("totalTaskList not populated");
+		}
 
 		if(!ezC.totalTaskList.contains(newTask)) {	// If the list doesn't contain this task, add it
 			ezC.totalTaskList.add(newTask);
