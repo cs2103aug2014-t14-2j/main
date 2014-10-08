@@ -1,10 +1,9 @@
 package powerSearch;
 
 import globalClasses.CommandComponent;
-import globalClasses.Date;
 import globalClasses.Task;
+import globalClasses.ezC;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ExactMatchSearcher {
@@ -30,5 +29,17 @@ public class ExactMatchSearcher {
 		}
 		
 		throw new Exception("no matches found");
+	}
+	
+	public static boolean isExactMatch(Task taskToCheck) {
+		
+		for(Task t : ezC.totalTaskList) {
+			
+			if(t.equals(taskToCheck)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }
