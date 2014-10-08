@@ -27,7 +27,8 @@ public class TaskFileReader {
 	// integers are indexes for their corresponding location in the task 
 	// component list
 	public enum TASK_COMPONENT {
-		NAME(0), CATEGORY(1), START(2), END(3), LOCATION(4), NOTE(5);
+		NAME(0), CATEGORY(1), START(2), END(3), LOCATION(4), NOTE(5), 
+		COMPLETED(6);
 		private int value;
 		
 		private TASK_COMPONENT(int val) {
@@ -45,6 +46,7 @@ public class TaskFileReader {
 	private static final String MESSAGE_NO_END = "No Specified End Date";
 	private static final String MESSAGE_NO_LOCATION = "This Task has no specified Location.";
 	private static final String MESSAGE_NO_NOTE = "This Task has no specified Note.";
+	private static final String MESSAGE_COMPLETED = "Yes";
 	
 	private static final int FIRST_POSITION = 0;
 
@@ -80,12 +82,18 @@ public class TaskFileReader {
 		String note = getNote();
 		String startDateString = getStartDateString();
 		String endDateString = getEndDateString();
+		String completed = getCompleted();
 		
 		Date start = determineDate(startDateString);
 		Date end = determineDate(endDateString);
 		
 		Task newTask = dataManipulation.TaskFactory.makeTask(name, category, location, note, 
 				start, end);
+		
+		if (completed.equalsIgnoreCase(MESSAGE_COMPLETED)) {
+			newTask.setComplete();
+		}
+		
 		return newTask;
 	}
 
@@ -263,6 +271,8 @@ public class TaskFileReader {
 			return TASK_COMPONENT.LOCATION;
 		} else if (lineTitle.equalsIgnoreCase("note")) {
 			return TASK_COMPONENT.NOTE;
+		} else if (lineTitle.equalsIgnoreCase("completed")) {
+			return TASK_COMPONENT.COMPLETED;
 		} else {
 			throw new RuntimeException("Invalid task in file");
 		}
@@ -302,6 +312,10 @@ public class TaskFileReader {
 	
 	private static String getEndDateString() {
 		return taskComponents.get(TASK_COMPONENT.END.getIndex());
+	}
+	
+	private static String getCompleted() {
+		return taskComponents.get(TASK_COMPONENT.COMPLETED.getIndex());
 	}
 
 }

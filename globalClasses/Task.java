@@ -160,6 +160,11 @@ public class Task {
 		if(!hasNote){
 			answer = answer + "Note: No Specified Note" + '\n';
 		}
+		if(!isComplete) {
+			answer = answer + "Completed: No" + '\n';
+		} else {
+			answer = answer + "Completed: Yes" + '\n';
+		}
 		return answer;
 	}
 	
