@@ -23,6 +23,8 @@ public class TaskRemover {
 		
 	}
 	public static void doDeleteTask(Task toRemove) {
+		ezC.totalTaskList.remove(toRemove);
+		
 		FileIo stream = new FileIo();
 		ezC.totalTaskList.remove(toRemove);
 		stream.rewriteFile(ezC.totalTaskList);
