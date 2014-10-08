@@ -41,6 +41,12 @@ public class CommandHandler {
 			 EditedPair edited = DataManipulation.edit(cc);
 			 message = ezCMessages.getEditMessage(edited.getOld(), edited.getNew());
 			break;
+		case FINISH: 
+			//catch exception: task already completed.
+			Task finished = DataManipulation.markAsCompleted(cc);
+			message = ezCMessages.getFinishMessage(finished);
+		case COMPLETED: 
+			break;
 		case SEARCH:
 			break;
 		case ALL:
