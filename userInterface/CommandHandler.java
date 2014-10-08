@@ -43,6 +43,9 @@ public class CommandHandler {
 			break;
 		case SEARCH:
 			break;
+		case ALL:
+			ezCMessages.getStringOfTasks(ezC.totalTaskList);
+			break;
 		default:
 			break;
 		}

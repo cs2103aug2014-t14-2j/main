@@ -23,7 +23,7 @@ public class ezC {
 			int comma = dateString.indexOf(',');
 			month = dateString.substring(0, space);
 			day = dateString.substring(space + 1, comma);
-			year = dateString.substring(comma);
+			year = dateString.substring(comma + 2);
 			mm = monthInteger(month);
 		} else if (dateString.contains("/")) {
 			String dateStr[] = dateString.split("/", 3);
