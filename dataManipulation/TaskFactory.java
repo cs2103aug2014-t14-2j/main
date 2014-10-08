@@ -15,7 +15,8 @@ import globalClasses.Task;
  */
 
 public class TaskFactory {
-	// expects null arguments if location, note, startTime, or endTime are not specified
+	// expects null arguments if location, note, startTime, or endTime are not 
+	// specified
 	public static Task makeTask(String name, String category, 
 			String location, String note, Date startTime, Date endTime) 
 					throws IllegalArgumentException {

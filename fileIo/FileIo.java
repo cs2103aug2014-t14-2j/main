@@ -74,7 +74,7 @@ public class FileIo {
 		List<String> fileContents;
 		try {
 			fileContents = fileStream.readFromFile();
-			taskList = TaskFileReader.getAllTasks(fileContents);
+			taskList.addAll(TaskFileReader.getAllTasks(fileContents));
 			return;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

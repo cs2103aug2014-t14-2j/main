@@ -14,7 +14,7 @@ get lost.
 Requests By Natalie
 -------------------------------------------------------------------------------
 
-Yui
+Yui -----------------------------------------------------------------------
 
 There's a bug in the determine date class. If you enter
 
@@ -28,6 +28,10 @@ Year: ", 2014"
 
 I'm fixing it for file reader, but I'm leaving it up to you to fix it for the
 rest of the program (you can copy mine directly)
+
+Also, please add the following to TaskHandler:
+	ALL
+		should call ezMessages.getStringOfTasks(TotalTaskList)
 
 -------------------------------------------------------------------------------
 Requests By Nelson

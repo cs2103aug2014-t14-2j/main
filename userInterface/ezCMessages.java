@@ -1,5 +1,7 @@
 package userInterface;
 
+import java.util.List;
+
 import globalClasses.Task;
 
 /**
@@ -73,5 +75,20 @@ public class ezCMessages {
 		String totalMessage = opening + errorMessage + NEW_LINE;
 		
 		return totalMessage;
+	}
+	
+	public static String getStringOfTasks(List<Task> tasks) {
+		if (tasks == null || tasks.isEmpty()) {
+			return "nothing to print" + NEW_LINE;
+		}
+		
+		String allTasks = tasks.get(0).toString();
+		
+		for (int i = 1; i < tasks.size(); ++i) {
+			Task nextTask = tasks.get(i);
+			allTasks = allTasks + NEW_LINE + nextTask;
+		}
+		
+		return allTasks;
 	}
 }

@@ -57,15 +57,15 @@ Add test cases:
 	(** need cases with different positions for each. Need to generate them automatically for a comprehensive test)
 	
 All:
-	Has nothing to present, untestable
+	Does nothing.
 	
 Category
 	no entry:
 		correctly responds "too short of argument"
 	with one entry: category "fsd"
-		prints nothing, but there is nothing to print
+		Incorrect response: prints nothing
 	with misformatted arguments: category fdaf
-		error: invalid subcommand argument
+		correct response: error: invalid subcommand argument
 		
 Completed
 	no entry:
