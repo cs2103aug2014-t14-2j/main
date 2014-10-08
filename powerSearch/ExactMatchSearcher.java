@@ -31,11 +31,10 @@ public class ExactMatchSearcher {
 		throw new Exception("no matches found");
 	}
 	
-	public static boolean isExactMatch(Task taskToCheck) {
+	public static boolean isTaskDuplicate(Task taskToCheck) {
 		
 		for(Task t : ezC.totalTaskList) {
-			
-			if(t.equals(taskToCheck)) {
+			if(t.getName().toLowerCase().equals(taskToCheck.getName().toLowerCase())) {
 				return true;
 			}
 		}
