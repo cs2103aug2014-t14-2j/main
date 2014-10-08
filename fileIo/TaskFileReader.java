@@ -113,6 +113,10 @@ public class TaskFileReader {
 
 	// by Yui- taken directly from ezC
 	public static Date determineDate(String dateString) {
+		if (dateString == null) {
+			return null;
+		}
+		
 		String month, day, year;
 		int mm, dd, yyyy;
 		if (dateString.contains(",")) {

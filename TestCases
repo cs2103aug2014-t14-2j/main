@@ -7,29 +7,65 @@ Add test cases:
 	Just add: add
 		correctly responded "error: too short of argument"
 	Just name: add "Just name"
-		incorrectly responded "error: null"
-		also deleted entire file contents
+		correctly responded
+			Task Added:Task: Just name
+			Category: no category
+			Start: October 8, 2014
+			End: No Specified End Date
+			Location: No Specified Location
+			Note: No Specified Note
 	Name and category: add "Just name and category" category "category's name"
-		incorrectly responded "error: null"
+		correctly responded
+			Task Added:Task: Just name and category
+			Category: category's name
+			Start: October 8, 2014
+			End: No Specified End Date
+			Location: No Specified Location
+			Note: No Specified Note
 	Name category and location: add "Name, category, location" category "cat name" location "loc"
-		incorrectly responded: "error: null"
+		correctly responded
+			Task Added:Task: Name, category, location
+			Category: cat name
+			Start: October 8, 2014
+			End: No Specified End Date
+			Location: loc
+			Note: No Specified Note
 	Name, category, location, start: add "Name, category, location, start" category "cat" location "loc" start 10/10/2010
-		incorrectly responded: "error: null"
+		correctly responded
+			Task Added:Task: Name, category, location, start
+			Category: cat
+			Start: October 10, 2010
+			End: No Specified End Date
+			Location: loc
+			Note: No Specified Note
 	Name, category, location, start, end: add "Name, category, location, start, end" category "cat" location "loc" start 10/10/2010 end 12/12/2012
-		incorrectly responded: "error: null"
+		correctly responded
+			Task Added:Task: Name, category, location, start, end
+			Category: cat
+			Start: October 10, 2010
+			End: December 12, 2012
+			Location: loc
+			Note: No Specified Note
 	Name, category, location, start, end, note: add "Name, category, location, start, end" category "cat" location "loc" start 10/10/2010 end 12/12/2012 note "Noting"
+		correctly responded
+			Task Added:Task: Name, category, location, start, end
+			Category: cat
+			Start: October 10, 2010
+			End: December 12, 2012
+			Location: loc
+			Note: Noting
 	(** need cases with different positions for each. Need to generate them automatically for a comprehensive test)
 	
 All:
-	Has nothing to present, untestable
+	Does nothing.
 	
 Category
 	no entry:
 		correctly responds "too short of argument"
 	with one entry: category "fsd"
-		prints nothing, but there is nothing to print
+		Incorrect response: prints nothing
 	with misformatted arguments: category fdaf
-		error: invalid subcommand argument
+		correct response: error: invalid subcommand argument
 		
 Completed
 	no entry:
