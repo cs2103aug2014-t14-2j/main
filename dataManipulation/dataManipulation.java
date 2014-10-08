@@ -19,4 +19,5 @@ public class DataManipulation {
   public static Task markAsCompleted(List<CommandComponent> cc) throws Exception {
 	  return TaskEditor.markAsCompleted(cc);
   }
+  
 }
