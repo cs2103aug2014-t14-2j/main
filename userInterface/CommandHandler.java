@@ -34,6 +34,7 @@ public class CommandHandler {
 		case REMOVE:
 			Task removed = DataManipulation.remove(cc);
 			message = ezCMessages.getDeleteMessage(removed);
+			break;
 		case EDIT:
 			 EditedPair edited = DataManipulation.edit(cc);
 			 message = ezCMessages.getEditMessage(edited.getOld(), edited.getNew());
@@ -42,6 +43,7 @@ public class CommandHandler {
 			//catch exception: task already completed.
 			Task finished = DataManipulation.markAsCompleted(cc);
 			message = ezCMessages.getFinishMessage(finished);
+			break;
 		case COMPLETED: 
 			break;
 		case SEARCH:

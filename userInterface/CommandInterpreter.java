@@ -11,7 +11,9 @@ import globalClasses.CommandComponent.COMPONENT_TYPE;
 public class CommandInterpreter {
 	public static Command formCommand(String input) throws IllegalArgumentException {
 		assert(input != null);
-		assert(!input.isEmpty());
+		if (input.isEmpty()) {
+			throw new IllegalArgumentException("no command given");
+		}
 		
 		if (isSpecialCommand(input)) {
 			Command command = determineSpecialCommand(input);
