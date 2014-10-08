@@ -166,9 +166,9 @@ public class CommandInterpreter {
 			case "-fn" :
 				return COMMAND_TYPE.FINISH;
 			case "help" :
-				return COMMAND_TYPE.FINISH;
+				return COMMAND_TYPE.HELP;
 			case "-h" :
-				return COMMAND_TYPE.FINISH;
+				return COMMAND_TYPE.HELP;
 			case "notes" :
 				return COMMAND_TYPE.NOTE;
 			case "note" :
