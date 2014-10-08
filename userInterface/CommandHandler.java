@@ -51,6 +51,8 @@ public class CommandHandler {
 		case ALL:
 			message = ezCMessages.getStringOfTasks(ezC.totalTaskList);
 			break;
+		case HELP:
+			message = ezCMessages.getHelpMessage();
 		default:
 			break;
 		}
