@@ -30,7 +30,7 @@ import java.util.List;
  * 
  * REMOVE: NAME
  * 
- * REPEAT: NAME, FREQUENCY
+ * REPEAT: NAME, FREQUENCY, START, END
  * 
  * SEARCH: 	AND, NAME, CATEGORY, DATE, END, LOCATION, NOTE, OR, START
  * 
@@ -231,7 +231,7 @@ public class Command {
 	private void checkForOnlyTitleComponent() throws IllegalArgumentException {
 		checkForComponentAmount(1);
 		boolean hasTitleComponent =
-				checkForSpecificComponent(CommandComponent.COMPONENT_TYPE.TITLE);
+				checkForSpecificComponent(CommandComponent.COMPONENT_TYPE.NAME);
 		
 		if (!hasTitleComponent) {
 			throw new IllegalArgumentException("invalid subcommand");
