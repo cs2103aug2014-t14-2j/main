@@ -31,6 +31,21 @@ public class ExactMatchSearcher {
 		throw new Exception("no matches found");
 	}
 	
+	/*
+	 * Given a list of command components, to search for, returns a list
+	 * of matches.
+	 * 
+	 * For a list of possible command components, see the header to the command
+	 * class under "SEARCH"
+	 */
+	private static List<Task> search(List<CommandComponent> list) {
+		return null;
+	}
+	
+	/*
+	 * Looks at every component in a task and checks whether or not the two are
+	 * exactly the same. Is not case sensitive.
+	 */
 	public static boolean isTaskDuplicate(Task taskToCheck) {
 		
 		for(Task t : ezC.totalTaskList) {
