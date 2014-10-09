@@ -16,8 +16,8 @@ package globalClasses;
 
 public class CommandComponent {
 	public enum COMPONENT_TYPE {
-		AND, CATEGORY, DATE, DATE_TYPE, END, LOCATION, NAME, NONE, NOTE,
-		OR, FREQUENCY, START, TITLE,
+		CATEGORY, DATE, DATE_TYPE, END, LINK, LOCATION, NAME, NONE, NOTE,
+		FREQUENCY, PAREN, START, TEXT, TITLE,
 		INVALID
 	}
 	
@@ -28,6 +28,29 @@ public class CommandComponent {
 		@Override
 		public String toString() {
 			return this.name().toLowerCase();
+		}
+	}
+	
+	// both possibilities for Link
+	public enum LINK {
+		AND, OR;
+		
+		@Override
+		public String toString() {
+			return this.name().toLowerCase();
+		}
+	}
+	
+	public enum PAREN {
+		OPEN_PAREN, CLOSE_PAREN;
+		
+		@Override
+		public String toString() {
+			if (this.name().equals("OPEN_PAREN")) {
+				return "(";
+			} else {
+				return ")";
+			}
 		}
 	}
 	
@@ -79,6 +102,10 @@ public class CommandComponent {
 			case DATE_TYPE :
 				checkDateTypeContents();
 				break;
+			case LINK :
+				checkLinkContents();
+			case PAREN :
+				checkParenContents();
 			default :
 				break;	// no restrictions on contents
 		}
@@ -86,6 +113,34 @@ public class CommandComponent {
 		return;
 	}
 	
+	private void checkParenContents() {
+		boolean isValid = false;
+		
+		if (contents.equals(PAREN.OPEN_PAREN.toString())) {
+			isValid = true;
+		} else if (contents.equals(PAREN.CLOSE_PAREN.toString())) {
+			isValid = true;
+		}
+		
+		if (!isValid) {
+			throw new IllegalArgumentException("invalid paren specified");
+		}
+	}
+
+	private void checkLinkContents() {
+		boolean isValid = false;
+		
+		if (contents.equals(LINK.AND.toString())) {
+			isValid = true;
+		} else if (contents.equals(LINK.OR.toString())) {
+			isValid = true;
+		}
+		
+		if (!isValid) {
+			throw new IllegalArgumentException("invalid link specified");
+		}
+	}
+
 	private void checkFrequencyContents() throws IllegalArgumentException {
 		boolean isValid = false;
 		

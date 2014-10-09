@@ -32,7 +32,7 @@ import java.util.List;
  * 
  * REPEAT: NAME, FREQUENCY, START, END
  * 
- * SEARCH: 	AND, NAME, CATEGORY, DATE, END, LOCATION, NOTE, OR, START
+ * SEARCH: 	TEXT, CATEGORY, DATE, END, LOCATION, NOTE, START, TITLE, LINK, PAREN
  * 
  * SORT: START or END
  * 
@@ -49,8 +49,8 @@ public class Command {
 	private List<CommandComponent> components;
 	
 	public enum COMMAND_TYPE {
-		ADD, ALL, CATEGORY, CHANGE_DATE_TYPE, COMPLETED, EDIT, FINISH, 
-		HELP, NOTE, REMOVE, REPEAT, SEARCH, SORT, TODAY, UNDO,
+		ADD, ALL, CATEGORY, CHANGE_DATE_TYPE, COMPLETED, EDIT, END, FINISH, 
+		HELP, NOTE, REMOVE, REPEAT, SEARCH, SORT, TEXT, TODAY, UNDO,
 		INVALID
 	}
 	
@@ -196,16 +196,16 @@ public class Command {
 		}
 	}
 	
-	// should only have AND, NAME, BEGIN, CATEGORY, DATE, DEADLINE, END, 
-	// LOCATION, NOTE, OR, START, TITLE
+	// should only have TEXT, CATEGORY, DATE, END, LOCATION, NOTE, START, 
+	// TITLE, LINK, PAREN
 	private void checkSearchComponents() throws IllegalArgumentException {
 		for (int i = 0; i < components.size(); ++i) {
 			CommandComponent component = components.get(i);
 			
 			switch (component.getType()) {
-				case AND :	 // valid
+				case LINK :	 // valid
 					break;
-				case NAME :
+				case TITLE :
 					break;
 				case CATEGORY :
 					break;
@@ -217,9 +217,11 @@ public class Command {
 					break;
 				case NOTE :
 					break;
+				case PAREN :
+					break;
 				case START :
 					break;
-				case TITLE:
+				case TEXT:
 					break;
 				default :
 					throw new IllegalArgumentException("invalid subcommand");

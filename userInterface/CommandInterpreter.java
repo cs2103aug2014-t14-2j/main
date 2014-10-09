@@ -361,10 +361,14 @@ public class CommandInterpreter {
 		componentTypeString = componentTypeString.trim();
 		
 		switch (componentTypeString.toLowerCase()) {
+		case ("(") :
+			return COMPONENT_TYPE.PAREN;
+		case (")") :
+			return COMPONENT_TYPE.PAREN;
 		case ("and") :
-			return COMPONENT_TYPE.AND;
+			return COMPONENT_TYPE.LINK;
 		case ("&") :
-			return COMPONENT_TYPE.AND;
+			return COMPONENT_TYPE.LINK;
 		case ("annually") :
 			return COMPONENT_TYPE.FREQUENCY;
 		case ("begin") :
