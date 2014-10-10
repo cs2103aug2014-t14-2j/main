@@ -1,4 +1,4 @@
-package globalClasses;
+import globalClasses.Date;
 
 import java.util.*;
 public class Task {
@@ -160,11 +160,6 @@ public class Task {
 		if(!hasNote){
 			answer = answer + "Note: No Specified Note" + '\n';
 		}
-		if(!isComplete) {
-			answer = answer + "Completed: No" + '\n';
-		} else {
-			answer = answer + "Completed: Yes" + '\n';
-		}
 		return answer;
 	}
 	
@@ -177,6 +172,14 @@ public class Task {
 		if(enddate.isBefore(today))
 			isComplete = true;
 		return isComplete;
+	}
+	
+	public boolean equals(Task a){
+		return this.name.toLowerCase().equals(a.getName().toLowerCase());
+	}
+	
+	public Date getStartDate() {
+		return startdate;
 	}
 	
 	public void setComplete(){
