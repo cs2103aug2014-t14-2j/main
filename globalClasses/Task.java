@@ -1,3 +1,5 @@
+package globalClasses;
+
 import globalClasses.Date;
 
 import java.util.*;
