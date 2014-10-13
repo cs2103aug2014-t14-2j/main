@@ -1,6 +1,5 @@
 package powerSearch;
 
-
 import globalClasses.CommandComponent;
 import globalClasses.Task;
 import globalClasses.Date;
