@@ -6,6 +6,7 @@ import globalClasses.EditedPair;
 import globalClasses.Task;
 import globalClasses.ezC;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class TaskEditor {
 	
 		public static EditedPair edit(List<CommandComponent> taskAttributes) throws Exception {
 			
-			Task toEdit = searchTask(taskAttributes);
+			Task toEdit = searchTaskByName(taskAttributes);
 			Task preEdit = toEdit;
 			Task postEdit = editTask(toEdit, taskAttributes);
 			
@@ -52,7 +53,7 @@ public class TaskEditor {
 		public static Task markAsCompleted(List<CommandComponent> taskAttributes) throws Exception {
 			assert ezC.totalTaskList != null;
 			
-			Task taskToBeMarked = searchTask(taskAttributes);
+			Task taskToBeMarked = searchTaskByName(taskAttributes);
 			Task taskMarked = taskToBeMarked;
 			taskMarked.setComplete();
 			addEditedTask(taskToBeMarked, taskMarked);
@@ -89,13 +90,19 @@ public class TaskEditor {
 				return toEdit;
 		}
 
-		private static Task searchTask(List<CommandComponent> taskAttributes) throws Exception {
+		private static Task searchTaskByName(List<CommandComponent> taskAttributes) throws Exception {
 			
 			for(CommandComponent cc : taskAttributes) {
 				
 				if(cc.getType() == CommandComponent.COMPONENT_TYPE.NAME) {
-					Task toEdit = ExactMatchSearcher.simpleSearch(cc, ezC.totalTaskList);
-					return toEdit;
+					ArrayList<Task> toEditArray = ExactMatchSearcher.exactSearch(cc, ezC.totalTaskList);
+					if(toEditArray.size() > 1) {
+						throw new Exception("Too many searches returned, need a more specific task to edit.");
+					}
+					else {
+						Task toEdit = toEditArray.get(0);
+						return toEdit;
+					}
 				}
 			}
 			
