@@ -77,7 +77,7 @@ public class ezCMessages {
 	}
 	
 	public static String getAddMessage(Task newTask) {
-		String message = "Task Added:" + NEW_LINE + newTask.toString() + 
+		String message = "Added task:" + NEW_LINE + newTask.toString() + 
 				NEW_LINE;
 		return message;
 	}
