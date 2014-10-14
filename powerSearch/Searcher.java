@@ -1,7 +1,6 @@
 package powerSearch;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import globalClasses.CommandComponent;
 import globalClasses.Task;
@@ -13,9 +12,11 @@ public class Searcher {
 	 * @return a list of all matches for that key
 	 * @throws Exception 
 	 */
-	public ArrayList<Task> search(ArrayList<CommandComponent> keylist, List<Task> list) throws Exception {
+	public ArrayList<Task> search(ArrayList<CommandComponent> keylist, ArrayList<Task> list) throws Exception {
 		int i;
 		ArrayList<ArrayList<Task>> answer = new ArrayList<ArrayList<Task>>();
+		assert(keylist!=null);
+		assert(list!=null);
 		String command = new String();
 		for(i=0; i<keylist.size(); i++){
 			switch(keylist.get(i).getType()){
@@ -29,14 +30,34 @@ public class Searcher {
 				answer.add(ExactMatchSearcher.exactSearch(keylist.get(i), list));
 			}
 		}
-		if(command.equals("OR"))
-			return mergeListsOR(answer);
-		else if(command.equals("AND"))
-			return mergeListsAND(answer);
-		else
-			return null;
+		ArrayList<Task> results = new ArrayList<Task>();
+		switch(command){
+		case "OR":
+			results = mergeListsOR(answer);
+			break;
+		case "AND":
+			results = mergeListsAND(answer);
+			break;
+		default:
+			results = mergeListsOR(answer);
+		}
+		if(results.isEmpty()){
+			for(i=0; i<keylist.size(); i++){
+				switch(keylist.get(i).getType()){
+				case AND:
+					command = "AND";
+					break;
+				case OR:
+					command = "OR";
+					break;
+				default:
+					answer.add(NearMatchSearcher.nearSearch(keylist.get(i), list));
+				}
+			}
+		}
+		return results;
 	}
-	
+
 	private ArrayList<Task> mergeListsOR(ArrayList<ArrayList<Task>> answer){
 		if(answer.isEmpty())
 			return null;
@@ -61,7 +82,7 @@ public class Searcher {
 		else
 			return list;
 	}
-	
+
 	private ArrayList<Task> mergeListsAND(ArrayList<ArrayList<Task>> answer){
 		if(answer.isEmpty())
 			return null;
