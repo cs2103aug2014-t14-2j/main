@@ -12,7 +12,7 @@ public class Searcher {
 	 * @return a list of all matches for that key
 	 * @throws Exception 
 	 */
-	public ArrayList<Task> search(ArrayList<CommandComponent> keylist, ArrayList<Task> list) throws Exception {
+	public static ArrayList<Task> search(ArrayList<CommandComponent> keylist, ArrayList<Task> list) throws Exception {
 		int i;
 		ArrayList<ArrayList<Task>> answer = new ArrayList<ArrayList<Task>>();
 		assert(keylist!=null);
@@ -58,7 +58,7 @@ public class Searcher {
 		return results;
 	}
 
-	private ArrayList<Task> mergeListsOR(ArrayList<ArrayList<Task>> answer){
+	private static ArrayList<Task> mergeListsOR(ArrayList<ArrayList<Task>> answer){
 		if(answer.isEmpty())
 			return null;
 		ArrayList<Task> list = new ArrayList<Task>();
@@ -66,7 +66,7 @@ public class Searcher {
 		ArrayList<Task> comp = new ArrayList<Task>();
 		list = answer.get(0);
 		for(i=1; i<answer.size(); i++){
-			comp = answer.get(i);
+			comp = answer.get(i); 
 			for(j=0; j< list.size(); j++){
 				k = 0;
 				while(k<=comp.size()){
@@ -83,7 +83,7 @@ public class Searcher {
 			return list;
 	}
 
-	private ArrayList<Task> mergeListsAND(ArrayList<ArrayList<Task>> answer){
+	private static ArrayList<Task> mergeListsAND(ArrayList<ArrayList<Task>> answer){
 		if(answer.isEmpty())
 			return null;
 		ArrayList<Task> list = new ArrayList<Task>();
