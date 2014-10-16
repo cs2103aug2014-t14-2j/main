@@ -4,6 +4,7 @@ import fileIo.FileIo;
 import globalClasses.CommandComponent;
 import globalClasses.Task;
 import globalClasses.ezC;
+import java.util.*;
 
 import java.util.List;
 
@@ -11,12 +12,15 @@ import powerSearch.ExactMatchSearcher;
 
 public class TaskRemover {
 	// YUI WEI
+	private static ArrayList<Task> tasksFound;
 	private static Task taskToRemove;
 	private static Task taskRemoved;
 	
-	public static Task remove(List<CommandComponent> cc) throws Exception{
+	public static Task remove(List<CommandComponent> cc) throws Exception {
 		assert(cc.size() == 1);
-		taskToRemove = ExactMatchSearcher.simpleSearch(cc.get(0), ezC.totalTaskList);
+		tasksFound = ExactMatchSearcher.exactSearch(cc.get(0), ezC.totalTaskList);
+		if (tasksFound.size() > 1) throw new Exception("More than one result from search.");
+		taskToRemove = tasksFound.get(0) ;
 		taskRemoved = taskToRemove;
 		doDeleteTask(taskToRemove);
 		return taskRemoved;
