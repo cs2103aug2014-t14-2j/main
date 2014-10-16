@@ -1,5 +1,6 @@
 package powerSearch;
 
+
 import globalClasses.CommandComponent;
 import globalClasses.Task;
 import globalClasses.Date;
@@ -88,13 +89,7 @@ public class ExactMatchSearcher {
 
 	private static ArrayList<Task> simpleSearchDate(String comm) throws Exception {
 		ArrayList<Task> tasksedited = new ArrayList<Task>();
-		String datesearch = comm;
-
-		datesearch = (datesearch.toLowerCase()).trim();
-		int day = Integer.valueOf(comm.substring(0,2));
-		int month = Integer.valueOf(comm.substring(3,5));
-		int year = Integer.valueOf(comm.substring(6,10));
-		Date lookfordate = new Date(day, month, year); //create the Date class which he is looking for
+		Date lookfordate = ezC.determineDate(comm); //create the Date class which he is looking for
 
 		int i;
 		for(i=0; i<taskList.size(); i++){
@@ -111,16 +106,11 @@ public class ExactMatchSearcher {
 		else
 			return tasksedited;
 	}
-	
+
+
 	private static ArrayList<Task> simpleSearchEndDate(String comm) throws Exception {
 		ArrayList<Task> tasksedited = new ArrayList<Task>();
-		String datesearch = comm;
-
-		datesearch = (datesearch.toLowerCase()).trim();
-		int day = Integer.valueOf(comm.substring(0,2));
-		int month = Integer.valueOf(comm.substring(3,5));
-		int year = Integer.valueOf(comm.substring(6,10));
-		Date lookfordate = new Date(day, month, year); //create the Date class which he is looking for
+		Date lookfordate = ezC.determineDate(comm); //create the Date class which he is looking for
 
 		int i;
 		for(i=0; i<taskList.size(); i++){
@@ -137,13 +127,7 @@ public class ExactMatchSearcher {
 
 	private static ArrayList<Task> simpleSearchStartDate(String comm) throws Exception {
 		ArrayList<Task> tasksedited = new ArrayList<Task>();
-		String datesearch = comm;
-
-		datesearch = (datesearch.toLowerCase()).trim();
-		int day = Integer.valueOf(comm.substring(0,2));
-		int month = Integer.valueOf(comm.substring(3,5));
-		int year = Integer.valueOf(comm.substring(6,10));
-		Date lookfordate = new Date(day, month, year); //create the Date class which he is looking for
+		Date lookfordate = ezC.determineDate(comm); //create the Date class which he is looking for
 
 		int i;
 		for(i=0; i<taskList.size(); i++){
