@@ -89,7 +89,7 @@ public class ExactMatchSearcher {
 
 	private static ArrayList<Task> simpleSearchDate(String comm) throws Exception {
 		ArrayList<Task> tasksedited = new ArrayList<Task>();
-		Date lookfordate = ezC.determineDate(comm); //create the Date class which he is looking for
+		Date lookfordate = Date.determineDate(comm); //create the Date class which he is looking for
 
 		int i;
 		for(i=0; i<taskList.size(); i++){
@@ -110,7 +110,7 @@ public class ExactMatchSearcher {
 
 	private static ArrayList<Task> simpleSearchEndDate(String comm) throws Exception {
 		ArrayList<Task> tasksedited = new ArrayList<Task>();
-		Date lookfordate = ezC.determineDate(comm); //create the Date class which he is looking for
+		Date lookfordate = Date.determineDate(comm); //create the Date class which he is looking for
 
 		int i;
 		for(i=0; i<taskList.size(); i++){
@@ -127,7 +127,7 @@ public class ExactMatchSearcher {
 
 	private static ArrayList<Task> simpleSearchStartDate(String comm) throws Exception {
 		ArrayList<Task> tasksedited = new ArrayList<Task>();
-		Date lookfordate = ezC.determineDate(comm); //create the Date class which he is looking for
+		Date lookfordate = Date.determineDate(comm); //create the Date class which he is looking for
 
 		int i;
 		for(i=0; i<taskList.size(); i++){
