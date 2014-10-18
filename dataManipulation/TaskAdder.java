@@ -29,7 +29,7 @@ public class TaskAdder {
 	private static Date taskEnd = null;
 	
 	public static Task add(List<CommandComponent> taskAttributes) throws Exception {
-
+		
 		Task newTask = buildTask(taskAttributes);
 		
 		assert ezC.totalTaskList != null;
