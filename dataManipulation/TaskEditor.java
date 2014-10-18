@@ -4,6 +4,7 @@ import fileIo.FileIo;
 import globalClasses.CommandComponent;
 import globalClasses.EditedPair;
 import globalClasses.Task;
+import globalClasses.UndoRedoProcessor;
 import globalClasses.ezC;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class TaskEditor {
 			Task postEdit = editTask(toEdit, taskAttributes);
 			
 			addEditedTask(preEdit, postEdit);
+			UndoRedoProcessor.undoEditComponentStack.add(taskAttributes);	// Add the old task's components into the undo component stack
 			
 			return new EditedPair(preEdit, postEdit);
 		}
@@ -57,10 +59,22 @@ public class TaskEditor {
 			Task taskMarked = taskToBeMarked;
 			taskMarked.setComplete();
 			addEditedTask(taskToBeMarked, taskMarked);
+			UndoRedoProcessor.undoFinishComponentStack.add(taskAttributes);
 			
 			return taskMarked;
 		}
-
+		
+		public static Task markAsIncomplete(List<CommandComponent> taskAttributes) throws Exception {
+			assert ezC.totalTaskList != null;
+			
+			Task taskToBeMarked = searchTaskByName(taskAttributes);
+			Task taskMarked = taskToBeMarked;
+			taskMarked.setIncomplete();
+			addEditedTask(taskToBeMarked, taskMarked);
+			
+			return taskMarked;
+		}
+		
 		private static Task setTaskAttributes(Task toEdit, List<CommandComponent> taskAttributes) {
 			
 			for(CommandComponent cc : taskAttributes) {
