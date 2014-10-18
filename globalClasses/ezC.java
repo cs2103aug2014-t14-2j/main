@@ -2,6 +2,7 @@ package globalClasses;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import userInterface.CommandHandler;
 import userInterface.UserInterface;
@@ -90,6 +91,7 @@ public class ezC {
 			try {
 				Command command = UserInterface.getUserCommand();
 				feedback = CommandHandler.executeCommand(command);
+				UndoRedoProcessor.undoCommandStack.add(command);	// Adds the command to the undo command stack
 			} catch (IllegalArgumentException e) {
 				feedback = UserInterface.getErrorMessage(e);
 			} catch (Exception e) {
