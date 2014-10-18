@@ -5,6 +5,7 @@ import globalClasses.Command.COMMAND_TYPE;
 import globalClasses.CommandComponent;
 import globalClasses.EditedPair;
 import globalClasses.Task;
+import globalClasses.UndoRedoProcessor;
 import globalClasses.ezC;
 
 import java.util.List;
@@ -30,19 +31,23 @@ public class CommandHandler {
 		case ADD:
 			Task added = DataManipulation.add(cc);
 			message = ezCMessages.getAddMessage(added);
+			UndoRedoProcessor.undoCommandStack.add(cmd);
 			break;
 		case REMOVE:
 			Task removed = DataManipulation.remove(cc);
 			message = ezCMessages.getDeleteMessage(removed);
+			UndoRedoProcessor.undoCommandStack.add(cmd);
 			break;
 		case EDIT:
-			 EditedPair edited = DataManipulation.edit(cc);
-			 message = ezCMessages.getEditMessage(edited.getOld(), edited.getNew());
+			EditedPair edited = DataManipulation.edit(cc);
+			message = ezCMessages.getEditMessage(edited.getOld(), edited.getNew());
+			UndoRedoProcessor.undoCommandStack.add(cmd);
 			break;
 		case FINISH: 
 			//catch exception: task already completed.
 			Task finished = DataManipulation.markAsCompleted(cc);
 			message = ezCMessages.getFinishMessage(finished);
+			UndoRedoProcessor.undoCommandStack.add(cmd);
 			break;
 		case COMPLETED: 
 			break;
