@@ -187,4 +187,8 @@ public class Task {
 	public void setComplete(){
 		this.isComplete = true;
 	}
+	
+	public void setIncomplete() {	// Using this for the undo command
+		this.isComplete = false;
+	}
 }
