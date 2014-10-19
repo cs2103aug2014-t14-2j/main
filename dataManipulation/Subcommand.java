@@ -1,4 +1,4 @@
-package globalClasses;
+package dataManipulation;
 /**
  * 
  * The data associated with a particular command. Note that certain component
@@ -14,8 +14,8 @@ package globalClasses;
  * 
  */
 
-public class CommandComponent {
-	public enum COMPONENT_TYPE {
+public class Subcommand {
+	public enum TYPE {
 		CATEGORY, DATE, DATE_TYPE, END, LINK, LOCATION, NAME, NONE, NOTE,
 		FREQUENCY, PAREN, START, TEXT, TITLE,
 		INVALID
@@ -71,10 +71,10 @@ public class CommandComponent {
 		}
 	}
 	
-	private COMPONENT_TYPE type;
+	private TYPE type;
 	private String contents;
 	
-	public CommandComponent(COMPONENT_TYPE componentType, 
+	public Subcommand(TYPE componentType, 
 			String componentContents) throws IllegalArgumentException {
 		type = componentType;
 		contents = componentContents;
@@ -82,7 +82,7 @@ public class CommandComponent {
 		checkValidity();
 	}
 
-	public COMPONENT_TYPE getType() {
+	public TYPE getType() {
 		return type;
 	}
 	
@@ -91,7 +91,7 @@ public class CommandComponent {
 	}
 	
 	private void checkValidity() throws IllegalArgumentException {
-		if (type == COMPONENT_TYPE.INVALID) {
+		if (type == TYPE.INVALID) {
 			throw new IllegalArgumentException("invalid subcommand type");
 		}
 		

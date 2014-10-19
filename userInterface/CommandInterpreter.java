@@ -3,10 +3,8 @@ package userInterface;
 import java.util.ArrayList;
 import java.util.List;
 
-import globalClasses.Command;
-import globalClasses.Command.COMMAND_TYPE;
-import globalClasses.CommandComponent;
-import globalClasses.CommandComponent.COMPONENT_TYPE;
+import dataManipulation.Command;
+import dataManipulation.Subcommand;
 
 public class CommandInterpreter {
 	public static Command formCommand(String input) throws IllegalArgumentException {
@@ -21,17 +19,17 @@ public class CommandInterpreter {
 		}
 		
 		String commandTypeString = getFirstWord(input);
-		COMMAND_TYPE commandType = determineCommandType(commandTypeString);
+		String commandType = determineCommandType(commandTypeString);
 		Command command;
 		
-		if (commandType == COMMAND_TYPE.INVALID) {
+		if (commandType == String.INVALID) {
 			throw new IllegalArgumentException("unrecognized command type");
 		} 
 
-		List<CommandComponent> components;
+		List<Subcommand> components;
 		
 		if (isNoComponentCommand(commandType)) {
-			components = getNoCommandComponents(input, commandType);
+			components = getNoSubcommands(input, commandType);
 		} else {
 			input = removeFirstWord(input);
 			components = getComponents(input, commandType);
@@ -116,13 +114,13 @@ public class CommandInterpreter {
 		String[] splitInput = splitString(input);
 		int lastPosition = splitInput.length - 1;
 
-		CommandComponent component = new CommandComponent(COMPONENT_TYPE.DATE_TYPE, 
+		Subcommand component = new Subcommand(Subcommand.TYPE.DATE_TYPE, 
 				splitInput[lastPosition]);
 		
-		List<CommandComponent> list = new ArrayList<CommandComponent>();
+		List<Subcommand> list = new ArrayList<Subcommand>();
 		list.add(component);
 		
-		Command command = new Command(COMMAND_TYPE.CHANGE_DATE_TYPE, list);
+		Command command = new ChangeDateType(list);
 
 		return command;
 	}
@@ -130,87 +128,54 @@ public class CommandInterpreter {
 	// ADD, ALL, CATEGORY, CHANGE_DATE_TYPE, COMPLETED, EDIT, FILTER, FINISH, 
 	// HELP, NOTE, REMOVE, REPEAT, SEARCH, SORT, TODAY, UNDO, VIEW,
 	// INVALID
-	private static COMMAND_TYPE determineCommandType(String commandTypeString) {
+	private static String determineCommandType(String commandTypeString) {
 		assert(commandTypeString != null);
 		commandTypeString = commandTypeString.trim();
+		String lowerCaseCommand = commandTypeString.toLowerCase();
 		
-		switch (commandTypeString.toLowerCase()) {
+		switch (lowerCaseCommand) {
 			case "add" :
-				return COMMAND_TYPE.ADD;
-			case "-ad" :
-				return COMMAND_TYPE.ADD;
+				return lowerCaseCommand;
 			case "all" :
-				return COMMAND_TYPE.ALL;
-			case "-al" :
-				return COMMAND_TYPE.ALL;
+				return lowerCaseCommand;
 			case "category" :
-				return COMMAND_TYPE.CATEGORY;
+				return lowerCaseCommand;
 			case "cat" :
-				return COMMAND_TYPE.CATEGORY;
+				return lowerCaseCommand;
 			case "categories" :
-				return COMMAND_TYPE.CATEGORY;
-			case "-ca" :
-				return COMMAND_TYPE.CATEGORY;
+				return lowerCaseCommand;
 			case "completed" :
-				return COMMAND_TYPE.COMPLETED;
-			case "-co" :
-				return COMMAND_TYPE.COMPLETED;
+				return lowerCaseCommand;
 			case "delete" :
-				return COMMAND_TYPE.REMOVE;
-			case "de" :
-				return COMMAND_TYPE.REMOVE;
+				return lowerCaseCommand;
 			case "edit" :
-				return COMMAND_TYPE.EDIT;
-			case "-e" :
-				return COMMAND_TYPE.EDIT;
+				return lowerCaseCommand;
 			case "filter" :
-				return COMMAND_TYPE.SEARCH;
-			case "-fl" :
-				return COMMAND_TYPE.SEARCH;
+				return lowerCaseCommand;
 			case "finish" :
-				return COMMAND_TYPE.FINISH;
-			case "-fn" :
-				return COMMAND_TYPE.FINISH;
+				return lowerCaseCommand;
 			case "help" :
-				return COMMAND_TYPE.HELP;
-			case "-h" :
-				return COMMAND_TYPE.HELP;
+				return lowerCaseCommand;
 			case "notes" :
-				return COMMAND_TYPE.NOTE;
+				return lowerCaseCommand;
 			case "note" :
-				return COMMAND_TYPE.NOTE;
-			case "-n" :
-				return COMMAND_TYPE.NOTE;
+				return lowerCaseCommand;
 			case "remove" :
-				return COMMAND_TYPE.REMOVE;
-			case "-rm" :
-				return COMMAND_TYPE.REMOVE;
+				return lowerCaseCommand;
 			case "repeat" :
-				return COMMAND_TYPE.REPEAT;
-			case "-rp" :
-				return COMMAND_TYPE.REPEAT;
+				return lowerCaseCommand;
 			case "search" :
-				return COMMAND_TYPE.SEARCH;
-			case "-se" :
-				return COMMAND_TYPE.SEARCH;
+				return lowerCaseCommand;
 			case "sort" :
-				return COMMAND_TYPE.SORT;
-			case "-so" :
-				return COMMAND_TYPE.SORT;
+				return lowerCaseCommand;
 			case "today" :
-				return COMMAND_TYPE.TODAY;
-			case "-t" :
-				return COMMAND_TYPE.TODAY;
+				return lowerCaseCommand;
 			case "undo" :
-				return COMMAND_TYPE.UNDO;
-			case "-u" :
-				return COMMAND_TYPE.UNDO;
+				return lowerCaseCommand;
 			case "view" :
-				return COMMAND_TYPE.SEARCH;
-			case "-v" :
-				return COMMAND_TYPE.SEARCH;
+				return lowerCaseCommand;
 			default :
-				return COMMAND_TYPE.INVALID;
+				throw new IllegalArgumentException("bad command type");
 		}
 	}
 	
@@ -218,16 +183,16 @@ public class CommandInterpreter {
 //------------------ Subcommand Related Methods -------------------------------
 //-----------------------------------------------------------------------------
 	
-	private static List<CommandComponent> getComponents(String string,
-			COMMAND_TYPE commandType) {
+	private static List<Subcommand> getComponents(String string,
+			String commandType) {
 		assert(string != null);
 		assert(!string.isEmpty());
 
-		List<CommandComponent> components = new ArrayList<CommandComponent>();
+		List<Subcommand> components = new ArrayList<Subcommand>();
 		
-		CommandComponent component;
+		Subcommand component;
 		// Search and Sort must label their first subcommands
-		if (commandType != COMMAND_TYPE.SEARCH && commandType != COMMAND_TYPE.SORT) {
+		if (commandType != String.SEARCH && commandType != String.SORT) {
 			component = getFirstComponent(commandType, string);
 			if (isQuotationComponent(component)) {
 				string = eraseQuoteComponent(string);
@@ -250,8 +215,8 @@ public class CommandInterpreter {
 		return components;
 	}
 
-	private static List<CommandComponent> getNoCommandComponents(String input,
-			COMMAND_TYPE commandType) {
+	private static List<Subcommand> getNoSubcommands(String input,
+			String commandType) {
 		assert(input != null);
 		
 		try {
@@ -263,8 +228,8 @@ public class CommandInterpreter {
 		return createNoComponent(input, commandType);
 	}
 	
-	private static List<CommandComponent> createNoComponent(String string,
-			COMMAND_TYPE commandType) {
+	private static List<Subcommand> createNoComponent(String string,
+			String commandType) {
 		assert(string != null);
 		
 		string = string.trim();
@@ -273,12 +238,12 @@ public class CommandInterpreter {
 			throw new IllegalArgumentException("too many arguments");
 		}
 		
-		List<CommandComponent> componentList = new ArrayList<CommandComponent>();
+		List<Subcommand> componentList = new ArrayList<Subcommand>();
 		
 		return componentList;
 	}
 
-	private static boolean isNoComponentCommand(COMMAND_TYPE commandType) {
+	private static boolean isNoComponentCommand(String commandType) {
 		switch (commandType) {
 			case ALL :
 				return true;
@@ -304,121 +269,121 @@ public class CommandInterpreter {
 	 * @param string
 	 * @return
 	 */
-	private static CommandComponent getFirstComponent(COMMAND_TYPE commandType,
+	private static Subcommand getFirstComponent(String commandType,
 			String string) {
 		string = string.trim();	// remove whitespace
 		
-		COMPONENT_TYPE componentType = determineFirstComponentType(commandType);
+		Subcommand.TYPE componentType = determineFirstComponentType(commandType);
 		
 		String componentData = getComponentData(string, componentType);
 		
-		CommandComponent component = 
-				new CommandComponent(componentType, componentData);
+		Subcommand component = 
+				new Subcommand(componentType, componentData);
 		return component;
 	}
 
-	private static COMPONENT_TYPE determineFirstComponentType(
-			COMMAND_TYPE commandType) {
+	private static Subcommand.TYPE determineFirstComponentType(
+			String commandType) {
 		switch (commandType) {
-			case ADD :
-				return COMPONENT_TYPE.NAME;
-			case CATEGORY :
-				return COMPONENT_TYPE.CATEGORY;
-			case EDIT :
-				return COMPONENT_TYPE.NAME;
-			case FINISH :
-				return COMPONENT_TYPE.NAME;
-			case NOTE :
-				return COMPONENT_TYPE.NAME;
-			case REMOVE :
-				return COMPONENT_TYPE.NAME;
-			case REPEAT :
-				return COMPONENT_TYPE.NAME;
+			case "add" :
+				return Subcommand.TYPE.NAME;
+			case "category" :
+				return Subcommand.TYPE.CATEGORY;
+			case "edit" :
+				return Subcommand.TYPE.NAME;
+			case "finish" :
+				return Subcommand.TYPE.NAME;
+			case "note" :
+				return Subcommand.TYPE.NAME;
+			case "remove" :
+				return Subcommand.TYPE.NAME;
+			case "repeat" :
+				return Subcommand.TYPE.NAME;
 			default :
-				return COMPONENT_TYPE.INVALID;
+				return Subcommand.TYPE.INVALID;
 		}
 	}
 	
-	private static CommandComponent getNextComponent(String componentSentence) {
+	private static Subcommand getNextComponent(String componentSentence) {
 		String componentTypeString = getFirstWord(componentSentence);
-		COMPONENT_TYPE componentType = 
+		Subcommand.TYPE componentType = 
 				determineComponentType(componentTypeString);
 		
-		if (componentType != COMPONENT_TYPE.FREQUENCY) {
+		if (componentType != Subcommand.TYPE.FREQUENCY) {
 			componentSentence = removeFirstWord(componentSentence);
 		}
 		
 		String componentData = getComponentData(componentSentence, 
 				componentType);
 		
-		CommandComponent component = 
-				new CommandComponent(componentType, componentData);
+		Subcommand component = 
+				new Subcommand(componentType, componentData);
 		return component;
 	}
 
-	private static COMPONENT_TYPE determineComponentType(
+	private static Subcommand.TYPE determineComponentType(
 			String componentTypeString) {
 		componentTypeString = componentTypeString.trim();
 		
 		switch (componentTypeString.toLowerCase()) {
 		case ("(") :
-			return COMPONENT_TYPE.PAREN;
+			return Subcommand.TYPE.PAREN;
 		case (")") :
-			return COMPONENT_TYPE.PAREN;
+			return Subcommand.TYPE.PAREN;
 		case ("and") :
-			return COMPONENT_TYPE.LINK;
+			return Subcommand.TYPE.LINK;
 		case ("&") :
-			return COMPONENT_TYPE.LINK;
+			return Subcommand.TYPE.LINK;
 		case ("annually") :
-			return COMPONENT_TYPE.FREQUENCY;
+			return Subcommand.TYPE.FREQUENCY;
 		case ("begin") :
-			return COMPONENT_TYPE.START;
+			return Subcommand.TYPE.START;
 		case ("-b") :
-			return COMPONENT_TYPE.START;
+			return Subcommand.TYPE.START;
 		case ("category") :
-			return COMPONENT_TYPE.CATEGORY;
+			return Subcommand.TYPE.CATEGORY;
 		case ("cat") :
-			return COMPONENT_TYPE.CATEGORY;
+			return Subcommand.TYPE.CATEGORY;
 		case ("-c") :
-			return COMPONENT_TYPE.CATEGORY;
+			return Subcommand.TYPE.CATEGORY;
 		case ("daily") :
-			return COMPONENT_TYPE.FREQUENCY;
+			return Subcommand.TYPE.FREQUENCY;
 		case ("date") :
-			return COMPONENT_TYPE.DATE;
+			return Subcommand.TYPE.DATE;
 		case ("-dt") :
-			return COMPONENT_TYPE.DATE;
+			return Subcommand.TYPE.DATE;
 		case ("deadline") :
-			return COMPONENT_TYPE.END;
+			return Subcommand.TYPE.END;
 		case ("-dl") :
-			return COMPONENT_TYPE.END;
+			return Subcommand.TYPE.END;
 		case ("end") :
-			return COMPONENT_TYPE.END;
+			return Subcommand.TYPE.END;
 		case ("-e") :
-			return COMPONENT_TYPE.END;
+			return Subcommand.TYPE.END;
 		case ("location") :
-			return COMPONENT_TYPE.LOCATION;
+			return Subcommand.TYPE.LOCATION;
 		case ("-l") :
-			return COMPONENT_TYPE.LOCATION;
+			return Subcommand.TYPE.LOCATION;
 		case ("monthly") :
-			return COMPONENT_TYPE.FREQUENCY;
+			return Subcommand.TYPE.FREQUENCY;
 		case ("note") :
-			return COMPONENT_TYPE.NOTE;
+			return Subcommand.TYPE.NOTE;
 		case ("-n") :
-			return COMPONENT_TYPE.NOTE;
+			return Subcommand.TYPE.NOTE;
 		case ("once") :
-			return COMPONENT_TYPE.FREQUENCY;
+			return Subcommand.TYPE.FREQUENCY;
 		case ("start") :
-			return COMPONENT_TYPE.START;
+			return Subcommand.TYPE.START;
 		case ("-s") :
-			return COMPONENT_TYPE.START;
+			return Subcommand.TYPE.START;
 		case ("title") :
-			return COMPONENT_TYPE.TITLE;
+			return Subcommand.TYPE.TITLE;
 		case ("-t") :
-			return COMPONENT_TYPE.TITLE;
+			return Subcommand.TYPE.TITLE;
 		case ("weekly") :
-			return COMPONENT_TYPE.FREQUENCY;
+			return Subcommand.TYPE.FREQUENCY;
 		default :
-			return COMPONENT_TYPE.INVALID;
+			return Subcommand.TYPE.INVALID;
 		}
 	}
 
@@ -430,17 +395,17 @@ public class CommandInterpreter {
 	 * @return
 	 */
 	private static boolean isSubcommand(String possibleSubcommand) {
-		COMPONENT_TYPE possibleType = 
+		Subcommand.TYPE possibleType = 
 				determineComponentType(possibleSubcommand);
 		
-		if (possibleType == COMPONENT_TYPE.INVALID) {
+		if (possibleType == Subcommand.TYPE.INVALID) {
 			return false;
 		} else {
 			return true;
 		}
 	}
 
-	private static String eraseNoQuoteComponent(CommandComponent component,
+	private static String eraseNoQuoteComponent(Subcommand component,
 			String sentence) {
 		assert(sentence != null);
 		assert(component != null);
@@ -492,8 +457,8 @@ public class CommandInterpreter {
 		return withoutUntilSecondQuote;
 	}
 	
-	private static boolean isQuotationComponent(CommandComponent component) {
-		COMPONENT_TYPE type = component.getType();
+	private static boolean isQuotationComponent(Subcommand component) {
+		Subcommand.TYPE type = component.getType();
 		
 		switch (type) {
 			case CATEGORY :
@@ -516,11 +481,11 @@ public class CommandInterpreter {
 //-----------------------------------------------------------------------------
 
 	private static String getComponentData(String userCommand, 
-			COMPONENT_TYPE componentType) {
-		if (componentType == COMPONENT_TYPE.START ||
-				componentType == COMPONENT_TYPE.END ||
-				componentType == COMPONENT_TYPE.DATE ||
-				componentType == COMPONENT_TYPE.FREQUENCY) {
+			Subcommand.TYPE componentType) {
+		if (componentType == Subcommand.TYPE.START ||
+				componentType == Subcommand.TYPE.END ||
+				componentType == Subcommand.TYPE.DATE ||
+				componentType == Subcommand.TYPE.FREQUENCY) {
 			return getDateComponentData(userCommand);
 		}
 		
@@ -593,7 +558,7 @@ public class CommandInterpreter {
 	}
 	
 	private static String extractComponentMatch(
-			CommandComponent component, String sentence) {
+			Subcommand component, String sentence) {
 		String[] splitSentence = splitString(sentence);
 		String matchingString = component.getContents();
 		String growingMatch = splitSentence[0];

@@ -1,9 +1,9 @@
 package userInterface;
 
-import globalClasses.Command;
-
 import java.io.PrintStream;
 import java.util.Scanner;
+
+import dataManipulation.Command;
 
 /*
  * This class acts as the interface between the User Interface component

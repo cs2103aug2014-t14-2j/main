@@ -1,8 +1,5 @@
 package userInterface;
 
-import globalClasses.Command;
-import globalClasses.Command.COMMAND_TYPE;
-import globalClasses.CommandComponent;
 import globalClasses.EditedPair;
 import globalClasses.Task;
 import globalClasses.UndoRedoProcessor;
@@ -10,7 +7,10 @@ import globalClasses.ezC;
 
 import java.util.List;
 
+import dataManipulation.Command;
+import dataManipulation.CommandComponent;
 import dataManipulation.DataManipulation;
+import dataManipulation.Command.COMMAND_TYPE;
 
 public class CommandHandler {
 	
