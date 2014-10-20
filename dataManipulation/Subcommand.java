@@ -16,24 +16,14 @@ package dataManipulation;
 
 public class Subcommand {
 	public enum TYPE {
-		CATEGORY, DATE, DATE_TYPE, END, LINK, LOCATION, NAME, NONE, NOTE,
-		FREQUENCY, PAREN, START, TEXT, TITLE,
+		AND, CATEGORY, DATE, DATE_TYPE, END, LINK, LOCATION, NAME, NONE, NOTE,
+		FREQUENCY, OR, PAREN, START, TEXT, TITLE,
 		INVALID
 	}
 	
 	// All possibilities for the frequency keyword
 	public enum FREQUENCY {
 		DAILY, WEEKLY, MONTHLY, ANNUALLY, ONCE;
-		
-		@Override
-		public String toString() {
-			return this.name().toLowerCase();
-		}
-	}
-	
-	// both possibilities for Link
-	public enum LINK {
-		AND, OR;
 		
 		@Override
 		public String toString() {
@@ -102,8 +92,6 @@ public class Subcommand {
 			case DATE_TYPE :
 				checkDateTypeContents();
 				break;
-			case LINK :
-				checkLinkContents();
 			case PAREN :
 				checkParenContents();
 			default :
@@ -124,20 +112,6 @@ public class Subcommand {
 		
 		if (!isValid) {
 			throw new IllegalArgumentException("invalid paren specified");
-		}
-	}
-
-	private void checkLinkContents() {
-		boolean isValid = false;
-		
-		if (contents.equals(LINK.AND.toString())) {
-			isValid = true;
-		} else if (contents.equals(LINK.OR.toString())) {
-			isValid = true;
-		}
-		
-		if (!isValid) {
-			throw new IllegalArgumentException("invalid link specified");
 		}
 	}
 
@@ -191,45 +165,47 @@ public class Subcommand {
 		
 		switch (componentTypeString.toLowerCase()) {
 		case ("(") :
-			return Subcommand.TYPE.PAREN;
+			return TYPE.PAREN;
 		case (")") :
-			return Subcommand.TYPE.PAREN;
+			return TYPE.PAREN;
 		case ("and") :
-			return Subcommand.TYPE.LINK;
+			return TYPE.AND;
 		case ("&") :
-			return Subcommand.TYPE.LINK;
+			return TYPE.AND;
 		case ("annually") :
-			return Subcommand.TYPE.FREQUENCY;
+			return TYPE.FREQUENCY;
 		case ("begin") :
-			return Subcommand.TYPE.START;
+			return TYPE.START;
 		case ("category") :
-			return Subcommand.TYPE.CATEGORY;
+			return TYPE.CATEGORY;
 		case ("cat") :
-			return Subcommand.TYPE.CATEGORY;
+			return TYPE.CATEGORY;
 		case ("daily") :
-			return Subcommand.TYPE.FREQUENCY;
+			return TYPE.FREQUENCY;
 		case ("date") :
-			return Subcommand.TYPE.DATE;
+			return TYPE.DATE;
 		case ("deadline") :
-			return Subcommand.TYPE.END;
+			return TYPE.END;
 		case ("end") :
-			return Subcommand.TYPE.END;
+			return TYPE.END;
 		case ("location") :
-			return Subcommand.TYPE.LOCATION;
+			return TYPE.LOCATION;
 		case ("monthly") :
-			return Subcommand.TYPE.FREQUENCY;
+			return TYPE.FREQUENCY;
 		case ("note") :
-			return Subcommand.TYPE.NOTE;
+			return TYPE.NOTE;
+		case ("or") :
+			return TYPE.OR;
 		case ("once") :
-			return Subcommand.TYPE.FREQUENCY;
+			return TYPE.FREQUENCY;
 		case ("start") :
-			return Subcommand.TYPE.START;
+			return TYPE.START;
 		case ("title") :
-			return Subcommand.TYPE.TITLE;
+			return TYPE.TITLE;
 		case ("weekly") :
-			return Subcommand.TYPE.FREQUENCY;
+			return TYPE.FREQUENCY;
 		default :
-			return Subcommand.TYPE.INVALID;
+			return TYPE.INVALID;
 		}
 	}
 }
