@@ -6,6 +6,7 @@ import globalClasses.Date;
 import globalClasses.Task;
 import globalClasses.ezC;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -73,6 +74,20 @@ public class TaskAdder {
 		
 		return toBeAdded;
 		
+	}
+	
+	public static List<CommandComponent> dismantleTask(Task taskToDismantle) {
+		
+		List<CommandComponent> taskDetails = new ArrayList<CommandComponent>();
+		
+		taskDetails.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.NAME, taskToDismantle.getName()));
+		taskDetails.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.CATEGORY, taskToDismantle.getCategory()));
+		taskDetails.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.LOCATION, taskToDismantle.getLocation()));
+		taskDetails.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.START, taskToDismantle.getStartDate().toString()));
+		taskDetails.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.END, taskToDismantle.getEndDate().toString()));
+		taskDetails.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.NOTE, taskToDismantle.getNote()));
+		
+		return taskDetails;
 	}
 	
 	/** For the aseembleAttributes method:
