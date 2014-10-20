@@ -34,7 +34,8 @@ public class TaskEditor {
 			Task postEdit = editTask(toEdit, taskAttributes);
 			
 			addEditedTask(preEdit, postEdit);
-			UndoRedoProcessor.undoEditComponentStack.add(taskAttributes);	// Add the old task's components into the undo component stack
+			UndoRedoProcessor.preEditTaskStack.add(toEdit);	// Add the pre-edited task into the pre edited task stack
+			UndoRedoProcessor.postEditTaskStack.add(postEdit);	// Add the edited task into the post edited task stack
 			
 			return new EditedPair(preEdit, postEdit);
 		}
