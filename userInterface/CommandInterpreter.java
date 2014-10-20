@@ -3,7 +3,6 @@ package userInterface;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
 import userInterface.CommandType.COMMAND_TYPE;
 import dataManipulation.Add;
 import dataManipulation.All;
@@ -39,15 +38,6 @@ public class CommandInterpreter {
 	}
 	
 	public Command formCommand(String input) throws IllegalArgumentException {
-=======
-import globalClasses.Command;
-import globalClasses.Command.COMMAND_TYPE;
-import globalClasses.CommandComponent;
-import globalClasses.CommandComponent.COMPONENT_TYPE;
-
-public class CommandInterpreter {
-	public static Command formCommand(String input) throws IllegalArgumentException {
->>>>>>> f7a35ff... Reverting back to Nelson's original
 		assert(input != null);
 		if (input.isEmpty()) {
 			throw new IllegalArgumentException("no command given");
@@ -57,7 +47,6 @@ public class CommandInterpreter {
 			Command command = determineSpecialCommand(input);
 			return command;
 		}
-<<<<<<< HEAD
         
 		String commandTypeString = getFirstWord(input);
 		COMMAND_TYPE commandType = commands.determineCommandType(commandTypeString);
@@ -67,31 +56,12 @@ public class CommandInterpreter {
 		
 		if (isNoComponentCommand(commandType)) {
 			components = getNoSubcommands(input);
-=======
-		
-		String commandTypeString = getFirstWord(input);
-		COMMAND_TYPE commandType = determineCommandType(commandTypeString);
-		Command command;
-		
-		if (commandType == COMMAND_TYPE.INVALID) {
-			throw new IllegalArgumentException("unrecognized command type");
-		} 
-
-		List<CommandComponent> components;
-		
-		if (isNoComponentCommand(commandType)) {
-			components = getNoCommandComponents(input, commandType);
->>>>>>> f7a35ff... Reverting back to Nelson's original
 		} else {
 			input = removeFirstWord(input);
 			components = getComponents(input, commandType);
 		}
 		
-<<<<<<< HEAD
 		command = makeCommand(commandType, components);
-=======
-		command = new Command(commandType, components);
->>>>>>> f7a35ff... Reverting back to Nelson's original
 		
 		return command;
 	}
@@ -100,7 +70,6 @@ public class CommandInterpreter {
 //---------------- Command Related Methods ------------------------------------
 //-----------------------------------------------------------------------------
 
-<<<<<<< HEAD
 	private Command makeCommand(COMMAND_TYPE type, List<Subcommand> subcommands) {
 		switch (type) {
 		case ADD:
@@ -139,9 +108,6 @@ public class CommandInterpreter {
 	}
 	
 	private boolean isSpecialCommand(String input) {
-=======
-	private static boolean isSpecialCommand(String input) {
->>>>>>> f7a35ff... Reverting back to Nelson's original
 		input = input.toLowerCase();
 		
 		String[] splitInput = splitString(input);
@@ -153,11 +119,7 @@ public class CommandInterpreter {
 		}
 	}
 
-<<<<<<< HEAD
 	private boolean isChangeDateType(String[] splitInput) {
-=======
-	private static boolean isChangeDateType(String[] splitInput) {
->>>>>>> f7a35ff... Reverting back to Nelson's original
 		String[] changeDateTypeExample = makeChangeDateTypeExample();
 		
 		if(splitInput.length != changeDateTypeExample.length) {
@@ -185,11 +147,7 @@ public class CommandInterpreter {
 		return true;
 	}
 
-<<<<<<< HEAD
 	private String[] makeChangeDateTypeExample() {
-=======
-	private static String[] makeChangeDateTypeExample() {
->>>>>>> f7a35ff... Reverting back to Nelson's original
 		int length = 4;	// "change" "date" "type" "D/M", etc
 		String[] example = new String[length];
 		
@@ -213,17 +171,12 @@ public class CommandInterpreter {
 	 * @param input
 	 * @return
 	 */
-<<<<<<< HEAD
 	private Command determineSpecialCommand(String input) {
-=======
-	private static Command determineSpecialCommand(String input) {
->>>>>>> f7a35ff... Reverting back to Nelson's original
 		input = input.toLowerCase();
 		
 		String[] splitInput = splitString(input);
 		int lastPosition = splitInput.length - 1;
 
-<<<<<<< HEAD
 		Subcommand component = new Subcommand(Subcommand.TYPE.DATE_TYPE, 
 				splitInput[lastPosition]);
 		
@@ -231,131 +184,22 @@ public class CommandInterpreter {
 		list.add(component);
 		
 		Command command = new ChangeDateType(list);
-=======
-		CommandComponent component = new CommandComponent(COMPONENT_TYPE.DATE_TYPE, 
-				splitInput[lastPosition]);
-		
-		List<CommandComponent> list = new ArrayList<CommandComponent>();
-		list.add(component);
-		
-		Command command = new Command(COMMAND_TYPE.CHANGE_DATE_TYPE, list);
->>>>>>> f7a35ff... Reverting back to Nelson's original
 
 		return command;
 	}
 	
-<<<<<<< HEAD
-=======
-	// ADD, ALL, CATEGORY, CHANGE_DATE_TYPE, COMPLETED, EDIT, FILTER, FINISH, 
-	// HELP, NOTE, REMOVE, REPEAT, SEARCH, SORT, TODAY, UNDO, VIEW,
-	// INVALID
-	private static COMMAND_TYPE determineCommandType(String commandTypeString) {
-		assert(commandTypeString != null);
-		commandTypeString = commandTypeString.trim();
-		
-		switch (commandTypeString.toLowerCase()) {
-			case "add" :
-				return COMMAND_TYPE.ADD;
-			case "-ad" :
-				return COMMAND_TYPE.ADD;
-			case "all" :
-				return COMMAND_TYPE.ALL;
-			case "-al" :
-				return COMMAND_TYPE.ALL;
-			case "category" :
-				return COMMAND_TYPE.CATEGORY;
-			case "cat" :
-				return COMMAND_TYPE.CATEGORY;
-			case "categories" :
-				return COMMAND_TYPE.CATEGORY;
-			case "-ca" :
-				return COMMAND_TYPE.CATEGORY;
-			case "completed" :
-				return COMMAND_TYPE.COMPLETED;
-			case "-co" :
-				return COMMAND_TYPE.COMPLETED;
-			case "delete" :
-				return COMMAND_TYPE.REMOVE;
-			case "de" :
-				return COMMAND_TYPE.REMOVE;
-			case "edit" :
-				return COMMAND_TYPE.EDIT;
-			case "-e" :
-				return COMMAND_TYPE.EDIT;
-			case "filter" :
-				return COMMAND_TYPE.SEARCH;
-			case "-fl" :
-				return COMMAND_TYPE.SEARCH;
-			case "finish" :
-				return COMMAND_TYPE.FINISH;
-			case "-fn" :
-				return COMMAND_TYPE.FINISH;
-			case "help" :
-				return COMMAND_TYPE.HELP;
-			case "-h" :
-				return COMMAND_TYPE.HELP;
-			case "notes" :
-				return COMMAND_TYPE.NOTE;
-			case "note" :
-				return COMMAND_TYPE.NOTE;
-			case "-n" :
-				return COMMAND_TYPE.NOTE;
-			case "remove" :
-				return COMMAND_TYPE.REMOVE;
-			case "-rm" :
-				return COMMAND_TYPE.REMOVE;
-			case "repeat" :
-				return COMMAND_TYPE.REPEAT;
-			case "-rp" :
-				return COMMAND_TYPE.REPEAT;
-			case "search" :
-				return COMMAND_TYPE.SEARCH;
-			case "-se" :
-				return COMMAND_TYPE.SEARCH;
-			case "sort" :
-				return COMMAND_TYPE.SORT;
-			case "-so" :
-				return COMMAND_TYPE.SORT;
-			case "today" :
-				return COMMAND_TYPE.TODAY;
-			case "-t" :
-				return COMMAND_TYPE.TODAY;
-			case "undo" :
-				return COMMAND_TYPE.UNDO;
-			case "-u" :
-				return COMMAND_TYPE.UNDO;
-			case "view" :
-				return COMMAND_TYPE.SEARCH;
-			case "-v" :
-				return COMMAND_TYPE.SEARCH;
-			default :
-				return COMMAND_TYPE.INVALID;
-		}
-	}
-	
->>>>>>> f7a35ff... Reverting back to Nelson's original
 //-----------------------------------------------------------------------------
 //------------------ Subcommand Related Methods -------------------------------
 //-----------------------------------------------------------------------------
 	
-<<<<<<< HEAD
 	private List<Subcommand> getComponents(String string,
-=======
-	private static List<CommandComponent> getComponents(String string,
->>>>>>> f7a35ff... Reverting back to Nelson's original
 			COMMAND_TYPE commandType) {
 		assert(string != null);
 		assert(!string.isEmpty());
 
-<<<<<<< HEAD
 		List<Subcommand> components = new ArrayList<Subcommand>();
 		
 		Subcommand component;
-=======
-		List<CommandComponent> components = new ArrayList<CommandComponent>();
-		
-		CommandComponent component;
->>>>>>> f7a35ff... Reverting back to Nelson's original
 		// Search and Sort must label their first subcommands
 		if (commandType != COMMAND_TYPE.SEARCH && commandType != COMMAND_TYPE.SORT) {
 			component = getFirstComponent(commandType, string);
@@ -380,7 +224,6 @@ public class CommandInterpreter {
 		return components;
 	}
 
-<<<<<<< HEAD
 	private List<Subcommand> getNoSubcommands(String input) {
 		assert(input != null);
 		
@@ -394,23 +237,6 @@ public class CommandInterpreter {
 	}
 	
 	private static List<Subcommand> createNoComponent(String string) {
-=======
-	private static List<CommandComponent> getNoCommandComponents(String input,
-			COMMAND_TYPE commandType) {
-		assert(input != null);
-		
-		try {
-			input = removeFirstWord(input);
-		} catch (IllegalArgumentException e) {
-			input = "";
-		}
-		
-		return createNoComponent(input, commandType);
-	}
-	
-	private static List<CommandComponent> createNoComponent(String string,
-			COMMAND_TYPE commandType) {
->>>>>>> f7a35ff... Reverting back to Nelson's original
 		assert(string != null);
 		
 		string = string.trim();
@@ -419,20 +245,12 @@ public class CommandInterpreter {
 			throw new IllegalArgumentException("too many arguments");
 		}
 		
-<<<<<<< HEAD
 		List<Subcommand> componentList = new ArrayList<Subcommand>();
-=======
-		List<CommandComponent> componentList = new ArrayList<CommandComponent>();
->>>>>>> f7a35ff... Reverting back to Nelson's original
 		
 		return componentList;
 	}
 
-<<<<<<< HEAD
 	private boolean isNoComponentCommand(COMMAND_TYPE commandType) {
-=======
-	private static boolean isNoComponentCommand(COMMAND_TYPE commandType) {
->>>>>>> f7a35ff... Reverting back to Nelson's original
 		switch (commandType) {
 			case ALL :
 				return true;
@@ -458,7 +276,6 @@ public class CommandInterpreter {
 	 * @param string
 	 * @return
 	 */
-<<<<<<< HEAD
 	private Subcommand getFirstComponent(COMMAND_TYPE commandType,
 			String string) {
 		string = string.trim();	// remove whitespace
@@ -500,134 +317,17 @@ public class CommandInterpreter {
 				Subcommand.determineComponentType(componentTypeString);
 		
 		if (componentType != Subcommand.TYPE.FREQUENCY) {
-=======
-	private static CommandComponent getFirstComponent(COMMAND_TYPE commandType,
-			String string) {
-		string = string.trim();	// remove whitespace
-		
-		COMPONENT_TYPE componentType = determineFirstComponentType(commandType);
-		
-		String componentData = getComponentData(string, componentType);
-		
-		CommandComponent component = 
-				new CommandComponent(componentType, componentData);
-		return component;
-	}
-
-	private static COMPONENT_TYPE determineFirstComponentType(
-			COMMAND_TYPE commandType) {
-		switch (commandType) {
-			case ADD :
-				return COMPONENT_TYPE.NAME;
-			case CATEGORY :
-				return COMPONENT_TYPE.CATEGORY;
-			case EDIT :
-				return COMPONENT_TYPE.NAME;
-			case FINISH :
-				return COMPONENT_TYPE.NAME;
-			case NOTE :
-				return COMPONENT_TYPE.NAME;
-			case REMOVE :
-				return COMPONENT_TYPE.NAME;
-			case REPEAT :
-				return COMPONENT_TYPE.NAME;
-			default :
-				return COMPONENT_TYPE.INVALID;
-		}
-	}
-	
-	private static CommandComponent getNextComponent(String componentSentence) {
-		String componentTypeString = getFirstWord(componentSentence);
-		COMPONENT_TYPE componentType = 
-				determineComponentType(componentTypeString);
-		
-		if (componentType != COMPONENT_TYPE.FREQUENCY) {
->>>>>>> f7a35ff... Reverting back to Nelson's original
 			componentSentence = removeFirstWord(componentSentence);
 		}
 		
 		String componentData = getComponentData(componentSentence, 
 				componentType);
 		
-<<<<<<< HEAD
 		Subcommand component = 
 				new Subcommand(componentType, componentData);
 		return component;
 	}
 
-=======
-		CommandComponent component = 
-				new CommandComponent(componentType, componentData);
-		return component;
-	}
-
-	private static COMPONENT_TYPE determineComponentType(
-			String componentTypeString) {
-		componentTypeString = componentTypeString.trim();
-		
-		switch (componentTypeString.toLowerCase()) {
-		case ("(") :
-			return COMPONENT_TYPE.PAREN;
-		case (")") :
-			return COMPONENT_TYPE.PAREN;
-		case ("and") :
-			return COMPONENT_TYPE.LINK;
-		case ("&") :
-			return COMPONENT_TYPE.LINK;
-		case ("annually") :
-			return COMPONENT_TYPE.FREQUENCY;
-		case ("begin") :
-			return COMPONENT_TYPE.START;
-		case ("-b") :
-			return COMPONENT_TYPE.START;
-		case ("category") :
-			return COMPONENT_TYPE.CATEGORY;
-		case ("cat") :
-			return COMPONENT_TYPE.CATEGORY;
-		case ("-c") :
-			return COMPONENT_TYPE.CATEGORY;
-		case ("daily") :
-			return COMPONENT_TYPE.FREQUENCY;
-		case ("date") :
-			return COMPONENT_TYPE.DATE;
-		case ("-dt") :
-			return COMPONENT_TYPE.DATE;
-		case ("deadline") :
-			return COMPONENT_TYPE.END;
-		case ("-dl") :
-			return COMPONENT_TYPE.END;
-		case ("end") :
-			return COMPONENT_TYPE.END;
-		case ("-e") :
-			return COMPONENT_TYPE.END;
-		case ("location") :
-			return COMPONENT_TYPE.LOCATION;
-		case ("-l") :
-			return COMPONENT_TYPE.LOCATION;
-		case ("monthly") :
-			return COMPONENT_TYPE.FREQUENCY;
-		case ("note") :
-			return COMPONENT_TYPE.NOTE;
-		case ("-n") :
-			return COMPONENT_TYPE.NOTE;
-		case ("once") :
-			return COMPONENT_TYPE.FREQUENCY;
-		case ("start") :
-			return COMPONENT_TYPE.START;
-		case ("-s") :
-			return COMPONENT_TYPE.START;
-		case ("title") :
-			return COMPONENT_TYPE.TITLE;
-		case ("-t") :
-			return COMPONENT_TYPE.TITLE;
-		case ("weekly") :
-			return COMPONENT_TYPE.FREQUENCY;
-		default :
-			return COMPONENT_TYPE.INVALID;
-		}
-	}
-
->>>>>>> f7a35ff... Reverting back to Nelson's original
 	/**
 	 * Assumes that the String is not between quotation marks (which would
 	 * allow the user to write subcommand keywords)
@@ -635,30 +335,18 @@ public class CommandInterpreter {
 	 * @param componentPart
 	 * @return
 	 */
-<<<<<<< HEAD
 	private boolean isSubcommand(String possibleSubcommand) {
 		Subcommand.TYPE possibleType = 
 				Subcommand.determineComponentType(possibleSubcommand);
 		
 		if (possibleType == Subcommand.TYPE.INVALID) {
-=======
-	private static boolean isSubcommand(String possibleSubcommand) {
-		COMPONENT_TYPE possibleType = 
-				determineComponentType(possibleSubcommand);
-		
-		if (possibleType == COMPONENT_TYPE.INVALID) {
->>>>>>> f7a35ff... Reverting back to Nelson's original
 			return false;
 		} else {
 			return true;
 		}
 	}
 
-<<<<<<< HEAD
 	private String eraseNoQuoteComponent(Subcommand component,
-=======
-	private static String eraseNoQuoteComponent(CommandComponent component,
->>>>>>> f7a35ff... Reverting back to Nelson's original
 			String sentence) {
 		assert(sentence != null);
 		assert(component != null);
@@ -678,11 +366,7 @@ public class CommandInterpreter {
 		return sentence;
 	}
 	
-<<<<<<< HEAD
 	private String eraseQuoteComponent(String sentence) 
-=======
-	private static String eraseQuoteComponent(String sentence) 
->>>>>>> f7a35ff... Reverting back to Nelson's original
 			throws IndexOutOfBoundsException {
 		assert(sentence != null);
 		char quote = '"';
@@ -714,13 +398,8 @@ public class CommandInterpreter {
 		return withoutUntilSecondQuote;
 	}
 	
-<<<<<<< HEAD
 	private boolean isQuotationComponent(Subcommand component) {
 		Subcommand.TYPE type = component.getType();
-=======
-	private static boolean isQuotationComponent(CommandComponent component) {
-		COMPONENT_TYPE type = component.getType();
->>>>>>> f7a35ff... Reverting back to Nelson's original
 		
 		switch (type) {
 			case CATEGORY :
@@ -742,21 +421,12 @@ public class CommandInterpreter {
 //------------------ Subcommand Data Related Methods --------------------------
 //-----------------------------------------------------------------------------
 
-<<<<<<< HEAD
 	private String getComponentData(String userCommand, 
 			Subcommand.TYPE componentType) {
 		if (componentType == Subcommand.TYPE.START ||
 				componentType == Subcommand.TYPE.END ||
 				componentType == Subcommand.TYPE.DATE ||
 				componentType == Subcommand.TYPE.FREQUENCY) {
-=======
-	private static String getComponentData(String userCommand, 
-			COMPONENT_TYPE componentType) {
-		if (componentType == COMPONENT_TYPE.START ||
-				componentType == COMPONENT_TYPE.END ||
-				componentType == COMPONENT_TYPE.DATE ||
-				componentType == COMPONENT_TYPE.FREQUENCY) {
->>>>>>> f7a35ff... Reverting back to Nelson's original
 			return getDateComponentData(userCommand);
 		}
 		
@@ -764,11 +434,7 @@ public class CommandInterpreter {
 		return getBetweenQuoteData(userCommand);
 	}
 
-<<<<<<< HEAD
 	private String getDateComponentData(String userCommand) {
-=======
-	private static String getDateComponentData(String userCommand) {
->>>>>>> f7a35ff... Reverting back to Nelson's original
 		assert(!userCommand.isEmpty());
 		
 		String[] splitCommand = splitString(userCommand);
@@ -788,11 +454,7 @@ public class CommandInterpreter {
 		return wholeData;
 	}
 	
-<<<<<<< HEAD
 	private String getBetweenQuoteData(String userCommand) 
-=======
-	private static String getBetweenQuoteData(String userCommand) 
->>>>>>> f7a35ff... Reverting back to Nelson's original
 			throws IllegalArgumentException {
 		String emptyString = "";
 		String doubleQuoteMark = "\"";
@@ -806,22 +468,14 @@ public class CommandInterpreter {
 		return commandData;
 	}
 	
-<<<<<<< HEAD
 	private void checkFirstQuotation(String userCommand) {
-=======
-	private static void checkFirstQuotation(String userCommand) {
->>>>>>> f7a35ff... Reverting back to Nelson's original
 		String doubleQuote = "\"";
 		if (!userCommand.startsWith(doubleQuote)) {
 			throw new IllegalArgumentException("invalid subcommand argument");
 		}
 	}
 	
-<<<<<<< HEAD
 	private String getUntilQuotation(String userCommand) {
-=======
-	private static String getUntilQuotation(String userCommand) {
->>>>>>> f7a35ff... Reverting back to Nelson's original
 		assert(userCommand != null);
 		if (userCommand.isEmpty()) {
 			throw new IllegalArgumentException("invalid subcommand argument");
@@ -844,13 +498,8 @@ public class CommandInterpreter {
 		return fullString;
 	}
 	
-<<<<<<< HEAD
 	private String extractComponentMatch(
 			Subcommand component, String sentence) {
-=======
-	private static String extractComponentMatch(
-			CommandComponent component, String sentence) {
->>>>>>> f7a35ff... Reverting back to Nelson's original
 		String[] splitSentence = splitString(sentence);
 		String matchingString = component.getContents();
 		String growingMatch = splitSentence[0];
@@ -877,11 +526,7 @@ public class CommandInterpreter {
 	 * @param sentence with length > 0
 	 * @return a String of all characters before the first whitespace (or the end)
 	 */
-<<<<<<< HEAD
 	private String getFirstWord(String sentence) {
-=======
-	private static String getFirstWord(String sentence) {
->>>>>>> f7a35ff... Reverting back to Nelson's original
 		assert(sentence != null);
 		assert(!sentence.isEmpty());
 		
@@ -896,11 +541,7 @@ public class CommandInterpreter {
 	 * @param input
 	 * @return
 	 */
-<<<<<<< HEAD
 	private String removeFirstWord(String sentence) {
-=======
-	private static String removeFirstWord(String sentence) {
->>>>>>> f7a35ff... Reverting back to Nelson's original
 		assert(sentence != null);
 		
 		String[] splitSentence = splitString(sentence);
@@ -926,11 +567,7 @@ public class CommandInterpreter {
 	 * @param toSplit
 	 * @return
 	 */
-<<<<<<< HEAD
 	private String[] splitString(String toSplit) {
-=======
-	private static String[] splitString(String toSplit) {
->>>>>>> f7a35ff... Reverting back to Nelson's original
 		assert(toSplit != null);
 		assert(!toSplit.isEmpty());
 		String whiteSpace = "\\s+";
