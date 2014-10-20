@@ -184,4 +184,52 @@ public class Subcommand {
 		String total = formattedType + newLine + formattedContents;
 		return total;
 	}
+	
+	public static Subcommand.TYPE determineComponentType(
+			String componentTypeString) {
+		componentTypeString = componentTypeString.trim();
+		
+		switch (componentTypeString.toLowerCase()) {
+		case ("(") :
+			return Subcommand.TYPE.PAREN;
+		case (")") :
+			return Subcommand.TYPE.PAREN;
+		case ("and") :
+			return Subcommand.TYPE.LINK;
+		case ("&") :
+			return Subcommand.TYPE.LINK;
+		case ("annually") :
+			return Subcommand.TYPE.FREQUENCY;
+		case ("begin") :
+			return Subcommand.TYPE.START;
+		case ("category") :
+			return Subcommand.TYPE.CATEGORY;
+		case ("cat") :
+			return Subcommand.TYPE.CATEGORY;
+		case ("daily") :
+			return Subcommand.TYPE.FREQUENCY;
+		case ("date") :
+			return Subcommand.TYPE.DATE;
+		case ("deadline") :
+			return Subcommand.TYPE.END;
+		case ("end") :
+			return Subcommand.TYPE.END;
+		case ("location") :
+			return Subcommand.TYPE.LOCATION;
+		case ("monthly") :
+			return Subcommand.TYPE.FREQUENCY;
+		case ("note") :
+			return Subcommand.TYPE.NOTE;
+		case ("once") :
+			return Subcommand.TYPE.FREQUENCY;
+		case ("start") :
+			return Subcommand.TYPE.START;
+		case ("title") :
+			return Subcommand.TYPE.TITLE;
+		case ("weekly") :
+			return Subcommand.TYPE.FREQUENCY;
+		default :
+			return Subcommand.TYPE.INVALID;
+		}
+	}
 }
