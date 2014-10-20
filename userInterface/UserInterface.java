@@ -1,9 +1,9 @@
 package userInterface;
 
-import globalClasses.Command;
-
 import java.io.PrintStream;
 import java.util.Scanner;
+
+import dataManipulation.Command;
 
 /*
  * This class acts as the interface between the User Interface component
@@ -12,14 +12,29 @@ import java.util.Scanner;
  */
 
 public class UserInterface {
-	private static PrintStream outputStream = System.out;
-	private static Scanner inputScanner = new Scanner(System.in);
+	private static UserInterface ui;
+	private CommandInterpreter ci;
 	
-	public static void showUser(String information) {
+	private UserInterface() {
+		ci = CommandInterpreter.getInstance();
+	};
+	
+	public static UserInterface getInstance() {
+		if (ui == null) {
+			ui = new UserInterface();
+		}
+		
+		return ui;
+	}
+	
+	private PrintStream outputStream = System.out;
+	private Scanner inputScanner = new Scanner(System.in);
+	
+	public void showUser(String information) {
 		outputStream.print(information);
 	}
 	
-	public static void welcomeUser() {
+	public void welcomeUser() {
 		String userIntro = ezCMessages.getWelcomeMessage();
 		userIntro = userIntro + ezCMessages.getNewLine();
 		userIntro = userIntro + ezCMessages.getHelpMessage();
@@ -28,19 +43,19 @@ public class UserInterface {
 		return;
 	}
 
-	public static Command getUserCommand() {
+	public Command getUserCommand() {
 		String input = inputScanner.nextLine();
 		
 		if (doesUserWantExit(input)) {
 			System.exit(0);
 		}
 		
-		Command command = CommandInterpreter.formCommand(input);
+		Command command = ci.formCommand(input);
 		
 		return command;
 	}
 	
-	private static boolean doesUserWantExit(String input) {
+	private boolean doesUserWantExit(String input) {
 		if (input.equalsIgnoreCase("exit")) {
 			return true;
 		} else {
@@ -48,7 +63,7 @@ public class UserInterface {
 		}
 	}
 
-	public static String getErrorMessage(Exception e) {
+	public String getErrorMessage(Exception e) {
 		return ezCMessages.getErrorMessage(e);
 	}
 	

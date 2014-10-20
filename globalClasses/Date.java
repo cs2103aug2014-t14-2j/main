@@ -82,7 +82,12 @@ public class Date {
 		return this.cal;
 	}
 
+
 	public static Date determineDate(String dateString) {
+		if (dateString == null) {
+			return null;
+		}
+
 		String month, day, year;
 		int mm, dd, yyyy;
 		if (dateString.contains(",")) {
@@ -90,7 +95,8 @@ public class Date {
 			int comma = dateString.indexOf(',');
 			month = dateString.substring(0, space);
 			day = dateString.substring(space + 1, comma);
-			year = dateString.substring(comma + 2);
+			year = dateString.substring(comma);
+			year = cleanUpYear(year);
 			mm = monthInteger(month);
 		} else if (dateString.contains("/")) {
 			String dateStr[] = dateString.split("/", 3);
@@ -112,25 +118,66 @@ public class Date {
 		return userDate;
 	}
 
-	private static int monthInteger(String month2) {
+	private static String cleanUpYear(String year) {
+		String space = " ";
+		String comma = ",";
+		String emptyString = new String();
+
+		if (year.contains(space)) {
+			year = year.replace(space, emptyString);
+		}
+
+		if (year.contains(comma)) {
+			year = year.replace(comma, emptyString);
+		}
+
+		return year;
+	}
+
+	public static int monthInteger(String month1) {
 		int monthNum;
-		switch (month2.toLowerCase()) {
-		case "january" :		monthNum = 1; 				break;
-		case "february":		monthNum = 2;				break;
-		case "march":			monthNum = 3;				break;
-		case "april":			monthNum = 4;				break;
-		case "may":				monthNum = 5;				break;
-		case "june":			monthNum = 6;				break;
-		case "july":			monthNum = 7;				break;
-		case "august":			monthNum = 8;				break;
-		case "september":		monthNum = 9;				break;
-		case "october":			monthNum = 10;				break;
-		case "november":		monthNum = 11;				break;
-		case "december":		monthNum = 12;				break;
-		default: 				monthNum = 0;				break;
+		switch (month1.toLowerCase()) {
+		case "january" :		
+			monthNum = 1; 			
+			break;
+		case "february":		
+			monthNum = 2;				
+			break;
+		case "march":			
+			monthNum = 3;				
+			break;
+		case "april":			
+			monthNum = 4;				
+			break;
+		case "may":				
+			monthNum = 5;				
+			break;
+		case "june":			
+			monthNum = 6;				
+			break;
+		case "july":			
+			monthNum = 7;				
+			break;
+		case "august":			
+			monthNum = 8;				
+			break;
+		case "september":		
+			monthNum = 9;				
+			break;
+		case "october":			
+			monthNum = 10;				
+			break;
+		case "november":		
+			monthNum = 11;				
+			break;
+		case "december":		
+			monthNum = 12;				
+			break;
+		default: 				
+			monthNum = 0;				
+			break;
 		}
 		return monthNum;
-
 	}
 
 	public String toString(){

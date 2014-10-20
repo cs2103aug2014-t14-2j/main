@@ -84,8 +84,8 @@ public class TaskFileReader {
 		String endDateString = getEndDateString();
 		String completed = getCompleted();
 		
-		Date start = determineDate(startDateString);
-		Date end = determineDate(endDateString);
+		Date start = Date.determineDate(startDateString);
+		Date end = Date.determineDate(endDateString);
 		
 		Task newTask = dataManipulation.TaskFactory.makeTask(name, category, location, note, 
 				start, end);
@@ -117,105 +117,6 @@ public class TaskFileReader {
 		
 		return;
 		
-	}
-
-	// by Yui- taken directly from ezC
-	public static Date determineDate(String dateString) {
-		if (dateString == null) {
-			return null;
-		}
-		
-		String month, day, year;
-		int mm, dd, yyyy;
-		if (dateString.contains(",")) {
-			int space = dateString.indexOf(' ');
-			int comma = dateString.indexOf(',');
-			month = dateString.substring(0, space);
-			day = dateString.substring(space + 1, comma);
-			year = dateString.substring(comma);
-			year = cleanUpYear(year);
-			mm = monthInteger(month);
-		} else if (dateString.contains("/")) {
-			String dateStr[] = dateString.split("/", 3);
-			day = dateStr[0];
-			month = dateStr[1];
-			year = dateStr[2];
-			mm = Integer.parseInt(month);
-		} else {
-			String dateStr[] = dateString.split(" ", 3);
-			day = dateStr[0];
-			month = dateStr[1];
-			year = dateStr[2];
-			mm = Integer.parseInt(month);
-		}
-		dd = Integer.parseInt(day);
-		yyyy = Integer.parseInt(year);
-		
-		Date userDate = new Date(dd, mm, yyyy);
-		return userDate;
-	}
-	
-	private static String cleanUpYear(String year) {
-		String space = " ";
-		String comma = ",";
-		String emptyString = new String();
-		
-		if (year.contains(space)) {
-			year = year.replace(space, emptyString);
-		}
-		
-		if (year.contains(comma)) {
-			year = year.replace(comma, emptyString);
-		}
-		
-		return year;
-	}
-
-	// Also by Yui - should be in Date class as an enum
-	public static int monthInteger(String month1) {
-		int monthNum;
-		switch (month1.toLowerCase()) {
-			case "january" :		
-				monthNum = 1; 			
-				break;
-			case "february":		
-				monthNum = 2;				
-				break;
-			case "march":			
-				monthNum = 3;				
-				break;
-			case "april":			
-				monthNum = 4;				
-				break;
-			case "may":				
-				monthNum = 5;				
-				break;
-			case "june":			
-				monthNum = 6;				
-				break;
-			case "july":			
-				monthNum = 7;				
-				break;
-			case "august":			
-				monthNum = 8;				
-				break;
-			case "september":		
-				monthNum = 9;				
-				break;
-			case "october":			
-				monthNum = 10;				
-				break;
-			case "november":		
-				monthNum = 11;				
-				break;
-			case "december":		
-				monthNum = 12;				
-				break;
-			default: 				
-				monthNum = 0;				
-				break;
-		}
-		return monthNum;
 	}
 
 	// adds the component from the line to the list of task components, in its

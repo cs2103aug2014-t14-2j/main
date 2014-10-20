@@ -1,8 +1,10 @@
 package dataManipulation;
 
 import globalClasses.Task;
+import globalClasses.ezC;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class TotalTaskList {
 	private ArrayList<Task> list;
@@ -20,6 +22,13 @@ public class TotalTaskList {
 		return ttl;
 	}
 	
+	public void add(Task newTask) {
+		list.add(newTask);
+		Collections.sort(list, new globalClasses.sortTaskByEndDate());
+	}
 	
+	public void remove(Task badTask) {
+		list.remove(badTask);
+	}
 
 }
