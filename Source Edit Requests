@@ -27,8 +27,10 @@ Requests By Yui Wei
 Requests By Nelson
 -------------------------------------------------------------------------------
 
-Kash
 
-Require a follow-up on the isExactSearch method that I've constructed a
-skeleton for, for use in the TaskEditor() method. Basically it should throw a
-true or false boolean for if a task exists in our list already. Thanks a lot man!
+
+-------------------------------------------------------------------------------
+Requests By Kaushik
+-------------------------------------------------------------------------------
+
+Natalie: I need a method that helps me establish what link the user has entered. As of now, I had assumed that AND and OR are still regarded as component types rather than Link. It would be cool if we could do this Link for V0.3
