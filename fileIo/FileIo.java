@@ -33,7 +33,7 @@ public class FileIo {
 		}
 	}
 	
-	public FileIo getInstance() {
+	public static FileIo getInstance() {
 		if (fileIo == null) {
 			fileIo = new FileIo();
 		}
