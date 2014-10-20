@@ -4,6 +4,7 @@ import globalClasses.Task;
 import globalClasses.ezC;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 public class TotalTaskList {
@@ -29,6 +30,14 @@ public class TotalTaskList {
 	
 	public void remove(Task badTask) {
 		list.remove(badTask);
+	}
+	
+	public void addAll(Collection<Task> tasks) {
+		list.addAll(tasks);
+	}
+	
+	public ArrayList<Task> getList() {
+		return list;
 	}
 
 }

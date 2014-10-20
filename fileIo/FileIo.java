@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import dataManipulation.TotalTaskList;
+
 /*
  * This class acts as the interface between the File IO component
  * and the Main and Data Manipulation components. The other
@@ -17,15 +19,26 @@ import java.util.List;
 
 public class FileIo {
 	private String fileName = "ezCTasks.txt";
-	private static TextIoStream fileStream;
+	private TextIoStream fileStream;
+	private TotalTaskList list;
 	
-	public FileIo() {
+	private static FileIo fileIo;
+	
+	private FileIo() {
 		try {
 			fileStream = new TextIoStream(fileName);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public FileIo getInstance() {
+		if (fileIo == null) {
+			fileIo = new FileIo();
+		}
+		
+		return fileIo;
 	}
 	
 	// Takes the lines of text from the task file and creates tasks from them.
@@ -35,9 +48,9 @@ public class FileIo {
 	}
 	
 	// Takes the lines of text from the task file and creates tasks from them.
-		public void rewriteFile(List<Task> taskList) {
+		public void rewriteFile() {
 			try {
-				fileStream.rewriteFile(taskList);
+				fileStream.rewriteFile(list.getList());
 				return;
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -70,7 +83,7 @@ public class FileIo {
 		}
 	}
 	
-	public static void initializeTaskList(List<Task> taskList) {
+	public void initializeTaskList(List<Task> taskList) {
 		List<String> fileContents;
 		try {
 			fileContents = fileStream.readFromFile();
