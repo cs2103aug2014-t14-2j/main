@@ -13,7 +13,11 @@ public class ActionException extends Exception {
 	private ErrorLocation location;
 	
 	public enum ErrorLocation {
-		DELETE, EDIT
+		DELETE, EDIT;
+		
+		public String toString() {
+			return this.name().toLowerCase();
+		}
 	}
 
 	public ActionException(List<Task> taskList, ErrorLocation loc) {
