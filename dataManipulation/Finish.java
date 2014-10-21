@@ -28,10 +28,12 @@ public class Finish extends Command {
 	public Task markAsCompleted() throws Exception {
 		
 		List<Task> tasks = Searcher.search(subcommands, taskList);
+		
 		if(tasks.size() > 1) {
 			ActionException moreThanOne = new ActionException(taskList, ActionException.ErrorLocation.FINISH, subcommands);
 			throw moreThanOne;
 		}
+		
 		else {
 			Task taskMarked = tasks.get(0);
 			taskMarked.setComplete();
