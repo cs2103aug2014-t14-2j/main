@@ -1,6 +1,6 @@
 package powerSearch;
 
-import globalClasses.CommandComponent;
+import dataManipulation.Subcommand;
 import globalClasses.Task;
 import globalClasses.ezC;
 
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class NearMatchSearcher{
 	public static ArrayList<Task> taskList;
-	public static ArrayList<Task> nearSearch(CommandComponent key, ArrayList<Task> list) throws Exception {
+	public static ArrayList<Task> nearSearch(Subcommand key, ArrayList<Task> list) throws Exception {
 		taskList = list;
 		ArrayList<Task> answer = new ArrayList<Task>();
 		switch (key.getType()){
