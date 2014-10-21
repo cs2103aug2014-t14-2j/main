@@ -1,18 +1,16 @@
 package dataManipulation;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import powerSearch.ExactMatchSearcher;
 import powerSearch.Searcher;
 import userInterface.ezCMessages;
+import dataEncapsulation.ActionException;
 import dataEncapsulation.Task;
 import dataEncapsulation.UndoRedoProcessor;
-import dataEncapsulation.ezC;
-import fileIo.FileIo;
 
 public class Finish extends Command {
+	
+	private List<Task> taskList = TotalTaskList.getInstance().getList();
 
 	public Finish(List<Subcommand> commandComponents)
 			throws IllegalArgumentException {
@@ -28,39 +26,20 @@ public class Finish extends Command {
 	}
 	
 	public Task markAsCompleted() throws Exception {
-		Task taskToBeMarked = searchTaskByName(subcommands);
-		Task taskMarked = taskToBeMarked;
-		taskMarked.setComplete();
-		addEditedTask(taskToBeMarked, taskMarked);
-		UndoRedoProcessor.undoFinishComponentStack.add(taskAttributes);
 		
-		return taskMarked;
-	}
-	
-	public static void addEditedTask(Task oldTask, Task newTask) {
-		TotalTaskList list = TotalTaskList.getInstance();
-		FileIo IoStream = FileIo.getInstance();
-		
-		list.remove(oldTask);
-		list.add(newTask);
-		IoStream.rewriteFile();
-	}
-	
-	private static Task searchTaskByName(List<Subcommand> taskAttributes) throws Exception {
-		
-		TotalTaskList list = TotalTaskList.getInstance();
-		List<Task> toEditArray = Searcher.search(taskAttributes, list);
-		if(toEditArray.size() > 1) {
-			throw new Exception("Too many searches returned, need a more specific task to edit.");
-		} else {
-			Task toEdit = toEditArray.get(0);
-			return toEdit;
+		List<Task> tasks = Searcher.search(subcommands, taskList);
+		if(tasks.size() > 1) {
+			ActionException moreThanOne = new ActionException(taskList, ActionException.ErrorLocation.FINISH, subcommands);
+			throw moreThanOne;
+		}
+		else {
+			Task taskMarked = tasks.get(0);
+			taskMarked.setComplete();
+			UndoRedoProcessor.undoCommandStack.add(new Finish(subcommands));
+			return taskMarked;
 		}
 	}
-		
-		throw new Exception("Task Not Found");
-	}
-
+	
 	@Override
 	protected void checkValidity() {
 		checkForComponentAmount(1);
