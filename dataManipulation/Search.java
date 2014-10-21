@@ -2,6 +2,10 @@ package dataManipulation;
 
 import java.util.List;
 
+import dataEncapsulation.Task;
+import powerSearch.Searcher;
+import userInterface.ezCMessages;
+
 public class Search extends Command {
 
 	public Search(List<Subcommand> commandComponents)
@@ -10,9 +14,11 @@ public class Search extends Command {
 	}
 
 	@Override
-	public String execute() {
-		// TODO Auto-generated method stub
-		return null;
+	public String execute() throws Exception {
+		TotalTaskList list = TotalTaskList.getInstance();
+		List<Task> results = Searcher.search(subcommands, list.getList());
+		ezCMessages messages = ezCMessages.getInstance();
+		return messages.getStringOfTasks(results);
 	}
 
 	@Override

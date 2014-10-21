@@ -11,7 +11,8 @@ public class Sort extends Command {
 
 	@Override
 	public String execute() {
-		return null;
+		String unimplemented = "This command has not been finished. :)";
+		return unimplemented;
 	}
 
 	@Override

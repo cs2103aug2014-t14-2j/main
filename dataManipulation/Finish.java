@@ -49,16 +49,15 @@ public class Finish extends Command {
 	private static Task searchTaskByName(List<Subcommand> taskAttributes) throws Exception {
 		
 		TotalTaskList list = TotalTaskList.getInstance();
-		List<Task> toEditArray = Searcher.search(taskAttributes, list);
+		List<Task> toEditArray = Searcher.search(taskAttributes, list.getList());
 		if(toEditArray.size() > 1) {
 			throw new Exception("Too many searches returned, need a more specific task to edit.");
+		} else if (toEditArray.size() == 0) {
+			throw new Exception("Task Not Found");
 		} else {
 			Task toEdit = toEditArray.get(0);
 			return toEdit;
 		}
-	}
-		
-		throw new Exception("Task Not Found");
 	}
 
 	@Override

@@ -13,8 +13,8 @@ public class Repeat extends Command {
 
 	@Override
 	public String execute() {
-		// TODO Auto-generated method stub
-		return null;
+		String unimplemented = "This command has not been finished. :)";
+		return unimplemented;
 	}
 
 	@Override
