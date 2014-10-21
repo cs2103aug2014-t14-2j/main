@@ -2,8 +2,9 @@ package powerSearch;
 
 import java.util.ArrayList;
 
-import globalClasses.CommandComponent;
+import dataManipulation.Subcommand;
 import globalClasses.Task;
+
 
 public class Searcher {
 	/**
@@ -12,7 +13,7 @@ public class Searcher {
 	 * @return a list of all matches for that key
 	 * @throws Exception 
 	 */
-	public static ArrayList<Task> search(ArrayList<CommandComponent> keylist, ArrayList<Task> list) throws Exception {
+	public static ArrayList<Task> search(ArrayList<Subcommand> keylist, ArrayList<Task> list) throws Exception {
 		int i;
 		ArrayList<ArrayList<Task>> answer = new ArrayList<ArrayList<Task>>();
 		assert(keylist!=null);
