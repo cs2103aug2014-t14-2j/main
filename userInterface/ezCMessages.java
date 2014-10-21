@@ -12,6 +12,18 @@ import dataEncapsulation.Task;
  *
  */
 public class ezCMessages {
+	private static ezCMessages messages;
+	
+	private ezCMessages() {}
+	
+	public static ezCMessages getInstance() {
+		if (messages == null) {
+			messages = new ezCMessages();
+		}
+		
+		return messages;
+	}
+	
 	private static final String TAB = "\t";
 	private static final String NEW_LINE = System.getProperty("line.separator");
 	
