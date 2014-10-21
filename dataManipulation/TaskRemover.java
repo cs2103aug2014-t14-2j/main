@@ -16,9 +16,9 @@ public class TaskRemover {
 	private static Task taskToRemove;
 	private static Task taskRemoved;
 	
-	public static Task remove(List<CommandComponent> cc) throws Exception {
+	public static Task remove(List<Subcommand> cc) throws Exception {
 		assert(cc.size() == 1);
-		tasksFound = ExactMatchSearcher.exactSearch(cc.get(0), ezC.totalTaskList);
+		tasksFound = ExactMatchSearcher.exactSearch(cc.get(0), TotalTaskList.getInstance());
 		if (tasksFound.size() > 1) throw new Exception("More than one result from search.");
 		taskToRemove = tasksFound.get(0) ;
 		taskRemoved = taskToRemove;
@@ -27,11 +27,11 @@ public class TaskRemover {
 		
 	}
 	public static void doDeleteTask(Task toRemove) {
-		ezC.totalTaskList.remove(toRemove);
+		TotalTaskList.getInstance().remove(toRemove);
 		
-		FileIo stream = new FileIo();
-		ezC.totalTaskList.remove(toRemove);
-		stream.rewriteFile(ezC.totalTaskList);
+		FileIo stream = FileIo.getInstance();
+		TotalTaskList.getInstance().remove(toRemove);
+		stream.rewriteFile();
 	}
 	
 	//other things to maybe add:
