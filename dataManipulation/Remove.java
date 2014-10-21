@@ -2,8 +2,7 @@ package dataManipulation;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import powerSearch.ExactMatchSearcher;
+import powerSearch.Searcher;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.Task;
 import fileIo.FileIo;
@@ -39,10 +38,11 @@ public class Remove extends Command {
 		}
 	}
 	public static Task remove(List<Subcommand> cc) throws Exception {
-		assert(cc.size() == 1);
-		tasksFound = ExactMatchSearcher.exactSearch(cc.get(0), TotalTaskList.getInstance().getList());
+		
+		tasksFound = Searcher.search((ArrayList<Subcommand>)cc, TotalTaskList.getInstance().getList());
 		if (tasksFound.size() > 1) {
-			ActionException moreThanOne = new ActionException(tasksFound, ActionException.ErrorLocation.DELETE);
+			ActionException moreThanOne = new ActionException(tasksFound, ActionException.ErrorLocation.DELETE,
+											cc);
 			throw moreThanOne;
 		}
 		taskToRemove = tasksFound.get(0) ;

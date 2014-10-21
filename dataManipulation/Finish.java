@@ -1,18 +1,18 @@
 package dataManipulation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
+import powerSearch.Searcher;
 import userInterface.ezCMessages;
-import dataEncapsulation.ActionException;
 import dataEncapsulation.Task;
 import dataEncapsulation.UndoRedoProcessor;
 import dataEncapsulation.ezC;
+import fileIo.FileIo;
 
 public class Finish extends Command {
-	
-	private static ArrayList<Task> taskList = TotalTaskList.getInstance().getList();
 
 	public Finish(List<Subcommand> commandComponents)
 			throws IllegalArgumentException {
@@ -22,26 +22,44 @@ public class Finish extends Command {
 	@Override
 	public String execute() throws Exception {
 		Task markedTask = markAsCompleted();
-		return ezCMessages.getFinishMessage(markedTask);
+		ezCMessages messages = ezCMessages.getInstance();
+		String stringTask = messages.getFinishMessage(markedTask);
+		return stringTask;
 	}
 	
-	/* public Task markAsCompleted() throws Exception {
-		
-		Task taskMarked = searchTaskByName(subcommands); Use Searcher
+	public Task markAsCompleted() throws Exception {
+		Task taskToBeMarked = searchTaskByName(subcommands);
+		Task taskMarked = taskToBeMarked;
 		taskMarked.setComplete();
-		UndoRedoProcessor.undoFinishComponentStack.add(subcommands);
+		addEditedTask(taskToBeMarked, taskMarked);
+		UndoRedoProcessor.undoFinishComponentStack.add(taskAttributes);
 		
 		return taskMarked;
-	} */
+	}
 	
-	/* public static Task markAsIncomplete() throws Exception {
+	public static void addEditedTask(Task oldTask, Task newTask) {
+		TotalTaskList list = TotalTaskList.getInstance();
+		FileIo IoStream = FileIo.getInstance();
 		
-		Task taskMarked = searchTaskByName(subcommands); Use Searcher
-		taskMarked.setIncomplete();
-		UndoRedoProcessor.undoFinishComponentStack.add(subcommands);
-			
-		return taskMarked;
-	} */
+		list.remove(oldTask);
+		list.add(newTask);
+		IoStream.rewriteFile();
+	}
+	
+	private static Task searchTaskByName(List<Subcommand> taskAttributes) throws Exception {
+		
+		TotalTaskList list = TotalTaskList.getInstance();
+		List<Task> toEditArray = Searcher.search(taskAttributes, list);
+		if(toEditArray.size() > 1) {
+			throw new Exception("Too many searches returned, need a more specific task to edit.");
+		} else {
+			Task toEdit = toEditArray.get(0);
+			return toEdit;
+		}
+	}
+		
+		throw new Exception("Task Not Found");
+	}
 
 	@Override
 	protected void checkValidity() {

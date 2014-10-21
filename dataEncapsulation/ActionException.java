@@ -2,6 +2,8 @@ package dataEncapsulation;
 
 import java.util.List;
 
+import dataManipulation.Subcommand;
+
 public class ActionException extends Exception {
 
 	/**
@@ -11,14 +13,20 @@ public class ActionException extends Exception {
 	
 	private List<Task> options;
 	private ErrorLocation location;
+	private List<Subcommand> subcommands;
 	
 	public enum ErrorLocation {
-		DELETE, EDIT
+		DELETE, EDIT;
+		
+		public String toString() {
+			return this.name().toLowerCase();
+		}
 	}
 
-	public ActionException(List<Task> taskList, ErrorLocation loc) {
+	public ActionException(List<Task> taskList, ErrorLocation loc, List<Subcommand> sc) {
 		options = taskList;
 		location = loc;
+		subcommands = sc;
 	}
 	
 	
@@ -28,6 +36,10 @@ public class ActionException extends Exception {
 	
 	public ErrorLocation getLocation() {
 		return location;
+	}
+	
+	public List<Subcommand> getSubcommands() {
+		return subcommands;
 	}
 
 }

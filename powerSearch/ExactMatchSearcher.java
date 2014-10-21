@@ -7,10 +7,11 @@ import dataManipulation.Subcommand;
 import dataManipulation.TotalTaskList;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ExactMatchSearcher {
-	public static ArrayList<Task> taskList;
-	public static ArrayList<Task> exactSearch(Subcommand key, ArrayList<Task> list) throws Exception {
+	public static List<Task> taskList;
+	public static List<Task> exactSearch(Subcommand key, List<Task> list) throws Exception {
 		taskList = list;
 		ArrayList<Task> answer = new ArrayList<Task>();
 		switch (key.getType()) {

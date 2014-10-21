@@ -24,13 +24,13 @@ public class ezCMessages {
 		return messages;
 	}
 	
-	private static final String TAB = "\t";
-	private static final String NEW_LINE = System.getProperty("line.separator");
+	private final String TAB = "\t";
+	private final String NEW_LINE = System.getProperty("line.separator");
 	
-	private static final String MESSAGE_WELCOME = "Welcome to ezC. No set-up "
+	private final String MESSAGE_WELCOME = "Welcome to ezC. No set-up "
 			+ "required.\n";
-	private static final String MESSAGE_HELP = "Enter \"help\" for a list of commands or \"exit\" to quit.\n";
-	private static final String MESSAGE_USER_HELP = "List of available commands (Not case sensitive): \n\n"
+	private final String MESSAGE_HELP = "Enter \"help\" for a list of commands or \"exit\" to quit.\n";
+	private final String MESSAGE_USER_HELP = "List of available commands (Not case sensitive): \n\n"
 			+ "Add (OR) -ad\n"
 			+ "All (OR) -al\n"
 			+ "Category (OR) categories (OR) cat (OR) cats (OR) -ca\n"
@@ -48,62 +48,62 @@ public class ezCMessages {
 			+ "View (OR) -v\n\n";
 	
 	// Task Error Messages
-	private static final String ERROR_DUPLICATE_EDIT = "ERROR: There already "
+	private final String ERROR_DUPLICATE_EDIT = "ERROR: There already "
 			+ "exists a duplicate task with the edits you are trying to make. "
 			+ "No edits were made.";
-	private static final String ERROR_TASK_NOT_FOUND = "ERROR: The task you are trying "
+	private final String ERROR_TASK_NOT_FOUND = "ERROR: The task you are trying "
 			+ "to edit does not exist. No edits were made.";
-	private static final String ERROR_DUPLICATE_ADD = "ERROR: There already exists"
+	private final String ERROR_DUPLICATE_ADD = "ERROR: There already exists"
 			+ " a task you are trying to create. No new task was added.";
 	
-	public static String getTab() {
+	public String getTab() {
 		return TAB;
 	}
 	
-	public static String getNewLine() {
+	public String getNewLine() {
 		return NEW_LINE;
 	}
 	
-	public static String getWelcomeMessage() {
+	public String getWelcomeMessage() {
 		return MESSAGE_WELCOME;
 	}
 	
-	public static String getHelpMessage() {
+	public String getHelpMessage() {
 		return MESSAGE_HELP;
 	}
 	
-	public static String getUserHelpMessage() {
+	public String getUserHelpMessage() {
 		return MESSAGE_USER_HELP;
 	}
 	
-	public static String getDuplicateEditErrorMessage() {
+	public String getDuplicateEditErrorMessage() {
 		return ERROR_DUPLICATE_EDIT;
 	}
 	
-	public static String getTaskNotFoundErrorMessage() {
+	public String getTaskNotFoundErrorMessage() {
 		return ERROR_TASK_NOT_FOUND;
 	}
 	
-	public static String getDuplicateAddErrorMessage() {
+	public String getDuplicateAddErrorMessage() {
 		return ERROR_DUPLICATE_ADD;
 	}
 	
-	public static String getAddMessage(Task newTask) {
+	public String getAddMessage(Task newTask) {
 		String message = "Added task:" + NEW_LINE + newTask.toString() + 
 				NEW_LINE;
 		return message;
 	}
-	public static String getDeleteMessage(Task deletedTask) {
+	public String getDeleteMessage(Task deletedTask) {
 		String message = "Task deleted: " + NEW_LINE + deletedTask.toString() + 
 				NEW_LINE;
 		return message;
 	}
-	public static String getEditMessage(Task original, Task edited) {
+	public String getEditMessage(Task original, Task edited) {
 		String message = new String();
 		return message;
 	}
 	
-	public static String getErrorMessage(Exception e) {
+	public String getErrorMessage(Exception e) {
 		String opening = "error: ";
 		String errorMessage = e.getMessage();
 		String totalMessage = opening + errorMessage + NEW_LINE;
@@ -111,7 +111,7 @@ public class ezCMessages {
 		return totalMessage;
 	}
 	
-	public static String getStringOfTasks(List<Task> tasks) {
+	public String getStringOfTasks(List<Task> tasks) {
 		if (tasks == null || tasks.isEmpty()) {
 			return "nothing to print" + NEW_LINE;
 		}
@@ -126,7 +126,7 @@ public class ezCMessages {
 		return allTasks;
 	}
 	
-	public static String getFinishMessage(Task completed) {
+	public String getFinishMessage(Task completed) {
 		String name = completed.getName();
 		String totalMessage = name + " was completed" + NEW_LINE;
 		return totalMessage;
