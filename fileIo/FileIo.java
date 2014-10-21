@@ -21,6 +21,7 @@ public class FileIo {
 	private String fileName = "ezCTasks.txt";
 	private TextIoStream fileStream;
 	private TotalTaskList list;
+	private TaskFileReader reader = TaskFileReader.getInstance();
 	
 	private static FileIo fileIo;
 	
@@ -42,8 +43,8 @@ public class FileIo {
 	}
 	
 	// Takes the lines of text from the task file and creates tasks from them.
-	public static List<Task> getAllTasks(List<String> linesOfText) {
-		List<Task> taskList = TaskFileReader.getAllTasks(linesOfText);
+	public List<Task> getAllTasks(List<String> linesOfText) {
+		List<Task> taskList = reader.getAllTasks(linesOfText);
 		return taskList;
 	}
 	
@@ -87,7 +88,7 @@ public class FileIo {
 		List<String> fileContents;
 		try {
 			fileContents = fileStream.readFromFile();
-			taskList.addAll(TaskFileReader.getAllTasks(fileContents));
+			taskList.addAll(reader.getAllTasks(fileContents));
 			return;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
