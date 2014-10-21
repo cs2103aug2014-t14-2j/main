@@ -15,9 +15,22 @@ import globalClasses.Task;
  */
 
 public class TaskFactory {
+	private static TaskFactory factory;
+	
+	private TaskFactory() {}
+	
+	public static TaskFactory getInstance() {
+		if (factory == null) {
+			factory = new TaskFactory();
+		}
+		
+		return factory;
+	}
+	
+	
 	// expects null arguments if location, note, startTime, or endTime are not 
 	// specified
-	public static Task makeTask(String name, String category, 
+	public Task makeTask(String name, String category, 
 			String location, String note, Date startTime, Date endTime) 
 					throws IllegalArgumentException {
 		category = checkVitalComponents(name, category);
@@ -43,7 +56,7 @@ public class TaskFactory {
 	 * @param category
 	 * @return the value that category should be
 	 */
-	private static String checkVitalComponents(String name, String category) 
+	private String checkVitalComponents(String name, String category) 
 			throws IllegalArgumentException {
 		if (name == null) {
 			throw new IllegalArgumentException("task does not have name");
@@ -59,7 +72,7 @@ public class TaskFactory {
 	// Has: location
 	// Does not have:
 	// May have: note, startTime, endTime
-	private static Task makeLocationTask(String name, String category,
+	private Task makeLocationTask(String name, String category,
 			String location, String note, Date startTime, Date endTime) {
 		Task newTask;
 		
@@ -77,7 +90,7 @@ public class TaskFactory {
 	// Has:
 	// Does not have: location
 	// May have: note, startTime, endTime
-	private static Task makeNoLocationTask(String name, String category,
+	private Task makeNoLocationTask(String name, String category,
 			String note, Date startTime, Date endTime) {
 		Task newTask;
 		
@@ -93,7 +106,7 @@ public class TaskFactory {
 	// Has: location, note
 	// Does not have:
 	// May have: startTime, endTime
-	private static Task makeNoteTask(String name, String category,
+	private Task makeNoteTask(String name, String category,
 			String location, String note, Date startTime, Date endTime) {
 		Task newTask;
 		
@@ -109,7 +122,7 @@ public class TaskFactory {
 	// Has: note
 	// Does not have: location
 	// May have: startTime, endTime
-	private static Task makeNoteTask(String name, String category, String note,
+	private Task makeNoteTask(String name, String category, String note,
 			Date startTime, Date endTime) {
 		Task newTask;
 		
@@ -125,7 +138,7 @@ public class TaskFactory {
 	// Has: location
 	// Does not have: note
 	// May have: startTime, endTime
-	private static Task makeNoNoteTask(String name, String category,
+	private Task makeNoNoteTask(String name, String category,
 			String location, Date startTime, Date endTime) {
 		Task newTask;
 		
@@ -141,7 +154,7 @@ public class TaskFactory {
 	// Has:
 	// Does not have: location, note
 	// May have: startTime, endTime
-	private static Task makeNoNoteTask(String name, String category,
+	private Task makeNoNoteTask(String name, String category,
 			Date startTime, Date endTime) {
 		Task newTask;
 		
@@ -157,7 +170,7 @@ public class TaskFactory {
 	// Has: location, note, startTime
 	// Does not have:
 	// May have: endTime
-	private static Task makeLocNoteStartTask(String name, String category,
+	private Task makeLocNoteStartTask(String name, String category,
 			String location, String note, Date startTime, Date endTime) {
 		Task newTask;
 		
@@ -174,14 +187,15 @@ public class TaskFactory {
 	// Has: location, note
 	// Does not have: startTime
 	// May have: endTime
-	private static Task makeLocNoteNoStartTask(String name, String category,
+	private Task makeLocNoteNoStartTask(String name, String category,
 			String location, String note, Date endTime) {
 		Task newTask;
+		Date startDate = new Date();	// default is today
 		
 		if (endTime == null) {
-			newTask = new Task(name, category, location, note);
+			newTask = new Task(name, category, location, note, startDate);
 		} else {
-			newTask = new Task(name, category, location, note, endTime);
+			newTask = new Task(name, category, location, note, startDate, endTime);
 		}
 		
 		return newTask;
@@ -190,7 +204,7 @@ public class TaskFactory {
 	// Has: note, startTime
 	// Does not have: location
 	// May have: endTime
-	private static Task makeNoteStartTask(String name, String category,
+	private Task makeNoteStartTask(String name, String category,
 			String location, Date startTime, Date endTime) {
 		Task newTask;
 		
@@ -206,14 +220,15 @@ public class TaskFactory {
 	// Has: note
 	// Does not have: location, startTime
 	// May have: endTime
-	private static Task makeNoteNoStartTask(String name, String category,
+	private Task makeNoteNoStartTask(String name, String category,
 			String note, Date endTime) {
 		Task newTask;
+		Date startDate = new Date();	// default is today
 		
 		if (endTime == null) {
-			newTask = new Task(name, category, note);
+			newTask = new Task(name, category, note, startDate);
 		} else {
-			newTask = new Task(name, category, note, endTime);
+			newTask = new Task(name, category, note, startDate, endTime);
 		}
 		
 		return newTask;
@@ -222,7 +237,7 @@ public class TaskFactory {
 	// Has: location, startTime
 	// Does not have: note
 	// May have: endTime
-	private static Task makeLocStartTask(String name, String category,
+	private Task makeLocStartTask(String name, String category,
 			String location, Date startTime, Date endTime) {
 		Task newTask;
 		
@@ -238,14 +253,15 @@ public class TaskFactory {
 	// Has: location
 	// Does not have: note, startTime
 	// May have: endTime
-	private static Task makeLocNoStartTask(String name, String category,
+	private Task makeLocNoStartTask(String name, String category,
 			String location, Date endTime) {
 		Task newTask;
+		Date startDate = new Date();	// default is today
 		
 		if (endTime == null) {
-			newTask = new Task(name, category, location);
+			newTask = new Task(name, category, location, startDate);
 		} else {
-			newTask = new Task(name, category, location, endTime);
+			newTask = new Task(name, category, location, startDate, endTime);
 		}
 		
 		return newTask;
@@ -254,7 +270,7 @@ public class TaskFactory {
 	// Has: startTime
 	// Does not have: location, note
 	// May have: endTime
-	private static Task makeStartTask(String name, String category,
+	private Task makeStartTask(String name, String category,
 			Date startTime, Date endTime) {
 		Task newTask;
 		
@@ -270,14 +286,15 @@ public class TaskFactory {
 	// Has:
 	// Does not have: location, note, startTime
 	// May have: endTime
-	private static Task makeNoStartTask(String name, String category,
+	private Task makeNoStartTask(String name, String category,
 			Date endTime) {
 		Task newTask;
+		Date startDate = new Date();	// default is today
 		
 		if (endTime == null) {
-			newTask = new Task(name, category);
+			newTask = new Task(name, category, startDate);
 		} else {
-			newTask = new Task(name, category, endTime);
+			newTask = new Task(name, category, startDate, endTime);
 		}
 		
 		return newTask;
