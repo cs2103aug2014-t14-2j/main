@@ -5,6 +5,7 @@ import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
 import userInterface.ezCMessages;
+import dataEncapsulation.ActionException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 import fileIo.FileIo;
@@ -18,7 +19,9 @@ public class Add extends Command {
 	private static Date taskStart = null;
 	private static Date taskEnd = null;
 	private static TotalTaskList taskList = TotalTaskList.getInstance();
+	private static List<Task> tasks = TotalTaskList.getInstance().getList();
 	private static TaskFactory makeMyTask = TaskFactory.getInstance();
+	private static ezCMessages message = ezCMessages.getInstance();
 
 	public Add(List<Subcommand> subcommands)
 					throws IllegalArgumentException {
@@ -31,14 +34,16 @@ public class Add extends Command {
 		Task newTask = buildTask(subcommands);
 		
 		if(ExactMatchSearcher.isTaskDuplicate(newTask)) {	// If the task list already contains this task, throw an error
-			throw new Exception("Duplicate Task Found");
+			ActionException moreThanOne = new ActionException(tasks, ActionException.ErrorLocation.ADD, subcommands);
+			throw moreThanOne;
 		}
 
 		else {
 			taskList.add(newTask);
 			FileIo IoStream = FileIo.getInstance();
 			IoStream.rewriteFile();
-			return ezCMessages.getAddMessage(newTask);
+			String returnMessage = message.getAddMessage(newTask);
+			return returnMessage;
 		}
 	}
 	
