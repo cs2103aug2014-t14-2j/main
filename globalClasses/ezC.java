@@ -25,9 +25,9 @@ public class ezC {
 				feedback = CommandHandler.executeCommand(command);
 				UndoRedoProcessor.undoCommandStack.add(command);	// Adds the command to the undo command stack
 			} catch (IllegalArgumentException e) {
-				feedback = UserInterface.getErrorMessage(e);
+				feedback = ui.getErrorMessage(e);
 			} catch (Exception e) {
-				feedback = UserInterface.getErrorMessage(e);
+				feedback = ui.getErrorMessage(e);
 			}
 			ui.showUser(feedback);
 		}

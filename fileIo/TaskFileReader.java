@@ -6,6 +6,8 @@ import globalClasses.Task;
 import java.util.ArrayList;
 import java.util.List;
 
+import dataManipulation.TaskFactory;
+
 /**
  * This class reads the file contents from the ezC task storage file.
  * It does not anticipate incorrect formatting and will throw an exception when
@@ -23,6 +25,18 @@ import java.util.List;
  */
 
 public class TaskFileReader {
+	private static TaskFileReader tfr;
+	
+	private TaskFileReader() {}
+	
+	public static TaskFileReader getInstance() {
+		if (tfr == null) {
+			tfr = new TaskFileReader();
+		}
+		
+		return tfr;
+	}
+	
 	
 	// integers are indexes for their corresponding location in the task 
 	// component list
@@ -40,19 +54,20 @@ public class TaskFileReader {
 		}
 	}
 	
-	private static final String LINE_TITLE_DELIMITER = ":";
-	private static final String EMPTY_STRING = "";
+	private final String LINE_TITLE_DELIMITER = ":";
+	private final String EMPTY_STRING = "";
 	
-	private static final String MESSAGE_NO_END = "No Specified End Date";
-	private static final String MESSAGE_NO_LOCATION = "This Task has no specified Location.";
-	private static final String MESSAGE_NO_NOTE = "This Task has no specified Note.";
-	private static final String MESSAGE_COMPLETED = "Yes";
+	private final String MESSAGE_NO_END = "No Specified End Date";
+	private final String MESSAGE_NO_LOCATION = "This Task has no specified Location.";
+	private final String MESSAGE_NO_NOTE = "This Task has no specified Note.";
+	private final String MESSAGE_COMPLETED = "Yes";
 	
-	private static final int FIRST_POSITION = 0;
+	private final int FIRST_POSITION = 0;
 
-	private static List<String> taskComponents = new ArrayList<String>();
+	private List<String> taskComponents = new ArrayList<String>();
+	private TaskFactory factory = TaskFactory.getInstance();
 
-	public static List<Task> getAllTasks(List<String> componentsFromFile) {
+	public List<Task> getAllTasks(List<String> componentsFromFile) {
 		List<Task> taskList = new ArrayList<Task>();
 		clearTaskComponents();
 		
@@ -73,7 +88,7 @@ public class TaskFileReader {
 		return taskList;
 	}
 
-	private static Task createTask() {
+	private Task createTask() {
 		checkForMissingComponents();
 		
 		String name = getName();
@@ -87,8 +102,7 @@ public class TaskFileReader {
 		Date start = Date.determineDate(startDateString);
 		Date end = Date.determineDate(endDateString);
 		
-		Task newTask = dataManipulation.TaskFactory.makeTask(name, category, location, note, 
-				start, end);
+		Task newTask = factory.makeTask(name, category, location, note, start, end);
 		
 		if (completed.equalsIgnoreCase(MESSAGE_COMPLETED)) {
 			newTask.setComplete();
@@ -98,7 +112,7 @@ public class TaskFileReader {
 	}
 
 	// sets missing components to null, as expected by TaskFactory
-	private static void checkForMissingComponents() {
+	private void checkForMissingComponents() {
 		String location = getLocation();
 		String note = getNote();
 		String end = getEndDateString();
@@ -121,7 +135,7 @@ public class TaskFileReader {
 
 	// adds the component from the line to the list of task components, in its
 	// designated location
-	private static void addComponent(String currentLine) {
+	private void addComponent(String currentLine) {
 		TASK_COMPONENT component = determineComponentType(currentLine);
 		int index = component.getIndex();
 		String componentData = getComponentData(currentLine);
@@ -131,14 +145,14 @@ public class TaskFileReader {
 	}
 
 	// made public for testing purposes. May have use outside of this class
-	public static TASK_COMPONENT determineComponentType(String string) {
+	public TASK_COMPONENT determineComponentType(String string) {
 		String lineTitle = getFirstWord(string);
 		TASK_COMPONENT lineType = interpretTitle(lineTitle);
 		return lineType;
 	}
 	
 	// made public for testing purposes. May have use outside of this class
-	public static String getComponentData(String currentLine) {
+	public String getComponentData(String currentLine) {
 		String lineTitle = getFirstWord(currentLine) + LINE_TITLE_DELIMITER;
 		
 		String lineData = 
@@ -150,7 +164,7 @@ public class TaskFileReader {
 	}
 
 	// made public for testing purposes. May have use outside of this class
-	public static String getFirstWord(String string) {
+	public String getFirstWord(String string) {
 		String[] stringDividedAtFirstWord = string.split(LINE_TITLE_DELIMITER);
 		
 		String lineTitle = stringDividedAtFirstWord[FIRST_POSITION];
@@ -159,7 +173,7 @@ public class TaskFileReader {
 	}
 	
 	// made public for testing purposes. May have use outside of this class
-	public static TASK_COMPONENT interpretTitle(String lineTitle) {
+	public TASK_COMPONENT interpretTitle(String lineTitle) {
 		if (lineTitle.equalsIgnoreCase("task")) {
 			return TASK_COMPONENT.NAME;
 		} else if (lineTitle.equalsIgnoreCase("category")) {
@@ -181,7 +195,7 @@ public class TaskFileReader {
 
 	@SuppressWarnings("unused")
 	// resets the task component list to have a space for each component
-	private static void clearTaskComponents() {
+	private void clearTaskComponents() {
 		taskComponents.clear();
 		
 		for (TASK_COMPONENT i : TASK_COMPONENT.values()) {
@@ -191,31 +205,31 @@ public class TaskFileReader {
 		return;
 	}
 	
-	private static String getName() {
+	private String getName() {
 		return taskComponents.get(TASK_COMPONENT.NAME.getIndex());
 	}
 	
-	private static String getCategory() {
+	private String getCategory() {
 		return taskComponents.get(TASK_COMPONENT.CATEGORY.getIndex());
 	}
 	
-	private static String getLocation() {
+	private String getLocation() {
 		return taskComponents.get(TASK_COMPONENT.LOCATION.getIndex());
 	}
 	
-	private static String getNote() {
+	private String getNote() {
 		return taskComponents.get(TASK_COMPONENT.NOTE.getIndex());
 	}
 	
-	private static String getStartDateString() {
+	private String getStartDateString() {
 		return taskComponents.get(TASK_COMPONENT.START.getIndex());
 	}
 	
-	private static String getEndDateString() {
+	private String getEndDateString() {
 		return taskComponents.get(TASK_COMPONENT.END.getIndex());
 	}
 	
-	private static String getCompleted() {
+	private String getCompleted() {
 		return taskComponents.get(TASK_COMPONENT.COMPLETED.getIndex());
 	}
 
