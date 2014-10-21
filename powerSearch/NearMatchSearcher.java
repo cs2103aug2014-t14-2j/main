@@ -5,12 +5,13 @@ import dataManipulation.Subcommand;
 import dataManipulation.TotalTaskList;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NearMatchSearcher{
-	public static ArrayList<Task> taskList;
-	public static ArrayList<Task> nearSearch(Subcommand key, ArrayList<Task> list) throws Exception {
+	public static List<Task> taskList;
+	public static List<Task> nearSearch(Subcommand key, List<Task> list) throws Exception {
 		taskList = list;
-		ArrayList<Task> answer = new ArrayList<Task>();
+		List<Task> answer = new ArrayList<Task>();
 		switch (key.getType()){
 		case NAME :
 			answer.add(nearSearchName(key.getContents()));
@@ -34,8 +35,8 @@ public class NearMatchSearcher{
 		throw new Exception("no matches found");
 	}
 	
-	private static ArrayList<Task> nearSearchCategory(String key) throws Exception {
-		ArrayList<Task> answer = new ArrayList<Task>();
+	private static List<Task> nearSearchCategory(String key) throws Exception {
+		List<Task> answer = new ArrayList<Task>();
 		for (int i = 0; i < taskList.size(); ++i) {
 			if (key.toLowerCase().compareTo(taskList.get(i).getCategory().toLowerCase()) <= 25) {
 				answer.add(taskList.get(i));
@@ -48,8 +49,8 @@ public class NearMatchSearcher{
 			return answer;
 	}
 	
-	private static ArrayList<Task> nearSearchLocation(String key) throws Exception {
-		ArrayList<Task> answer = new ArrayList<Task>();
+	private static List<Task> nearSearchLocation(String key) throws Exception {
+		List<Task> answer = new ArrayList<Task>();
 		for (int i = 0; i < taskList.size(); ++i) {
 			if (key.toLowerCase().compareTo(taskList.get(i).getLocation().toLowerCase()) <= 25) {
 				answer.add(taskList.get(i));

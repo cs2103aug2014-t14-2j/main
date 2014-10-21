@@ -29,15 +29,16 @@ public class UserInterface {
 	
 	private PrintStream outputStream = System.out;
 	private Scanner inputScanner = new Scanner(System.in);
+	private ezCMessages messages = ezCMessages.getInstance();
 	
 	public void showUser(String information) {
 		outputStream.print(information);
 	}
 	
 	public void welcomeUser() {
-		String userIntro = ezCMessages.getWelcomeMessage();
-		userIntro = userIntro + ezCMessages.getNewLine();
-		userIntro = userIntro + ezCMessages.getHelpMessage();
+		String userIntro = messages.getWelcomeMessage();
+		userIntro = userIntro + messages.getNewLine();
+		userIntro = userIntro + messages.getHelpMessage();
 		
 		outputStream.println(userIntro);
 		return;
@@ -64,7 +65,7 @@ public class UserInterface {
 	}
 
 	public String getErrorMessage(Exception e) {
-		return ezCMessages.getErrorMessage(e);
+		return messages.getErrorMessage(e);
 	}
 	
 }

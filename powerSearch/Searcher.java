@@ -1,6 +1,7 @@
 package powerSearch;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import dataEncapsulation.Task;
 import dataManipulation.Subcommand;
@@ -13,9 +14,9 @@ public class Searcher {
 	 * @return a list of all matches for that key
 	 * @throws Exception 
 	 */
-	public static ArrayList<Task> search(ArrayList<Subcommand> keylist, ArrayList<Task> list) throws Exception {
+	public static List<Task> search(List<Subcommand> keylist, List<Task> list) throws Exception {
 		int i;
-		ArrayList<ArrayList<Task>> answer = new ArrayList<ArrayList<Task>>();
+		List<List<Task>> answer = new ArrayList<List<Task>>();
 		assert(keylist!=null);
 		assert(list!=null);
 		String command = new String();
@@ -31,7 +32,7 @@ public class Searcher {
 				answer.add(ExactMatchSearcher.exactSearch(keylist.get(i), list));
 			}
 		}
-		ArrayList<Task> results = new ArrayList<Task>();
+		List<Task> results = new ArrayList<Task>();
 		switch(command){
 		case "OR":
 			results = mergeListsOR(answer);
@@ -59,12 +60,12 @@ public class Searcher {
 		return results;
 	}
 
-	private static ArrayList<Task> mergeListsOR(ArrayList<ArrayList<Task>> answer){
+	private static List<Task> mergeListsOR(List<List<Task>> answer){
 		if(answer.isEmpty())
 			return null;
-		ArrayList<Task> list = new ArrayList<Task>();
+		List<Task> list = new ArrayList<Task>();
 		int i, j, k;
-		ArrayList<Task> comp = new ArrayList<Task>();
+		List<Task> comp = new ArrayList<Task>();
 		list = answer.get(0);
 		for(i=1; i<answer.size(); i++){
 			comp = answer.get(i); 
@@ -84,14 +85,14 @@ public class Searcher {
 			return list;
 	}
 
-	private static ArrayList<Task> mergeListsAND(ArrayList<ArrayList<Task>> answer){
+	private static List<Task> mergeListsAND(List<List<Task>> answer){
 		if(answer.isEmpty())
 			return null;
-		ArrayList<Task> list = new ArrayList<Task>();
+		List<Task> list = new ArrayList<Task>();
 		int i, j;
 		boolean contains = false;
-		ArrayList<Task> comp = new ArrayList<Task>();
-		ArrayList<Task> returnlist = new ArrayList<Task>();
+		List<Task> comp = new ArrayList<Task>();
+		List<Task> returnlist = new ArrayList<Task>();
 		list = answer.get(0);
 		for(i=0; i<list.size(); i++){
 			Task check = list.get(i);

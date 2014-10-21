@@ -36,7 +36,8 @@ public class All extends Command {
 	}
 
 	private String getStringOfAllTasks(List<Task> list) {
-		return ezCMessages.getStringOfTasks(list);
+		ezCMessages messages = ezCMessages.getInstance();
+		return messages.getStringOfTasks(list);
 	}
 
 	@Override
