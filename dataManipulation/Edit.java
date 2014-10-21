@@ -2,6 +2,10 @@ package dataManipulation;
 
 import java.util.List;
 
+import dataEncapsulation.EditedPair;
+import dataEncapsulation.Task;
+import dataEncapsulation.UndoRedoProcessor;
+
 public class Edit extends Command {
 
 	public Edit(List<Subcommand> commandComponents)
@@ -11,9 +15,18 @@ public class Edit extends Command {
 
 	@Override
 	public String execute() {
-		// TODO Auto-generated method stub
-		return null;
+		Task toEdit = searchTaskByName(taskAttributes);
+		Task preEdit = toEdit;
+		Task postEdit = editTask(toEdit, taskAttributes);
+		
+		addEditedTask(preEdit, postEdit);
+		UndoRedoProcessor.preEditTaskStack.add(toEdit);	// Add the pre-edited task into the pre edited task stack
+		UndoRedoProcessor.postEditTaskStack.add(postEdit);	// Add the edited task into the post edited task stack
+		
+		return new EditedPair(preEdit, postEdit);
 	}
+	
+	
 
 	@Override
 	protected void checkValidity() {

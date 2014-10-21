@@ -54,7 +54,6 @@ public class TaskEditor {
 		}
 		
 		public static Task markAsCompleted(List<CommandComponent> taskAttributes) throws Exception {
-			assert ezC.totalTaskList != null;
 			
 			Task taskToBeMarked = searchTaskByName(taskAttributes);
 			Task taskMarked = taskToBeMarked;
@@ -66,7 +65,6 @@ public class TaskEditor {
 		}
 		
 		public static Task markAsIncomplete(List<CommandComponent> taskAttributes) throws Exception {
-			assert ezC.totalTaskList != null;
 			
 			Task taskToBeMarked = searchTaskByName(taskAttributes);
 			Task taskMarked = taskToBeMarked;
