@@ -41,7 +41,8 @@ public class Remove extends Command {
 		
 		tasksFound = Searcher.search((ArrayList<Subcommand>)cc, TotalTaskList.getInstance().getList());
 		if (tasksFound.size() > 1) {
-			ActionException moreThanOne = new ActionException(tasksFound, ActionException.ErrorLocation.DELETE);
+			ActionException moreThanOne = new ActionException(tasksFound, ActionException.ErrorLocation.DELETE,
+											cc);
 			throw moreThanOne;
 		}
 		taskToRemove = tasksFound.get(0) ;
