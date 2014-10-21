@@ -45,7 +45,7 @@ public abstract class Command {
 	protected String type;
 	protected List<Subcommand> subcommands;
 	
-	public abstract String execute();
+	public abstract String execute() throws Exception;
 	
 	public Command(String commandType, 
 			List<Subcommand> commandComponents) 

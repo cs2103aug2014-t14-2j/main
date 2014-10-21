@@ -1,18 +1,31 @@
 package dataManipulation;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import powerSearch.ExactMatchSearcher;
+import dataEncapsulation.ActionException;
+import dataEncapsulation.Task;
+import fileIo.FileIo;
+
 public class Remove extends Command {
+	
+	private static ArrayList<Task> tasksFound;
+	private static Task taskToRemove;
+	private static Task taskRemoved;
+	private static List<Subcommand> sc;
 
 	public Remove(List<Subcommand> commandComponents)
 			throws IllegalArgumentException {
 		super("remove", commandComponents);
+		sc = commandComponents;
 	}
 
 	@Override
-	public String execute() {
+	public String execute() throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		taskRemoved = remove(sc);
+		return taskRemoved.toString();
 	}
 
 	@Override
@@ -24,6 +37,26 @@ public class Remove extends Command {
 		if (!hasTitleComponent) {
 			throw new IllegalArgumentException("invalid subcommand");
 		}
+	}
+	public static Task remove(List<Subcommand> cc) throws Exception {
+		assert(cc.size() == 1);
+		tasksFound = ExactMatchSearcher.exactSearch(cc.get(0), TotalTaskList.getInstance().getList());
+		if (tasksFound.size() > 1) {
+			ActionException moreThanOne = new ActionException(tasksFound, ActionException.ErrorLocation.DELETE);
+			throw moreThanOne;
+		}
+		taskToRemove = tasksFound.get(0) ;
+		taskRemoved = taskToRemove;
+		doDeleteTask(taskToRemove);
+		return taskRemoved;
+		
+	}
+	public static void doDeleteTask(Task toRemove) {
+		TotalTaskList.getInstance().remove(toRemove);
+		
+		FileIo stream = FileIo.getInstance();
+		TotalTaskList.getInstance().remove(toRemove);
+		stream.rewriteFile();
 	}
 
 }
