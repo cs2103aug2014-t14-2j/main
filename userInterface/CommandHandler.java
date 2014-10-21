@@ -20,7 +20,7 @@ public class CommandHandler {
 		} catch (ActionException e) {
 			ret = ExceptionHandler.furtherAction(e);
 		} catch (Exception e) {
-			ret = ezCMessages.getErrorMessage(e);
+			ret = ezCMessages.getInstance().getErrorMessage(e);
 		}
 		return ret;
 	}

@@ -11,7 +11,7 @@ public class ExceptionHandler {
 	private static Scanner inputSc = new Scanner(System.in);
 	
 	public static String furtherAction(ActionException e) {
-		String ofTasks = ezCMessages.getStringOfTasks(e.getOptions());
+		String ofTasks = ezCMessages.getInstance().getStringOfTasks(e.getOptions());
 		System.out.println("That was a bit too vague -please choose which of these you would like to " 
 							+ e.getLocation().toString() + ": ");
 		System.out.println(ofTasks);
