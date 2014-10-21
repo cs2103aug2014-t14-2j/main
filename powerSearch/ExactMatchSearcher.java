@@ -1,7 +1,7 @@
 package powerSearch;
 
 
-import globalClasses.CommandComponent;
+import dataManipulation.Subcommand;
 import globalClasses.Task;
 import globalClasses.Date;
 import globalClasses.ezC;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class ExactMatchSearcher {
 	public static ArrayList<Task> taskList;
-	public static ArrayList<Task> exactSearch(CommandComponent key, ArrayList<Task> list) throws Exception {
+	public static ArrayList<Task> exactSearch(Subcommand key, ArrayList<Task> list) throws Exception {
 		taskList = list;
 		ArrayList<Task> answer = new ArrayList<Task>();
 		switch (key.getType()) {
