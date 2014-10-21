@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import dataEncapsulation.Task;
-import dataEncapsulation.ezC;
+import dataEncapsulation.sortTaskByEndDate;
 
 public class TotalTaskList {
 	private ArrayList<Task> list;
@@ -25,7 +25,7 @@ public class TotalTaskList {
 	
 	public void add(Task newTask) {
 		list.add(newTask);
-		Collections.sort(list, new dataEncapsulation.sortTaskByEndDate());
+		Collections.sort(list, new sortTaskByEndDate());
 	}
 	
 	public void remove(Task badTask) {
