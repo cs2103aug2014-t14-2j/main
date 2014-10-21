@@ -1,15 +1,12 @@
 package dataManipulation;
 
-import fileIo.FileIo;
-import globalClasses.CommandComponent;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import powerSearch.ExactMatchSearcher;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
-import dataEncapsulation.ezC;
+import fileIo.FileIo;
 
 public class TaskAdder {
 	
@@ -29,64 +26,52 @@ public class TaskAdder {
 	private static String taskNote = null;
 	private static Date taskStart = null;
 	private static Date taskEnd = null;
+	private static TotalTaskList taskList = TotalTaskList.getInstance();
+	private static TaskFactory makeMyTask = TaskFactory.getInstance();
 	
-	public static Task add(List<CommandComponent> taskAttributes) throws Exception {
+	public static Task add(List<Subcommand> taskAttributes) throws Exception {
 		
 		Task newTask = buildTask(taskAttributes);
 		
-		assert ezC.totalTaskList != null;
-		
-		if(isDuplicate(newTask)) {	// If the task list already contains this task, throw an error
+		if(ExactMatchSearcher.isTaskDuplicate(newTask)) {	// If the task list already contains this task, throw an error
 			throw new Exception("Duplicate Task Found");
 		}
 
 		else {
-			ezC.totalTaskList.add(newTask);
-			Collections.sort(ezC.totalTaskList, new dataEncapsulation.sortTaskByEndDate());
-			FileIo IoStream = new FileIo();
-			IoStream.rewriteFile(ezC.totalTaskList);
+			taskList.add(newTask);
+			FileIo IoStream = FileIo.getInstance();
+			IoStream.rewriteFile();
 			return newTask;
 		}
 
 	}
-	
-	private static boolean isDuplicate(Task toCheck) {
 		
-		for(Task t : ezC.totalTaskList) {
-			if(t.getName().equals(toCheck.getName())) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
 	/** For the buildTask method:
 	 * 
 	 * @param taskAttributes
 	 * @return the task toBeAdded
 	 */
 	
-	public static Task buildTask(List<CommandComponent> taskAttributes) {
+	public static Task buildTask(List<Subcommand> taskAttributes) {
 		
 		assembleAttributes(taskAttributes);
 		
-		Task toBeAdded = TaskFactory.makeTask(taskName, taskCategory, taskLocation, taskNote, taskStart, taskEnd);
+		Task toBeAdded = makeMyTask.makeTask(taskName, taskCategory, taskLocation, taskNote, taskStart, taskEnd);
 		
 		return toBeAdded;
 		
 	}
 	
-	public static List<CommandComponent> dismantleTask(Task taskToDismantle) {
+	public static List<Subcommand> dismantleTask(Task taskToDismantle) {
 		
-		List<CommandComponent> taskDetails = new ArrayList<CommandComponent>();
+		List<Subcommand> taskDetails = new ArrayList<Subcommand>();
 		
-		taskDetails.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.NAME, taskToDismantle.getName()));
-		taskDetails.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.CATEGORY, taskToDismantle.getCategory()));
-		taskDetails.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.LOCATION, taskToDismantle.getLocation()));
-		taskDetails.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.START, taskToDismantle.getStartDate().toString()));
-		taskDetails.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.END, taskToDismantle.getEndDate().toString()));
-		taskDetails.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.NOTE, taskToDismantle.getNote()));
+		taskDetails.add(new Subcommand(Subcommand.TYPE.NAME, taskToDismantle.getName()));
+		taskDetails.add(new Subcommand(Subcommand.TYPE.CATEGORY, taskToDismantle.getCategory()));
+		taskDetails.add(new Subcommand(Subcommand.TYPE.LOCATION, taskToDismantle.getLocation()));
+		taskDetails.add(new Subcommand(Subcommand.TYPE.START, taskToDismantle.getStartDate().toString()));
+		taskDetails.add(new Subcommand(Subcommand.TYPE.END, taskToDismantle.getEndDate().toString()));
+		taskDetails.add(new Subcommand(Subcommand.TYPE.NOTE, taskToDismantle.getNote()));
 		
 		return taskDetails;
 	}
@@ -96,9 +81,9 @@ public class TaskAdder {
 	 * @param taskAttributes
 	 */
 	
-	private static void assembleAttributes(List<CommandComponent> taskAttributes) {
+	private static void assembleAttributes(List<Subcommand> taskAttributes) {
 		
-		for(CommandComponent cc : taskAttributes) {
+		for(Subcommand cc : taskAttributes) {
 
 			switch (cc.getType()) {
 
@@ -130,11 +115,11 @@ public class TaskAdder {
 	}
 	
 	private static void setTaskEnd(String contents) {
-		taskEnd = ezC.determineDate(contents);
+		taskEnd = Date.determineDate(contents);
 	}
 
 	private static void setTaskStart(String contents) {
-		taskStart = ezC.determineDate(contents);
+		taskStart = Date.determineDate(contents);
 	}
 
 	private static void setTaskNote(String contents) {
