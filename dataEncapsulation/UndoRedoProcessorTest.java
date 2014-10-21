@@ -1,4 +1,4 @@
-package globalClasses;
+package dataEncapsulation;
 
 import static org.junit.Assert.*;
 
@@ -23,8 +23,8 @@ public class UndoRedoProcessorTest {
 		listCC.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.LOCATION, "Clementi"));
 		listCC.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.NOTE, "Meiji Chocolate Milk"));
 		
-		Date startDate = globalClasses.ezC.determineDate("01/01/2014");
-		Date endDate = globalClasses.ezC.determineDate("02/01/2014");
+		Date startDate = dataEncapsulation.ezC.determineDate("01/01/2014");
+		Date endDate = dataEncapsulation.ezC.determineDate("02/01/2014");
 		Task addTask = new Task("Buy Milk", "Groceries", "Clementi", "Meiji Chocolate Milk", startDate, endDate);
 		Task originalTask = new Task("Buy Milk", "Groceries", "Jurong East", "Meiji Chocolate Milk", startDate, endDate);
 		TaskAdder.add(listCC);

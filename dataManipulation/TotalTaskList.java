@@ -1,10 +1,11 @@
 package dataManipulation;
 
-import globalClasses.Task;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+
+import dataEncapsulation.Task;
+import dataEncapsulation.sortTaskByEndDate;
 
 public class TotalTaskList {
 	private ArrayList<Task> list;
@@ -24,7 +25,7 @@ public class TotalTaskList {
 	
 	public void add(Task newTask) {
 		list.add(newTask);
-		Collections.sort(list, new globalClasses.sortTaskByEndDate());
+		Collections.sort(list, new sortTaskByEndDate());
 	}
 	
 	public void remove(Task badTask) {

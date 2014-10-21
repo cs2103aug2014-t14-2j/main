@@ -2,12 +2,11 @@ package dataManipulation;
 
 import fileIo.FileIo;
 import globalClasses.CommandComponent;
-import globalClasses.Task;
-import globalClasses.ezC;
+
 import java.util.*;
 
-import java.util.List;
-
+import dataEncapsulation.Task;
+import dataEncapsulation.ezC;
 import powerSearch.ExactMatchSearcher;
 
 public class TaskRemover {

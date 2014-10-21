@@ -1,4 +1,4 @@
-package globalClasses;
+package dataEncapsulation;
 
 import java.time.*;
 import java.util.*;

@@ -1,7 +1,7 @@
 package dataManipulation;
 
-import globalClasses.Date;
-import globalClasses.Task;
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
 
 /*
  * Decides which constructor of Task to call based on which arguments are

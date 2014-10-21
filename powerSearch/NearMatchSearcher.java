@@ -1,8 +1,8 @@
 package powerSearch;
 
+import dataEncapsulation.Task;
+import dataEncapsulation.ezC;
 import dataManipulation.Subcommand;
-import globalClasses.Task;
-import globalClasses.ezC;
 
 import java.util.ArrayList;
 

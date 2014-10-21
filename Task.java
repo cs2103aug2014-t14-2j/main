@@ -1,8 +1,8 @@
-package globalClasses;
 
-import globalClasses.Date;
 
 import java.util.*;
+
+import dataEncapsulation.Date;
 public class Task {
 	private Date startdate, enddate;
 	private boolean hasNoDeadline = true;

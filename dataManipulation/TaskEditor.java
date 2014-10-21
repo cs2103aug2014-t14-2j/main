@@ -2,15 +2,15 @@ package dataManipulation;
 
 import fileIo.FileIo;
 import globalClasses.CommandComponent;
-import globalClasses.EditedPair;
-import globalClasses.Task;
-import globalClasses.UndoRedoProcessor;
-import globalClasses.ezC;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import dataEncapsulation.EditedPair;
+import dataEncapsulation.Task;
+import dataEncapsulation.UndoRedoProcessor;
+import dataEncapsulation.ezC;
 import powerSearch.ExactMatchSearcher;
 
 public class TaskEditor {
@@ -128,7 +128,7 @@ public class TaskEditor {
 		public static void addEditedTask(Task oldTask, Task newTask) {
 			ezC.totalTaskList.remove(oldTask);
 			ezC.totalTaskList.add(newTask);
-			Collections.sort(ezC.totalTaskList, new globalClasses.sortTaskByEndDate());
+			Collections.sort(ezC.totalTaskList, new dataEncapsulation.sortTaskByEndDate());
 			FileIo IoStream = new FileIo();
 			IoStream.rewriteFile(ezC.totalTaskList);
 		}

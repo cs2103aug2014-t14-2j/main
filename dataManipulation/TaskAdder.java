@@ -2,13 +2,14 @@ package dataManipulation;
 
 import fileIo.FileIo;
 import globalClasses.CommandComponent;
-import globalClasses.Date;
-import globalClasses.Task;
-import globalClasses.ezC;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
+import dataEncapsulation.ezC;
 
 public class TaskAdder {
 	
@@ -41,7 +42,7 @@ public class TaskAdder {
 
 		else {
 			ezC.totalTaskList.add(newTask);
-			Collections.sort(ezC.totalTaskList, new globalClasses.sortTaskByEndDate());
+			Collections.sort(ezC.totalTaskList, new dataEncapsulation.sortTaskByEndDate());
 			FileIo IoStream = new FileIo();
 			IoStream.rewriteFile(ezC.totalTaskList);
 			return newTask;

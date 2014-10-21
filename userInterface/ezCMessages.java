@@ -2,7 +2,7 @@ package userInterface;
 
 import java.util.List;
 
-import globalClasses.Task;
+import dataEncapsulation.Task;
 
 /**
  * Holds all of the messages associated with the program.
