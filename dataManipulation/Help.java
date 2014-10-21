@@ -2,6 +2,8 @@ package dataManipulation;
 
 import java.util.List;
 
+import userInterface.ezCMessages;
+
 public class Help extends Command {
 
 	public Help(List<Subcommand> commandComponents)
@@ -11,8 +13,7 @@ public class Help extends Command {
 
 	@Override
 	public String execute() {
-		// TODO Auto-generated method stub
-		return null;
+		return ezCMessages.getInstance().getHelpMessage();
 	}
 
 	@Override
