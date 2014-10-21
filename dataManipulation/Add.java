@@ -17,8 +17,8 @@ public class Add extends Command {
 
 	@Override
 	protected void checkValidity() {
-		for (int i = 0; i < components.size(); ++i) {
-			Subcommand component = components.get(i);
+		for (int i = 0; i < subcommands.size(); ++i) {
+			Subcommand component = subcommands.get(i);
 
 			switch (component.getType()) {
 			case NAME :
@@ -37,6 +37,8 @@ public class Add extends Command {
 				throw new IllegalArgumentException("invalid subcommand");
 			}
 		}
+		
+		checkForNoDuplicateSubcommands();
 	}
 
 }
