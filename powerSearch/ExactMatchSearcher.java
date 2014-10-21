@@ -3,8 +3,8 @@ package powerSearch;
 
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
-import dataEncapsulation.ezC;
 import dataManipulation.Subcommand;
+import dataManipulation.TotalTaskList;
 
 import java.util.ArrayList;
 
@@ -143,7 +143,7 @@ public class ExactMatchSearcher {
 	}
 
 	public static boolean isTaskDuplicate(Task taskToCheck) {
-		for(Task t : ezC.totalTaskList) {
+		for(Task t : TotalTaskList.getInstance().getList()) {
 			if(t.getName().toLowerCase().equals(taskToCheck.getName().toLowerCase())) {
 				return true;
 			}
