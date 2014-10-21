@@ -1,6 +1,10 @@
 package dataManipulation;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import userInterface.ezCMessages;
+import dataEncapsulation.Task;
 
 public class Completed extends Command {
 
@@ -11,8 +15,28 @@ public class Completed extends Command {
 
 	@Override
 	public String execute() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Task> allTasks = getAllUncompletedTasks();
+		String stringTasks = getStringOfAllTasks(allTasks);
+		return stringTasks;
+	}
+
+	private List<Task> getAllUncompletedTasks() {
+		List<Task> completed = new ArrayList<Task>();
+		TotalTaskList totalList = TotalTaskList.getInstance();
+		List<Task> allTasks = totalList.getList();
+		
+		for (int i = 0; i < completed.size(); ++i) {
+			Task currentTask = allTasks.get(i);
+			if (currentTask.isCompleted()) {
+				completed.add(currentTask);
+			}
+		}
+		
+		return completed;
+	}
+
+	private String getStringOfAllTasks(List<Task> list) {
+		return ezCMessages.getStringOfTasks(list);
 	}
 
 	@Override
