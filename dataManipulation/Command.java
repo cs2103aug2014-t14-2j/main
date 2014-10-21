@@ -2,6 +2,8 @@ package dataManipulation;
 
 import java.util.List;
 
+import dataEncapsulation.Task;
+
 /**
  * A class for holding the command in an easy-to-manage way.
  * Note that each command type is associated with specific command component
