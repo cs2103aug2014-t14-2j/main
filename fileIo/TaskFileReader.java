@@ -1,11 +1,10 @@
 package fileIo;
 
-import globalClasses.Date;
-import globalClasses.Task;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
 import dataManipulation.TaskFactory;
 
 /**

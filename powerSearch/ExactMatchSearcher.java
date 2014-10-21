@@ -1,10 +1,10 @@
 package powerSearch;
 
 
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
+import dataEncapsulation.ezC;
 import dataManipulation.Subcommand;
-import globalClasses.Task;
-import globalClasses.Date;
-import globalClasses.ezC;
 
 import java.util.ArrayList;
 

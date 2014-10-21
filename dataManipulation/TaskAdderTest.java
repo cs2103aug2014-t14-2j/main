@@ -3,13 +3,14 @@ package dataManipulation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import globalClasses.CommandComponent;
-import globalClasses.Date;
-import globalClasses.Task;
-import globalClasses.ezC;
 
 import java.util.ArrayList;
 
 import org.junit.Test;
+
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
+import dataEncapsulation.ezC;
 
 public class TaskAdderTest {
 	
@@ -31,8 +32,8 @@ public class TaskAdderTest {
 		listCC.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.NOTE, "Meiji Chocolate Milk"));
 		
 		Task actual = TaskAdder.buildTask(listCC);
-		Date startDate = globalClasses.ezC.determineDate("01/01/2014");
-		Date endDate = globalClasses.ezC.determineDate("02/01/2014");
+		Date startDate = dataEncapsulation.ezC.determineDate("01/01/2014");
+		Date endDate = dataEncapsulation.ezC.determineDate("02/01/2014");
 		Task expected = new Task("Buy Milk", "Groceries", "Clementi", "Meiji Chocolate Milk", startDate, endDate);
 		
 		assertEquals("Task built as expected", expected.getName(), actual.getName());
@@ -42,8 +43,8 @@ public class TaskAdderTest {
 	
 	@Test
 	public void testIsDuplicate() {
-		Date startDate = globalClasses.ezC.determineDate("01/01/2014");
-		Date endDate = globalClasses.ezC.determineDate("02/01/2014");
+		Date startDate = dataEncapsulation.ezC.determineDate("01/01/2014");
+		Date endDate = dataEncapsulation.ezC.determineDate("02/01/2014");
 		Task expected = new Task("Buy Milk", "Groceries", "Clementi", "Meiji Chocolate Milk", startDate, endDate);
 		ezC.totalTaskList.add(expected);
 		
@@ -59,8 +60,8 @@ public class TaskAdderTest {
 		listCC.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.END, "02/01/2014"));
 		listCC.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.LOCATION, "Clementi"));
 		listCC.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.NOTE, "Meiji Chocolate Milk"));
-		Date startDate = globalClasses.ezC.determineDate("01/01/2014");
-		Date endDate = globalClasses.ezC.determineDate("02/01/2014");
+		Date startDate = dataEncapsulation.ezC.determineDate("01/01/2014");
+		Date endDate = dataEncapsulation.ezC.determineDate("02/01/2014");
 		Task expected = new Task("Buy Milk", "Groceries", "Clementi", "Meiji Chocolate Milk", startDate, endDate);
 		
 		Task actual = TaskAdder.add(listCC);

@@ -1,11 +1,11 @@
 package dataManipulation;
 
-import globalClasses.Task;
-import globalClasses.ezC;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+
+import dataEncapsulation.Task;
+import dataEncapsulation.ezC;
 
 public class TotalTaskList {
 	private ArrayList<Task> list;
@@ -25,7 +25,7 @@ public class TotalTaskList {
 	
 	public void add(Task newTask) {
 		list.add(newTask);
-		Collections.sort(list, new globalClasses.sortTaskByEndDate());
+		Collections.sort(list, new dataEncapsulation.sortTaskByEndDate());
 	}
 	
 	public void remove(Task badTask) {

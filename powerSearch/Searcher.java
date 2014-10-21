@@ -2,8 +2,8 @@ package powerSearch;
 
 import java.util.ArrayList;
 
+import dataEncapsulation.Task;
 import dataManipulation.Subcommand;
-import globalClasses.Task;
 
 
 public class Searcher {
