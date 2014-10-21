@@ -20,6 +20,7 @@ public class Repeat extends Command {
 	@Override
 	protected void checkValidity() {
 		try {
+			checkForNoDuplicateSubcommands();
 			checkRepeatTwoComponents();
 			checkFrequencyIsNotOnly();
 		} catch (IllegalArgumentException e) {
@@ -31,8 +32,8 @@ public class Repeat extends Command {
 	protected void checkRepeatFourComponents() {
 		checkForComponentAmount(4);
 		
-		for (int i = 0; i < components.size(); ++i) {
-			Subcommand component = components.get(i);
+		for (int i = 0; i < subcommands.size(); ++i) {
+			Subcommand component = subcommands.get(i);
 			
 			switch (component.getType()) {
 				case FREQUENCY :	 // valid
@@ -52,8 +53,8 @@ public class Repeat extends Command {
 	protected void checkRepeatTwoComponents() {
 		checkForComponentAmount(2);
 		
-		for (int i = 0; i < components.size(); ++i) {
-			Subcommand component = components.get(i);
+		for (int i = 0; i < subcommands.size(); ++i) {
+			Subcommand component = subcommands.get(i);
 			
 			switch (component.getType()) {
 				case FREQUENCY :	 // valid
@@ -67,8 +68,8 @@ public class Repeat extends Command {
 	}
 
 	protected void checkFrequencyIsNotOnly() {
-		for (int i = 0; i < components.size(); ++i) {
-			Subcommand component = components.get(i);
+		for (int i = 0; i < subcommands.size(); ++i) {
+			Subcommand component = subcommands.get(i);
 			
 			if (component.getType() == Subcommand.TYPE.FREQUENCY) {
 				if (component.getContents().equalsIgnoreCase(FREQUENCY.ONCE.toString())) {
@@ -79,8 +80,8 @@ public class Repeat extends Command {
 	}
 
 	protected void checkFrequencyIsOnly() {
-		for (int i = 0; i < components.size(); ++i) {
-			Subcommand component = components.get(i);
+		for (int i = 0; i < subcommands.size(); ++i) {
+			Subcommand component = subcommands.get(i);
 			
 			if (component.getType() == Subcommand.TYPE.FREQUENCY) {
 				if (!component.getContents().equalsIgnoreCase(FREQUENCY.ONCE.toString())) {

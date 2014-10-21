@@ -43,15 +43,19 @@ import java.util.List;
 
 public abstract class Command {
 	protected String type;
-	protected List<Subcommand> components;
+	protected List<Subcommand> subcommands;
 	
 	public abstract String execute();
 	
 	public Command(String commandType, 
 			List<Subcommand> commandComponents) 
 					throws IllegalArgumentException {
+		if (commandType == null || commandComponents == null) {
+			throw new IllegalArgumentException("null argument for Command constructor");
+		}
+		
 		type = commandType;
-		components = commandComponents;
+		subcommands = commandComponents;
 		
 		checkValidity();
 	}
@@ -61,20 +65,20 @@ public abstract class Command {
 	}
 	
 	public List<Subcommand> getComponents() {
-		return components;
+		return subcommands;
 	}
 	
 	protected abstract void checkValidity();
 
 	protected void checkForNoComponents() throws IllegalArgumentException {
-		if (!components.isEmpty()) {
+		if (!subcommands.isEmpty()) {
 			throw new IllegalArgumentException("too many subcommands");
 		}
 	}
 	
 	protected boolean checkForSpecificComponent(Subcommand.TYPE givenType) {
-		for (int i = 0; i < components.size(); ++i) {
-			Subcommand currentComponent = components.get(i);
+		for (int i = 0; i < subcommands.size(); ++i) {
+			Subcommand currentComponent = subcommands.get(i);
 			
 			if (currentComponent.getType() == givenType) {
 				return true;
@@ -84,10 +88,31 @@ public abstract class Command {
 		return false;
 	}
 	
+	protected void checkForNoDuplicateSubcommands() throws IllegalArgumentException {
+		if (subcommands.size() == 0) {
+			return;
+		}
+		
+		Subcommand current;
+		Subcommand temp;
+		
+		for (int i = 0; i < subcommands.size() - 1; ++i) {
+			current = subcommands.get(i);
+			for (int j = i + 1; j < subcommands.size(); ++j) {
+				temp = subcommands.get(j);
+				if (current.getType().toString().equals(temp.getType().toString())) {
+					throw new IllegalArgumentException("duplicate subcommands");
+				}
+			}
+		}
+		
+		return;
+	}
+	
 	protected void checkForComponentAmount(int amount) throws IllegalArgumentException {
-		if (components.size() > amount) {
+		if (subcommands.size() > amount) {
 			throw new IllegalArgumentException("too many subcommands");
-		} else if (components.size() < amount) {
+		} else if (subcommands.size() < amount) {
 			throw new IllegalArgumentException("not enough information");
 		}
 	}
@@ -98,8 +123,8 @@ public abstract class Command {
 		String newLine = "\n";
 		String fullMessage = new String(formattedType + newLine);
 		
-		for (int i = 0; i < components.size(); ++i) {
-			fullMessage = fullMessage + components.get(i).toString() + newLine;
+		for (int i = 0; i < subcommands.size(); ++i) {
+			fullMessage = fullMessage + subcommands.get(i).toString() + newLine;
 		}
 		
 		return fullMessage;
