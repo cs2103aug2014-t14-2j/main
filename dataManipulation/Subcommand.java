@@ -16,7 +16,7 @@ package dataManipulation;
 
 public class Subcommand {
 	public enum TYPE {
-		AND, CATEGORY, DATE, DATE_TYPE, END, LINK, LOCATION, NAME, NONE, NOTE,
+		AND, CATEGORY, DATE, DATE_TYPE, END, LOCATION, NAME, NONE, NOTE,
 		FREQUENCY, OR, PAREN, START, TEXT, TITLE,
 		INVALID
 	}

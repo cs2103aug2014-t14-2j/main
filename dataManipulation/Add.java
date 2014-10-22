@@ -12,12 +12,12 @@ import fileIo.FileIo;
 
 public class Add extends Command {
 	
-	private static String taskName = null;
-	private static String taskCategory = null;
-	private static String taskLocation = null;
-	private static String taskNote = null;
-	private static Date taskStart = null;
-	private static Date taskEnd = null;
+	private String taskName = null;
+	private String taskCategory = null;
+	private String taskLocation = null;
+	private String taskNote = null;
+	private Date taskStart = null;
+	private Date taskEnd = null;
 	private static TotalTaskList taskList = TotalTaskList.getInstance();
 	private static List<Task> tasks = TotalTaskList.getInstance().getList();
 	private static TaskFactory makeMyTask = TaskFactory.getInstance();
@@ -47,7 +47,7 @@ public class Add extends Command {
 		}
 	}
 	
-	public static Task buildTask(List<Subcommand> taskAttributes) {
+	public Task buildTask(List<Subcommand> taskAttributes) {
 
 		assembleAttributes(taskAttributes);
 
@@ -57,7 +57,7 @@ public class Add extends Command {
 
 	}
 	
-	public static List<Subcommand> dismantleTask(Task taskToDismantle) {
+	public List<Subcommand> dismantleTask(Task taskToDismantle) {
 		
 		List<Subcommand> taskDetails = new ArrayList<Subcommand>();
 		
@@ -71,7 +71,7 @@ public class Add extends Command {
 		return taskDetails;
 	}
 	
-	private static void assembleAttributes(List<Subcommand> taskAttributes) {
+	private void assembleAttributes(List<Subcommand> taskAttributes) {
 		
 		for(Subcommand cc : taskAttributes) {
 
@@ -104,27 +104,27 @@ public class Add extends Command {
 		
 	}
 	
-	private static void setTaskEnd(String contents) {
+	private void setTaskEnd(String contents) {
 		taskEnd = Date.determineDate(contents);
 	}
 
-	private static void setTaskStart(String contents) {
+	private void setTaskStart(String contents) {
 		taskStart = Date.determineDate(contents);
 	}
 
-	private static void setTaskNote(String contents) {
+	private void setTaskNote(String contents) {
 		taskNote = contents;
 	}
 
-	private static void setTaskLocation(String contents) {
+	private void setTaskLocation(String contents) {
 		taskLocation = contents;
 	}
 
-	private static void setTaskCategory(String contents) {
+	private void setTaskCategory(String contents) {
 		taskCategory = contents;
 	}
 
-	private static void setTaskName(String contents) {
+	private void setTaskName(String contents) {
 		taskName = contents;
 	}
 

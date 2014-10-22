@@ -316,7 +316,9 @@ public class CommandInterpreter {
 		Subcommand.TYPE componentType = 
 				Subcommand.determineComponentType(componentTypeString);
 		
-		if (componentType != Subcommand.TYPE.FREQUENCY) {
+		if (componentType != Subcommand.TYPE.FREQUENCY && 
+				componentType != Subcommand.TYPE.AND &&
+				componentType != Subcommand.TYPE.OR) {
 			componentSentence = removeFirstWord(componentSentence);
 		}
 		
@@ -426,15 +428,17 @@ public class CommandInterpreter {
 		if (componentType == Subcommand.TYPE.START ||
 				componentType == Subcommand.TYPE.END ||
 				componentType == Subcommand.TYPE.DATE ||
-				componentType == Subcommand.TYPE.FREQUENCY) {
-			return getDateComponentData(userCommand);
+				componentType == Subcommand.TYPE.FREQUENCY ||
+				componentType == Subcommand.TYPE.AND ||
+				componentType == Subcommand.TYPE.OR) {
+			return getNoQuoteComponentData(userCommand);
 		}
 		
 		userCommand = userCommand.trim();
 		return getBetweenQuoteData(userCommand);
 	}
 
-	private String getDateComponentData(String userCommand) {
+	private String getNoQuoteComponentData(String userCommand) {
 		assert(!userCommand.isEmpty());
 		
 		String[] splitCommand = splitString(userCommand);

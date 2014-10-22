@@ -15,17 +15,17 @@ public class Completed extends Command {
 
 	@Override
 	public String execute() {
-		List<Task> allTasks = getAllUncompletedTasks();
+		List<Task> allTasks = getAllCompletedTasks();
 		String stringTasks = getStringOfAllTasks(allTasks);
 		return stringTasks;
 	}
 
-	private List<Task> getAllUncompletedTasks() {
+	private List<Task> getAllCompletedTasks() {
 		List<Task> completed = new ArrayList<Task>();
 		TotalTaskList totalList = TotalTaskList.getInstance();
 		List<Task> allTasks = totalList.getList();
 		
-		for (int i = 0; i < completed.size(); ++i) {
+		for (int i = 0; i < allTasks.size(); ++i) {
 			Task currentTask = allTasks.get(i);
 			if (currentTask.isCompleted()) {
 				completed.add(currentTask);
