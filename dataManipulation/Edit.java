@@ -46,7 +46,7 @@ public class Edit extends Command {
 		}
 	}
 	
-	private static Task editTask(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
+	public static Task editTask(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
 		
 		Task editTaskExceptName = Add.buildTask(taskAttributes);
 		Task editTaskIncludingName = setTaskAttributes(editTaskExceptName, taskAttributes);
