@@ -1,15 +1,10 @@
 package dataManipulation;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import powerSearch.ExactMatchSearcher;
 import powerSearch.Searcher;
 import userInterface.ezCMessages;
 import dataEncapsulation.Task;
-import dataEncapsulation.UndoRedoProcessor;
-import dataEncapsulation.ezC;
 import fileIo.FileIo;
 
 public class Finish extends Command {
@@ -36,7 +31,7 @@ public class Finish extends Command {
 		return taskMarked;
 	}
 	
-	public static void addEditedTask(Task oldTask, Task newTask) {
+	public void addEditedTask(Task oldTask, Task newTask) {
 		TotalTaskList list = TotalTaskList.getInstance();
 		FileIo IoStream = FileIo.getInstance();
 		
@@ -45,7 +40,7 @@ public class Finish extends Command {
 		IoStream.rewriteFile();
 	}
 	
-	private static Task searchTaskByName(List<Subcommand> taskAttributes) throws Exception {
+	private Task searchTaskByName(List<Subcommand> taskAttributes) throws Exception {
 		TotalTaskList list = TotalTaskList.getInstance();
 		List<Task> toEditArray = Searcher.search(taskAttributes, list.getList());
 		if(toEditArray.size() > 1) {
