@@ -23,7 +23,7 @@ public class Remove extends Command {
 	public String execute() throws Exception {
 		// TODO Auto-generated method stub
 		taskRemoved = remove(sc);
-		return taskRemoved.toString();
+		return "Just deleted: \n" + taskRemoved.toString();
 	}
 
 	@Override
@@ -42,6 +42,7 @@ public class Remove extends Command {
 		if (tasksFound.size() > 1) {
 			ActionException moreThanOne = new ActionException(tasksFound, ActionException.ErrorLocation.DELETE,
 											cc);
+			System.out.println("more than one");
 			throw moreThanOne;
 		}
 		taskToRemove = tasksFound.get(0) ;
