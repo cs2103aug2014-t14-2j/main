@@ -1,11 +1,11 @@
 package dataEncapsulation;
-import static org.junit.Assert.*;
 
-import java.util.*;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 public class TaskTest {
+
 	@Test
 	//testtoString
 	public void testToString() {
@@ -58,4 +58,5 @@ public class TaskTest {
 		ArrayList<Task> answer = search.searchName(tasks);
 		System.out.println(answer);
 	}
+
 }
