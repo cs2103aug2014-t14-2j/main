@@ -38,16 +38,25 @@ public class ExceptionHandler {
 		
 		return cmdHandlerOut;
 	}
-	public static editFurther(ArrayList<Task> ch) {
+	public static String editFurther(ArrayList<Task> ch, List<Subcommand> cc) {
+		String ret = "";
 		for (Task t : ch) {
 			
 		}
+		return ret;
 	}
 	
-	public static deleteFurther(ArrayList<Task> ch) {
+	public static String deleteFurther(ArrayList<Task> ch, List<Subcommand> cc) {
+		String ret = "";
 		for (Task t : ch) {
 			
+			try {
+				Remove.doDeleteTask(t) ;
+			} catch (Exception e) {
+				System.out.println("Sorry, you've entered something wrong again. Please try deleting again!");
+			}
 		}
+		return ret;
 	}
 	
 	public static ArrayList<Task> getChoices(String input, List<Task> opts) {

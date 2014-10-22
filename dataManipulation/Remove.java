@@ -1,6 +1,5 @@
 package dataManipulation;
 
-import java.util.ArrayList;
 import java.util.List;
 import powerSearch.Searcher;
 import dataEncapsulation.ActionException;
@@ -9,7 +8,7 @@ import fileIo.FileIo;
 
 public class Remove extends Command {
 	
-	private static ArrayList<Task> tasksFound;
+	private static List<Task> tasksFound;
 	private static Task taskToRemove;
 	private static Task taskRemoved;
 	private static List<Subcommand> sc;
@@ -39,7 +38,7 @@ public class Remove extends Command {
 	}
 	public static Task remove(List<Subcommand> cc) throws Exception {
 		
-		tasksFound = Searcher.search((ArrayList<Subcommand>)cc, TotalTaskList.getInstance().getList());
+		tasksFound = Searcher.search(cc, TotalTaskList.getInstance().getList());
 		if (tasksFound.size() > 1) {
 			ActionException moreThanOne = new ActionException(tasksFound, ActionException.ErrorLocation.DELETE,
 											cc);
