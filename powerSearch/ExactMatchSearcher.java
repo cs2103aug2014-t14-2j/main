@@ -146,7 +146,17 @@ public class ExactMatchSearcher {
 	public static boolean isTaskDuplicate(Task taskToCheck) {
 		for(Task t : TotalTaskList.getInstance().getList()) {
 			if(t.getName().toLowerCase().equals(taskToCheck.getName().toLowerCase())) {
-				return true;
+				if(t.getCategory().toLowerCase().equals(taskToCheck.getCategory().toLowerCase())) {
+					if(t.getLocation().toLowerCase().equals(taskToCheck.getLocation().toLowerCase())) {
+						if(t.getNote().toLowerCase().equals(taskToCheck.getLocation().toLowerCase())) {
+							if(t.getStartDate().toString().toLowerCase().equals(taskToCheck.getStartDate().toString().toLowerCase())) {
+								if(t.getEndDate().toString().toLowerCase().equals(taskToCheck.getEndDate().toString().toLowerCase())) {
+									return true;
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 		return false;
