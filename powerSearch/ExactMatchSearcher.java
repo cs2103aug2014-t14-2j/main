@@ -15,7 +15,7 @@ public class ExactMatchSearcher {
 		taskList = list;
 		ArrayList<Task> answer = new ArrayList<Task>();
 		switch (key.getType()) {
-		case NAME:
+		case TITLE:
 			answer.add(simpleSearchName(key.getContents()));
 			return answer;
 		case CATEGORY:
