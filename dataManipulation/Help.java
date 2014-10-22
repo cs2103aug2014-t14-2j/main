@@ -13,7 +13,7 @@ public class Help extends Command {
 
 	@Override
 	public String execute() {
-		return ezCMessages.getInstance().getHelpMessage();
+		return ezCMessages.getInstance().getUserHelpMessage();
 	}
 
 	@Override
