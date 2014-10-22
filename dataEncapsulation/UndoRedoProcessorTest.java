@@ -1,35 +1,43 @@
 package dataEncapsulation;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 
-import dataManipulation.TaskAdder;
-import dataManipulation.TaskEditor;
+import userInterface.CommandHandler;
+import dataManipulation.Add;
+import dataManipulation.Command;
+import dataManipulation.Edit;
+import dataManipulation.Subcommand;
 
 public class UndoRedoProcessorTest {
 
 	@Test
 	public void testUndo() throws Exception {
 		
-		ArrayList<CommandComponent> listCC = new ArrayList<CommandComponent>();
-		listCC.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.NAME, "Buy Milk"));
-		listCC.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.CATEGORY, "Groceries"));
-		listCC.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.START, "01/01/2014"));
-		listCC.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.END, "02/01/2014"));
-		listCC.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.LOCATION, "Clementi"));
-		listCC.add(new CommandComponent(CommandComponent.COMPONENT_TYPE.NOTE, "Meiji Chocolate Milk"));
+		List<Subcommand> listCC = new ArrayList<Subcommand>();
+		listCC.add(new Subcommand(Subcommand.TYPE.NAME, "Buy Milk"));
+		listCC.add(new Subcommand(Subcommand.TYPE.CATEGORY, "Groceries"));
+		listCC.add(new Subcommand(Subcommand.TYPE.START, "01/01/2014"));
+		listCC.add(new Subcommand(Subcommand.TYPE.END, "02/01/2014"));
+		listCC.add(new Subcommand(Subcommand.TYPE.LOCATION, "Clementi"));
+		listCC.add(new Subcommand(Subcommand.TYPE.NOTE, "Meiji Chocolate Milk"));
 		
-		Date startDate = dataEncapsulation.ezC.determineDate("01/01/2014");
-		Date endDate = dataEncapsulation.ezC.determineDate("02/01/2014");
+		Date startDate = Date.determineDate("01/01/2014");
+		Date endDate = Date.determineDate("02/01/2014");
 		Task addTask = new Task("Buy Milk", "Groceries", "Clementi", "Meiji Chocolate Milk", startDate, endDate);
 		Task originalTask = new Task("Buy Milk", "Groceries", "Jurong East", "Meiji Chocolate Milk", startDate, endDate);
-		TaskAdder.add(listCC);
-		List<CommandComponent> listCC2 = TaskAdder.dismantleTask(originalTask);
-		TaskEditor.edit(listCC2);
+		
+		Command addOriginal = new Add(listCC);
+		CommandHandler.executeCommand(addOriginal);
+		
+		List<Subcommand> listCC2 = Add.dismantleTask(originalTask);
+		Command editOriginal = new Edit(listCC2);
+		CommandHandler.executeCommand(editOriginal);
 		
 		UndoRedoProcessor.undo();
 		assertEquals("Undo Edit works - Name is the same", addTask.getName());
