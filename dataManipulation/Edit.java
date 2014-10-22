@@ -46,7 +46,7 @@ public class Edit extends Command {
 		}
 	}
 	
-	public static Task editTask(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
+	public Task editTask(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
 		
 		Task editTaskExceptName = new Add(taskAttributes).buildTask(taskAttributes);
 		Task editTaskIncludingName = setTaskAttributes(editTaskExceptName, taskAttributes);
@@ -60,7 +60,7 @@ public class Edit extends Command {
 		}
 	}
 	
-	private static Task setTaskAttributes(Task toEdit, List<Subcommand> taskAttributes) {
+	private Task setTaskAttributes(Task toEdit, List<Subcommand> taskAttributes) {
 		
 		for(Subcommand cc : taskAttributes) {
 
@@ -89,7 +89,7 @@ public class Edit extends Command {
 			return toEdit;
 	}
 	
-	public static void addEditedTask(Task oldTask, Task newTask) {
+	public void addEditedTask(Task oldTask, Task newTask) {
 		taskList.remove(oldTask);
 		taskList.add(newTask);
 		FileIo IoStream = FileIo.getInstance();
