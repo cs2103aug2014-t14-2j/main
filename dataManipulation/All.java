@@ -25,7 +25,7 @@ public class All extends Command {
 		TotalTaskList totalList = TotalTaskList.getInstance();
 		List<Task> allTasks = totalList.getList();
 		
-		for (int i = 0; i < uncompleted.size(); ++i) {
+		for (int i = 0; i < allTasks.size(); ++i) {
 			Task currentTask = allTasks.get(i);
 			if (!currentTask.isCompleted()) {
 				uncompleted.add(currentTask);

@@ -162,10 +162,21 @@ public class Task {
 		if(!hasNote){
 			answer = answer + "Note: No Specified Note" + '\n';
 		}
+		if(isComplete) {
+			answer = answer + "Completed: Yes\n";
+		} else {
+			answer = answer + "Completed: No\n";
+		}
 		return answer;
 	}
 	
 	public boolean isCompleted(){
+		if (isComplete == true) {
+			return isComplete;
+		} else if (hasNoDeadline == true) {
+			return isComplete;
+		}
+		
 		Calendar cal = GregorianCalendar.getInstance();
 		int day = cal.get(Calendar.DATE);
 		int month = cal.get(Calendar.MONTH) + 1;

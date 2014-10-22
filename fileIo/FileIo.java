@@ -19,7 +19,7 @@ import dataManipulation.TotalTaskList;
 public class FileIo {
 	private String fileName = "ezCTasks.txt";
 	private TextIoStream fileStream;
-	private TotalTaskList list;
+	private TotalTaskList list = TotalTaskList.getInstance();
 	private TaskFileReader reader = TaskFileReader.getInstance();
 	
 	private static FileIo fileIo;

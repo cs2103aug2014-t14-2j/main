@@ -27,10 +27,8 @@ public class Search extends Command {
 			Subcommand component = subcommands.get(i);
 			
 			switch (component.getType()) {
-				case LINK :	 // valid
-					break;
-				case TITLE :
-					break;
+				case AND :
+					break;	// valid
 				case CATEGORY :
 					break;
 				case DATE :
@@ -41,11 +39,15 @@ public class Search extends Command {
 					break;
 				case NOTE :
 					break;
+				case OR :
+					break;
 				case PAREN :
 					break;
 				case START :
 					break;
 				case TEXT:
+					break;
+				case TITLE :
 					break;
 				default :
 					throw new IllegalArgumentException("invalid subcommand");
