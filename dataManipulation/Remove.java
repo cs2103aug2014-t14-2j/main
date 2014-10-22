@@ -50,12 +50,14 @@ public class Remove extends Command {
 		return taskRemoved;
 		
 	}
-	public static void doDeleteTask(Task toRemove) {
+	public static Task doDeleteTask(Task toRemove) {
+		Task a = toRemove;
 		TotalTaskList.getInstance().remove(toRemove);
 		
 		FileIo stream = FileIo.getInstance();
 		TotalTaskList.getInstance().remove(toRemove);
 		stream.rewriteFile();
+		return a;
 	}
 
 }

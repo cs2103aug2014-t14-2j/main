@@ -41,9 +41,14 @@ public class ExceptionHandler {
 	public static String editFurther(ArrayList<Task> ch, List<Subcommand> cc) {
 		String ret = "";
 		for (Task t : ch) {
-			Edit
+			try {
+				Task edited = Edit.editTask(t, cc);
+				ret = ret + "\n " + edited.toString();
+			} catch ( Exception e) {
+				System.out.println("Sorry, you've entered something wrong again. Please try editing again!");
+			}
 		}
-		return ret;
+		return "Successfully edited: \n" + ret;
 	}
 	
 	public static String deleteFurther(ArrayList<Task> ch, List<Subcommand> cc) {
@@ -51,12 +56,13 @@ public class ExceptionHandler {
 		for (Task t : ch) {
 			
 			try {
-				Remove.doDeleteTask(t) ;
+				Task deleted = Remove.doDeleteTask(t) ;
+				ret = ret + "\n " + deleted.toString();
 			} catch (Exception e) {
 				System.out.println("Sorry, you've entered something wrong again. Please try deleting again!");
 			}
 		}
-		return ret;
+		return "Successfully deleted: \n" + ret;
 	}
 	
 	public static ArrayList<Task> getChoices(String input, List<Task> opts) {
