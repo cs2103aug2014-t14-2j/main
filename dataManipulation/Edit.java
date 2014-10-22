@@ -48,7 +48,7 @@ public class Edit extends Command {
 	
 	public static Task editTask(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
 		
-		Task editTaskExceptName = Add.buildTask(taskAttributes);
+		Task editTaskExceptName = new Add(taskAttributes).buildTask(taskAttributes);
 		Task editTaskIncludingName = setTaskAttributes(editTaskExceptName, taskAttributes);
 		
 		if(ExactMatchSearcher.isTaskDuplicate(editTaskIncludingName)) {
