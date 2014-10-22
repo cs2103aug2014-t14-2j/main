@@ -32,7 +32,6 @@ public class Finish extends Command {
 		Task taskMarked = taskToBeMarked;
 		taskMarked.setComplete();
 		addEditedTask(taskToBeMarked, taskMarked);
-		UndoRedoProcessor.undoFinishComponentStack.add(taskAttributes);
 		
 		return taskMarked;
 	}
@@ -47,7 +46,6 @@ public class Finish extends Command {
 	}
 	
 	private static Task searchTaskByName(List<Subcommand> taskAttributes) throws Exception {
-		
 		TotalTaskList list = TotalTaskList.getInstance();
 		List<Task> toEditArray = Searcher.search(taskAttributes, list.getList());
 		if(toEditArray.size() > 1) {
