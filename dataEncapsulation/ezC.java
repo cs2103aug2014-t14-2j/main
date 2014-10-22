@@ -1,12 +1,9 @@
 package dataEncapsulation;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import dataManipulation.Command;
-import dataManipulation.TotalTaskList;
 import userInterface.CommandHandler;
 import userInterface.UserInterface;
+import dataManipulation.Command;
+import dataManipulation.TotalTaskList;
 import fileIo.FileIo;
 
 public class ezC {

@@ -3,13 +3,13 @@ package dataEncapsulation;
 import java.util.List;
 import java.util.Stack;
 
-import userInterface.CommandHandler;
-import dataManipulation.TaskAdder;
-import dataManipulation.TaskEditor;
+import powerSearch.Searcher;
+import userInterface.*;
+import dataManipulation.*;
 
 /**
  * 
- * @author nellystix
+ * @author Nelson
  * 
  * This class processes the undo and redo functions of the program that allows the user to undo
  * or redo as many commands as has been executed AS LONG AS the program has not been quit. All changes
@@ -21,9 +21,8 @@ public class UndoRedoProcessor {
 	
 	public static Stack<Command> undoCommandStack = new Stack<Command>();
 	public static Stack<Task> preEditTaskStack = new Stack<Task>();
-	public static Stack<Task> postEditTaskStack = new Stack<Task>();
-	public static Stack<List<CommandComponent>> undoFinishComponentStack = new Stack<List<CommandComponent>>();
-	public static Stack<Command> redoCommandStack = new Stack<Command>();
+	private static Stack<Command> redoCommandStack = new Stack<Command>();
+	private static List<Task> taskList = TotalTaskList.getInstance().getList();
 	
 	public static void undo() throws Exception {
 		
@@ -32,28 +31,26 @@ public class UndoRedoProcessor {
 		
 		switch(commandToUndo.getType()) {
 		
-			case ADD :
-				Command negatedAddCommand = new Command(Command.COMMAND_TYPE.REMOVE, commandToUndo.getComponents());
+			case "add" :
+				Command negatedAddCommand = new Remove(commandToUndo.getComponents());
 				CommandHandler.executeCommand(negatedAddCommand);
-				redoCommandStack.add(commandToUndo);
 				break;
 				
-			case REMOVE :
-				Command negatedRemoveCommand = new Command(Command.COMMAND_TYPE.ADD, commandToUndo.getComponents());
+			case "remove" :
+				Command negatedRemoveCommand = new Add(commandToUndo.getComponents());
 				CommandHandler.executeCommand(negatedRemoveCommand);
-				redoCommandStack.add(commandToUndo);
 				break;
 				
-			case EDIT :
+			case "edit" :
 				Task preEditedTask = preEditTaskStack.pop();
-				Command negatedEditCommand = new Command(Command.COMMAND_TYPE.EDIT, TaskAdder.dismantleTask(preEditedTask));
+				Command negatedEditCommand = new Edit(Add.dismantleTask(preEditedTask));
 				CommandHandler.executeCommand(negatedEditCommand);
-				redoCommandStack.add(new Command(Command.COMMAND_TYPE.EDIT, TaskAdder.dismantleTask(postEditTaskStack.pop())));
 				break;
 				
-			case FINISH :
-				TaskEditor.markAsIncomplete(undoFinishComponentStack.pop());
-				redoCommandStack.add(commandToUndo);
+			case "finish" :
+				List<Task> tasks = Searcher.search(commandToUndo.getComponents(), taskList);
+				Task toMarkAsInComplete = tasks.get(0);
+				toMarkAsInComplete.setIncomplete();
 				break;
 				
 			default:
@@ -69,19 +66,19 @@ public class UndoRedoProcessor {
 		
 		switch(commandToRedo.getType()) {
 			
-			case ADD :
+			case "add" :
 				CommandHandler.executeCommand(commandToRedo);
 				break;
 				
-			case REMOVE :
+			case "remove" :
 				CommandHandler.executeCommand(commandToRedo);
 				break;
 				
-			case EDIT :
+			case "edit" :
 				CommandHandler.executeCommand(commandToRedo);
 				break;
 				
-			case FINISH :
+			case "finish" :
 				CommandHandler.executeCommand(commandToRedo);
 				break;
 		
