@@ -35,9 +35,10 @@ public class UndoRedoProcessorTest {
 		Command addOriginal = new Add(listCC);
 		CommandHandler.executeCommand(addOriginal);
 		
-		List<Subcommand> listCC2 = Add.dismantleTask(originalTask);
+	/*	List<Subcommand> listCC2 = Add.dismantleTask(originalTask);
 		Command editOriginal = new Edit(listCC2);
 		CommandHandler.executeCommand(editOriginal);
+		*/
 		
 		UndoRedoProcessor.undo();
 		assertEquals("Undo Edit works - Name is the same", addTask.getName());
