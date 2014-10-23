@@ -24,7 +24,7 @@ public class FileIo {
 	
 	private static FileIo fileIo;
 	
-	private FileIo() {
+	public FileIo() {
 		try {
 			fileStream = new TextIoStream(fileName);
 		} catch (IOException e) {
