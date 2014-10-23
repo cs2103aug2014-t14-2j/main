@@ -9,7 +9,7 @@ import powerSearch.ExactMatchSearcher;
 
 public class TaskRemover {
 	// YUI WEI
-	private static ArrayList<Task> tasksFound;
+	private static List<Task> tasksFound;
 	private static Task taskToRemove;
 	private static Task taskRemoved;
 	
