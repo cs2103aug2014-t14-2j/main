@@ -1,6 +1,8 @@
 package dataManipulation;
 
 import java.util.List;
+
+import powerSearch.ExactMatchSearcher;
 import powerSearch.Searcher;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.Task;
@@ -38,7 +40,7 @@ public class Remove extends Command {
 	}
 	public static Task remove(List<Subcommand> cc) throws Exception {
 		
-		tasksFound = Searcher.search(cc, TotalTaskList.getInstance().getList());
+		tasksFound = ExactMatchSearcher.exactSearch(cc.get(0), TotalTaskList.getInstance().getList());
 		if (tasksFound.size() > 1) {
 			ActionException moreThanOne = new ActionException(tasksFound, ActionException.ErrorLocation.DELETE,
 											cc);
