@@ -19,8 +19,6 @@ public class Task {
 		this.setLocation(location);
 		this.setNote(note);
 		this.setEndDate(endTime);
-		if(!hasNoDeadline && hasNote && hasLocation && hasNote)
-			isComplete = true;
 		this.startdate = startTime;
 	}
 	//no loc or note
@@ -176,7 +174,6 @@ public class Task {
 		} else if (hasNoDeadline == true) {
 			return isComplete;
 		}
-		
 		Calendar cal = GregorianCalendar.getInstance();
 		int day = cal.get(Calendar.DATE);
 		int month = cal.get(Calendar.MONTH) + 1;
