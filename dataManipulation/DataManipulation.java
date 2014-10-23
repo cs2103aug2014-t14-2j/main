@@ -4,10 +4,9 @@ import java.util.*;
 
 import dataEncapsulation.EditedPair;
 import dataEncapsulation.Task;
-import globalClasses.*;
 
 
-public class DataManipulation {
+public class DataManipulation{
 	
   public static Task add(List<Subcommand> cc) throws Exception {
     return TaskAdder.add(cc);
