@@ -44,6 +44,7 @@ public class Add extends Command {
 			UndoRedoProcessor.undoCommandStack.add(new Add(subcommands));
 			FileIo IoStream = FileIo.getInstance();
 			IoStream.rewriteFile();
+			flushSubcommand();
 			String returnMessage = message.getAddMessage(newTask);
 			return returnMessage;
 		}
@@ -59,7 +60,50 @@ public class Add extends Command {
 
 	}
 	
-	public List<Subcommand> dismantleTask(Task taskToDismantle) {
+	private void flushSubcommand() {
+		
+		for(Subcommand s : subcommands) {
+			
+			switch(s.getType()) {
+				
+				case NAME :
+					subcommands.remove(s);
+					subcommands.add(new Subcommand(Subcommand.TYPE.NAME, null));
+					break;
+					
+				case CATEGORY :
+					subcommands.remove(s);
+					subcommands.add(new Subcommand(Subcommand.TYPE.CATEGORY, null));
+					break;
+					
+				case LOCATION :
+					subcommands.remove(s);
+					subcommands.add(new Subcommand(Subcommand.TYPE.LOCATION, null));
+					break;
+					
+				case START :
+					subcommands.remove(s);
+					subcommands.add(new Subcommand(Subcommand.TYPE.START, null));
+					break;
+					
+				case END :
+					subcommands.remove(s);
+					subcommands.add(new Subcommand(Subcommand.TYPE.END, null));
+					break;
+					
+				case NOTE :
+					subcommands.remove(s);
+					subcommands.add(new Subcommand(Subcommand.TYPE.NOTE, null));
+					break;
+					
+				default :
+					break;
+
+			}
+		}
+	}
+	
+	public static List<Subcommand> dismantleTask(Task taskToDismantle) {
 		
 		List<Subcommand> taskDetails = new ArrayList<Subcommand>();
 		
