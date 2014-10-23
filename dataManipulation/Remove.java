@@ -3,7 +3,6 @@ package dataManipulation;
 import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
-import powerSearch.Searcher;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.Task;
 import fileIo.FileIo;
@@ -44,7 +43,6 @@ public class Remove extends Command {
 		if (tasksFound.size() > 1) {
 			ActionException moreThanOne = new ActionException(tasksFound, ActionException.ErrorLocation.DELETE,
 											cc);
-			System.out.println("more than one");
 			throw moreThanOne;
 		}
 		taskToRemove = tasksFound.get(0) ;
