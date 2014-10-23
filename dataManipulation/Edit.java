@@ -28,7 +28,6 @@ public class Edit extends Command {
 		
 		addEditedTask(preEdit, postEdit);
 		UndoRedoProcessor.preEditTaskStack.add(toEdit);	// Add the pre-edited task into the pre edited task stack
-		new Add(subcommands).flushSubcommand();	// flush the subcommands after editing
 		
 		String editComplete = messages.getEditMessage(preEdit, postEdit);
 		return editComplete;
