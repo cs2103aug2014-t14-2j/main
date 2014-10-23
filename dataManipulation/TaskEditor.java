@@ -1,14 +1,15 @@
 package dataManipulation;
 
 import fileIo.FileIo;
-import globalClasses.CommandComponent;
+import dataManipulation.Subcommand;
 
-import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.List;
 
 import dataEncapsulation.EditedPair;
 import dataEncapsulation.Task;
+import dataEncapsulation.Date;
 import dataEncapsulation.UndoRedoProcessor;
 import dataEncapsulation.ezC;
 import powerSearch.ExactMatchSearcher;
@@ -27,7 +28,7 @@ public class TaskEditor {
 		 * @throws Exception if 1) Task to be edited cannot be found or 2) Task is a duplicate after editing
 		 */
 	
-		public static EditedPair edit(List<CommandComponent> taskAttributes) throws Exception {
+		public static EditedPair edit(List<Subcommand> taskAttributes) throws Exception {
 			
 			Task toEdit = searchTaskByName(taskAttributes);
 			Task preEdit = toEdit;
@@ -35,12 +36,12 @@ public class TaskEditor {
 			
 			addEditedTask(preEdit, postEdit);
 			UndoRedoProcessor.preEditTaskStack.add(toEdit);	// Add the pre-edited task into the pre edited task stack
-			UndoRedoProcessor.postEditTaskStack.add(postEdit);	// Add the edited task into the post edited task stack
+			//UndoRedoProcessor.postEditTaskStack.add(postEdit);	// Add the edited task into the post edited task stack
 			
 			return new EditedPair(preEdit, postEdit);
 		}
 		
-		private static Task editTask(Task toEdit, List<CommandComponent> taskAttributes) throws Exception {
+		private static Task editTask(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
 			
 			Task editTaskExceptName = TaskAdder.buildTask(taskAttributes);
 			Task editTaskIncludingName = setTaskAttributes(editTaskExceptName, taskAttributes);
@@ -53,18 +54,18 @@ public class TaskEditor {
 			}
 		}
 		
-		public static Task markAsCompleted(List<CommandComponent> taskAttributes) throws Exception {
+		public static Task markAsCompleted(List<Subcommand> taskAttributes) throws Exception {
 			
 			Task taskToBeMarked = searchTaskByName(taskAttributes);
 			Task taskMarked = taskToBeMarked;
 			taskMarked.setComplete();
 			addEditedTask(taskToBeMarked, taskMarked);
-			UndoRedoProcessor.undoFinishComponentStack.add(taskAttributes);
+			//UndoRedoProcessor.undoFinishComponentStack.add(taskAttributes);
 			
 			return taskMarked;
 		}
 		
-		public static Task markAsIncomplete(List<CommandComponent> taskAttributes) throws Exception {
+		public static Task markAsIncomplete(List<Subcommand> taskAttributes) throws Exception {
 			
 			Task taskToBeMarked = searchTaskByName(taskAttributes);
 			Task taskMarked = taskToBeMarked;
@@ -74,9 +75,9 @@ public class TaskEditor {
 			return taskMarked;
 		}
 		
-		private static Task setTaskAttributes(Task toEdit, List<CommandComponent> taskAttributes) {
+		private static Task setTaskAttributes(Task toEdit, List<Subcommand> taskAttributes) {
 			
-			for(CommandComponent cc : taskAttributes) {
+			for(Subcommand cc : taskAttributes) {
 
 				switch (cc.getType()) {
 
@@ -89,7 +90,7 @@ public class TaskEditor {
 				case LOCATION:	toEdit.setLocation(cc.getContents());
 								break;
 
-				case END:	toEdit.setEndDate(ezC.determineDate(cc.getContents()));
+				case END:	toEdit.setEndDate(Date.determineDate(cc.getContents())); //changed from ezC.determineDate to Date.determineDate
 							break;
 
 				case NOTE:	toEdit.setNote(cc.getContents());
@@ -103,12 +104,12 @@ public class TaskEditor {
 				return toEdit;
 		}
 
-		private static Task searchTaskByName(List<CommandComponent> taskAttributes) throws Exception {
+		private static Task searchTaskByName(List<Subcommand> taskAttributes) throws Exception {
 			
-			for(CommandComponent cc : taskAttributes) {
+			for(Subcommand cc : taskAttributes) {
 				
-				if(cc.getType() == CommandComponent.COMPONENT_TYPE.NAME) {
-					ArrayList<Task> toEditArray = ExactMatchSearcher.exactSearch(cc, ezC.totalTaskList);
+				if(cc.getType() == Subcommand.TYPE.NAME) {
+					List<Task> toEditArray = ExactMatchSearcher.exactSearch(cc, ezC.totalTaskList.getList());
 					if(toEditArray.size() > 1) {
 						throw new Exception("Too many searches returned, need a more specific task to edit.");
 					}
@@ -123,12 +124,13 @@ public class TaskEditor {
 		}
 
 		// Adds the edited task to the total task list
+		// Edited by Kaushik
 		public static void addEditedTask(Task oldTask, Task newTask) {
 			ezC.totalTaskList.remove(oldTask);
 			ezC.totalTaskList.add(newTask);
-			Collections.sort(ezC.totalTaskList, new dataEncapsulation.sortTaskByEndDate());
+			Collections.sort(ezC.totalTaskList.getList(), new dataEncapsulation.sortTaskByEndDate());
 			FileIo IoStream = new FileIo();
-			IoStream.rewriteFile(ezC.totalTaskList);
+			IoStream.rewriteFile(); //rewriteFile does not take in any arguments for now.
 		}
 		
 }
