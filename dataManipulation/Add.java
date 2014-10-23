@@ -61,46 +61,12 @@ public class Add extends Command {
 	}
 	
 	private void flushSubcommand() {
-		
-		for(Subcommand s : subcommands) {
-			
-			switch(s.getType()) {
-				
-				case NAME :
-					subcommands.remove(s);
-					subcommands.add(new Subcommand(Subcommand.TYPE.NAME, null));
-					break;
-					
-				case CATEGORY :
-					subcommands.remove(s);
-					subcommands.add(new Subcommand(Subcommand.TYPE.CATEGORY, null));
-					break;
-					
-				case LOCATION :
-					subcommands.remove(s);
-					subcommands.add(new Subcommand(Subcommand.TYPE.LOCATION, null));
-					break;
-					
-				case START :
-					subcommands.remove(s);
-					subcommands.add(new Subcommand(Subcommand.TYPE.START, null));
-					break;
-					
-				case END :
-					subcommands.remove(s);
-					subcommands.add(new Subcommand(Subcommand.TYPE.END, null));
-					break;
-					
-				case NOTE :
-					subcommands.remove(s);
-					subcommands.add(new Subcommand(Subcommand.TYPE.NOTE, null));
-					break;
-					
-				default :
-					break;
-
-			}
-		}
+		taskName = null;
+		taskCategory = null;
+		taskLocation = null;
+		taskNote = null;
+		taskStart = null;
+		taskEnd = null;
 	}
 	
 	public static List<Subcommand> dismantleTask(Task taskToDismantle) {
