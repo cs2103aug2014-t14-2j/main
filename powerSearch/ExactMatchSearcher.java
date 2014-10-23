@@ -39,65 +39,64 @@ public class ExactMatchSearcher {
 
 	private static ArrayList<Task> simpleSearchName(String key){
 		ArrayList<Task> answer = new ArrayList<Task>();
+		CharSequence temp = key;
 		for (int i = 0; i < taskList.size(); ++i) {
 			if (key.toLowerCase().equals(taskList.get(i).getName().toLowerCase())) {
 				answer.add(taskList.get(i));
 			}
+			else if(taskList.get(i).getName().toLowerCase().contains(temp)){
+				answer.add(taskList.get(i));
+			}
 		}
-		if(answer.isEmpty()){
-			return null;
-		}
-		else
-			return answer;
+		return answer;
 	}
 
 	private static ArrayList<Task> simpleSearchCategory(String key) {
 		ArrayList<Task> answer = new ArrayList<Task>();
+		CharSequence temp = key;
 		for (int i = 0; i < taskList.size(); ++i) {
 			if (key.toLowerCase().equals(taskList.get(i).getCategory().toLowerCase())) {
 				answer.add(taskList.get(i));
 			}
+			else if(taskList.get(i).getCategory().toLowerCase().contains(temp)){
+				answer.add(taskList.get(i));
+			}
 		}
-		if(answer.isEmpty()){
-			return null;
-		}
-		else
-			return answer;
+		return answer;
 	}
 
 	private static ArrayList<Task> simpleSearchLocation(String key){
 		ArrayList<Task> answer = new ArrayList<Task>();
+		CharSequence temp = key;
 		for (int i = 0; i < taskList.size(); ++i) {
 			if (key.toLowerCase().equals(taskList.get(i).getLocation().toLowerCase())) {
 				answer.add(taskList.get(i));
 			}
+			else if(taskList.get(i).getLocation().toLowerCase().contains(temp)){
+				answer.add(taskList.get(i));
+			}
 		}
-		if(answer.isEmpty())
-			return null;
-
-		else
-			return answer;
+		return answer;
 	}
 
 	private static ArrayList<Task> simpleSearchNote(String key) {
 		ArrayList<Task> answer = new ArrayList<Task>();
+		CharSequence temp = key;
 		key = key.toLowerCase();
 		for (int i = 0; i < taskList.size(); ++i) {
 			if (taskList.get(i).getNote().toLowerCase().contains(key.subSequence(0, key.length()))) {
 				answer.add(taskList.get(i));
 			}
+			else if(taskList.get(i).getNote().toLowerCase().contains(temp)){
+				answer.add(taskList.get(i));
+			}
 		}
-		if(answer.isEmpty())
-			return null;
-
-		else
-			return answer;
+		return answer;
 	}
 
 	private static ArrayList<Task> simpleSearchDate(String comm) {
 		ArrayList<Task> tasksedited = new ArrayList<Task>();
 		Date lookfordate = Date.determineDate(comm); //create the Date class which he is looking for
-
 		int i;
 		for(i=0; i<taskList.size(); i++){
 			if(lookfordate.isEqual(taskList.get(i).getEndDate())){
@@ -107,11 +106,7 @@ public class ExactMatchSearcher {
 				tasksedited.add(taskList.get(i));
 			}
 		}
-		if(tasksedited.isEmpty())
-			return null;
-
-		else
-			return tasksedited;
+		return tasksedited;
 	}
 
 
@@ -125,11 +120,7 @@ public class ExactMatchSearcher {
 				tasksedited.add(taskList.get(i)); //supposed to show all the tasks that have an endDate after the date searched for
 			}
 		}
-		if(tasksedited.isEmpty())
-			return null;
-
-		else
-			return tasksedited;
+		return tasksedited;
 	}
 
 	private static ArrayList<Task> simpleSearchStartDate(String comm) {
@@ -142,11 +133,7 @@ public class ExactMatchSearcher {
 				tasksedited.add(taskList.get(i)); //supposed to show all the tasks that have an endDate after the date searched for
 			}
 		}
-		if(tasksedited.isEmpty())
-			return null;
-
-		else
-			return tasksedited;
+		return tasksedited;
 	}
 
 	public static boolean isTaskDuplicate(Task taskToCheck) {
