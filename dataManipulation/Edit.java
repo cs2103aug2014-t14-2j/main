@@ -3,7 +3,6 @@ package dataManipulation;
 import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
-import powerSearch.Searcher;
 import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.Date;
@@ -29,6 +28,7 @@ public class Edit extends Command {
 		
 		addEditedTask(preEdit, postEdit);
 		UndoRedoProcessor.preEditTaskStack.add(toEdit);	// Add the pre-edited task into the pre edited task stack
+		new Add(subcommands).flushSubcommand();	// flush the subcommands after editing
 		
 		String editComplete = messages.getEditMessage(preEdit, postEdit);
 		return editComplete;
@@ -36,7 +36,7 @@ public class Edit extends Command {
 	
 	private Task getTaskToEdit() throws Exception {
 		
-		List<Task> tasks = Searcher.search(subcommands, taskList);
+		List<Task> tasks = ExactMatchSearcher.exactSearch(subcommands.get(0), taskList);
 		if(tasks.size() > 1) {
 			ActionException moreThanOne = new ActionException(taskList, ActionException.ErrorLocation.EDIT, subcommands);
 			throw moreThanOne;
