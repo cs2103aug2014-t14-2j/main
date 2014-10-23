@@ -37,6 +37,8 @@ public class Search extends Command {
 					break;
 				case LOCATION :
 					break;
+				case NAME :
+					break;
 				case NOTE :
 					break;
 				case OR :

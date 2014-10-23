@@ -15,6 +15,9 @@ public class ExactMatchSearcher {
 		taskList = list;
 		ArrayList<Task> answer = new ArrayList<Task>();
 		switch (key.getType()) {
+		case NAME:
+			answer.add(simpleSearchName(key.getContents()));
+			return answer;
 		case TITLE:
 			answer.add(simpleSearchName(key.getContents()));
 			return answer;
@@ -36,16 +39,16 @@ public class ExactMatchSearcher {
 		}
 	}
 
-	private static Task simpleSearchName(String key) throws Exception {
+	private static Task simpleSearchName(String key){
 		for (int i = 0; i < taskList.size(); ++i) {
 			if (key.toLowerCase().equals(taskList.get(i).getName().toLowerCase())) {
 				return taskList.get(i);
 			}
 		}
-		throw new Exception("no matches found");
+		return null;
 	}
 
-	private static ArrayList<Task> simpleSearchCategory(String key) throws Exception {
+	private static ArrayList<Task> simpleSearchCategory(String key) {
 		ArrayList<Task> answer = new ArrayList<Task>();
 		for (int i = 0; i < taskList.size(); ++i) {
 			if (key.toLowerCase().equals(taskList.get(i).getCategory().toLowerCase())) {
@@ -53,13 +56,13 @@ public class ExactMatchSearcher {
 			}
 		}
 		if(answer.isEmpty()){
-			throw new Exception("no matches found");
+			return null;
 		}
 		else
 			return answer;
 	}
 
-	private static ArrayList<Task> simpleSearchLocation(String key) throws Exception {
+	private static ArrayList<Task> simpleSearchLocation(String key){
 		ArrayList<Task> answer = new ArrayList<Task>();
 		for (int i = 0; i < taskList.size(); ++i) {
 			if (key.toLowerCase().equals(taskList.get(i).getLocation().toLowerCase())) {
@@ -67,13 +70,13 @@ public class ExactMatchSearcher {
 			}
 		}
 		if(answer.isEmpty())
-			throw new Exception("no matches found");
+			return null;
 
 		else
 			return answer;
 	}
 
-	private static ArrayList<Task> simpleSearchNote(String key) throws Exception {
+	private static ArrayList<Task> simpleSearchNote(String key) {
 		ArrayList<Task> answer = new ArrayList<Task>();
 		key = key.toLowerCase();
 		for (int i = 0; i < taskList.size(); ++i) {
@@ -82,13 +85,13 @@ public class ExactMatchSearcher {
 			}
 		}
 		if(answer.isEmpty())
-			throw new Exception("no matches found");
+			return null;
 
 		else
 			return answer;
 	}
 
-	private static ArrayList<Task> simpleSearchDate(String comm) throws Exception {
+	private static ArrayList<Task> simpleSearchDate(String comm) {
 		ArrayList<Task> tasksedited = new ArrayList<Task>();
 		Date lookfordate = Date.determineDate(comm); //create the Date class which he is looking for
 
@@ -102,14 +105,14 @@ public class ExactMatchSearcher {
 			}
 		}
 		if(tasksedited.isEmpty())
-			throw new Exception("no matches found");
+			return null;
 
 		else
 			return tasksedited;
 	}
 
 
-	private static ArrayList<Task> simpleSearchEndDate(String comm) throws Exception {
+	private static ArrayList<Task> simpleSearchEndDate(String comm) {
 		ArrayList<Task> tasksedited = new ArrayList<Task>();
 		Date lookfordate = Date.determineDate(comm); //create the Date class which he is looking for
 
@@ -120,13 +123,13 @@ public class ExactMatchSearcher {
 			}
 		}
 		if(tasksedited.isEmpty())
-			throw new Exception("no matches found");
+			return null;
 
 		else
 			return tasksedited;
 	}
 
-	private static ArrayList<Task> simpleSearchStartDate(String comm) throws Exception {
+	private static ArrayList<Task> simpleSearchStartDate(String comm) {
 		ArrayList<Task> tasksedited = new ArrayList<Task>();
 		Date lookfordate = Date.determineDate(comm); //create the Date class which he is looking for
 
@@ -137,7 +140,7 @@ public class ExactMatchSearcher {
 			}
 		}
 		if(tasksedited.isEmpty())
-			throw new Exception("no matches found");
+			return null;
 
 		else
 			return tasksedited;
@@ -161,4 +164,5 @@ public class ExactMatchSearcher {
 		}
 		return false;
 	}
+	
 }

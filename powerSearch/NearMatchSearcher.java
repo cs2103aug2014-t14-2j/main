@@ -28,7 +28,7 @@ public class NearMatchSearcher{
 		return answer;
 	}
 	
-	private static Task nearSearchName(String key) throws Exception {
+	private static Task nearSearchName(String key){
 		int length1, length2, diff;
 		length2 = key.length();
 		for (int i = 0; i < taskList.size(); ++i) {
@@ -38,10 +38,10 @@ public class NearMatchSearcher{
 				return taskList.get(i);
 			}
 		}
-		throw new Exception("no matches found");
+		return null;
 	}
 	
-	private static List<Task> nearSearchCategory(String key) throws Exception {
+	private static List<Task> nearSearchCategory(String key){
 		List<Task> answer = new ArrayList<Task>();
 		int length1, length2, diff;
 		length2 = key.length();
@@ -52,14 +52,13 @@ public class NearMatchSearcher{
 				answer.add(taskList.get(i));
 			}
 		}
-		if(answer.isEmpty()){
-		throw new Exception("no matches found");
-		}
+		if(answer.isEmpty())
+			return null;
 		else
 			return answer;
 	}
 	
-	private static List<Task> nearSearchNote(String key) throws Exception {
+	private static List<Task> nearSearchNote(String key){
 		List<Task> answer = new ArrayList<Task>();
 		int length1, length2, diff;
 		length2 = key.length();
@@ -70,14 +69,13 @@ public class NearMatchSearcher{
 				answer.add(taskList.get(i));
 			}
 		}
-		if(answer.isEmpty()){
-		throw new Exception("no matches found");
-		}
+		if(answer.isEmpty())
+			return null;
 		else
 			return answer;
 	}
 	
-	private static List<Task> nearSearchLocation(String key) throws Exception {
+	private static List<Task> nearSearchLocation(String key){
 		List<Task> answer = new ArrayList<Task>();
 		int length1, length2, diff;
 		length2 = key.length();
@@ -88,9 +86,9 @@ public class NearMatchSearcher{
 				answer.add(taskList.get(i));
 			}
 		}
-		if(answer.isEmpty()){
-		throw new Exception("no matches found");
-		}
+		if(answer.isEmpty())
+			return null;
+		
 		else
 			return answer;
 	}
