@@ -13,13 +13,15 @@ public class NearMatchSearcher{
 		taskList = list;
 		List<Task> answer = new ArrayList<Task>();
 		switch (key.getType()){
-		case NAME :
+		case TITLE:
 			answer.add(nearSearchName(key.getContents()));
 			return answer;
 		case CATEGORY:
 			return nearSearchCategory(key.getContents());
 		case LOCATION:
 			return nearSearchLocation(key.getContents());
+		case NOTE:
+			return nearSearchNote(key.getContents());
 		default:
 			break;
 		}
@@ -27,8 +29,12 @@ public class NearMatchSearcher{
 	}
 	
 	private static Task nearSearchName(String key) throws Exception {
+		int length1, length2, diff;
+		length2 = key.length();
 		for (int i = 0; i < taskList.size(); ++i) {
-			if (key.toLowerCase().compareTo(taskList.get(i).getName().toLowerCase()) <= 25) {
+			length1 = taskList.get(i).getName().length();
+			diff = Math.abs(length2 - length1);
+			if (diff <= 2) {
 				return taskList.get(i);
 			}
 		}
@@ -37,8 +43,30 @@ public class NearMatchSearcher{
 	
 	private static List<Task> nearSearchCategory(String key) throws Exception {
 		List<Task> answer = new ArrayList<Task>();
+		int length1, length2, diff;
+		length2 = key.length();
 		for (int i = 0; i < taskList.size(); ++i) {
-			if (key.toLowerCase().compareTo(taskList.get(i).getCategory().toLowerCase()) <= 25) {
+			length1 = taskList.get(i).getCategory().length();
+			diff = Math.abs(length2 - length1);
+			if (diff <= 2) {
+				answer.add(taskList.get(i));
+			}
+		}
+		if(answer.isEmpty()){
+		throw new Exception("no matches found");
+		}
+		else
+			return answer;
+	}
+	
+	private static List<Task> nearSearchNote(String key) throws Exception {
+		List<Task> answer = new ArrayList<Task>();
+		int length1, length2, diff;
+		length2 = key.length();
+		for (int i = 0; i < taskList.size(); ++i) {
+			length1 = taskList.get(i).getNote().length();
+			diff = Math.abs(length2 - length1);
+			if (diff <= 2) {
 				answer.add(taskList.get(i));
 			}
 		}
@@ -51,14 +79,18 @@ public class NearMatchSearcher{
 	
 	private static List<Task> nearSearchLocation(String key) throws Exception {
 		List<Task> answer = new ArrayList<Task>();
+		int length1, length2, diff;
+		length2 = key.length();
 		for (int i = 0; i < taskList.size(); ++i) {
-			if (key.toLowerCase().compareTo(taskList.get(i).getLocation().toLowerCase()) <= 25) {
+			length1 = taskList.get(i).getLocation().length();
+			diff = Math.abs(length2 - length1);
+			if (diff <= 2) {
 				answer.add(taskList.get(i));
 			}
 		}
-		if(answer.isEmpty())
-			throw new Exception("no matches found");
-		
+		if(answer.isEmpty()){
+		throw new Exception("no matches found");
+		}
 		else
 			return answer;
 	}
