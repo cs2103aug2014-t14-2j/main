@@ -16,11 +16,9 @@ public class ExactMatchSearcher {
 		ArrayList<Task> answer = new ArrayList<Task>();
 		switch (key.getType()) {
 		case NAME:
-			answer.add(simpleSearchName(key.getContents()));
-			return answer;
+			return simpleSearchName(key.getContents()));
 		case TITLE:
-			answer.add(simpleSearchName(key.getContents()));
-			return answer;
+			return simpleSearchName(key.getContents()));
 		case CATEGORY:
 			return simpleSearchCategory(key.getContents());
 		case LOCATION:
@@ -40,12 +38,17 @@ public class ExactMatchSearcher {
 	}
 
 	private static Task simpleSearchName(String key){
+		ArrayList<Task> answer = new ArrayList<Task>();
 		for (int i = 0; i < taskList.size(); ++i) {
 			if (key.toLowerCase().equals(taskList.get(i).getName().toLowerCase())) {
-				return taskList.get(i);
+				answer.add(taskList.get(i));
 			}
 		}
-		return null;
+		if(answer.isEmpty()){
+			return null;
+		}
+		else
+			return answer;
 	}
 
 	private static ArrayList<Task> simpleSearchCategory(String key) {
