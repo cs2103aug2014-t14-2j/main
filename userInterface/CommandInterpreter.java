@@ -475,14 +475,14 @@ public class CommandInterpreter {
 	private void checkFirstQuotation(String userCommand) {
 		String doubleQuote = "\"";
 		if (!userCommand.startsWith(doubleQuote)) {
-			throw new IllegalArgumentException("invalid subcommand argument");
+			throw new IllegalArgumentException("invalid subcommand argument: double quotes");
 		}
 	}
 	
 	private String getUntilQuotation(String userCommand) {
 		assert(userCommand != null);
 		if (userCommand.isEmpty()) {
-			throw new IllegalArgumentException("invalid subcommand argument");
+			throw new IllegalArgumentException("invalid subcommand argument: double quotes");
 		}
 		
 		String fullString = userCommand.substring(0, 1);
@@ -496,7 +496,7 @@ public class CommandInterpreter {
 		
 		// check to see if it ever saw another quotation mark
 		if (!singleChar.equals(doubleQuote)) {
-			throw new IllegalArgumentException("invalid subcommand argument");
+			throw new IllegalArgumentException("invalid subcommand argument: double quotes");
 		}
 		
 		return fullString;

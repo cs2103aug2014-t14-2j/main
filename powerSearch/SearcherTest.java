@@ -22,9 +22,7 @@ public class SearcherTest {
 		tasks.add(new Task("Charlie", "C", temp1, new Date(25,12,2014)));
 		
 		List<Subcommand> listCC = new ArrayList<Subcommand>();
-		listCC.add(new Subcommand(Subcommand.TYPE.CATEGORY, "A"));
-		listCC.add(new Subcommand(Subcommand.TYPE.OR, "or"));
-		listCC.add(new Subcommand(Subcommand.TYPE.CATEGORY, "C"));
+		listCC.add(new Subcommand(Subcommand.TYPE.TITLE, "ndrew"));
 		
 		System.out.println(Searcher.search(listCC, tasks));
 		
