@@ -30,7 +30,8 @@ public class Searcher {
 				break;
 			default:
 				answer.add(ExactMatchSearcher.exactSearch(keylist.get(i), list));
-				answer.add(NearMatchSearcher.nearSearch(keylist.get(i), list));
+				if(answer.get(answer.size()-1)==null)
+					answer.add(NearMatchSearcher.nearSearch(keylist.get(i), list));
 			}
 		}
 		List<Task> results = new ArrayList<Task>();
