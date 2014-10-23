@@ -60,7 +60,7 @@ public class Add extends Command {
 
 	}
 	
-	private void flushSubcommand() {
+	public void flushSubcommand() {
 		
 		for(Subcommand s : subcommands) {
 			
