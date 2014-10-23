@@ -59,7 +59,7 @@ public class Add extends Command {
 
 	}
 	
-	public static List<Subcommand> dismantleTask(Task taskToDismantle) {
+	public List<Subcommand> dismantleTask(Task taskToDismantle) {
 		
 		List<Subcommand> taskDetails = new ArrayList<Subcommand>();
 		
