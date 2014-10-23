@@ -43,7 +43,7 @@ public class UndoRedoProcessor {
 				
 			case "edit" :
 				Task preEditedTask = preEditTaskStack.pop();
-				Command negatedEditCommand = new Edit(Add.dismantleTask(preEditedTask));
+				Command negatedEditCommand = new Edit(Add(dismantleTask(preEditedTask));
 				CommandHandler.executeCommand(negatedEditCommand);
 				break;
 				
