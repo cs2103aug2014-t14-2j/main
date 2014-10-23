@@ -1,5 +1,7 @@
 package powerSearch;
 
+
+import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 import dataManipulation.Subcommand;
 import dataManipulation.TotalTaskList;
@@ -7,101 +9,156 @@ import dataManipulation.TotalTaskList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NearMatchSearcher{
+public class ExactMatchSearcher {
 	public static List<Task> taskList;
-	public static List<Task> nearSearch(Subcommand key, List<Task> list) throws Exception {
+	public static List<Task> exactSearch(Subcommand key, List<Task> list) throws Exception {
 		taskList = list;
-		List<Task> answer = new ArrayList<Task>();
-		switch (key.getType()){
+		ArrayList<Task> answer = new ArrayList<Task>();
+		switch (key.getType()) {
 		case TITLE:
-			answer.add(nearSearchName(key.getContents()));
+			answer.add(simpleSearchName(key.getContents()));
 			return answer;
 		case CATEGORY:
-			return nearSearchCategory(key.getContents());
+			return simpleSearchCategory(key.getContents());
 		case LOCATION:
-			return nearSearchLocation(key.getContents());
+			return simpleSearchLocation(key.getContents());
 		case NOTE:
-			return nearSearchNote(key.getContents());
-		default:
-			break;
+			return simpleSearchNote(key.getContents()); //returns all Tasks that have the key as a substring within Notes
+		case END:
+			return simpleSearchEndDate(key.getContents()); 
+		case START:
+			return simpleSearchStartDate(key.getContents()); 
+		case DATE:
+			return simpleSearchDate(key.getContents());
+		default :
+			throw new 
+			IllegalArgumentException("invalid subcommand for search");
 		}
-		return answer;
 	}
-	
-	private static Task nearSearchName(String key) throws Exception {
-		int length1, length2, diff;
-		length2 = key.length();
+
+	private static Task simpleSearchName(String key) throws Exception {
 		for (int i = 0; i < taskList.size(); ++i) {
-			length1 = taskList.get(i).getName().length();
-			diff = Math.abs(length2 - length1);
-			if (diff <= 2) {
+			if (key.toLowerCase().equals(taskList.get(i).getName().toLowerCase())) {
 				return taskList.get(i);
 			}
 		}
 		throw new Exception("no matches found");
 	}
-	
-	private static List<Task> nearSearchCategory(String key) throws Exception {
-		List<Task> answer = new ArrayList<Task>();
-		int length1, length2, diff;
-		length2 = key.length();
+
+	private static ArrayList<Task> simpleSearchCategory(String key) throws Exception {
+		ArrayList<Task> answer = new ArrayList<Task>();
 		for (int i = 0; i < taskList.size(); ++i) {
-			length1 = taskList.get(i).getCategory().length();
-			diff = Math.abs(length2 - length1);
-			if (diff <= 2) {
+			if (key.toLowerCase().equals(taskList.get(i).getCategory().toLowerCase())) {
 				answer.add(taskList.get(i));
 			}
 		}
 		if(answer.isEmpty()){
-		throw new Exception("no matches found");
+			throw new Exception("no matches found");
 		}
 		else
 			return answer;
 	}
-	
-	private static List<Task> nearSearchNote(String key) throws Exception {
-		List<Task> answer = new ArrayList<Task>();
-		int length1, length2, diff;
-		length2 = key.length();
+
+	private static ArrayList<Task> simpleSearchLocation(String key) throws Exception {
+		ArrayList<Task> answer = new ArrayList<Task>();
 		for (int i = 0; i < taskList.size(); ++i) {
-			length1 = taskList.get(i).getNote().length();
-			diff = Math.abs(length2 - length1);
-			if (diff <= 2) {
+			if (key.toLowerCase().equals(taskList.get(i).getLocation().toLowerCase())) {
 				answer.add(taskList.get(i));
 			}
 		}
-		if(answer.isEmpty()){
-		throw new Exception("no matches found");
-		}
+		if(answer.isEmpty())
+			throw new Exception("no matches found");
+
 		else
 			return answer;
 	}
-	
-	private static List<Task> nearSearchLocation(String key) throws Exception {
-		List<Task> answer = new ArrayList<Task>();
-		int length1, length2, diff;
-		length2 = key.length();
+
+	private static ArrayList<Task> simpleSearchNote(String key) throws Exception {
+		ArrayList<Task> answer = new ArrayList<Task>();
+		key = key.toLowerCase();
 		for (int i = 0; i < taskList.size(); ++i) {
-			length1 = taskList.get(i).getLocation().length();
-			diff = Math.abs(length2 - length1);
-			if (diff <= 2) {
+			if (taskList.get(i).getNote().toLowerCase().contains(key.subSequence(0, key.length()))) {
 				answer.add(taskList.get(i));
 			}
 		}
-		if(answer.isEmpty()){
-		throw new Exception("no matches found");
-		}
+		if(answer.isEmpty())
+			throw new Exception("no matches found");
+
 		else
 			return answer;
 	}
-	
+
+	private static ArrayList<Task> simpleSearchDate(String comm) throws Exception {
+		ArrayList<Task> tasksedited = new ArrayList<Task>();
+		Date lookfordate = Date.determineDate(comm); //create the Date class which he is looking for
+
+		int i;
+		for(i=0; i<taskList.size(); i++){
+			if(lookfordate.isEqual(taskList.get(i).getEndDate())){
+				tasksedited.add(taskList.get(i));
+			}
+			if(lookfordate.isEqual(taskList.get(i).getStartDate())){
+				tasksedited.add(taskList.get(i));
+			}
+		}
+		if(tasksedited.isEmpty())
+			throw new Exception("no matches found");
+
+		else
+			return tasksedited;
+	}
+
+
+	private static ArrayList<Task> simpleSearchEndDate(String comm) throws Exception {
+		ArrayList<Task> tasksedited = new ArrayList<Task>();
+		Date lookfordate = Date.determineDate(comm); //create the Date class which he is looking for
+
+		int i;
+		for(i=0; i<taskList.size(); i++){
+			if(lookfordate.isBefore(taskList.get(i).getEndDate())){
+				tasksedited.add(taskList.get(i)); //supposed to show all the tasks that have an endDate after the date searched for
+			}
+		}
+		if(tasksedited.isEmpty())
+			throw new Exception("no matches found");
+
+		else
+			return tasksedited;
+	}
+
+	private static ArrayList<Task> simpleSearchStartDate(String comm) throws Exception {
+		ArrayList<Task> tasksedited = new ArrayList<Task>();
+		Date lookfordate = Date.determineDate(comm); //create the Date class which he is looking for
+
+		int i;
+		for(i=0; i<taskList.size(); i++){
+			if(lookfordate.isEqual(taskList.get(i).getStartDate())){
+				tasksedited.add(taskList.get(i)); //supposed to show all the tasks that have an endDate after the date searched for
+			}
+		}
+		if(tasksedited.isEmpty())
+			throw new Exception("no matches found");
+
+		else
+			return tasksedited;
+	}
+
 	public static boolean isTaskDuplicate(Task taskToCheck) {
 		for(Task t : TotalTaskList.getInstance().getList()) {
 			if(t.getName().toLowerCase().equals(taskToCheck.getName().toLowerCase())) {
-				return true;
+				if(t.getCategory().toLowerCase().equals(taskToCheck.getCategory().toLowerCase())) {
+					if(t.getLocation().toLowerCase().equals(taskToCheck.getLocation().toLowerCase())) {
+						if(t.getNote().toLowerCase().equals(taskToCheck.getLocation().toLowerCase())) {
+							if(t.getStartDate().toString().toLowerCase().equals(taskToCheck.getStartDate().toString().toLowerCase())) {
+								if(t.getEndDate().toString().toLowerCase().equals(taskToCheck.getEndDate().toString().toLowerCase())) {
+									return true;
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 		return false;
 	}
-	
 }
