@@ -60,15 +60,13 @@ public class Add extends Command {
 
 	}
 	
-	public void flushSubcommand() {
-		
+	private void flushSubcommand() {
 		taskName = null;
 		taskCategory = null;
 		taskLocation = null;
 		taskNote = null;
 		taskStart = null;
 		taskEnd = null;
-		
 	}
 	
 	public static List<Subcommand> dismantleTask(Task taskToDismantle) {
