@@ -24,7 +24,7 @@ public class Edit extends Command {
 	public String execute() throws Exception {
 		Task toEdit = getTaskToEdit();
 		Task preEdit = toEdit;
-		Task postEdit = editTask(toEdit, Add.dismantleTask(toEdit));
+		Task postEdit = editTask(toEdit, subcommands);
 		
 		addEditedTask(preEdit, postEdit);
 		UndoRedoProcessor.preEditTaskStack.add(toEdit);	// Add the pre-edited task into the pre edited task stack
@@ -47,15 +47,14 @@ public class Edit extends Command {
 	
 	public Task editTask(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
 		
-		Task editTaskExceptName = new Add(taskAttributes).buildTask(taskAttributes);
-		Task editTaskIncludingName = setTaskAttributes(editTaskExceptName, taskAttributes);
+		Task editedTask = setTaskAttributes(toEdit, taskAttributes);
 		
-		if(ExactMatchSearcher.isTaskDuplicate(editTaskIncludingName)) {
+		if(ExactMatchSearcher.isTaskDuplicate(editedTask)) {
 			ActionException moreThanOne = new ActionException(taskList, ActionException.ErrorLocation.EDIT, taskAttributes);
 			throw moreThanOne;
 		}
 		else {
-			return editTaskIncludingName;
+			return editedTask;
 		}
 	}
 	
