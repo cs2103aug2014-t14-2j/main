@@ -31,14 +31,16 @@ public class NearMatchSearcher{
 	private static Task nearSearchName(String key){
 		int length1, length2, diff;
 		length2 = key.length();
+		Task temp = null;
 		for (int i = 0; i < taskList.size(); ++i) {
 			length1 = taskList.get(i).getName().length();
 			diff = Math.abs(length2 - length1);
 			if (diff <= 2) {
-				return taskList.get(i);
+				temp = taskList.get(i);
+				return temp;
 			}
 		}
-		return null;
+		return temp;
 	}
 	
 	private static List<Task> nearSearchCategory(String key){
@@ -52,10 +54,7 @@ public class NearMatchSearcher{
 				answer.add(taskList.get(i));
 			}
 		}
-		if(answer.isEmpty())
-			return null;
-		else
-			return answer;
+		return answer;
 	}
 	
 	private static List<Task> nearSearchNote(String key){
@@ -69,10 +68,7 @@ public class NearMatchSearcher{
 				answer.add(taskList.get(i));
 			}
 		}
-		if(answer.isEmpty())
-			return null;
-		else
-			return answer;
+		return answer;
 	}
 	
 	private static List<Task> nearSearchLocation(String key){
@@ -86,11 +82,7 @@ public class NearMatchSearcher{
 				answer.add(taskList.get(i));
 			}
 		}
-		if(answer.isEmpty())
-			return null;
-		
-		else
-			return answer;
+		return answer;
 	}
 	
 	public static boolean isTaskDuplicate(Task taskToCheck) {
