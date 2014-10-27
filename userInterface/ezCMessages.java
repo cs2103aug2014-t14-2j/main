@@ -131,4 +131,10 @@ public class ezCMessages {
 		String totalMessage = name + " was completed" + NEW_LINE;
 		return totalMessage;
 	}
+	
+	public String getUnfinishMessage(Task incomplete) {
+		String name = incomplete.getName();
+		String totalMessage = name + " was marked as incomplete" + NEW_LINE;
+		return totalMessage;
+	}
 }
