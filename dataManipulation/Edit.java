@@ -24,7 +24,7 @@ public class Edit extends Command {
 	public String execute() throws Exception {
 		Task toEdit = getTaskToEdit();
 		Task preEdit = toEdit;
-		Task postEdit = editTask(toEdit, subcommands);
+		Task postEdit = editTask(toEdit, Add.dismantleTask(toEdit));
 		
 		addEditedTask(preEdit, postEdit);
 		UndoRedoProcessor.preEditTaskStack.add(toEdit);	// Add the pre-edited task into the pre edited task stack
