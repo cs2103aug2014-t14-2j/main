@@ -4,6 +4,7 @@ import userInterface.CommandHandler;
 import userInterface.UserInterface;
 import dataManipulation.Command;
 import dataManipulation.TotalTaskList;
+import dataManipulation.UndoRedoList;
 import fileIo.FileIo;
 
 public class ezC {
@@ -20,7 +21,7 @@ public class ezC {
 			try {
 				Command command = ui.getUserCommand();
 				feedback = CommandHandler.executeCommand(command);
-				UndoRedoProcessor.undoCommandStack.add(command);	// Adds the command to the undo command stack
+				UndoRedoList.getInstance().pushUndoCommand(command);	// Adds the command to the undo command stack
 			} catch (IllegalArgumentException e) {
 				feedback = ui.getErrorMessage(e);
 			} catch (Exception e) {
