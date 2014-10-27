@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import userInterface.CommandHandler;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 
@@ -56,6 +57,10 @@ public class AddTest {
 		Task expected = new Task("Buy Milk", "Groceries", "Clementi", "Meiji Chocolate Milk", startDate, endDate);
 		
 		Task actual = new Add(listCC).buildTask(listCC);
+		Command addTask = new Add(listCC);
+		CommandHandler.executeCommand(addTask);
+		TotalTaskList taskList = TotalTaskList.getInstance();
+		actual = taskList.getList().get(0);
 		
 		assertEquals("Task name matches expected", expected.getName(), actual.getName());
 		assertEquals("Task location matches expected", expected.getLocation(), actual.getLocation());
