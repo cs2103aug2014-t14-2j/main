@@ -31,21 +31,21 @@ public class ezCMessages {
 			+ "required.\n";
 	private final String MESSAGE_HELP = "Enter \"help\" for a list of commands or \"exit\" to quit.\n";
 	private final String MESSAGE_USER_HELP = "List of available commands (Not case sensitive): \n\n"
-			+ "Add (OR) -ad\n"
-			+ "All (OR) -al\n"
-			+ "Category (OR) categories (OR) cat (OR) cats (OR) -ca\n"
-			+ "Complete (OR) comp (OR) -co\n"
-			+ "Edit (OR) -e\n"
-			+ "Filter (OR) -fl\n"
-			+ "Finish (OR) -fn\n"
-			+ "Help (OR) -h\n"
-			+ "Note (OR) notes (OR) -n\n"
-			+ "Remove (OR) -r\n"
-			+ "Search (OR) -se\n"
-			+ "Sort (OR) -se\n"
-			+ "Today (OR) -t\n"
-			+ "Undo (OR) -u\n"
-			+ "View (OR) -v\n\n";
+			+ "Add\n"
+			+ "All\n"
+			+ "Category\n"
+			+ "Complete\n"
+			+ "Edit\n"
+			+ "Filter\n"
+			+ "Finish\n"
+			+ "Help\n"
+			+ "Note\n"
+			+ "Remove\n"
+			+ "Search\n"
+			+ "Sort\n"
+			+ "Today\n"
+			+ "Undo\n"
+			+ "View\n\n";
 	
 	// Task Error Messages
 	private final String ERROR_DUPLICATE_EDIT = "ERROR: There already "
