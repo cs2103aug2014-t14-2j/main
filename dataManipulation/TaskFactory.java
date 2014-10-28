@@ -226,9 +226,11 @@ public class TaskFactory {
 		Date startDate = new Date();	// default is today
 		
 		if (endTime == null) {
-			newTask = new Task(name, category, note, startDate);
+			newTask = new Task(name, category, startDate);
+			newTask.setNote(note);
 		} else {
-			newTask = new Task(name, category, note, startDate, endTime);
+			newTask = new Task(name, category, startDate, endTime);
+			newTask.setNote(note);
 		}
 		
 		return newTask;
