@@ -137,4 +137,9 @@ public class ezCMessages {
 		String totalMessage = name + " was marked as incomplete" + NEW_LINE;
 		return totalMessage;
 	}
+
+	public String getChangeDateTypeMessage(String type) {
+		String message = "changed date type to " + type;
+		return message;
+	}
 }

@@ -2,6 +2,9 @@ package dataManipulation;
 
 import java.util.List;
 
+import userInterface.ezCMessages;
+import dataEncapsulation.Date;
+
 public class ChangeDateType extends Command {
 
 	public ChangeDateType(List<Subcommand> commandComponents)
@@ -11,8 +14,24 @@ public class ChangeDateType extends Command {
 
 	@Override
 	public String execute() {
-		// TODO Auto-generated method stub
-		return null;
+		String type = getDateType();
+		changeDateFormat(type);
+		
+		ezCMessages messages = ezCMessages.getInstance();
+		
+		return messages.getChangeDateTypeMessage(type);
+	}
+
+	private String getDateType() {
+		return subcommands.get(0).getContents();
+	}
+
+	private void changeDateFormat(String type) {
+		if (type.equals("d/m")) {
+			Date.changeFormatDm();
+		} else {
+			Date.changeFormatMd();
+		}
 	}
 
 	@Override

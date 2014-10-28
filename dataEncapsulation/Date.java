@@ -4,7 +4,10 @@ import java.time.*;
 import java.util.*;
 public class Date {
 	private int day, month, year;
-	private Calendar cal = GregorianCalendar.getInstance();;
+	private Calendar cal = GregorianCalendar.getInstance();
+	
+	private static boolean dmFormat = true;
+	
 	public Date(int userday, int usermonth, int useryear) {
 		if(dateValid(userday, usermonth, useryear)){
 			this.setDay(userday);
@@ -81,7 +84,18 @@ public class Date {
 	public Calendar getCal(){
 		return this.cal;
 	}
-
+	
+	public static void changeFormatDm() {
+		dmFormat = true;
+	}
+	
+	public static void changeFormatMd() {
+		dmFormat = false;
+	}
+	
+	public static boolean isFormatDm() {
+		return dmFormat;
+	}
 
 	public static Date determineDate(String dateString) {
 		if (dateString == null) {
@@ -99,9 +113,16 @@ public class Date {
 			year = cleanUpYear(year);
 			mm = monthInteger(month);
 		} else if (dateString.contains("/")) {
+			int dayIndex = 0;
+			int monthIndex = 1;
+			if (!dmFormat) {
+				dayIndex = 1;
+				monthIndex = 0;
+			}
+			
 			String dateStr[] = dateString.split("/", 3);
-			day = dateStr[0];
-			month = dateStr[1];
+			day = dateStr[dayIndex];
+			month = dateStr[monthIndex];
 			year = dateStr[2];
 			mm = Integer.parseInt(month);
 		} else {
