@@ -7,7 +7,6 @@ import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
-import dataEncapsulation.UndoRedoProcessor;
 import fileIo.FileIo;
 
 public class Edit extends Command {
@@ -22,12 +21,13 @@ public class Edit extends Command {
 
 	@Override
 	public String execute() throws Exception {
-		Task toEdit = getTaskToEdit();
-		Task preEdit = toEdit;
-		Task postEdit = editTask(toEdit, subcommands);
+		Task preEdit = getTaskToEdit();
+		List<Subcommand> taskToEditSubcommands = new Add(subcommands).dismantleTask(preEdit);
+		Task taskToEdit = new Add(subcommands).buildTask(taskToEditSubcommands);
+		Task postEdit = editTask(taskToEdit, subcommands);
 		
 		addEditedTask(preEdit, postEdit);
-		UndoRedoProcessor.preEditTaskStack.add(toEdit);	// Add the pre-edited task into the pre edited task stack
+		UndoRedoList.getInstance().pushPreEditedTask(preEdit);	// Add the pre-edited task into the pre edited task stack
 		
 		String editComplete = messages.getEditMessage(preEdit, postEdit);
 		return editComplete;
