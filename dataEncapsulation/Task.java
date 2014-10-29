@@ -181,6 +181,27 @@ public class Task {
 		return answer;
 	}
 	
+	public String toPrint(){
+		String answer = new String();
+		answer = answer + "Task: " + this.name + '\n';
+		answer = answer + "Category: " + this.category + '\n';
+		if(!hasNoDeadline){
+			answer = answer + "Start: " + this.startdate.toString() + '\n' + "End: " + this.enddate.toString() + '\n';
+		}
+		if(hasLocation){
+			answer = answer + "Location: " + this.location + '\n';
+		}
+		if(hasNote){
+			answer = answer + "Note: " + this.note + '\n';
+		}
+		if(isComplete) {
+			answer = answer + "Completed: Yes\n";
+		} else {
+			answer = answer + "Completed: No\n";
+		}
+		return answer;
+	}
+	
 	public boolean isCompleted(){
 		if (isComplete == true) {
 			return isComplete;
