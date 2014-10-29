@@ -156,7 +156,7 @@ public class Task {
 		answer = answer + "Task: " + this.name + '\n';
 		answer = answer + "Category: " + this.category + '\n';
 		if(hasNoDeadline){
-			answer = answer + "Start: " + this.startdate.toString() + '\n';
+		answer = answer + "Start: " + this.startdate.toString() + '\n' + "End: " + "No Specified End Date" + '\n';
 		}
 		if(!hasNoDeadline){
 			answer = answer + "Start: " + this.startdate.toString() + '\n' + "End: " + this.enddate.toString() + '\n';
@@ -165,13 +165,13 @@ public class Task {
 			answer = answer + "Location: " + this.location + '\n';
 		}
 		if(!hasLocation){
-			;
+			answer = answer + "Location: No Specified Location" + '\n';
 		}
 		if(hasNote){
 			answer = answer + "Note: " + this.note + '\n';
 		}
 		if(!hasNote){
-			;
+			answer = answer + "Note: No Specified Note" + '\n';
 		}
 		if(isComplete) {
 			answer = answer + "Completed: Yes\n";
