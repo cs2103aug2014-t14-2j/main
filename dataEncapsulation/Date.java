@@ -58,6 +58,19 @@ public class Date {
 		return answer;
 	}
 
+	/**
+	 * @author yuiwei
+	 * @param another
+	 * @return
+	 */
+	public boolean isEquals(Date another) {
+		if (this.day == another.day && this.month == another.month && this.year == another.year) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	public int getDay() {
 		return day;
 	}
