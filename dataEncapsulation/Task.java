@@ -5,6 +5,11 @@ import java.util.*;
 
 import dataEncapsulation.Date;
 public class Task {
+	
+	private final String MESSAGE_NO_END = "No Specified End Date";
+	private final String MESSAGE_NO_LOCATION = "No Specified Location";
+	private final String MESSAGE_NO_NOTE = "No Specified Note";
+	
 	private Date startdate, enddate;
 	private boolean hasNoDeadline = true;
 	private boolean isComplete = false;
@@ -172,6 +177,27 @@ public class Task {
 		}
 		if(!hasNote){
 			answer = answer + "Note: No Specified Note" + '\n';
+		}
+		if(isComplete) {
+			answer = answer + "Completed: Yes\n";
+		} else {
+			answer = answer + "Completed: No\n";
+		}
+		return answer;
+	}
+	
+	public String toPrint(){
+		String answer = new String();
+		answer = answer + "Task: " + this.name + '\n';
+		answer = answer + "Category: " + this.category + '\n';
+		if(!hasNoDeadline){
+			answer = answer + "Start: " + this.startdate.toString() + '\n' + "End: " + this.enddate.toString() + '\n';
+		}
+		if(hasLocation){
+			answer = answer + "Location: " + this.location + '\n';
+		}
+		if(hasNote){
+			answer = answer + "Note: " + this.note + '\n';
 		}
 		if(isComplete) {
 			answer = answer + "Completed: Yes\n";
