@@ -1,5 +1,9 @@
 package dataManipulation;
 
+/**
+ * 
+ * @author yuiwei
+ */
 import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
@@ -45,7 +49,7 @@ public class Edit extends Command {
 		}
 	}
 	
-	public Task editTask(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
+	private Task editTask(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
 		
 		Task editedTask = setTaskAttributes(toEdit, taskAttributes);
 		
@@ -87,7 +91,7 @@ public class Edit extends Command {
 			return toEdit;
 	}
 	
-	public void addEditedTask(Task oldTask, Task newTask) {
+	private void addEditedTask(Task oldTask, Task newTask) {
 		taskList.remove(oldTask);
 		taskList.add(newTask);
 		FileIo IoStream = FileIo.getInstance();
