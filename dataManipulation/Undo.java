@@ -3,9 +3,11 @@ package dataManipulation;
 import java.util.ArrayList;
 import java.util.List;
 
+import powerSearch.ExactMatchSearcher;
 import powerSearch.Searcher;
 import userInterface.CommandHandler;
 import userInterface.ezCMessages;
+import dataEncapsulation.ActionException;
 import dataEncapsulation.Task;
 
 public class Undo extends Command {
@@ -39,8 +41,11 @@ public class Undo extends Command {
 				
 			case "edit" :
 				Task preEditedTask = UndoRedoList.getInstance().popPreEditedTask();
-				Command negatedEditCommand = new Edit(new Add(dummySubcommands).dismantleTask(preEditedTask));
-				returnMessage = CommandHandler.executeCommand(negatedEditCommand);
+				Task taskToRemove = getTaskToRemove();
+				Command negatedEditCommandRemove = new Remove(new Add(dummySubcommands).dismantleTask(taskToRemove));
+				Command negatedEditCommandAdd = new Add(new Add(dummySubcommands).dismantleTask(preEditedTask));
+				CommandHandler.executeCommand(negatedEditCommandRemove);
+				returnMessage = CommandHandler.executeCommand(negatedEditCommandAdd);
 				break;
 				
 			case "finish" :
@@ -56,6 +61,18 @@ public class Undo extends Command {
 		}
 		
 		return returnMessage;
+	}
+	
+	private Task getTaskToRemove() throws Exception {
+		
+		List<Task> tasks = Searcher.search(subcommands, taskList);
+		if(tasks.size() > 1) {
+			ActionException moreThanOne = new ActionException(taskList, ActionException.ErrorLocation.UNDO, subcommands);
+			throw moreThanOne;
+		}
+		else {
+			return tasks.get(0);
+		}
 	}
 
 	@Override
