@@ -1,8 +1,23 @@
 package dataManipulation;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import userInterface.ezCMessages;
+import dataEncapsulation.Task;
+import dataEncapsulation.sortTaskByEndDate;
+import dataEncapsulation.sortTaskByName;
+import dataEncapsulation.sortTaskByStartDate;
+
+
 public class Sort extends Command {
+	private List<Task> allTasks;
+	private Comparator<Task> byStartDate = new sortTaskByStartDate();
+	private Comparator<Task> byEndDate = new sortTaskByEndDate();
+	private Comparator<Task> byName = new sortTaskByName();
+
 
 	public Sort(List<Subcommand> commandComponents)
 			throws IllegalArgumentException {
@@ -11,20 +26,50 @@ public class Sort extends Command {
 
 	@Override
 	public String execute() {
-		String unimplemented = "This command has not been finished. :)";
-		return unimplemented;
+		allTasks = TotalTaskList.getInstance().getList();
+		switch (subcommands.get(0).getType()) {
+		case BYNAME:
+			return ezCMessages.getInstance().getStringOfTasks(sortByName());
+		case BYEND:
+			return ezCMessages.getInstance().getStringOfTasks(sortByEndDate());
+		case BYSTART:
+			return ezCMessages.getInstance().getStringOfTasks(sortByStartDate());
+		default:
+			return "Sort by name or date!";
+		}
+		
 	}
 
+	private List<Task> sortByEndDate() {
+		List<Task> sortedByDate = new ArrayList<Task>(allTasks);
+		Collections.sort(sortedByDate, byEndDate);
+		return sortedByDate;
+	}
+	
+	private List<Task> sortByStartDate() {
+		List<Task> sortedByDate = new ArrayList<Task>(allTasks);
+		Collections.sort(sortedByDate, byStartDate);
+		return sortedByDate;
+	}
+	
+	private List<Task> sortByName() {
+		List<Task> sortedByName = new ArrayList<Task>(allTasks);
+		Collections.sort(sortedByName, byName);
+		return sortedByName;
+	}
+	
 	@Override
 	protected void checkValidity() {
 		checkForComponentAmount(1);
 		
+		boolean hasName =
+				checkForSpecificComponent(Subcommand.TYPE.BYNAME);
 		boolean hasStart = 
-				checkForSpecificComponent(Subcommand.TYPE.START);
+				checkForSpecificComponent(Subcommand.TYPE.BYSTART);
 		boolean hasEnd = 
-				checkForSpecificComponent(Subcommand.TYPE.END);
+				checkForSpecificComponent(Subcommand.TYPE.BYEND);
 		
-		if (!hasStart && !hasEnd) {
+		if (!hasStart && !hasEnd && !hasName) {
 			throw new IllegalArgumentException("invalid subcommand");
 		}
 	}

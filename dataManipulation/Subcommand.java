@@ -16,7 +16,7 @@ package dataManipulation;
 
 public class Subcommand {
 	public enum TYPE {
-		AND, CATEGORY, DATE, DATE_TYPE, END, LOCATION, NAME, NONE, NOTE,
+		AND, BYEND, BYNAME, BYSTART, CATEGORY, DATE, DATE_TYPE, END, LOCATION, NAME, NONE, NOTE,
 		FREQUENCY, OR, PAREN, START, TEXT, TITLE,
 		INVALID
 	}
@@ -168,6 +168,12 @@ public class Subcommand {
 			return TYPE.PAREN;
 		case (")") :
 			return TYPE.PAREN;
+		case ("byname") :
+			return TYPE.BYNAME;
+		case ("byend") :
+			return TYPE.BYEND;
+		case ("bystart") :
+			return TYPE.BYSTART;
 		case ("and") :
 			return TYPE.AND;
 		case ("&") :
