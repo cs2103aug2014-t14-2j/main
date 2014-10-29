@@ -5,6 +5,11 @@ import java.util.*;
 
 import dataEncapsulation.Date;
 public class Task {
+	
+	private final String MESSAGE_NO_END = "No Specified End Date";
+	private final String MESSAGE_NO_LOCATION = "No Specified Location";
+	private final String MESSAGE_NO_NOTE = "No Specified Note";
+	
 	private Date startdate, enddate;
 	private boolean hasNoDeadline = true;
 	private boolean isComplete = false;

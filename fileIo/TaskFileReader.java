@@ -57,8 +57,8 @@ public class TaskFileReader {
 	private final String EMPTY_STRING = "";
 	
 	private final String MESSAGE_NO_END = "No Specified End Date";
-	private final String MESSAGE_NO_LOCATION = "This Task has no specified Location.";
-	private final String MESSAGE_NO_NOTE = "This Task has no specified Note.";
+	private final String MESSAGE_NO_LOCATION = "No Specified Location";
+	private final String MESSAGE_NO_NOTE = "No Specified Note";
 	private final String MESSAGE_COMPLETED = "Yes";
 	
 	private final int FIRST_POSITION = 0;

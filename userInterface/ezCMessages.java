@@ -89,12 +89,12 @@ public class ezCMessages {
 	}
 	
 	public String getAddMessage(Task newTask) {
-		String message = "Added task:" + NEW_LINE + newTask.toString() + 
+		String message = "Added task:" + NEW_LINE + newTask.toPrint() + 
 				NEW_LINE;
 		return message;
 	}
 	public String getDeleteMessage(Task deletedTask) {
-		String message = "Task deleted: " + NEW_LINE + deletedTask.toString() + 
+		String message = "Task deleted: " + NEW_LINE + deletedTask.toPrint() + 
 				NEW_LINE;
 		return message;
 	}
@@ -116,11 +116,11 @@ public class ezCMessages {
 			return "nothing to print" + NEW_LINE;
 		}
 		
-		String allTasks = tasks.get(0).toString();
+		String allTasks = tasks.get(0).toPrint();
 		
 		for (int i = 1; i < tasks.size(); ++i) {
 			Task nextTask = tasks.get(i);
-			allTasks = allTasks + NEW_LINE + nextTask;
+			allTasks = allTasks + NEW_LINE + nextTask.toPrint();
 		}
 		
 		return allTasks;
