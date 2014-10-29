@@ -17,7 +17,7 @@ public class ExceptionHandler {
 		List<Subcommand> cc = e.getSubcommands();
 		
 		String ofTasks = ezCMessages.getInstance().getStringOfTasks(opts);
-		System.out.println("That was a bit too vague -please choose which of these you would like to " 
+		System.out.println("That was a bit too vague - please choose which of these you would like to " 
 							+ e.getLocation().toString() + ": ");
 		System.out.println(ofTasks);
 		String userChoice = inputSc.nextLine();
@@ -42,7 +42,7 @@ public class ExceptionHandler {
 		String ret = "";
 		for (Task t : ch) {
 			try {
-				Task edited = Edit.editTask(t, cc);
+				Task edited = ;
 				ret = ret + "\n " + edited.toString();
 			} catch ( Exception e) {
 				System.out.println("Sorry, you've entered something wrong again. Please try editing again!");
