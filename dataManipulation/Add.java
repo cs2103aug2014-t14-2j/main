@@ -13,12 +13,12 @@ import fileIo.FileIo;
 
 public class Add extends Command {
 	
-	private static String taskName = null;
-	private static String taskCategory = null;
-	private static String taskLocation = null;
-	private static String taskNote = null;
-	private static Date taskStart = null;
-	private static Date taskEnd = null;
+	private String taskName = null;
+	private String taskCategory = null;
+	private String taskLocation = null;
+	private String taskNote = null;
+	private Date taskStart = null;
+	private Date taskEnd = null;
 	private static TotalTaskList taskList = TotalTaskList.getInstance();
 	private static List<Task> tasks = TotalTaskList.getInstance().getList();
 	private static TaskFactory makeMyTask = TaskFactory.getInstance();
@@ -69,16 +69,29 @@ public class Add extends Command {
 		taskEnd = null;
 	}
 	
-	public static List<Subcommand> dismantleTask(Task taskToDismantle) {
+	public List<Subcommand> dismantleTask(Task taskToDismantle) {
 		
 		List<Subcommand> taskDetails = new ArrayList<Subcommand>();
 		
 		taskDetails.add(new Subcommand(Subcommand.TYPE.NAME, taskToDismantle.getName()));
-		taskDetails.add(new Subcommand(Subcommand.TYPE.CATEGORY, taskToDismantle.getCategory()));
-		taskDetails.add(new Subcommand(Subcommand.TYPE.LOCATION, taskToDismantle.getLocation()));
+		
+		if(taskToDismantle.getCategory() != null) {
+			taskDetails.add(new Subcommand(Subcommand.TYPE.CATEGORY, taskToDismantle.getCategory()));
+		}
+		
+		if(taskToDismantle.getLocation() != null) { 
+			taskDetails.add(new Subcommand(Subcommand.TYPE.LOCATION, taskToDismantle.getLocation()));
+		}
+		
 		taskDetails.add(new Subcommand(Subcommand.TYPE.START, taskToDismantle.getStartDate().toString()));
-		taskDetails.add(new Subcommand(Subcommand.TYPE.END, taskToDismantle.getEndDate().toString()));
-		taskDetails.add(new Subcommand(Subcommand.TYPE.NOTE, taskToDismantle.getNote()));
+		
+		if(taskToDismantle.getEndDate().getDay() != 0) {
+			taskDetails.add(new Subcommand(Subcommand.TYPE.END, taskToDismantle.getEndDate().toString()));
+		}
+		
+		if(taskToDismantle.getNote() != null) {
+			taskDetails.add(new Subcommand(Subcommand.TYPE.NOTE, taskToDismantle.getNote()));
+		}
 		
 		return taskDetails;
 	}
