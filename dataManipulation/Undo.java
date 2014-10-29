@@ -1,5 +1,6 @@
 package dataManipulation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import powerSearch.Searcher;
@@ -9,6 +10,7 @@ import dataEncapsulation.Task;
 
 public class Undo extends Command {
 	
+	private List<Subcommand> dummySubcommands = new ArrayList<Subcommand>();
 	private static List<Task> taskList = TotalTaskList.getInstance().getList();
 	private static String returnMessage;
 	
@@ -37,7 +39,7 @@ public class Undo extends Command {
 				
 			case "edit" :
 				Task preEditedTask = UndoRedoList.getInstance().popPreEditedTask();
-				Command negatedEditCommand = new Edit(Add.dismantleTask(preEditedTask));
+				Command negatedEditCommand = new Edit(new Add(dummySubcommands).dismantleTask(preEditedTask));
 				returnMessage = CommandHandler.executeCommand(negatedEditCommand);
 				break;
 				
