@@ -2,10 +2,10 @@
 package dataEncapsulation;
 
 import java.util.Comparator;
-public class sortTaskByName implements Comparator<Object> {
-	    public int compare(Object o1, Object o2) {
-	        Task s1 = (Task) o1;
-	        Task s2 = (Task) o2;
+public class sortTaskByName implements Comparator<Task> {
+	    public int compare(Task o1, Task o2) {
+	        Task s1 = o1;
+	        Task s2 = o2;
 	        return s1.getName().compareTo(s2.getName());
 	    }
 }
