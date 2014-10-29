@@ -218,7 +218,6 @@ public class CommandInterpreter {
 		if (commandType == COMMAND_TYPE.SORT) {
 			Subcommand.TYPE sortType = Subcommand.determineComponentType(string
 					.replaceAll("\\s+", "").toLowerCase());
-			System.out.println(sortType);
 			components.add(new Subcommand(sortType, ""));
 		} else {
 			while (string.length() > 0) {
