@@ -70,11 +70,13 @@ public class ExactMatchSearcher {
 		ArrayList<Task> answer = new ArrayList<Task>();
 		CharSequence temp = key;
 		for (int i = 0; i < taskList.size(); ++i) {
-			if (key.toLowerCase().equals(taskList.get(i).getLocation().toLowerCase())) {
-				answer.add(taskList.get(i));
-			}
-			else if(taskList.get(i).getLocation().toLowerCase().contains(temp)){
-				answer.add(taskList.get(i));
+			if(taskList.get(i).getHasLocation()){
+				if (key.toLowerCase().equals(taskList.get(i).getLocation().toLowerCase())) {
+					answer.add(taskList.get(i));
+				}
+				else if(taskList.get(i).getLocation().toLowerCase().contains(temp)){
+					answer.add(taskList.get(i));
+				}
 			}
 		}
 		return answer;
@@ -85,11 +87,13 @@ public class ExactMatchSearcher {
 		CharSequence temp = key;
 		key = key.toLowerCase();
 		for (int i = 0; i < taskList.size(); ++i) {
-			if (taskList.get(i).getNote().toLowerCase().contains(key.subSequence(0, key.length()))) {
-				answer.add(taskList.get(i));
-			}
-			else if(taskList.get(i).getNote().toLowerCase().contains(temp)){
-				answer.add(taskList.get(i));
+			if(taskList.get(i).getHasNote()){
+				if (taskList.get(i).getNote().toLowerCase().contains(key.subSequence(0, key.length()))) {
+					answer.add(taskList.get(i));
+				}
+				else if(taskList.get(i).getNote().toLowerCase().contains(temp)){
+					answer.add(taskList.get(i));
+				}
 			}
 		}
 		return answer;
@@ -100,8 +104,10 @@ public class ExactMatchSearcher {
 		Date lookfordate = Date.determineDate(comm); //create the Date class which he is looking for
 		int i;
 		for(i=0; i<taskList.size(); i++){
-			if(lookfordate.isEqual(taskList.get(i).getEndDate())){
-				tasksedited.add(taskList.get(i));
+			if(!taskList.get(i).getHasNoDeadline()){
+				if(lookfordate.isEqual(taskList.get(i).getEndDate())){
+					tasksedited.add(taskList.get(i));
+				}
 			}
 			if(lookfordate.isEqual(taskList.get(i).getStartDate())){
 				tasksedited.add(taskList.get(i));
@@ -109,7 +115,6 @@ public class ExactMatchSearcher {
 		}
 		return tasksedited;
 	}
-
 
 	private static ArrayList<Task> simpleSearchEndDate(String comm) {
 		ArrayList<Task> tasksedited = new ArrayList<Task>();
@@ -123,7 +128,18 @@ public class ExactMatchSearcher {
 		}
 		return tasksedited;
 	}
-
+	
+	public static ArrayList<Task> simpleSearchDate(Date lookfordate) {
+		ArrayList<Task> tasksedited = new ArrayList<Task>();
+		int i;
+		for(i=0; i<taskList.size(); i++){
+			if(lookfordate.isBefore(taskList.get(i).getEndDate()) || lookfordate.isEquals(taskList.get(i).getEndDate()) || lookfordate.isEquals(taskList.get(i).getStartDate())){
+				tasksedited.add(taskList.get(i)); //supposed to show all the tasks that have an endDate after the date searched for
+			}
+		}
+		return tasksedited;
+	}
+	
 	private static ArrayList<Task> simpleSearchStartDate(String comm) {
 		ArrayList<Task> tasksedited = new ArrayList<Task>();
 		Date lookfordate = Date.determineDate(comm); //create the Date class which he is looking for
