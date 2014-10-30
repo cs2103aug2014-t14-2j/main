@@ -184,6 +184,21 @@ public class CombinedAddEditRemoveUndoTest {
 		CommandHandler.executeCommand(editTestCaseTwoFour);
 
 		// EDITING note "Say hi to Mr. Muthu"
+		/**
+		 * Instead of making the subcommand and command like you are below
+		 * 
+		 * subcommand.add(new Subcommand(Subcommand.TYPE.NOTE, "Say hi to Mr. Muthu"));
+		 * Command editTestCaseTwoFive = new Edit(subcommand);
+		 * 
+		 * You need to say
+		 * 
+		 * String editCommand = "edit /"Buy Curry/" note "Say hi to Mr. Muthu";
+		 * Command editTestCaseTwoFive = CommandInterpreter.getInstance().formCommand(editCommand);
+		 * 
+		 * etc. Don't manually make the commands. Put them through Command Interpreter
+		 * so we can get a full view of how well the program works.
+		 * 
+		 */
 
 		subcommand.add(new Subcommand(Subcommand.TYPE.NOTE, "Say hi to Mr. Muthu"));
 		
