@@ -218,7 +218,7 @@ public class Task {
 		int month = cal.get(Calendar.MONTH) + 1;
 		int year = cal.get(Calendar.YEAR);
 		Date today = new Date(day, month, year);
-		if(enddate.isBefore(today))
+		if(enddate.isBefore(today) || enddate.equals(today))
 			isComplete = true;
 		return isComplete;
 	}
