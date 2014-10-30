@@ -18,12 +18,13 @@ public class SearcherTest {
 	public void testSearch() throws Exception {
 		List<Task> tasks = new ArrayList<Task>();
 		Date temp1 = new Date();
-		tasks.add(new Task("Andrew", "A", temp1, new Date(25,9,2018)));
+		String location = new String("CSC");
+		tasks.add(new Task("Andrew", "A", location, temp1, new Date(25,9,2018)));
 		tasks.add(new Task("Bravo", "B", temp1, new Date(26,9,2015)));
 		tasks.add(new Task("Charlie", "C", temp1, new Date(25,12,2014)));
 		
 		List<Subcommand> listCC = new ArrayList<Subcommand>();
-		listCC.add(new Subcommand(Subcommand.TYPE.TITLE, "ravo"));
+		listCC.add(new Subcommand(Subcommand.TYPE.LOCATION, "CSC"));
 		System.out.println(Searcher.search(listCC, tasks));
 	}
 
