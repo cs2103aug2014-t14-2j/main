@@ -1,3 +1,7 @@
+/**
+ * @author nellystix
+ */
+
 package dataManipulation;
 
 import java.util.Stack;
