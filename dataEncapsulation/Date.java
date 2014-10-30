@@ -4,7 +4,8 @@ package dataEncapsulation;
 import java.time.*;
 import java.util.*;
 public class Date {
-	private int day, month, year;
+	private int day, month, year, hours, minutes, seconds;
+	private long time;
 	private Calendar cal = GregorianCalendar.getInstance();
 	
 	private static boolean dmFormat = true;
@@ -15,15 +16,36 @@ public class Date {
 			this.setMonth(usermonth);
 			this.setYear(useryear);
 			cal.set(useryear, usermonth, userday);
+			this.setHours(0);
+			this.setMinutes(0);
+			this.setSeconds(0);
+			this.setTime(cal.getTimeInMillis());
 		}
 	}
 
+	public Date(int userday, int usermonth, int useryear, int hours, int minutes, int seconds) {
+		if(dateValid(userday, usermonth, useryear)){
+			this.setDay(userday);
+			this.setMonth(usermonth);
+			this.setYear(useryear);
+			this.setHours(hours);
+			this.setMinutes(minutes);
+			this.setSeconds(seconds);
+			cal.set(useryear, usermonth, userday, hours, minutes, seconds);
+			this.setTime(cal.getTimeInMillis());
+		}
+	}
+	
 	public Date(){
 		cal = Calendar.getInstance();
 		this.day = cal.get(Calendar.DATE);
 		this.month = cal.get(Calendar.MONTH) + 1;
-		this.year = cal.get(Calendar.YEAR);
+		this.year = cal.get(Calendar.YEAR);getClass();
+		this.setHours(0);
+		this.setMinutes(0);
+		this.setSeconds(0);
 		cal.set(year, month, day);
+		this.setTime(cal.getTimeInMillis());
 	}
 
 	public boolean dateValid(int userday, int usermonth, int useryear){
@@ -253,5 +275,37 @@ public class Date {
 			break;
 		}
 		return answer + " " + this.getDay() + ", " + this.getYear();
+	}
+
+	public long getTime() {
+		return time;
+	}
+
+	public void setTime(long time) {
+		this.time = time;
+	}
+
+	public int getMinutes() {
+		return minutes;
+	}
+
+	public void setMinutes(int minutes) {
+		this.minutes = minutes;
+	}
+
+	public int getHours() {
+		return hours;
+	}
+
+	public void setHours(int hours) {
+		this.hours = hours;
+	}
+
+	public int getSeconds() {
+		return seconds;
+	}
+
+	public void setSeconds(int seconds) {
+		this.seconds = seconds;
 	}
 }
