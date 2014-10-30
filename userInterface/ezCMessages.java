@@ -120,7 +120,8 @@ public class ezCMessages {
 		
 		for (int i = 1; i < tasks.size(); ++i) {
 			Task nextTask = tasks.get(i);
-			allTasks = allTasks + NEW_LINE + nextTask.toPrint();
+			String taskToPrint = nextTask.toPrint();
+			allTasks = allTasks + NEW_LINE + taskToPrint;
 		}
 		
 		return allTasks;
