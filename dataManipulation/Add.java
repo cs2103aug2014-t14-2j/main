@@ -1,3 +1,7 @@
+/**
+ * @author nellystix
+ */
+
 package dataManipulation;
 
 import java.util.ArrayList;
@@ -8,7 +12,6 @@ import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
-import dataEncapsulation.UndoRedoProcessor;
 import fileIo.FileIo;
 
 public class Add extends Command {
@@ -41,7 +44,6 @@ public class Add extends Command {
 
 		else {
 			taskList.add(newTask);
-			UndoRedoProcessor.undoCommandStack.add(new Add(subcommands));
 			FileIo IoStream = FileIo.getInstance();
 			IoStream.rewriteFile();
 			flushSubcommand();
