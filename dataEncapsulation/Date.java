@@ -48,14 +48,11 @@ public class Date {
 	}
 
 	public boolean isEqual(Date anotherdate){
-		boolean answer = false;
-		if(anotherdate instanceof Date && anotherdate.getDay()!=0){ //avoids the case whereby the enddate has not been stated by the user
-			Calendar calcompare = anotherdate.getCal();
-			if(cal.equals(calcompare)){
-				return true;
-			}
+		if(anotherdate.getDay() == day && anotherdate.getMonth() == month && anotherdate.getYear() == year) {
+			return true;
+		} else {
+			return false;
 		}
-		return answer;
 	}
 
 	/**
