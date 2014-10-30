@@ -3,8 +3,10 @@ package powerSearch;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.commons.collections.ListUtils;
 
+import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 import dataManipulation.Subcommand;
 
@@ -123,5 +125,99 @@ public class Searcher {
 		else
 			return list;
 		}
+	}
+	
+	public static String searchTimeSlot(List<Task> list, Date dt){
+		String answer = new String();
+		List<Task> search = new ArrayList<Task>();
+		int[] seconds = new int[86401];
+		for(int k=1; k<=86400; k++){
+			seconds[k] = 0;
+		}
+		
+		search = ExactMatchSearcher.simpleSearchDate(dt);
+		
+		for(int i=0; i<search.size(); i++){
+			if(search.get(i).getEndDate().isEquals(dt) && search.get(i).getStartDate().isEquals(dt)){ //the task starts and ends on same day
+				Date edtemp = search.get(i).getEndDate();
+				Date sdtemp = search.get(i).getStartDate();
+
+				int sdhours = sdtemp.getHours();
+				int sdmins = sdtemp.getMinutes();
+				int sdseconds = sdtemp.getSeconds();
+				int totalsdseconds = sdseconds + sdhours*60*60 + sdmins*60;
+
+				int edhours = edtemp.getHours();
+				int edmins = edtemp.getMinutes();
+				int edseconds = edtemp.getSeconds();
+				int totaledseconds = edseconds + edhours*60*60 + edmins*60;
+
+				for(int j=totalsdseconds; j<=totaledseconds; j++){
+					seconds[j]++;
+				}
+			}
+			else if(search.get(i).getStartDate().isEquals(dt)){ //the task starts on the mentioned date
+				Date sdtemp = search.get(i).getStartDate();
+				int sdhours = sdtemp.getHours();
+				int sdmins = sdtemp.getMinutes();
+				int sdseconds = sdtemp.getSeconds();
+				int totalsdseconds = sdseconds + sdhours*60*60 + sdmins*60;
+
+				for(int j=totalsdseconds; j<=seconds.length; j++){
+					seconds[j]++;
+				}
+			}
+			else if(search.get(i).getEndDate().isEquals(dt)){ //the task ends on the mentioned date
+				Date edtemp = search.get(i).getEndDate();
+
+				int edhours = edtemp.getHours();
+				int edmins = edtemp.getMinutes();
+				int edseconds = edtemp.getSeconds();
+				int totaledseconds = edseconds + edhours*60*60 + edmins*60;
+
+				for(int j=1; j<=totaledseconds; j++){
+					seconds[j]++;
+				}
+			}
+			else if(dt.isBefore(search.get(i).getEndDate())){
+				answer = "None of the slots on " + dt.toString() + " are free to be scheduled.\n";
+				return answer;
+			}
+		}
+		int start, end;
+		start = 0;
+		end = 0;
+		for(int i=0; i<seconds.length; i++){
+			if(seconds[i]==0 && i==0){
+				start = i;
+			}
+			if(i>=1 && i<=86400){
+				if(seconds[i]==0 && seconds[i-1]>0){
+					start = i;
+				}
+				if(seconds[i]==0 && seconds[i+1]>0){
+					end = i;
+					break;
+				}
+			}
+		}
+		if(end==0){
+			answer = "None of the slots on " + dt.toString() + " are free to be scheduled.\n";
+			return answer;
+		}
+		int starthour, startmin, startsec, endhour, endmin, endsec;
+		
+		starthour = start/3600;
+		startmin = start/60 - starthour*60;
+		startsec = start - startmin*60 - starthour*3600;
+		
+		endhour = end/3600;
+		endmin = end/60 - endhour*60;
+		endsec = end - endmin*60 - endhour*3600;
+		
+		answer = "Free Slot Found on " + dt.toString() + '\n';
+		answer = answer + starthour + ":" + startmin + ":" + startsec + " to " + endhour + ":" + endmin + ":" + endsec + '\n';
+
+		return answer;
 	}
 }
