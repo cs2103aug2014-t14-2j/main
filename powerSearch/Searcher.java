@@ -136,7 +136,10 @@ public class Searcher {
 		}
 		
 		search = ExactMatchSearcher.simpleSearchDate(dt);
-		
+		if(search.isEmpty()){
+			answer = "All slots on " + dt.toString() + " are free to be scheduled.\n";
+			return answer;
+		}
 		for(int i=0; i<search.size(); i++){
 			if(search.get(i).getEndDate().isEquals(dt) && search.get(i).getStartDate().isEquals(dt)){ //the task starts and ends on same day
 				Date edtemp = search.get(i).getEndDate();
