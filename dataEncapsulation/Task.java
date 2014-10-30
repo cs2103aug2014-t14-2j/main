@@ -213,12 +213,8 @@ public class Task {
 		} else if (hasNoDeadline == true) {
 			return isComplete;
 		}
-		Calendar cal = GregorianCalendar.getInstance();
-		int day = cal.get(Calendar.DATE);
-		int month = cal.get(Calendar.MONTH) + 1;
-		int year = cal.get(Calendar.YEAR);
-		Date today = new Date(day, month, year);
-		if(enddate.isBefore(today))
+		Date today = new Date();
+		if(enddate.isBefore(today) && !enddate.isEqual(today))
 			isComplete = true;
 		return isComplete;
 	}
