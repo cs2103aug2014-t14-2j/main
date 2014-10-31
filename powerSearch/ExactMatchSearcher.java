@@ -129,12 +129,12 @@ public class ExactMatchSearcher {
 		return tasksedited;
 	}
 	
-	public static ArrayList<Task> simpleSearchDate(Date lookfordate) {
+	public static ArrayList<Task> simpleSearchDate(Date lookfordate, List<Task> list) {
 		ArrayList<Task> tasksedited = new ArrayList<Task>();
 		int i;
-		for(i=0; i<taskList.size(); i++){
-			if(lookfordate.isBefore(taskList.get(i).getEndDate()) || lookfordate.isEquals(taskList.get(i).getEndDate()) || lookfordate.isEquals(taskList.get(i).getStartDate())){
-				tasksedited.add(taskList.get(i)); //supposed to show all the tasks that have an endDate after the date searched for
+		for(i=0; i<list.size(); i++){
+			if(lookfordate.isBefore(list.get(i).getEndDate()) || lookfordate.isEquals(list.get(i).getEndDate()) || lookfordate.isEquals(list.get(i).getStartDate())){
+				tasksedited.add(list.get(i)); //supposed to show all the tasks that have an endDate after the date searched for
 			}
 		}
 		return tasksedited;
