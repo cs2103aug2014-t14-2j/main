@@ -135,7 +135,7 @@ public class Searcher {
 			seconds[k] = 0;
 		}
 		
-		search = ExactMatchSearcher.simpleSearchDate(dt);
+		search = ExactMatchSearcher.simpleSearchDate(dt, list);
 		if(search.isEmpty()){
 			answer = "All slots on " + dt.toString() + " are free to be scheduled.\n";
 			return answer;
@@ -194,7 +194,7 @@ public class Searcher {
 			if(seconds[i]==0 && i==0){
 				start = i;
 			}
-			if(i>=1 && i<=86400){
+			if(i>=1 && i<86400){
 				if(seconds[i]==0 && seconds[i-1]>0){
 					start = i;
 				}
@@ -204,7 +204,7 @@ public class Searcher {
 				}
 			}
 		}
-		if(end==0){
+		if(end==0 && start==0){
 			answer = "None of the slots on " + dt.toString() + " are free to be scheduled.\n";
 			return answer;
 		}
