@@ -42,7 +42,7 @@ public class ExceptionHandler {
 		String ret = "";
 		for (Task t : ch) {
 			try {
-				Task edited = Edit.editTask(t, cc);
+				Task edited = new Edit(cc).editTask(t, cc);
 				ret = ret + "\n " + edited.toString();
 			} catch ( Exception e) {
 				System.out.println("Sorry, you've entered something wrong again. Please try editing again!");

@@ -1,5 +1,10 @@
-package dataManipulation;
+/**
+ * 
+ * @author nellystix
+ * 
+ **/
 
+package dataManipulation;
 
 import java.util.List;
 
@@ -46,7 +51,7 @@ public class Edit extends Command {
 		}
 	}
 	
-	public static Task editTask(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
+	public Task editTask(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
 		
 		Task editedTask = setTaskAttributes(toEdit, taskAttributes);
 		

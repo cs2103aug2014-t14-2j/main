@@ -1,5 +1,9 @@
 /**
  * @author nellystix
+ * 
+ * This class processes the methods within the Undo and Redo classes and holds the stack of
+ * commands to undo and redo.
+ *
  */
 
 package dataManipulation;
