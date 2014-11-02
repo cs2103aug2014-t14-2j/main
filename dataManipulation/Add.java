@@ -13,6 +13,7 @@ import userInterface.CommandType.COMMAND_TYPE;
 import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
 import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
@@ -75,7 +76,7 @@ public class Add extends Command {
 		taskEnd = null;
 	}
 	
-	public List<Subcommand> dismantleTask(Task taskToDismantle) {
+	public List<Subcommand> dismantleTask(Task taskToDismantle) throws BadSubcommandException, BadSubcommandArgException {
 		
 		List<Subcommand> taskDetails = new ArrayList<Subcommand>();
 		

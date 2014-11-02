@@ -1,4 +1,8 @@
 package dataManipulation;
+
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
+
 /**
  * 
  * The data associated with a particular command. Note that certain component
@@ -75,7 +79,7 @@ public class Subcommand {
 	private String contents;
 	
 	public Subcommand(TYPE componentType, 
-			String componentContents) throws IllegalArgumentException {
+			String componentContents) throws BadSubcommandException, BadSubcommandArgException {
 		type = componentType;
 		contents = componentContents;
 		
@@ -90,9 +94,9 @@ public class Subcommand {
 		return contents;
 	}
 	
-	private void checkValidity() throws IllegalArgumentException {
+	private void checkValidity() throws BadSubcommandException, BadSubcommandArgException {
 		if (type == TYPE.INVALID) {
-			throw new IllegalArgumentException("invalid subcommand type");
+			throw new BadSubcommandException("invalid subcommand type");
 		}
 		
 		switch (type) {
@@ -111,7 +115,7 @@ public class Subcommand {
 		return;
 	}
 	
-	private void checkParenContents() {
+	private void checkParenContents() throws BadSubcommandArgException {
 		boolean isValid = false;
 		
 		if (contents.equals(PAREN.OPEN_PAREN.toString())) {
@@ -121,11 +125,11 @@ public class Subcommand {
 		}
 		
 		if (!isValid) {
-			throw new IllegalArgumentException("invalid paren specified");
+			throw new BadSubcommandArgException("invalid paren specified");
 		}
 	}
 
-	private void checkFrequencyContents() throws IllegalArgumentException {
+	private void checkFrequencyContents() throws BadSubcommandArgException {
 		boolean isValid = false;
 		
 		if (contents.equals(FREQUENCY.DAILY.toString())) {
@@ -141,11 +145,11 @@ public class Subcommand {
 		}
 		
 		if (!isValid) {
-			throw new IllegalArgumentException("invalid frequency specified");
+			throw new BadSubcommandArgException("invalid frequency specified");
 		}
 	}
 	
-	private void checkDateTypeContents() throws IllegalArgumentException {
+	private void checkDateTypeContents() throws BadSubcommandArgException {
 		boolean isValid = false;
 		
 		if (contents.equals(DATE_TYPE.DAY_MONTH.toString())) {
@@ -155,7 +159,7 @@ public class Subcommand {
 		}
 		
 		if (!isValid) {
-			throw new IllegalArgumentException("invalid date format specified");
+			throw new BadSubcommandArgException("invalid date format specified");
 		}
 	}
 	

@@ -76,7 +76,8 @@ public class CommandInterpreter {
 	// ------------------------------------
 	// -----------------------------------------------------------------------------
 
-	private Command makeCommand(COMMAND_TYPE type, List<Subcommand> subcommands) throws BadCommandException {
+	private Command makeCommand(COMMAND_TYPE type, List<Subcommand> subcommands) 
+			throws BadCommandException, BadSubcommandException {
 		switch (type) {
 		case ADD:
 			return new Add(subcommands);
@@ -177,8 +178,13 @@ public class CommandInterpreter {
 	 * 
 	 * @param input
 	 * @return
+	 * @throws BadSubcommandException 
+	 * @throws BadCommandException 
+	 * @throws BadSubcommandArgException 
 	 */
-	private Command determineSpecialCommand(String input) {
+	private Command determineSpecialCommand(String input) 
+			throws BadCommandException, BadSubcommandException, 
+			BadSubcommandArgException {
 		input = input.toLowerCase();
 
 		String[] splitInput = splitString(input);
@@ -291,9 +297,10 @@ public class CommandInterpreter {
 	 * @param string
 	 * @return
 	 * @throws BadSubcommandArgException 
+	 * @throws BadSubcommandException 
 	 */
 	private Subcommand getFirstComponent(COMMAND_TYPE commandType, String string) 
-			throws BadSubcommandArgException {
+			throws BadSubcommandArgException, BadSubcommandException {
 		string = string.trim(); // remove whitespace
 
 		Subcommand.TYPE componentType = determineFirstComponentType(commandType);
