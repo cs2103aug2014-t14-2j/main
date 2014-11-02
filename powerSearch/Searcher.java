@@ -218,9 +218,28 @@ public class Searcher {
 		endmin = end/60 - endhour*60;
 		endsec = end - endmin*60 - endhour*3600;
 		
+		String startTime = getTimeString(starthour, startmin);
+		String endTime = getTimeString(endhour, endmin);
+		
 		answer = "Free Slot Found on " + dt.toString() + '\n';
-		answer = answer + starthour + ":" + startmin + ":" + startsec + " to " + endhour + ":" + endmin + ":" + endsec + '\n';
+		answer = answer + startTime + " to " + endTime + '\n';
 
 		return answer;
+	}
+
+	/**
+	 * @author Natalie Rawle
+	 * Takes time in hours and minutes and returns the string of that time
+	 * @return format: "hour:min" (ex. "10:04")
+	 */
+	private static String getTimeString(int hour, int min) {
+		String hourString = String.valueOf(hour);
+		String minuteString = String.valueOf(min);
+		
+		if (min < 10) {
+			minuteString = "0" + minuteString;
+		}
+		
+		return hourString + ":" + minuteString;
 	}
 }
