@@ -61,17 +61,7 @@ public class Sort extends Command {
 	@Override
 	protected void checkValidity() {
 		checkForComponentAmount(1);
-		
-		boolean hasName =
-				checkForSpecificComponent(Subcommand.TYPE.BYNAME);
-		boolean hasStart = 
-				checkForSpecificComponent(Subcommand.TYPE.BYSTART);
-		boolean hasEnd = 
-				checkForSpecificComponent(Subcommand.TYPE.BYEND);
-		
-		if (!hasStart && !hasEnd && !hasName) {
-			throw new IllegalArgumentException("invalid subcommand");
-		}
+		super.checkValidity();
 	}
 
 }

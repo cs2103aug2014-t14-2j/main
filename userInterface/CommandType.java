@@ -141,37 +141,57 @@ public class CommandType {
 	}
 
 	private boolean isAllType(TYPE subcommandType) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	private boolean isCategoryType(TYPE subcommandType) {
-		// TODO Auto-generated method stub
-		return false;
+		switch (subcommandType) {
+			case CATEGORY :
+				return true;
+			default :
+				return false;
+		}
 	}
 
 	private boolean isChangeDateTypeType(TYPE subcommandType) {
-		// TODO Auto-generated method stub
-		return false;
+		switch (subcommandType) {
+		case DATE_TYPE :
+			return true;
+		default :
+			return false;
+		}
 	}
 
 	private boolean isCompletedType(TYPE subcommandType) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	private boolean isEditType(TYPE subcommandType) {
-		// TODO Auto-generated method stub
-		return false;
+		switch (subcommandType) {
+		case NAME :
+			return true;
+		case CATEGORY :
+			return true;
+		case END :
+			return true;
+		case LOCATION :
+			return true;
+		case NOTE :
+			return true;
+		case START :
+			return true;
+		case TITLE :
+			return true;
+		default :
+			return false;
+		}
 	}
 
 	private boolean isFinishType(TYPE subcommandType) {
-		// TODO Auto-generated method stub
-		return false;
+		return isAddType(subcommandType);
 	}
 
 	private boolean isHelpType(TYPE subcommandType) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -181,32 +201,73 @@ public class CommandType {
 	}
 
 	private boolean isRemoveType(TYPE subcommandType) {
-		// TODO Auto-generated method stub
-		return false;
+		return isAddType(subcommandType);
 	}
 
 	private boolean isRepeatType(TYPE subcommandType) {
-		// TODO Auto-generated method stub
-		return false;
+		switch (subcommandType) {
+			case FREQUENCY :	 // valid
+				return true;
+			case NAME :
+				return true;
+			case START :
+				return true;
+			case END :
+				return true;
+			default :
+				return false;
+		}
 	}
 
 	private boolean isSearchType(TYPE subcommandType) {
-		// TODO Auto-generated method stub
-		return false;
+		switch (subcommandType) {
+			case AND :
+				return true;
+			case CATEGORY :
+				return true;
+			case DATE :
+				return true;
+			case END :
+				return true;
+			case LOCATION :
+				return true;
+			case NAME :
+				return true;
+			case NOTE :
+				return true;
+			case OR :
+				return true;
+			case PAREN :
+				return true;
+			case START :
+				return true;
+			case TEXT:
+				return true;
+			case TITLE :
+				return true;
+			default :
+				return false;
+		}
 	}
 
 	private boolean isSortType(TYPE subcommandType) {
-		// TODO Auto-generated method stub
-		return false;
+		switch (subcommandType) {
+			case BYNAME :
+				return true;
+			case BYSTART :
+				return true;
+			case BYEND :
+				return true;
+			default :
+				return false;
+		}
 	}
 
 	private boolean isTodayType(TYPE subcommandType) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	private boolean isUndoType(TYPE subcommandType) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }

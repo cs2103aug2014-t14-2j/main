@@ -36,13 +36,8 @@ public class ChangeDateType extends Command {
 
 	@Override
 	protected void checkValidity() {
-		checkForComponentAmount(1);
-		boolean isComponentDateType = 
-			checkForSpecificComponent(Subcommand.TYPE.DATE_TYPE);
-		
-		if (!isComponentDateType) {
-			throw new IllegalArgumentException("invalid subcommand");
-		}
+		super.checkValidity();
+		checkForNoDuplicateSubcommands();
 	}
 
 }

@@ -42,7 +42,8 @@ public class Completed extends Command {
 
 	@Override
 	protected void checkValidity() {
-		checkForNoComponents();
+		super.checkValidity();
+		checkForNoDuplicateSubcommands();
 	}
 
 }

@@ -49,8 +49,8 @@ public class CommandInterpreter {
 		}
 
 		String commandTypeString = getFirstWord(input);
-		COMMAND_TYPE commandType = commands
-				.determineCommandType(commandTypeString);
+		COMMAND_TYPE commandType = 
+				CommandType.determineCommandType(commandTypeString);
 		Command command;
 
 		List<Subcommand> components;

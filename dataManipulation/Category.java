@@ -18,12 +18,7 @@ public class Category extends Command {
 	@Override
 	protected void checkValidity() {
 		checkForComponentAmount(1);
-		boolean isComponentCategory = 
-				checkForSpecificComponent(Subcommand.TYPE.CATEGORY);
-			
-			if (!isComponentCategory) {
-				throw new IllegalArgumentException("invalid subcommand");
-			}
+		super.checkValidity();
 	}
 
 }

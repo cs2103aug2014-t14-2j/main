@@ -40,9 +40,4 @@ public class All extends Command {
 		return messages.getStringOfTasks(list);
 	}
 
-	@Override
-	protected void checkValidity() {
-		checkForNoComponents();
-	}
-
 }

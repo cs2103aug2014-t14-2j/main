@@ -40,9 +40,4 @@ public class Today extends Command {
 		return messages.getStringOfTasks(results);
 	}
 
-	@Override
-	protected void checkValidity() {
-		checkForNoComponents();
-	}
-
 }

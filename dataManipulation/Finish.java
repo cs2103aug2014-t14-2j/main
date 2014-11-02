@@ -55,13 +55,8 @@ public class Finish extends Command {
 
 	@Override
 	protected void checkValidity() {
-		checkForComponentAmount(1);
-		boolean hasTitleComponent =
-				checkForSpecificComponent(Subcommand.TYPE.NAME);
-		
-		if (!hasTitleComponent) {
-			throw new IllegalArgumentException("invalid subcommand");
-		}
+		super.checkValidity();
+		checkForNoDuplicateSubcommands();
 	}
 
 }

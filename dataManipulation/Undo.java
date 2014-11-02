@@ -91,9 +91,4 @@ public class Undo extends Command {
 		}
 	}
 
-	@Override
-	protected void checkValidity() {
-		checkForNoComponents();
-	}
-
 }

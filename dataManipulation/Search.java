@@ -21,40 +21,4 @@ public class Search extends Command {
 		return messages.getStringOfTasks(results);
 	}
 
-	@Override
-	protected void checkValidity() {
-		for (int i = 0; i < subcommands.size(); ++i) {
-			Subcommand component = subcommands.get(i);
-			
-			switch (component.getType()) {
-				case AND :
-					break;	// valid
-				case CATEGORY :
-					break;
-				case DATE :
-					break;
-				case END :
-					break;
-				case LOCATION :
-					break;
-				case NAME :
-					break;
-				case NOTE :
-					break;
-				case OR :
-					break;
-				case PAREN :
-					break;
-				case START :
-					break;
-				case TEXT:
-					break;
-				case TITLE :
-					break;
-				default :
-					throw new IllegalArgumentException("invalid subcommand");
-			}
-		}
-	}
-
 }
