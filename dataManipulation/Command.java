@@ -1,6 +1,7 @@
 package dataManipulation;
 
 import java.util.List;
+
 import userInterface.CommandType;
 import userInterface.CommandType.COMMAND_TYPE;
 
@@ -70,7 +71,16 @@ public abstract class Command {
 		return subcommands;
 	}
 	
-	protected abstract void checkValidity();
+	protected void checkValidity() {
+		for (int i = 0; i < subcommands.size(); ++i) {
+			Subcommand component = subcommands.get(i);
+			CommandType checker = CommandType.getInstance();
+
+			if (!checker.isSubcommand(type, component.getType())) {
+				throw new IllegalArgumentException("invalid subcommand");
+			}
+		}
+	}
 
 	protected void checkForNoComponents() throws IllegalArgumentException {
 		if (!subcommands.isEmpty()) {
