@@ -1,6 +1,8 @@
 package dataManipulation;
 
 import java.util.List;
+import userInterface.CommandType;
+import userInterface.CommandType.COMMAND_TYPE;
 
 /**
  * A class for holding the command in an easy-to-manage way.
@@ -42,7 +44,7 @@ import java.util.List;
  */
 
 public abstract class Command {
-	protected String type;
+	protected COMMAND_TYPE type;
 	protected List<Subcommand> subcommands;
 	
 	public abstract String execute() throws Exception;
@@ -54,13 +56,13 @@ public abstract class Command {
 			throw new IllegalArgumentException("null argument for Command constructor");
 		}
 		
-		type = commandType;
+		type = CommandType.determineCommandType(commandType);
 		subcommands = commandComponents;
 		
 		checkValidity();
 	}
 	
-	public String getType() {
+	public COMMAND_TYPE getType() {
 		return type;
 	}
 	
