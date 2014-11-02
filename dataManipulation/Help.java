@@ -2,12 +2,14 @@ package dataManipulation;
 
 import java.util.List;
 
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
 import userInterface.ezCMessages;
 
 public class Help extends Command {
 
-	public Help(List<Subcommand> commandComponents)
-			throws IllegalArgumentException {
+	public Help(List<Subcommand> commandComponents) 
+			throws BadCommandException, BadSubcommandException {
 		super("help", commandComponents);
 		}
 
@@ -17,7 +19,7 @@ public class Help extends Command {
 	}
 
 	@Override
-	protected void checkValidity() {
+	protected void checkValidity() throws BadSubcommandException {
 		super.checkValidity();
 		checkForNoDuplicateSubcommands();
 	}

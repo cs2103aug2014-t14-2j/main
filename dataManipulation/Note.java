@@ -2,10 +2,13 @@ package dataManipulation;
 
 import java.util.List;
 
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
+
 public class Note extends Command {
 
-	public Note(List<Subcommand> commandComponents)
-			throws IllegalArgumentException {
+	public Note(List<Subcommand> commandComponents) 
+			throws BadCommandException, BadSubcommandException {
 		super("note", commandComponents);
 	}
 
@@ -16,7 +19,7 @@ public class Note extends Command {
 	}
 
 	@Override
-	protected void checkValidity() {
+	protected void checkValidity() throws BadSubcommandException {
 		super.checkValidity();
 		checkForNoDuplicateSubcommands();
 	}

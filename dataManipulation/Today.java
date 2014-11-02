@@ -6,13 +6,15 @@ import java.util.List;
 import powerSearch.ExactMatchSearcher;
 import powerSearch.Searcher;
 import userInterface.ezCMessages;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 
 public class Today extends Command {
 
 	public Today(List<Subcommand> commandComponents)
-			throws IllegalArgumentException {
+			throws BadCommandException, BadSubcommandException {
 		super("today", commandComponents);
 	}
 

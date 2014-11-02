@@ -2,6 +2,8 @@ package dataManipulation;
 
 import java.util.List;
 
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Task;
 import powerSearch.Searcher;
 import userInterface.ezCMessages;
@@ -9,7 +11,7 @@ import userInterface.ezCMessages;
 public class Search extends Command {
 
 	public Search(List<Subcommand> commandComponents)
-			throws IllegalArgumentException {
+			throws BadCommandException, BadSubcommandException {
 		super("search", commandComponents);
 	}
 

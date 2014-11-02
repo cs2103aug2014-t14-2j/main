@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import userInterface.ezCMessages;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Task;
 
 public class Completed extends Command {
 
 	public Completed(List<Subcommand> commandComponents)
-			throws IllegalArgumentException {
+			throws BadCommandException, BadSubcommandException {
 		super("completed", commandComponents);
 	}
 
@@ -41,7 +43,7 @@ public class Completed extends Command {
 	}
 
 	@Override
-	protected void checkValidity() {
+	protected void checkValidity() throws BadSubcommandException {
 		super.checkValidity();
 		checkForNoDuplicateSubcommands();
 	}

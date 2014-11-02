@@ -11,6 +11,8 @@ import java.util.List;
 import powerSearch.ExactMatchSearcher;
 import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 import fileIo.FileIo;
@@ -21,7 +23,7 @@ public class Edit extends Command {
 	private static ezCMessages messages = ezCMessages.getInstance();
 
 	public Edit(List<Subcommand> commandComponents)
-			throws IllegalArgumentException {
+			throws BadCommandException, BadSubcommandException {
 		super("edit", commandComponents);
 	}
 
@@ -101,7 +103,7 @@ public class Edit extends Command {
 	}
 
 	@Override
-	protected void checkValidity() {
+	protected void checkValidity() throws BadSubcommandException {
 		super.checkValidity();
 		checkForNoDuplicateSubcommands();
 	}

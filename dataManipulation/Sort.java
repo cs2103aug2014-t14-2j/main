@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import userInterface.ezCMessages;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Task;
 import dataEncapsulation.sortTaskByEndDate;
 import dataEncapsulation.sortTaskByName;
@@ -20,7 +22,7 @@ public class Sort extends Command {
 
 
 	public Sort(List<Subcommand> commandComponents)
-			throws IllegalArgumentException {
+			throws BadCommandException, BadSubcommandException {
 		super("sort", commandComponents);
 	}
 
@@ -59,7 +61,7 @@ public class Sort extends Command {
 	}
 	
 	@Override
-	protected void checkValidity() {
+	protected void checkValidity() throws BadSubcommandException {
 		checkForComponentAmount(1);
 		super.checkValidity();
 	}

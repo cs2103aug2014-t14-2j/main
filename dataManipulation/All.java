@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import userInterface.ezCMessages;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Task;
 
 public class All extends Command {
 
 	public All(List<Subcommand> commandComponents)
-			throws IllegalArgumentException {
+			throws BadCommandException, BadSubcommandException {
 		super("all", commandComponents);
 	}
 

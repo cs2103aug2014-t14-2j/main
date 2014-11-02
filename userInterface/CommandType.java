@@ -1,5 +1,9 @@
 package userInterface;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import dataEncapsulation.BadCommandException;
 import dataManipulation.Subcommand;
 import dataManipulation.Subcommand.TYPE;
 
@@ -33,7 +37,8 @@ public class CommandType {
 		return records;
 	}
 
-	public static COMMAND_TYPE determineCommandType(String commandTypeString) {
+	public static COMMAND_TYPE determineCommandType(String commandTypeString) 
+			throws BadCommandException {
 		assert(commandTypeString != null);
 		commandTypeString = commandTypeString.trim();
 		String lowerCaseCommand = commandTypeString.toLowerCase();
@@ -80,7 +85,7 @@ public class CommandType {
 		case "view" :
 			return COMMAND_TYPE.SEARCH;
 		default :
-			throw new IllegalArgumentException("unrecognized command type");
+			throw new BadCommandException("unrecognized command type");
 		}
 	}
 
@@ -119,6 +124,140 @@ public class CommandType {
 		default :
 			return false;
 		}
+	}
+
+	/**
+	 * This method returns the name of all subcommand types
+	 * as they are visible to the user. That is, instead of returning
+	 * Subcommand.TYPE.FREQUENCY, it will return a list of the strings
+	 * once, weekly, monthly, yearly, and so on.
+	 * @param commandType
+	 * @return
+	 */
+	public List<String> getSubcommands(COMMAND_TYPE commandType) {
+		switch (commandType) {
+		case ADD :
+			return getAddSubcommands();
+		case ALL :
+			return getAllSubcommands();
+		case CATEGORY :
+			return getCategorySubcommands();
+		case CHANGE_DATE_TYPE :
+			return getChangeDateTypeSubcommands();
+		case COMPLETED :
+			return getCompletedSubcommands();
+		case EDIT :
+			return getEditSubcommands();
+		case FINISH :
+			return getFinishSubcommands();
+		case HELP :
+			return getHelpSubcommands();
+		case NOTE :
+			return getNoteSubcommands();
+		case REMOVE :
+			return getRemoveSubcommands();
+		case REPEAT :
+			return getRepeatSubcommands();
+		case SEARCH :
+			return getSearchSubcommands();
+		case SORT :
+			return getSortSubcommands();
+		case TODAY :
+			return getTodaySubcommands();
+		case UNDO :
+			return getUndoSubcommands();
+		default :
+			return new ArrayList<String>();
+		}
+	}
+	
+	private List<String> getAddSubcommands() {
+		List<String> list = new ArrayList<String>();
+		list.add(Subcommand.TYPE.CATEGORY.toString());
+		list.add(Subcommand.TYPE.END.toString());
+		list.add(Subcommand.TYPE.LOCATION.toString());
+		list.add(Subcommand.TYPE.NOTE.toString());
+		list.add(Subcommand.TYPE.START.toString());
+		
+		return list;
+	}
+
+	private List<String> getAllSubcommands() {
+		return new ArrayList<String>();
+	}
+
+	private List<String> getCategorySubcommands() {
+		return new ArrayList<String>();
+	}
+
+	private List<String> getChangeDateTypeSubcommands() {
+		List<String> list = new ArrayList<String>();
+		for (Subcommand.DATE_TYPE type : Subcommand.DATE_TYPE.values()) {
+			list.add(type.toString());
+		}
+		
+		return list;
+	}
+
+	private List<String> getCompletedSubcommands() {
+		return new ArrayList<String>();
+	}
+
+	private List<String> getEditSubcommands() {
+		List<String> list = getAddSubcommands();
+		list.add(Subcommand.TYPE.TITLE.toString());
+		
+		return list;
+	}
+
+	private List<String> getFinishSubcommands() {
+		return getAddSubcommands();
+	}
+
+	private List<String> getHelpSubcommands() {
+		return new ArrayList<String>();
+	}
+
+	private List<String> getNoteSubcommands() {
+		return new ArrayList<String>();
+	}
+
+	private List<String> getRemoveSubcommands() {
+		return getAddSubcommands();
+	}
+
+	private List<String> getRepeatSubcommands() {
+		List<String> list = new ArrayList<String>();
+		
+		for (Subcommand.FREQUENCY type : Subcommand.FREQUENCY.values()) {
+			list.add(type.toString());
+		}
+		
+		list.add(Subcommand.TYPE.NAME.toString());
+		list.add(Subcommand.TYPE.START.toString());
+		list.add(Subcommand.TYPE.END.toString());
+		
+		return list;
+	}
+
+	private List<String> getSearchSubcommands() {
+		List<String> list = getEditSubcommands();
+		list.add(Subcommand.TYPE.AND.toString());
+		list.add(Subcommand.TYPE.OR.toString());
+		
+		return list;
+	}
+
+	private List<String> getSortSubcommands() {
+		return new ArrayList<String>();
+	}
+
+	private List<String> getTodaySubcommands() {
+		return new ArrayList<String>();
+	}
+
+	private List<String> getUndoSubcommands() {
+		return new ArrayList<String>();
 	}
 
 	private boolean isAddType(TYPE subcommandType) {

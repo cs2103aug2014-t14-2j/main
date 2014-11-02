@@ -12,6 +12,8 @@ import userInterface.CommandType;
 import userInterface.CommandType.COMMAND_TYPE;
 import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 import fileIo.FileIo;
@@ -30,7 +32,7 @@ public class Add extends Command {
 	private static ezCMessages message = ezCMessages.getInstance();
 
 	public Add(List<Subcommand> subcommands)
-					throws IllegalArgumentException {
+					throws BadCommandException, BadSubcommandException {
 		super("add", subcommands);
 	}
 
@@ -158,7 +160,7 @@ public class Add extends Command {
 	}
 
 	@Override
-	protected void checkValidity() {
+	protected void checkValidity() throws BadSubcommandException {
 		super.checkValidity();
 		checkForNoDuplicateSubcommands();
 	}

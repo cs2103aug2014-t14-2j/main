@@ -2,10 +2,13 @@ package dataManipulation;
 
 import java.util.List;
 
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
+
 public class Category extends Command {
 
 	public Category(List<Subcommand> commandComponents)
-			throws IllegalArgumentException {
+			throws BadCommandException, BadSubcommandException {
 		super("category", commandComponents);
 	}
 
@@ -16,7 +19,7 @@ public class Category extends Command {
 	}
 
 	@Override
-	protected void checkValidity() {
+	protected void checkValidity() throws BadSubcommandException {
 		checkForComponentAmount(1);
 		super.checkValidity();
 	}

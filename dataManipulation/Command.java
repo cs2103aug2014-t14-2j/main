@@ -2,6 +2,8 @@ package dataManipulation;
 
 import java.util.List;
 
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
 import userInterface.CommandType;
 import userInterface.CommandType.COMMAND_TYPE;
 
@@ -52,7 +54,7 @@ public abstract class Command {
 	
 	public Command(String commandType, 
 			List<Subcommand> commandComponents) 
-					throws IllegalArgumentException {
+					throws BadCommandException, BadSubcommandException {
 		if (commandType == null || commandComponents == null) {
 			throw new IllegalArgumentException("null argument for Command constructor");
 		}
@@ -71,20 +73,20 @@ public abstract class Command {
 		return subcommands;
 	}
 	
-	protected void checkValidity() {
+	protected void checkValidity() throws BadSubcommandException {
 		for (int i = 0; i < subcommands.size(); ++i) {
 			Subcommand component = subcommands.get(i);
 			CommandType checker = CommandType.getInstance();
 
 			if (!checker.isSubcommand(type, component.getType())) {
-				throw new IllegalArgumentException("invalid subcommand");
+				throw new BadSubcommandException("invalid subcommand");
 			}
 		}
 	}
 
-	protected void checkForNoComponents() throws IllegalArgumentException {
+	protected void checkForNoComponents() throws BadSubcommandException {
 		if (!subcommands.isEmpty()) {
-			throw new IllegalArgumentException("too many subcommands");
+			throw new BadSubcommandException("too many subcommands");
 		}
 	}
 	
@@ -100,7 +102,7 @@ public abstract class Command {
 		return false;
 	}
 	
-	protected void checkForNoDuplicateSubcommands() throws IllegalArgumentException {
+	protected void checkForNoDuplicateSubcommands() throws BadSubcommandException {
 		if (subcommands.size() == 0) {
 			return;
 		}
@@ -113,7 +115,7 @@ public abstract class Command {
 			for (int j = i + 1; j < subcommands.size(); ++j) {
 				temp = subcommands.get(j);
 				if (current.getType().toString().equals(temp.getType().toString())) {
-					throw new IllegalArgumentException("duplicate subcommands");
+					throw new BadSubcommandException("duplicate subcommands");
 				}
 			}
 		}
@@ -121,11 +123,11 @@ public abstract class Command {
 		return;
 	}
 	
-	protected void checkForComponentAmount(int amount) throws IllegalArgumentException {
+	protected void checkForComponentAmount(int amount) throws BadSubcommandException {
 		if (subcommands.size() > amount) {
-			throw new IllegalArgumentException("too many subcommands");
+			throw new BadSubcommandException("too many subcommands");
 		} else if (subcommands.size() < amount) {
-			throw new IllegalArgumentException("not enough information");
+			throw new BadSubcommandException("not enough information");
 		}
 	}
 	

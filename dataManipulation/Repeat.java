@@ -2,12 +2,14 @@ package dataManipulation;
 
 import java.util.List;
 
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
 import dataManipulation.Subcommand.FREQUENCY;
 
 public class Repeat extends Command {
 
 	public Repeat(List<Subcommand> commandComponents)
-			throws IllegalArgumentException {
+			throws BadCommandException, BadSubcommandException {
 		super("repeat", commandComponents);
 	}
 
@@ -18,7 +20,7 @@ public class Repeat extends Command {
 	}
 
 	@Override
-	protected void checkValidity() {
+	protected void checkValidity() throws BadSubcommandException {
 		try {
 			checkForNoDuplicateSubcommands();
 			checkRepeatTwoComponents();
@@ -29,7 +31,7 @@ public class Repeat extends Command {
 		}
 		
 	}
-	protected void checkRepeatFourComponents() {
+	protected void checkRepeatFourComponents() throws BadSubcommandException {
 		checkForComponentAmount(4);
 		
 		for (int i = 0; i < subcommands.size(); ++i) {
@@ -45,12 +47,12 @@ public class Repeat extends Command {
 				case END :
 					break;
 				default :
-					throw new IllegalArgumentException("invalid subcommand");
+					throw new BadSubcommandException("invalid subcommand");
 			}
 		}
 	}
 
-	protected void checkRepeatTwoComponents() {
+	protected void checkRepeatTwoComponents() throws BadSubcommandException {
 		checkForComponentAmount(2);
 		
 		for (int i = 0; i < subcommands.size(); ++i) {
@@ -62,30 +64,30 @@ public class Repeat extends Command {
 				case NAME :
 					break;
 				default :
-					throw new IllegalArgumentException("invalid subcommand");
+					throw new BadSubcommandException("invalid subcommand");
 			}
 		}
 	}
 
-	protected void checkFrequencyIsNotOnly() {
+	protected void checkFrequencyIsNotOnly() throws BadSubcommandException {
 		for (int i = 0; i < subcommands.size(); ++i) {
 			Subcommand component = subcommands.get(i);
 			
 			if (component.getType() == Subcommand.TYPE.FREQUENCY) {
 				if (component.getContents().equalsIgnoreCase(FREQUENCY.ONCE.toString())) {
-					throw new IllegalArgumentException("too few subcommands");
+					throw new BadSubcommandException("too few subcommands");
 				}
 			}
 		}
 	}
 
-	protected void checkFrequencyIsOnly() {
+	protected void checkFrequencyIsOnly() throws BadSubcommandException {
 		for (int i = 0; i < subcommands.size(); ++i) {
 			Subcommand component = subcommands.get(i);
 			
 			if (component.getType() == Subcommand.TYPE.FREQUENCY) {
 				if (!component.getContents().equalsIgnoreCase(FREQUENCY.ONCE.toString())) {
-					throw new IllegalArgumentException("too many subcommands");
+					throw new BadSubcommandException("too many subcommands");
 				}
 			}
 		}

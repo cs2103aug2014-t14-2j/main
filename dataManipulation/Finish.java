@@ -4,13 +4,15 @@ import java.util.List;
 
 import powerSearch.Searcher;
 import userInterface.ezCMessages;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Task;
 import fileIo.FileIo;
 
 public class Finish extends Command {
 
-	public Finish(List<Subcommand> commandComponents)
-			throws IllegalArgumentException {
+	public Finish(List<Subcommand> commandComponents) 
+			throws BadCommandException, BadSubcommandException {
 		super("finish", commandComponents);
 	}
 
@@ -54,7 +56,7 @@ public class Finish extends Command {
 	}
 
 	@Override
-	protected void checkValidity() {
+	protected void checkValidity() throws BadSubcommandException {
 		super.checkValidity();
 		checkForNoDuplicateSubcommands();
 	}

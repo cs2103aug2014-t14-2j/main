@@ -18,7 +18,17 @@ public class Subcommand {
 	public enum TYPE {
 		AND, BYEND, BYNAME, BYSTART, CATEGORY, DATE, DATE_TYPE, END, LOCATION, NAME, NONE, NOTE,
 		FREQUENCY, OR, PAREN, START, TEXT, TITLE,
-		INVALID
+		INVALID;
+		
+		@Override
+		public String toString() {
+			if (name().equals(INVALID.name())) {
+				String nothing = "";
+				return nothing;
+			}
+			
+			return name().toLowerCase();
+		}
 	}
 	
 	// All possibilities for the frequency keyword

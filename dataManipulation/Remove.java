@@ -4,6 +4,8 @@ import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
 import dataEncapsulation.ActionException;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Task;
 import fileIo.FileIo;
 
@@ -15,7 +17,7 @@ public class Remove extends Command {
 	private static List<Subcommand> sc;
 
 	public Remove(List<Subcommand> commandComponents)
-			throws IllegalArgumentException {
+			throws BadCommandException, BadSubcommandException {
 		super("remove", commandComponents);
 		sc = commandComponents;
 	}
@@ -28,7 +30,7 @@ public class Remove extends Command {
 	}
 
 	@Override
-	protected void checkValidity() {
+	protected void checkValidity() throws BadSubcommandException {
 		super.checkValidity();
 		checkForNoDuplicateSubcommands();
 	}

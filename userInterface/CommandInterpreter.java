@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import userInterface.CommandType.COMMAND_TYPE;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
 import dataManipulation.Add;
 import dataManipulation.All;
 import dataManipulation.Category;
@@ -37,10 +40,11 @@ public class CommandInterpreter {
 		return commandInterpreter;
 	}
 
-	public Command formCommand(String input) throws IllegalArgumentException {
+	public Command formCommand(String input) throws BadCommandException, 
+		BadSubcommandException, BadSubcommandArgException {
 		assert (input != null);
 		if (input.isEmpty()) {
-			throw new IllegalArgumentException("no command given");
+			throw new BadCommandException("no command given");
 		}
 
 		if (isSpecialCommand(input)) {
@@ -72,7 +76,7 @@ public class CommandInterpreter {
 	// ------------------------------------
 	// -----------------------------------------------------------------------------
 
-	private Command makeCommand(COMMAND_TYPE type, List<Subcommand> subcommands) {
+	private Command makeCommand(COMMAND_TYPE type, List<Subcommand> subcommands) throws BadCommandException {
 		switch (type) {
 		case ADD:
 			return new Add(subcommands);
@@ -105,7 +109,7 @@ public class CommandInterpreter {
 		case UNDO:
 			return new Undo(subcommands);
 		default:
-			throw new IllegalArgumentException("invalid command type");
+			throw new BadCommandException("invalid command type");
 		}
 	}
 
@@ -197,7 +201,7 @@ public class CommandInterpreter {
 	// -----------------------------------------------------------------------------
 
 	private List<Subcommand> getComponents(String string,
-			COMMAND_TYPE commandType) {
+			COMMAND_TYPE commandType) throws BadSubcommandArgException, BadSubcommandException {
 		assert (string != null);
 		assert (!string.isEmpty());
 
@@ -234,25 +238,26 @@ public class CommandInterpreter {
 		return components;
 	}
 
-	private List<Subcommand> getNoSubcommands(String input) {
+	private List<Subcommand> getNoSubcommands(String input) throws 
+		BadSubcommandException {
 		assert (input != null);
 
 		try {
 			input = removeFirstWord(input); // will throw if there's no input
-		} catch (IllegalArgumentException e) {
+		} catch (BadSubcommandException e) {
 			input = ""; // ok - just means that the command was the last one
 		}
 
 		return createNoComponent(input);
 	}
 
-	private static List<Subcommand> createNoComponent(String string) {
+	private static List<Subcommand> createNoComponent(String string) throws BadSubcommandException {
 		assert (string != null);
 
 		string = string.trim();
 
 		if (!string.isEmpty()) {
-			throw new IllegalArgumentException("too many arguments");
+			throw new BadSubcommandException("too many arguments");
 		}
 
 		List<Subcommand> componentList = new ArrayList<Subcommand>();
@@ -285,8 +290,10 @@ public class CommandInterpreter {
 	 * 
 	 * @param string
 	 * @return
+	 * @throws BadSubcommandArgException 
 	 */
-	private Subcommand getFirstComponent(COMMAND_TYPE commandType, String string) {
+	private Subcommand getFirstComponent(COMMAND_TYPE commandType, String string) 
+			throws BadSubcommandArgException {
 		string = string.trim(); // remove whitespace
 
 		Subcommand.TYPE componentType = determineFirstComponentType(commandType);
@@ -318,7 +325,8 @@ public class CommandInterpreter {
 		}
 	}
 
-	private Subcommand getNextComponent(String componentSentence) {
+	private Subcommand getNextComponent(String componentSentence) throws 
+		BadSubcommandArgException, BadSubcommandException {
 		String componentTypeString = getFirstWord(componentSentence);
 		Subcommand.TYPE componentType = Subcommand
 				.determineComponentType(componentTypeString);
@@ -375,13 +383,13 @@ public class CommandInterpreter {
 	}
 
 	private String eraseQuoteComponent(String sentence)
-			throws IndexOutOfBoundsException {
+			throws IndexOutOfBoundsException, BadSubcommandArgException {
 		assert (sentence != null);
 		char quote = '"';
 
 		int indexOfNextQuote = sentence.indexOf(quote);
 		if (indexOfNextQuote == -1) {
-			throw new IndexOutOfBoundsException("No double quote found");
+			throw new BadSubcommandArgException("No double quote found");
 		}
 
 		String withoutUntilFirstQuote = sentence
@@ -396,7 +404,7 @@ public class CommandInterpreter {
 		}
 
 		if (indexOfNextQuote == -1) {
-			throw new IndexOutOfBoundsException("No double quote found");
+			throw new BadSubcommandArgException("No double quote found");
 		}
 
 		String withoutUntilSecondQuote = withoutUntilFirstQuote
@@ -432,7 +440,7 @@ public class CommandInterpreter {
 	// -----------------------------------------------------------------------------
 
 	private String getComponentData(String userCommand,
-			Subcommand.TYPE componentType) {
+			Subcommand.TYPE componentType) throws BadSubcommandArgException {
 		if (componentType == Subcommand.TYPE.START
 				|| componentType == Subcommand.TYPE.END
 				|| componentType == Subcommand.TYPE.DATE
@@ -466,7 +474,7 @@ public class CommandInterpreter {
 	}
 
 	private String getBetweenQuoteData(String userCommand)
-			throws IllegalArgumentException {
+			throws BadSubcommandArgException {
 		String emptyString = "";
 		String doubleQuoteMark = "\"";
 
@@ -480,18 +488,18 @@ public class CommandInterpreter {
 		return commandData;
 	}
 
-	private void checkFirstQuotation(String userCommand) {
+	private void checkFirstQuotation(String userCommand) throws BadSubcommandArgException {
 		String doubleQuote = "\"";
 		if (!userCommand.startsWith(doubleQuote)) {
-			throw new IllegalArgumentException(
+			throw new BadSubcommandArgException(
 					"invalid subcommand argument: double quotes");
 		}
 	}
 
-	private String getUntilQuotation(String userCommand) {
+	private String getUntilQuotation(String userCommand) throws BadSubcommandArgException {
 		assert (userCommand != null);
 		if (userCommand.isEmpty()) {
-			throw new IllegalArgumentException(
+			throw new BadSubcommandArgException(
 					"invalid subcommand argument: double quotes");
 		}
 
@@ -507,7 +515,7 @@ public class CommandInterpreter {
 
 		// check to see if it ever saw another quotation mark
 		if (!singleChar.equals(doubleQuote)) {
-			throw new IllegalArgumentException(
+			throw new BadSubcommandArgException(
 					"invalid subcommand argument: double quotes");
 		}
 
@@ -559,15 +567,16 @@ public class CommandInterpreter {
 	 * 
 	 * @param input
 	 * @return
+	 * @throws BadSubcommandException 
 	 */
-	private String removeFirstWord(String sentence) {
+	private String removeFirstWord(String sentence) throws BadSubcommandException {
 		assert (sentence != null);
 
 		String[] splitSentence = splitString(sentence);
 
 		int minimumSize = 2; // must be at least 2 words in command;
 		if (splitSentence.length < minimumSize) {
-			throw new IllegalArgumentException("too short of argument");
+			throw new BadSubcommandException("too short of argument");
 		}
 
 		String shorterString = new String();
