@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
+import userInterface.CommandType;
+import userInterface.CommandType.COMMAND_TYPE;
 import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.Date;
@@ -157,27 +159,7 @@ public class Add extends Command {
 
 	@Override
 	protected void checkValidity() {
-		for (int i = 0; i < subcommands.size(); ++i) {
-			Subcommand component = subcommands.get(i);
-
-			switch (component.getType()) {
-			case NAME :
-				break; // valid
-			case CATEGORY :
-				break;
-			case END :
-				break;
-			case LOCATION :
-				break;
-			case NOTE :
-				break;
-			case START :
-				break;
-			default :
-				throw new IllegalArgumentException("invalid subcommand");
-			}
-		}
-		
+		super.checkValidity();
 		checkForNoDuplicateSubcommands();
 	}
 
