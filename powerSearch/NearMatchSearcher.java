@@ -1,4 +1,8 @@
-//@author Kaushik A0108297X
+	/**
+	 * @author Kadayam Suresh Kaushik A0108297X
+	 * Performs an Near Search on a List<Task> based on different Keys given
+	 * @return format: List<Task>
+	 */
 package powerSearch;
 
 import dataEncapsulation.Task;
