@@ -28,6 +28,7 @@ import javax.swing.event.DocumentListener;
 
 import dataEncapsulation.Mediator;
 import dataManipulation.Command;
+import dataManipulation.ExceptionHandler;
 import dataManipulation.TotalTaskList;
 import dataManipulation.UndoRedoList;
 import fileIo.FileIo;
@@ -46,12 +47,15 @@ public class ezCWindow extends JFrame
 	final static String CANCEL_ACTION = "cancel-entry";
 	final static String ENTER_ACTION = "enter-command";
 	final static String TAB_ACTION = "toggle-autocomplete";
+	final static String ENTER_MEDIATOR_ACTION = "enter-mediator";
 
 	private UserInterface ui = UserInterface.getInstance();
 	private TotalTaskList totalTaskList = TotalTaskList.getInstance();
 	private FileIo fileIo = FileIo.getInstance();
 	private ezCMessages messages = ezCMessages.getInstance();
 	private CommandInterpreter interpreter = CommandInterpreter.getInstance();
+	
+	private boolean hasResponse = false;
 
 	public ezCWindow() {
 		initComponents();
@@ -64,11 +68,37 @@ public class ezCWindow extends JFrame
 	 */
 	
 	@Override
-	public String call(String message) {
-		// TODO Auto-generated method stub
-		return null;
+	public synchronized String call(String message) {
+		InputMap im = entry.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap am = entry.getActionMap();
+		im.put(KeyStroke.getKeyStroke("ENTER"), ENTER_MEDIATOR_ACTION);
+		am.put(ENTER_MEDIATOR_ACTION, new MediatorEnter());
+		
+		entry.setText(message);
+		while (!hasResponse) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		String response = entry.getText();
+		entry.setText("");
+		
+		im = entry.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		am = entry.getActionMap();
+		im.put(KeyStroke.getKeyStroke("ENTER"), ENTER_ACTION);
+		am.put(ENTER_ACTION, new EnterAction());
+		
+		return response;
 	}
 
+	@Override
+	public void send(String message) {
+		entry.setText(message);
+	}
+	
 	private void initComponents() {
 		initializeStaticMembers();
 
@@ -121,6 +151,9 @@ public class ezCWindow extends JFrame
 		textArea.setWrapStyleWord(true);
 		textArea.setEditable(false);
 		jScrollPane1 = new JScrollPane(textArea);
+		
+		ExceptionHandler handler = ExceptionHandler.getInstance();
+		handler.setMediator(this);
 	}
 
 	private void initializeVerticalGroup(GroupLayout layout) {
@@ -294,6 +327,13 @@ public class ezCWindow extends JFrame
 			} catch (Exception e) {
 				status.setText(e.getMessage());
 			}
+		}
+	}
+	
+	class MediatorEnter extends AbstractAction {
+		public synchronized void actionPerformed(ActionEvent ev)  {
+			hasResponse = true;
+			notifyAll();
 		}
 	}
 

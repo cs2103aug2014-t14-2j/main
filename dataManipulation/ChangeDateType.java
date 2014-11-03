@@ -2,6 +2,7 @@ package dataManipulation;
 
 import java.util.List;
 
+import userInterface.CommandType.COMMAND_TYPE;
 import userInterface.ezCMessages;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
@@ -11,7 +12,7 @@ public class ChangeDateType extends Command {
 
 	public ChangeDateType(List<Subcommand> commandComponents)
 			throws BadCommandException, BadSubcommandException {
-		super("change date type", commandComponents);
+		super(COMMAND_TYPE.CHANGE_DATE_TYPE, commandComponents);
 	}
 
 	@Override

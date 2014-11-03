@@ -18,7 +18,7 @@ public class CommandHandler {
 		try {
 			ret = cmd.execute();
 		} catch (ActionException e) {
-			ret = ExceptionHandler.furtherAction(e);
+			ret = ExceptionHandler.getInstance().furtherAction(e);
 		} catch (Exception e) {
 			ret = ezCMessages.getInstance().getErrorMessage(e);
 		}

@@ -5,6 +5,7 @@ import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
 import powerSearch.Searcher;
+import userInterface.CommandType.COMMAND_TYPE;
 import userInterface.ezCMessages;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
@@ -15,7 +16,7 @@ public class Today extends Command {
 
 	public Today(List<Subcommand> commandComponents)
 			throws BadCommandException, BadSubcommandException {
-		super("today", commandComponents);
+		super(COMMAND_TYPE.TODAY, commandComponents);
 	}
 
 	@Override

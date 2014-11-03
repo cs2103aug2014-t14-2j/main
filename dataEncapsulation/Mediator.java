@@ -7,4 +7,6 @@ package dataEncapsulation;
 
 public interface Mediator {
 	public String call(String message);
+	
+	public void send(String message);
 }

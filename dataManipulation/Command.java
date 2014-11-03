@@ -52,14 +52,14 @@ public abstract class Command {
 	
 	public abstract String execute() throws Exception;
 	
-	public Command(String commandType, 
+	public Command(COMMAND_TYPE commandType, 
 			List<Subcommand> commandComponents) 
 					throws BadCommandException, BadSubcommandException {
 		if (commandType == null || commandComponents == null) {
 			throw new IllegalArgumentException("null argument for Command constructor");
 		}
 		
-		type = CommandType.determineCommandType(commandType);
+		type = commandType;
 		subcommands = commandComponents;
 		
 		checkValidity();

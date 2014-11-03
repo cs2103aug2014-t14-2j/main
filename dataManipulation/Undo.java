@@ -13,6 +13,7 @@ import java.util.List;
 
 import powerSearch.Searcher;
 import userInterface.CommandHandler;
+import userInterface.CommandType.COMMAND_TYPE;
 import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.BadCommandException;
@@ -26,7 +27,7 @@ public class Undo extends Command {
 	
 	public Undo(List<Subcommand> commandComponents)
 			throws IllegalArgumentException, BadCommandException, BadSubcommandException {
-		super("undo", commandComponents);
+		super(COMMAND_TYPE.UNDO, commandComponents);
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package dataManipulation;
 import java.util.List;
 
 import powerSearch.Searcher;
+import userInterface.CommandType.COMMAND_TYPE;
 import userInterface.ezCMessages;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
@@ -13,7 +14,7 @@ public class Finish extends Command {
 
 	public Finish(List<Subcommand> commandComponents) 
 			throws BadCommandException, BadSubcommandException {
-		super("finish", commandComponents);
+		super(COMMAND_TYPE.FINISH, commandComponents);
 	}
 
 	@Override

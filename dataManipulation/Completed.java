@@ -3,6 +3,7 @@ package dataManipulation;
 import java.util.ArrayList;
 import java.util.List;
 
+import userInterface.CommandType.COMMAND_TYPE;
 import userInterface.ezCMessages;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
@@ -12,7 +13,7 @@ public class Completed extends Command {
 
 	public Completed(List<Subcommand> commandComponents)
 			throws BadCommandException, BadSubcommandException {
-		super("completed", commandComponents);
+		super(COMMAND_TYPE.COMPLETED, commandComponents);
 	}
 
 	@Override

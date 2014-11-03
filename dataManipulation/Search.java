@@ -6,13 +6,14 @@ import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Task;
 import powerSearch.Searcher;
+import userInterface.CommandType.COMMAND_TYPE;
 import userInterface.ezCMessages;
 
 public class Search extends Command {
 
 	public Search(List<Subcommand> commandComponents)
 			throws BadCommandException, BadSubcommandException {
-		super("search", commandComponents);
+		super(COMMAND_TYPE.SEARCH, commandComponents);
 	}
 
 	@Override
