@@ -1,4 +1,4 @@
-//@ Kaushik A0108297X
+//@author Kaushik A0108297X
 package powerSearch;
 
 import dataEncapsulation.Task;
