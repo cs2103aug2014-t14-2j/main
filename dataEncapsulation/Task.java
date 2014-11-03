@@ -1,4 +1,8 @@
-//@author Kaushik A0108297X
+	/**
+	 * @author Kadayam Suresh Kaushik A0108297X
+	 * Task Class (Instant) containing Constructor and all methods. - Uses the Date Class
+	 * @return format: Depends on which method is being used.
+	 */
 package dataEncapsulation;
 
 import java.util.*;
