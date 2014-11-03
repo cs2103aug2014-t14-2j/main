@@ -1,4 +1,8 @@
-//@author Kaushik A0108297X
+	/**
+	 * @author Kadayam Suresh Kaushik A0108297X
+	 * Takes a list and searches for various details
+	 * @return format: String or List of Tasks
+	 */
 package powerSearch;
 
 import java.util.ArrayList;
@@ -13,7 +17,7 @@ import dataManipulation.Subcommand;
 public class Searcher {
 	/**
 	 * searches for exact/near matches to search key
-	 * @param key
+	 * @param keylist and a list of tasks
 	 * @return a list of all matches for that key
 	 * @throws Exception 
 	 */
@@ -64,7 +68,8 @@ public class Searcher {
 		}
 		return results;
 	}
-
+	//Parameters: List of Lists which have Tasks
+	//It merges the lists returned according to the OR Command
 	private static List<Task> mergeListsOR(List<List<Task>> answer) throws Exception{
 		if(answer.isEmpty()) {
 			return null;
@@ -84,7 +89,8 @@ public class Searcher {
 			return list;
 		}
 	}
-	
+	//Parameters: List which has Tasks
+	//It removes any duplicates in the final answer
 	private static List<Task> removeDuplicates(List<Task> list){
 		int k=0;
 		Task t1;
@@ -106,7 +112,8 @@ public class Searcher {
 		}
 		return list;
 	}
-
+	//Parameters: List of Lists which have Tasks
+	//It merges the lists returned according to the AND Command
 	private static List<Task> mergeListsAND(List<List<Task>> answer){
 		if(answer.isEmpty()) {
 			return null;
@@ -126,7 +133,8 @@ public class Searcher {
 			return list;
 		}
 	}
-	
+	//Parameters: List of Tasks and the Date which is to be searched
+	//Searches for the next available free slot on a specified date.
 	public static String searchTimeSlot(List<Task> list, Date dt){
 		String answer = new String();
 		List<Task> search = new ArrayList<Task>();
