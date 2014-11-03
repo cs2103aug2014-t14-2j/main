@@ -158,6 +158,16 @@ public class Date {
 			month = dateStr[monthIndex];
 			year = dateStr[2];
 			mm = Integer.parseInt(month);
+		} else if (dateString.contains("-")) {
+			int yearIndex = 0;
+			int dayIndex = 2;
+			int monthIndex = 1;
+			
+			String dateStr[] = dateString.split("-", 3);
+			day = dateStr[dayIndex];
+			month = dateStr[monthIndex];
+			year = dateStr[yearIndex];
+			mm = Integer.parseInt(month);
 		} else {
 			String dateStr[] = dateString.split(" ", 3);
 			day = dateStr[0];

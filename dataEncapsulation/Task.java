@@ -14,7 +14,7 @@ public class Task {
 	private boolean hasNoDeadline = true;
 	private boolean isComplete = false;
 	private boolean hasNote = false;
-	private boolean hasLocation = false;
+	private boolean hasLocation = false; 
 	private String name, location, note, category;
 	private static ArrayList<String> categorylist = new ArrayList<String>();
 	public Task(String name, String first_category, String location, String note, Date startTime, Date endTime) {
