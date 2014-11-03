@@ -15,6 +15,7 @@ import java.util.List;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
 import userInterface.CommandHandler;
+import userInterface.CommandType.COMMAND_TYPE;
 
 public class Redo extends Command {
 	
@@ -22,7 +23,7 @@ public class Redo extends Command {
 	
 	public Redo(List<Subcommand> commandComponents)
 			throws IllegalArgumentException, BadCommandException, BadSubcommandException {
-		super("redo", commandComponents);
+		super(COMMAND_TYPE.REDO, commandComponents);
 	}
 
 	@Override

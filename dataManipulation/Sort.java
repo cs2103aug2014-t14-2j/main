@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import userInterface.CommandType.COMMAND_TYPE;
 import userInterface.ezCMessages;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
@@ -23,7 +24,7 @@ public class Sort extends Command {
 
 	public Sort(List<Subcommand> commandComponents)
 			throws BadCommandException, BadSubcommandException {
-		super("sort", commandComponents);
+		super(COMMAND_TYPE.SORT, commandComponents);
 	}
 
 	@Override

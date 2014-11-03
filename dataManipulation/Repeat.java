@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
+import userInterface.CommandType.COMMAND_TYPE;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandArgException;
@@ -33,7 +34,7 @@ public class Repeat extends Command {
 
 	public Repeat(List<Subcommand> commandComponents)
 			throws BadCommandException, BadSubcommandException {
-		super("repeat", commandComponents);
+		super(COMMAND_TYPE.REPEAT, commandComponents);
 	}
 
 	@Override

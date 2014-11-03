@@ -3,6 +3,7 @@ package dataManipulation;
 import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
+import userInterface.CommandType.COMMAND_TYPE;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
@@ -18,7 +19,7 @@ public class Remove extends Command {
 
 	public Remove(List<Subcommand> commandComponents)
 			throws BadCommandException, BadSubcommandException {
-		super("remove", commandComponents);
+		super(COMMAND_TYPE.REMOVE, commandComponents);
 		sc = commandComponents;
 	}
 

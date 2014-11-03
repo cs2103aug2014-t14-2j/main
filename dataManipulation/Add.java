@@ -34,7 +34,7 @@ public class Add extends Command {
 
 	public Add(List<Subcommand> subcommands)
 					throws BadCommandException, BadSubcommandException {
-		super("add", subcommands);
+		super(COMMAND_TYPE.ADD, subcommands);
 	}
 
 	@Override
