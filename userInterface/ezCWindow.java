@@ -1,10 +1,10 @@
 package userInterface;
 
-import java.awt.Color;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Collections;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -20,15 +20,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.LayoutStyle;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultHighlighter;
-import javax.swing.text.Highlighter;
 
 import dataManipulation.Command;
 import dataManipulation.TotalTaskList;
@@ -206,6 +202,10 @@ public class ezCWindow extends JFrame
 		final static String EXIT_ACTION = "exit-entry";
 		
 		private String initialText;
+		private Autocomplete autocomplete = Autocomplete.getInstance();
+		
+		private int counter = 0;
+		private List<String> completionList;
 		
 		private void initializeActions() {
 			InputMap im = entry.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -239,6 +239,8 @@ public class ezCWindow extends JFrame
 			status.setText("autocomplete mode");
 			initialText = entry.getText();
 			initializeActions();
+			completionList = autocomplete.complete(initialText);
+			entry.setText(completionList.get(counter));
 		}
 		
 		class AcceptAction extends AbstractAction {
@@ -248,12 +250,18 @@ public class ezCWindow extends JFrame
 			}
 		}
 		
-		private int counter = 0;
+		private void incrementCounter() {
+			if (counter >= completionList.size() - 1) {
+				counter = 0;
+			} else {
+				++counter;
+			}
+		}
 		
 		class ContinueAction extends AbstractAction {
 			public void actionPerformed(ActionEvent ev)  {
-				++counter;
-				status.setText("continuing " + counter);
+				incrementCounter();
+				entry.setText(completionList.get(counter));
 			}
 		}
 		

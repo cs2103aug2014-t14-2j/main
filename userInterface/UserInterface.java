@@ -3,6 +3,9 @@ package userInterface;
 import java.io.PrintStream;
 import java.util.Scanner;
 
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
 import dataManipulation.Command;
 
 /*
@@ -44,7 +47,8 @@ public class UserInterface {
 		return;
 	}
 
-	public Command getUserCommand() {
+	public Command getUserCommand() throws BadCommandException, 
+		BadSubcommandException, BadSubcommandArgException {
 		String input = inputScanner.nextLine();
 		
 		if (doesUserWantExit(input)) {
