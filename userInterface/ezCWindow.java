@@ -26,6 +26,7 @@ import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import dataEncapsulation.Mediator;
 import dataManipulation.Command;
 import dataManipulation.TotalTaskList;
 import dataManipulation.UndoRedoList;
@@ -34,7 +35,7 @@ import fileIo.FileIo;
 
 @SuppressWarnings("serial")
 public class ezCWindow extends JFrame
-	implements DocumentListener {
+	implements DocumentListener, Mediator {
 
 	private JTextField entry;
 	private JLabel jLabel1;
@@ -61,6 +62,12 @@ public class ezCWindow extends JFrame
 	/** This method is called from within the constructor to
 	 * initialize the form.
 	 */
+	
+	@Override
+	public String call(String message) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	private void initComponents() {
 		initializeStaticMembers();

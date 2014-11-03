@@ -23,23 +23,23 @@ public class UndoRedoProcessor {
 		
 		switch(commandToUndo.getType()) {
 		
-			case "add" :
+			case ADD :
 				Command negatedAddCommand = new Remove(commandToUndo.getComponents());
 				CommandHandler.executeCommand(negatedAddCommand);
 				break;
 				
-			case "remove" :
+			case REMOVE :
 				Command negatedRemoveCommand = new Add(commandToUndo.getComponents());
 				CommandHandler.executeCommand(negatedRemoveCommand);
 				break;
 				
-			case "edit" :
+			case EDIT :
 				Task preEditedTask = preEditTaskStack.pop();
 				Command negatedEditCommand = new Edit(Add.dismantleTask(preEditedTask));
 				CommandHandler.executeCommand(negatedEditCommand);
 				break;
 				
-			case "finish" :
+			case FINISH :
 				List<Task> tasks = Searcher.search(commandToUndo.getComponents(), taskList);
 				Task toMarkAsInComplete = tasks.get(0);
 				toMarkAsInComplete.setIncomplete();

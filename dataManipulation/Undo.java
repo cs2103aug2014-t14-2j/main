@@ -15,6 +15,8 @@ import powerSearch.Searcher;
 import userInterface.CommandHandler;
 import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Task;
 
 public class Undo extends Command {
@@ -23,7 +25,7 @@ public class Undo extends Command {
 	private static String returnMessage;
 	
 	public Undo(List<Subcommand> commandComponents)
-			throws IllegalArgumentException {
+			throws IllegalArgumentException, BadCommandException, BadSubcommandException {
 		super("undo", commandComponents);
 	}
 
@@ -35,24 +37,24 @@ public class Undo extends Command {
 		
 		switch(commandToUndo.getType()) {
 		
-			case "add" :
+			case ADD :
 				Command negatedAddCommand = new Remove(commandToUndo.getComponents());
 				returnMessage = CommandHandler.executeCommand(negatedAddCommand);
 				break;
 				
-			case "remove" :
+			case REMOVE :
 				Command negatedRemoveCommand = new Add(commandToUndo.getComponents());
 				returnMessage = CommandHandler.executeCommand(negatedRemoveCommand);
 				break;
 				
-			case "edit" :
+			case EDIT :
 				Command negatedEditCommandRemove = negatedEditRemovePreProcess(commandToUndo);
 				Command negatedEditCommandAdd = negatedEditAddPreProcess(commandToUndo);
 				CommandHandler.executeCommand(negatedEditCommandRemove);
 				returnMessage = CommandHandler.executeCommand(negatedEditCommandAdd);
 				break;
 				
-			case "finish" :
+			case FINISH :
 				List<Task> tasks = Searcher.search(commandToUndo.getComponents(), taskList);
 				Task toMarkAsInComplete = tasks.get(0);
 				toMarkAsInComplete.setIncomplete();
