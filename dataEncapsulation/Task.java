@@ -1,4 +1,4 @@
-//@ Kaushik A0108297X
+//@author Kaushik A0108297X
 package dataEncapsulation;
 
 import java.util.*;
