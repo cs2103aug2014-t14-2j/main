@@ -1,4 +1,4 @@
-//@ Kaushik A0108297X
+//@author Kaushik A0108297X
 package powerSearch;
 
 import java.util.ArrayList;
@@ -166,7 +166,7 @@ public class Searcher {
 				int sdseconds = sdtemp.getSeconds();
 				int totalsdseconds = sdseconds + sdhours*60*60 + sdmins*60;
 
-				for(int j=totalsdseconds; j<=seconds.length; j++){
+				for(int j=totalsdseconds; j<seconds.length; j++){
 					seconds[j]++;
 				}
 			}
@@ -198,7 +198,7 @@ public class Searcher {
 				if(seconds[i]==0 && seconds[i-1]>0){
 					start = i;
 				}
-				if(seconds[i]==0 && seconds[i+1]>0){
+				else if(seconds[i]==0 && seconds[i+1]>0){
 					end = i;
 					break;
 				}
