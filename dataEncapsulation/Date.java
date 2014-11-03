@@ -1,4 +1,8 @@
-//@author Kaushik A0108297X
+	/**
+	 * @author Kadayam Suresh Kaushik A0108297X
+	 * Date Class (Instant) containing Constructor and all methods.
+	 * @return format: Depends on which method is being used.
+	 */
 package dataEncapsulation;
 
 import java.time.*;

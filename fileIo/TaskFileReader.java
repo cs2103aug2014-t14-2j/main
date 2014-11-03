@@ -3,6 +3,7 @@ package fileIo;
 import java.util.ArrayList;
 import java.util.List;
 
+import userInterface.Autocomplete;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 import dataManipulation.TaskFactory;
@@ -102,12 +103,28 @@ public class TaskFileReader {
 		Date end = Date.determineDate(endDateString);
 		
 		Task newTask = factory.makeTask(name, category, location, note, start, end);
+		addToAutocomplete(name, category, location);
 		
 		if (completed.equalsIgnoreCase(MESSAGE_COMPLETED)) {
 			newTask.setComplete();
 		}
 		
 		return newTask;
+	}
+
+	private void addToAutocomplete(String name,
+			String category, String location) {
+		Autocomplete autocomplete = Autocomplete.getInstance();
+		
+		if (category != null) {
+			autocomplete.addCategory(category);
+		}
+		if (location != null) {
+			autocomplete.addLocation(location);
+		}
+		if (name != null) {
+			autocomplete.addTitle(name);
+		}
 	}
 
 	// sets missing components to null, as expected by TaskFactory

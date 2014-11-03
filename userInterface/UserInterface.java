@@ -47,7 +47,12 @@ public class UserInterface {
 		return;
 	}
 
+<<<<<<< HEAD
 	public Command getUserCommand() throws BadCommandException, BadSubcommandException, BadSubcommandArgException {
+=======
+	public Command getUserCommand() throws BadCommandException, 
+		BadSubcommandException, BadSubcommandArgException {
+>>>>>>> 08b12257bb34074f20d48bd54717c4ab7d20eec2
 		String input = inputScanner.nextLine();
 		
 		if (doesUserWantExit(input)) {
