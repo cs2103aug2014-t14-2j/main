@@ -8,11 +8,28 @@ import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.Task;
 
-public class ExceptionHandler {
+public class ExceptionHandler <T extends Mediator>{
+	
+	private T med;
+	public void setMediator(T mediator) {
+		med = mediator;
+	}
+	
+	private static ExceptionHandler handler;
+	private ExceptionHandler() {
+		handler = new ExceptionHandler();
+	}
+	
+	public static ExceptionHandler getInstance() {
+		if (handler == null) {
+			handler= new ExceptionHandler();
+		}
+		return handler;
+	}
 	
 	private static Scanner inputSc = new Scanner(System.in);
 	
-	public static String furtherAction(ActionException e) {
+	public String furtherAction(ActionException e) {
 		List<Task> opts = e.getOptions();
 		List<Subcommand> cc = e.getSubcommands();
 		
@@ -38,7 +55,7 @@ public class ExceptionHandler {
 		
 		return cmdHandlerOut;
 	}
-	public static String editFurther(ArrayList<Task> ch, List<Subcommand> cc) {
+	public String editFurther(ArrayList<Task> ch, List<Subcommand> cc) {
 		String ret = "";
 		for (Task t : ch) {
 			try {
@@ -51,7 +68,7 @@ public class ExceptionHandler {
 		return "Successfully edited: \n" + ret;
 	}
 	
-	public static String deleteFurther(ArrayList<Task> ch, List<Subcommand> cc) {
+	public String deleteFurther(ArrayList<Task> ch, List<Subcommand> cc) {
 		String ret = "";
 		for (Task t : ch) {
 			
@@ -65,7 +82,7 @@ public class ExceptionHandler {
 		return "Successfully deleted: \n" + ret;
 	}
 	
-	public static ArrayList<Task> getChoices(String input, List<Task> opts) {
+	public ArrayList<Task> getChoices(String input, List<Task> opts) {
 		String str = input;
 		if(input.contains(",")) {
 			str.replaceAll(",", " ");
