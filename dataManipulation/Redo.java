@@ -12,6 +12,8 @@ package dataManipulation;
 
 import java.util.List;
 
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
 import userInterface.CommandHandler;
 
 public class Redo extends Command {
@@ -19,7 +21,7 @@ public class Redo extends Command {
 	private static String returnMessage;
 	
 	public Redo(List<Subcommand> commandComponents)
-			throws IllegalArgumentException {
+			throws IllegalArgumentException, BadCommandException, BadSubcommandException {
 		super("redo", commandComponents);
 	}
 
@@ -31,19 +33,19 @@ public class Redo extends Command {
 		
 		switch(commandToRedo.getType()) {
 		
-		case "add" :
+		case ADD :
 			returnMessage = CommandHandler.executeCommand(commandToRedo);
 			break;
 			
-		case "remove" :
+		case REMOVE :
 			returnMessage = CommandHandler.executeCommand(commandToRedo);
 			break;
 			
-		case "edit" :
+		case EDIT :
 			returnMessage = CommandHandler.executeCommand(commandToRedo);
 			break;
 			
-		case "finish" :
+		case FINISH :
 			returnMessage = CommandHandler.executeCommand(commandToRedo);
 			break;
 	
@@ -56,7 +58,7 @@ public class Redo extends Command {
 	}
 
 	@Override
-	protected void checkValidity() {
+	protected void checkValidity() throws BadSubcommandException {
 		checkForNoComponents();
 	}
 	

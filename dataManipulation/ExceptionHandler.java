@@ -6,11 +6,18 @@ import java.util.Scanner;
 
 import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
+import dataEncapsulation.Mediator;
 import dataEncapsulation.Task;
 
-public class ExceptionHandler {
+public class ExceptionHandler <T extends Mediator> {
 	
 	private static Scanner inputSc = new Scanner(System.in);
+	
+	private T t;
+	
+	public void setMediator(T mediator) {
+		t = mediator;
+	}
 	
 	public static String furtherAction(ActionException e) {
 		List<Task> opts = e.getOptions();
