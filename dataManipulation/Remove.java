@@ -2,7 +2,6 @@ package dataManipulation;
 
 import java.util.List;
 
-import powerSearch.ExactMatchSearcher;
 import powerSearch.Searcher;
 import userInterface.CommandType.COMMAND_TYPE;
 import dataEncapsulation.ActionException;
