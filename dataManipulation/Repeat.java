@@ -1,5 +1,15 @@
 package dataManipulation;
 
+/**
+ * Notes - 
+ * 		TIME is probably going to be wrong, since it is under the DATE attribute of the Task, 
+ * 		which I replace. 
+ * 
+ * 		Repeat ONCE has not been implemented. > How do START and END work with a repeat ONCE?
+ * 
+ * @author tyuiwei
+ */
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -24,8 +34,6 @@ public class Repeat extends Command {
 	private int hrs;
 	private int mins;
 	private int durationOfTaskInDays;
-	private int durationOfTaskInHours;
-	private int durationOfTaskInMins;
 
 	private Task t;
 	private List<Subcommand> sc;
@@ -45,19 +53,27 @@ public class Repeat extends Command {
 		getSubcommands();
 		
 		if (freq.equals(FREQUENCY.DAILY.toString())) {
-			List<LocalDate> daysHappening = durationInDays(start, end);
-			for (LocalDate ld : daysHappening) {
-				Date d = Date.determineDate(ld.toString());
-				
+			List<LocalDate> daysHappening_daily = repeatStartDates_daily(start, end);
+			for (LocalDate ld : daysHappening_daily) { //each ld is a new start date
+				makeRepeat(ld);
 			}
 		} else if (freq.equals(FREQUENCY.WEEKLY.toString())) {
-			
+			List<LocalDate> daysHappening_weekly = repeatStartDates_weekly(start, end);
+			for (LocalDate ld : daysHappening_weekly) {
+				makeRepeat(ld);
+			}
 		} else if (freq.equals(FREQUENCY.MONTHLY.toString())) {
-			
+			List<LocalDate> daysHappening_monthly = repeatStartDates_monthly(start, end);
+			for (LocalDate ld : daysHappening_monthly) {
+				makeRepeat(ld);
+			}
 		} else if (freq.equals(FREQUENCY.ANNUALLY.toString())) {
-			
+			List<LocalDate> daysHappening_yearly = repeatStartDates_yearly(start, end);
+			for (LocalDate ld : daysHappening_yearly) {
+				makeRepeat(ld);
+			}
 		} else if (freq.equals(FREQUENCY.ONCE.toString())) {
-			
+			;
 		} else {
 			//THROW ERROR OR STRING
 		}
@@ -85,6 +101,14 @@ public class Repeat extends Command {
 			}
 		}
 	}
+	
+	private void makeRepeat(LocalDate ld) throws BadCommandException, BadSubcommandException, BadSubcommandArgException {
+		String sd = ld.toString();
+		String ed = ld.plusDays(durationOfTaskInDays).toString();
+		List<Subcommand> lsc = modifyDate(sd, ed);
+		Task repeatTask = new Add(subcommands).buildTask(lsc);
+		taskList.add(repeatTask);
+	}
 
 	private String ldParse(String inDateFormat) {
 		Date d = Date.determineDate(inDateFormat);
@@ -95,14 +119,46 @@ public class Repeat extends Command {
 		return inLocalDateFormat;
 	}
 
-	private List<LocalDate> durationInDays(String st, String en) {
+	private List<LocalDate> repeatStartDates_daily(String st, String en) {
 		LocalDate s = LocalDate.parse(st);
 		LocalDate e = LocalDate.parse(en);
 		List<LocalDate> totalDates = new ArrayList<>();
 		while (!s.isAfter(e)) {
 			totalDates.add(s);
-			System.out.println(" " + s);
 			s = s.plusDays(1);
+		}
+		return totalDates;
+	}
+	
+	private List<LocalDate> repeatStartDates_weekly(String st, String en) {
+		LocalDate s = LocalDate.parse(st);
+		LocalDate e = LocalDate.parse(en);
+		List<LocalDate> totalDates = new ArrayList<>();
+		while (!s.isAfter(e)) {
+			totalDates.add(s);
+			s = s.plusWeeks(1);
+		}
+		return totalDates;
+	}
+	
+	private List<LocalDate> repeatStartDates_monthly(String st, String en) {
+		LocalDate s = LocalDate.parse(st);
+		LocalDate e = LocalDate.parse(en);
+		List<LocalDate> totalDates = new ArrayList<>();
+		while (!s.isAfter(e)) {
+			totalDates.add(s);
+			s = s.plusMonths(1);
+		}
+		return totalDates;
+	}
+
+	private List<LocalDate> repeatStartDates_yearly(String st, String en) {
+		LocalDate s = LocalDate.parse(st);
+		LocalDate e = LocalDate.parse(en);
+		List<LocalDate> totalDates = new ArrayList<>();
+		while (!s.isAfter(e)) {
+			totalDates.add(s);
+			s = s.plusYears(1);
 		}
 		return totalDates;
 	}
