@@ -252,7 +252,30 @@ public class Date {
 
 	public String toString(){
 		String answer = new String();
-		String[] strDays = new String[] { "Sunday", "Monday", "Tuesday", "Wednesday", "Thusday", "Friday", "Saturday" };
+		String day = new String();
+		switch  (cal.get(Calendar.DAY_OF_WEEK_IN_MONTH)){   
+        case Calendar.MONDAY : 
+        	day = "Monday";  
+            break;  
+         case Calendar.TUESDAY :
+        	 day = "Tuesday";  
+             break;    
+         case Calendar.WEDNESDAY :
+        	 day = "Wednesday";  
+             break;  
+         case Calendar.THURSDAY :
+        	 day = "Thursday";  
+             break;  
+         case Calendar.FRIDAY : 
+        	 day = "Friday";  
+             break;  
+         case Calendar.SATURDAY : 
+        	 day = "Saturday";  
+             break;  
+         case Calendar.SUNDAY : 
+        	 day = "Sunday";  
+             break;
+		}
 		switch(this.getMonth()){
 		case 1:
 			answer = "January";
@@ -291,7 +314,7 @@ public class Date {
 			answer = "December";
 			break;
 		}
-		return strDays[cal.get(Calendar.DAY_OF_WEEK_IN_MONTH) - 1] + " " + answer + " " + this.getDay() + ", " + this.getYear();
+		return day + " " + answer + " " + this.getDay() + ", " + this.getYear();
 	}
 
 	public long getTime() {
