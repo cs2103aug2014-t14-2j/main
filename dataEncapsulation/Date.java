@@ -7,6 +7,8 @@ package dataEncapsulation;
 
 import java.time.*;
 import java.util.*;
+
+import powerSearch.Searcher;
 public class Date {
 	private int day, month, year, hours, minutes, seconds;
 	private long time;
@@ -250,6 +252,7 @@ public class Date {
 
 	public String toString(){
 		String answer = new String();
+		String[] strDays = new String[] { "Sunday", "Monday", "Tuesday", "Wednesday", "Thusday", "Friday", "Saturday" };
 		switch(this.getMonth()){
 		case 1:
 			answer = "January";
@@ -288,7 +291,7 @@ public class Date {
 			answer = "December";
 			break;
 		}
-		return answer + " " + this.getDay() + ", " + this.getYear();
+		return strDays[cal.get(Calendar.DAY_OF_WEEK_IN_MONTH) - 1] + " " + answer + " " + this.getDay() + ", " + this.getYear();
 	}
 
 	public long getTime() {
