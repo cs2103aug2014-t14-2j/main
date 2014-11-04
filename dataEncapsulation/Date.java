@@ -1,8 +1,8 @@
-	/**
-	 * @author Kadayam Suresh Kaushik A0108297X
-	 * Date Class (Instant) containing Constructor and all methods.
-	 * @return format: Depends on which method is being used.
-	 */
+/**
+ * @author Kadayam Suresh Kaushik A0108297X
+ * Date Class (Instant) containing Constructor and all methods.
+ * @return format: Depends on which method is being used.
+ */
 package dataEncapsulation;
 
 import java.time.*;
@@ -13,9 +13,9 @@ public class Date {
 	private int day, month, year, hours, minutes, seconds;
 	private long time;
 	private Calendar cal = GregorianCalendar.getInstance();
-	
+
 	private static boolean dmFormat = true;
-	
+
 	public Date(int userday, int usermonth, int useryear) {
 		if(dateValid(userday, usermonth, useryear)){
 			this.setDay(userday);
@@ -41,7 +41,7 @@ public class Date {
 			this.setTime(cal.getTimeInMillis());
 		}
 	}
-	
+
 	public Date(){
 		cal = Calendar.getInstance();
 		this.day = cal.get(Calendar.DATE);
@@ -95,7 +95,7 @@ public class Date {
 			return false;
 		}
 	}
-	
+
 	public int getDay() {
 		return day;
 	}
@@ -123,15 +123,15 @@ public class Date {
 	public Calendar getCal(){
 		return this.cal;
 	}
-	
+
 	public static void changeFormatDm() {
 		dmFormat = true;
 	}
-	
+
 	public static void changeFormatMd() {
 		dmFormat = false;
 	}
-	
+
 	public static boolean isFormatDm() {
 		return dmFormat;
 	}
@@ -158,7 +158,7 @@ public class Date {
 				dayIndex = 1;
 				monthIndex = 0;
 			}
-			
+
 			String dateStr[] = dateString.split("/", 3);
 			day = dateStr[dayIndex];
 			month = dateStr[monthIndex];
@@ -168,7 +168,7 @@ public class Date {
 			int yearIndex = 0;
 			int dayIndex = 2;
 			int monthIndex = 1;
-			
+
 			String dateStr[] = dateString.split("-", 3);
 			day = dateStr[dayIndex];
 			month = dateStr[monthIndex];
@@ -254,27 +254,27 @@ public class Date {
 		String answer = new String();
 		String day = new String();
 		switch  (cal.get(Calendar.DAY_OF_WEEK_IN_MONTH)){   
-        case Calendar.MONDAY : 
-        	day = "Monday";  
-            break;  
-         case Calendar.TUESDAY :
-        	 day = "Tuesday";  
-             break;    
-         case Calendar.WEDNESDAY :
-        	 day = "Wednesday";  
-             break;  
-         case Calendar.THURSDAY :
-        	 day = "Thursday";  
-             break;  
-         case Calendar.FRIDAY : 
-        	 day = "Friday";  
-             break;  
-         case Calendar.SATURDAY : 
-        	 day = "Saturday";  
-             break;  
-         case Calendar.SUNDAY : 
-        	 day = "Sunday";  
-             break;
+		case Calendar.MONDAY : 
+			day = "Monday";  
+			break;  
+		case Calendar.TUESDAY :
+			day = "Tuesday";  
+			break;    
+		case Calendar.WEDNESDAY :
+			day = "Wednesday";  
+			break;  
+		case Calendar.THURSDAY :
+			day = "Thursday";  
+			break;  
+		case Calendar.FRIDAY : 
+			day = "Friday";  
+			break;  
+		case Calendar.SATURDAY : 
+			day = "Saturday";  
+			break;  
+		case Calendar.SUNDAY : 
+			day = "Sunday";  
+			break;
 		}
 		switch(this.getMonth()){
 		case 1:
