@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
-import userInterface.CommandType;
 import userInterface.CommandType.COMMAND_TYPE;
 import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
