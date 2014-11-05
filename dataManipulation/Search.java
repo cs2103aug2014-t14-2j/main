@@ -18,6 +18,9 @@ public class Search extends Command {
 
 	@Override
 	public String execute() throws Exception {
+		if(this.getComponents().contains(Subcommand.TYPE.COMPLETED)) {
+			
+		}
 		TotalTaskList list = TotalTaskList.getInstance();
 		List<Task> results = Searcher.search(subcommands, list.getList());
 		ezCMessages messages = ezCMessages.getInstance();
