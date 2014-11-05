@@ -3,7 +3,7 @@ package dataManipulation;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 
-/*
+/**
  * Decides which constructor of Task to call based on which arguments are
  * available. Expects unavailable data in its arguments to be indicated by
  * null.
@@ -11,8 +11,9 @@ import dataEncapsulation.Task;
  * Mandatory arguments: name, category, startTime
  * Optional arguments: location, note, endTime
  * 
- * author: Natalie Rawle
  */
+
+//@author A0126720N
 
 public class TaskFactory {
 	private static TaskFactory factory;

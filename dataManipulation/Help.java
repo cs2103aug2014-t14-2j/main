@@ -4,7 +4,7 @@ import java.util.List;
 
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
-import userInterface.CommandType.COMMAND_TYPE;
+import dataManipulation.CommandType.COMMAND_TYPE;
 import userInterface.ezCMessages;
 
 public class Help extends Command {

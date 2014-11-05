@@ -8,6 +8,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+//@author A0126720N
+
 public class SuffixTreeTest {
 	SuffixTree tree;
 	List<String> list;

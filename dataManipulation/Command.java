@@ -4,47 +4,15 @@ import java.util.List;
 
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
-import userInterface.CommandType;
-import userInterface.CommandType.COMMAND_TYPE;
+import dataManipulation.CommandType.COMMAND_TYPE;
 
 /**
  * A class for holding the command in an easy-to-manage way.
  * Note that each command type is associated with specific command component
- * types, as follows:
- *
- * ADD: NAME, CATEGORY, END, LOCATION, NOTE, START
- * 
- * All: NONE
- * 
- * CATEGORY: CATEGORY
- * 
- * CHANGE_DATE_TYPE: DATE_TYPE
- * 
- * COMPLETED: NONE
- * 
- * EDIT: NAME, CATEGORY, END, LOCATION, NOTE, START, TITLE
- * 
- * FINISH: NAME
- * 
- * HELP: NONE
- * 
- * NOTE: NAME
- * 
- * REMOVE: NAME
- * 
- * REPEAT: NAME, FREQUENCY, START, END
- * 
- * SEARCH: 	TEXT, CATEGORY, DATE, END, LOCATION, NOTE, START, TITLE, LINK, PAREN
- * 
- * SORT: START or END
- * 
- * TODAY: NONE
- * 
- * UNDO: NONE
- * 
- * @author Natalie Rawle
- *
- */
+ * See CommandType for list
+*/
+
+//@author A0126720N
 
 public abstract class Command {
 	protected COMMAND_TYPE type;

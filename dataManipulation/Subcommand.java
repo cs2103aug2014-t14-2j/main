@@ -14,14 +14,15 @@ import dataEncapsulation.BadSubcommandException;
  * NAME is the actual name of the Task. TITLE is only used when editing the
  * task's name.
  * 
- * @author Natalie Rawle
- * 
  */
+
+//@author A0126720N
 
 public class Subcommand {
 	public enum TYPE {
-		AND, BYEND, BYNAME, BYSTART, CATEGORY, DATE, DATE_TYPE, END, ENDTIME, LOCATION, NAME, NONE, NOTE,
-		FREQUENCY, OR, PAREN, START, STARTTIME, TEXT, TITLE,
+		AND, BYEND, BYNAME, BYSTART, CATEGORY, DATE, DATE_TYPE, END, ENDTIME, 
+		LOCATION, NAME, NONE, NOTE, FREQUENCY, OR, PAREN, START, STARTTIME, 
+		TEXT, TITLE,
 		INVALID;
 		
 		@Override

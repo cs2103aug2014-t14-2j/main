@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
-import userInterface.CommandType.COMMAND_TYPE;
 import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.BadCommandException;
@@ -17,6 +16,7 @@ import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 import dataEncapsulation.Time;
+import dataManipulation.CommandType.COMMAND_TYPE;
 import fileIo.FileIo;
 
 public class Add extends Command {

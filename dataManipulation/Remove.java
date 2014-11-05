@@ -3,11 +3,11 @@ package dataManipulation;
 import java.util.List;
 
 import powerSearch.Searcher;
-import userInterface.CommandType.COMMAND_TYPE;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Task;
+import dataManipulation.CommandType.COMMAND_TYPE;
 import fileIo.FileIo;
 
 public class Remove extends Command {

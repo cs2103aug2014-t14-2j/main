@@ -1,18 +1,20 @@
-package userInterface;
+package dataManipulation;
+
+//@author A0126720N
 
 import java.util.ArrayList;
 import java.util.List;
 
-import dataEncapsulation.BadCommandException;
-import dataManipulation.Subcommand;
 import dataManipulation.Subcommand.TYPE;
+
+import dataEncapsulation.BadCommandException;
 
 public class CommandType {
 	private static CommandType records;
 
 	public enum COMMAND_TYPE {
-		ADD, ALL, CATEGORY, CHANGE_DATE_TYPE, COMPLETED, EDIT, FINISH, 
-		HELP, NOTE, REDO, REMOVE, REPEAT, SEARCH, SORT, TODAY, UNDO,
+		ADD, ALL, CHANGE_DATE_TYPE, COMPLETED, EDIT, FINISH, 
+		HELP, REDO, REMOVE, REPEAT, SEARCH, SORT, TODAY, UNFINISH, UNDO,
 		INVALID;
 
 		@Override
@@ -48,12 +50,6 @@ public class CommandType {
 			return COMMAND_TYPE.ADD;
 		case "all" :
 			return COMMAND_TYPE.ALL;
-		case "category" :
-			return COMMAND_TYPE.CATEGORY;
-		case "cat" :
-			return COMMAND_TYPE.CATEGORY;
-		case "categories" :
-			return COMMAND_TYPE.CATEGORY;
 		case "completed" :
 			return COMMAND_TYPE.COMPLETED;
 		case "delete" :
@@ -66,10 +62,8 @@ public class CommandType {
 			return COMMAND_TYPE.FINISH;
 		case "help" :
 			return COMMAND_TYPE.HELP;
-		case "notes" :
-			return COMMAND_TYPE.NOTE;
-		case "note" :
-			return COMMAND_TYPE.NOTE;
+		case "redo" :
+			return COMMAND_TYPE.REDO;
 		case "remove" :
 			return COMMAND_TYPE.REMOVE;
 		case "repeat" :
@@ -80,6 +74,8 @@ public class CommandType {
 			return COMMAND_TYPE.SORT;
 		case "today" :
 			return COMMAND_TYPE.TODAY;
+		case "unfinish" :
+			return COMMAND_TYPE.UNFINISH;
 		case "undo" :
 			return COMMAND_TYPE.UNDO;
 		case "view" :
@@ -95,8 +91,6 @@ public class CommandType {
 			return isAddType(subcommandType);
 		case ALL :
 			return isAllType(subcommandType);
-		case CATEGORY :
-			return isCategoryType(subcommandType);
 		case CHANGE_DATE_TYPE :
 			return isChangeDateTypeType(subcommandType);
 		case COMPLETED :
@@ -107,8 +101,8 @@ public class CommandType {
 			return isFinishType(subcommandType);
 		case HELP :
 			return isHelpType(subcommandType);
-		case NOTE :
-			return isNoteType(subcommandType);
+		case REDO :
+			return isRedoType(subcommandType);
 		case REMOVE :
 			return isRemoveType(subcommandType);
 		case REPEAT :
@@ -119,6 +113,8 @@ public class CommandType {
 			return isSortType(subcommandType);
 		case TODAY :
 			return isTodayType(subcommandType);
+		case UNFINISH :
+			return isUnfinishType(subcommandType);
 		case UNDO :
 			return isUndoType(subcommandType);
 		default :
@@ -140,8 +136,6 @@ public class CommandType {
 			return getAddSubcommands();
 		case ALL :
 			return getAllSubcommands();
-		case CATEGORY :
-			return getCategorySubcommands();
 		case CHANGE_DATE_TYPE :
 			return getChangeDateTypeSubcommands();
 		case COMPLETED :
@@ -152,8 +146,6 @@ public class CommandType {
 			return getFinishSubcommands();
 		case HELP :
 			return getHelpSubcommands();
-		case NOTE :
-			return getNoteSubcommands();
 		case REMOVE :
 			return getRemoveSubcommands();
 		case REPEAT :
@@ -186,10 +178,6 @@ public class CommandType {
 		return new ArrayList<String>();
 	}
 
-	private List<String> getCategorySubcommands() {
-		return new ArrayList<String>();
-	}
-
 	private List<String> getChangeDateTypeSubcommands() {
 		List<String> list = new ArrayList<String>();
 		for (Subcommand.DATE_TYPE type : Subcommand.DATE_TYPE.values()) {
@@ -215,10 +203,6 @@ public class CommandType {
 	}
 
 	private List<String> getHelpSubcommands() {
-		return new ArrayList<String>();
-	}
-
-	private List<String> getNoteSubcommands() {
 		return new ArrayList<String>();
 	}
 
@@ -283,15 +267,6 @@ public class CommandType {
 		return false;
 	}
 
-	private boolean isCategoryType(TYPE subcommandType) {
-		switch (subcommandType) {
-			case CATEGORY :
-				return true;
-			default :
-				return false;
-		}
-	}
-
 	private boolean isChangeDateTypeType(TYPE subcommandType) {
 		switch (subcommandType) {
 		case DATE_TYPE :
@@ -331,11 +306,6 @@ public class CommandType {
 	}
 
 	private boolean isHelpType(TYPE subcommandType) {
-		return false;
-	}
-
-	private boolean isNoteType(TYPE subcommandType) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -408,5 +378,13 @@ public class CommandType {
 
 	private boolean isUndoType(TYPE subcommandType) {
 		return false;
+	}
+	
+	private boolean isRedoType(TYPE subcommandType) {
+		return false;
+	}
+
+	private boolean isUnfinishType(TYPE subcommandType) {
+		return isAddType(subcommandType);
 	}
 }

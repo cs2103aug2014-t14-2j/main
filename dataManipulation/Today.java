@@ -5,12 +5,12 @@ import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
 import powerSearch.Searcher;
-import userInterface.CommandType.COMMAND_TYPE;
 import userInterface.ezCMessages;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
+import dataManipulation.CommandType.COMMAND_TYPE;
 
 public class Today extends Command {
 

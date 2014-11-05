@@ -1,12 +1,13 @@
 package userInterface;
 
+//@author A0126720N
+
 import java.awt.event.ActionEvent;
 import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-
 
 @SuppressWarnings("serial")
 class AutocompleteAction extends AbstractAction {	

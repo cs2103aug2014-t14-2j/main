@@ -14,8 +14,8 @@ import java.util.List;
 
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
+import dataManipulation.CommandType.COMMAND_TYPE;
 import userInterface.CommandHandler;
-import userInterface.CommandType.COMMAND_TYPE;
 
 public class Redo extends Command {
 	

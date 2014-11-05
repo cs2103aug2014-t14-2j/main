@@ -1,5 +1,7 @@
 package userInterface;
 
+//@author A0126720N
+
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -8,7 +10,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import userInterface.CommandType.COMMAND_TYPE;
+import dataManipulation.CommandType;
+import dataManipulation.CommandType.COMMAND_TYPE;
 
 public class AutocompleteTest {
 	Autocomplete autocomplete;
