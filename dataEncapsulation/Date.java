@@ -9,6 +9,7 @@ import java.time.*;
 import java.util.*;
 
 import powerSearch.Searcher;
+
 public class Date {
 	private int day, month, year;
 	private Calendar cal = GregorianCalendar.getInstance();
@@ -16,7 +17,7 @@ public class Date {
 	private static boolean dmFormat = true;
 
 	public Date(int userday, int usermonth, int useryear) {
-		if(dateValid(userday, usermonth, useryear)){
+		if (dateValid(userday, usermonth, useryear)) {
 			this.setDay(userday);
 			this.setMonth(usermonth);
 			this.setYear(useryear);
@@ -24,15 +25,16 @@ public class Date {
 		}
 	}
 
-	public Date(){
+	public Date() {
 		cal = Calendar.getInstance();
 		this.day = cal.get(Calendar.DATE);
 		this.month = cal.get(Calendar.MONTH) + 1;
-		this.year = cal.get(Calendar.YEAR);getClass();
+		this.year = cal.get(Calendar.YEAR);
+		getClass();
 		cal.set(year, month, day);
 	}
 
-	public boolean dateValid(int userday, int usermonth, int useryear){
+	public boolean dateValid(int userday, int usermonth, int useryear) {
 		boolean dateIsValid = true;
 		try {
 			LocalDate.of(useryear, usermonth, userday);
@@ -42,19 +44,32 @@ public class Date {
 		return dateIsValid;
 	}
 
-	public boolean isBefore(Date anotherdate){
+	public boolean isBefore(Date anotherdate) {
 		boolean answer = false;
-		if(anotherdate instanceof Date && anotherdate.getDay()!=0){ //avoids the case whereby the enddate has not been stated by the user
+		if (anotherdate instanceof Date && anotherdate.getDay() != 0) { // avoids
+																		// the
+																		// case
+																		// whereby
+																		// the
+																		// enddate
+																		// has
+																		// not
+																		// been
+																		// stated
+																		// by
+																		// the
+																		// user
 			Calendar calcompare = anotherdate.getCal();
-			if(cal.before(calcompare)){
+			if (cal.before(calcompare)) {
 				return true;
 			}
 		}
 		return answer;
 	}
 
-	public boolean isEqual(Date anotherdate){
-		if(anotherdate.getDay() == day && anotherdate.getMonth() == month && anotherdate.getYear() == year) {
+	public boolean isEqual(Date anotherdate) {
+		if (anotherdate.getDay() == day && anotherdate.getMonth() == month
+				&& anotherdate.getYear() == year) {
 			return true;
 		} else {
 			return false;
@@ -67,7 +82,8 @@ public class Date {
 	 * @return
 	 */
 	public boolean isEquals(Date another) {
-		if (this.day == another.day && this.month == another.month && this.year == another.year) {
+		if (this.day == another.day && this.month == another.month
+				&& this.year == another.year) {
 			return true;
 		} else {
 			return false;
@@ -98,7 +114,7 @@ public class Date {
 		this.year = year;
 	}
 
-	public Calendar getCal(){
+	public Calendar getCal() {
 		return this.cal;
 	}
 
@@ -185,76 +201,119 @@ public class Date {
 	public static int monthInteger(String month1) {
 		int monthNum;
 		switch (month1.toLowerCase()) {
-		case "january" :		
-			monthNum = 1; 			
+		case "january":
+			monthNum = 1;
 			break;
-		case "february":		
-			monthNum = 2;				
+		case "february":
+			monthNum = 2;
 			break;
-		case "march":			
-			monthNum = 3;				
+		case "march":
+			monthNum = 3;
 			break;
-		case "april":			
-			monthNum = 4;				
+		case "april":
+			monthNum = 4;
 			break;
-		case "may":				
-			monthNum = 5;				
+		case "may":
+			monthNum = 5;
 			break;
-		case "june":			
-			monthNum = 6;				
+		case "june":
+			monthNum = 6;
 			break;
-		case "july":			
-			monthNum = 7;				
+		case "july":
+			monthNum = 7;
 			break;
-		case "august":			
-			monthNum = 8;				
+		case "august":
+			monthNum = 8;
 			break;
-		case "september":		
-			monthNum = 9;				
+		case "september":
+			monthNum = 9;
 			break;
-		case "october":			
-			monthNum = 10;				
+		case "october":
+			monthNum = 10;
 			break;
-		case "november":		
-			monthNum = 11;				
+		case "november":
+			monthNum = 11;
 			break;
-		case "december":		
-			monthNum = 12;				
+		case "december":
+			monthNum = 12;
 			break;
-		default: 				
-			monthNum = 0;				
+		default:
+			monthNum = 0;
 			break;
 		}
 		return monthNum;
 	}
 
-	public String toString(){
+	public String toString() {
 		String answer = new String();
-		String day = new String();
-		switch  (cal.get(Calendar.DAY_OF_WEEK_IN_MONTH)){   
-		case Calendar.MONDAY : 
-			day = "Monday";  
-			break;  
-		case Calendar.TUESDAY :
-			day = "Tuesday";  
-			break;    
-		case Calendar.WEDNESDAY :
-			day = "Wednesday";  
-			break;  
-		case Calendar.THURSDAY :
-			day = "Thursday";  
-			break;  
-		case Calendar.FRIDAY : 
-			day = "Friday";  
-			break;  
-		case Calendar.SATURDAY : 
-			day = "Saturday";  
-			break;  
-		case Calendar.SUNDAY : 
-			day = "Sunday";  
+		switch (this.getMonth()) {
+		case 1:
+			answer = "January";
+			break;
+		case 2:
+			answer = "February";
+			break;
+		case 3:
+			answer = "March";
+			break;
+		case 4:
+			answer = "April";
+			break;
+		case 5:
+			answer = "May";
+			break;
+		case 6:
+			answer = "June";
+			break;
+		case 7:
+			answer = "July";
+			break;
+		case 8:
+			answer = "August";
+			break;
+		case 9:
+			answer = "September";
+			break;
+		case 10:
+			answer = "October";
+			break;
+		case 11:
+			answer = "November";
+			break;
+		case 12:
+			answer = "December";
 			break;
 		}
-		switch(this.getMonth()){
+		return answer + " " + this.getDay() + ", " + this.getYear();
+	}
+
+	public String toPrint() {
+		String answer = new String();
+		String day = new String();
+		switch (cal.get(Calendar.DAY_OF_WEEK_IN_MONTH)) {
+		case Calendar.MONDAY:
+			day = "Monday";
+			break;
+		case Calendar.TUESDAY:
+			day = "Tuesday";
+			break;
+		case Calendar.WEDNESDAY:
+			day = "Wednesday";
+			break;
+		case Calendar.THURSDAY:
+			day = "Thursday";
+			break;
+		case Calendar.FRIDAY:
+			day = "Friday";
+			break;
+		case Calendar.SATURDAY:
+			day = "Saturday";
+			break;
+		case Calendar.SUNDAY:
+			day = "Sunday";
+			break;
+		}
+		switch (this.getMonth()) {
 		case 1:
 			answer = "January";
 			break;
