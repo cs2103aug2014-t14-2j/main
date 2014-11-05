@@ -20,25 +20,55 @@ public class Task {
 	private boolean hasNote = false;
 	private boolean hasLocation = false; 
 	private String name, location, note, category;
+	private Time starttime, endtime;
 	private static ArrayList<String> categorylist = new ArrayList<String>();
-	public Task(String name, String first_category, String location, String note, Date startTime, Date endTime) {
+	
+	public Task(String name, String first_category, String location, String note, Date start, Date end, Time s, Time e) {
 		this.setName(name);
 		categorylist = new ArrayList<String>();
 		categorylist.add(first_category);
 		this.setCategory(first_category);
 		this.setLocation(location);
 		this.setNote(note);
-		this.setEndDate(endTime);
-		this.startdate = startTime;
+		this.setEndDate(end);
+		this.startdate = start;
+		this.setStartTime(s);
+		this.setEndTime(e);
+		
+	}
+	
+	public Task(String name, String first_category, String location, String note, Date start, Date end, Time s) {
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(first_category);
+		this.setCategory(first_category);
+		this.setLocation(location);
+		this.setNote(note);
+		this.setEndDate(end);
+		this.startdate = start;
+		this.setStartTime(s);
+
+	}
+	
+	public Task(String name, String first_category, String location, String note, Date start, Date end) {
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(first_category);
+		this.setCategory(first_category);
+		this.setLocation(location);
+		this.setNote(note);
+		this.setEndDate(end);
+		this.startdate = start;
+		
 	}
 	//no loc or note
-	public Task(String name, String category, Date startTime, Date endTime){
+	public Task(String name, String category, Date start, Date end){
 		this.setName(name);
 		categorylist = new ArrayList<String>();
 		categorylist.add(category);
 		this.setCategory(category);
-		this.setEndDate(endTime);
-		this.startdate = startTime;
+		this.setEndDate(end);
+		this.startdate = start;
 	}
 	//no end time, loc or note
 	public Task(String name, String category, Date startTime){
@@ -164,6 +194,22 @@ public class Task {
 		return isComplete;
 	}
 	
+	public Time getStartTime() {
+		return starttime;
+	}
+	
+	public void setStartTime(Time s) {
+		starttime = s;
+	}
+	
+	public Time getEndTime() {
+		return endtime;
+	}
+	
+	public void setEndTime(Time e) {
+		endtime = e;
+	}
+	
 	public String toString(){
 		String answer = new String();
 		answer = answer + "Task: " + this.name + '\n';
@@ -199,7 +245,7 @@ public class Task {
 		answer = answer + "Task: " + this.name + '\n';
 		answer = answer + "Category: " + this.category + '\n';
 		if(!hasNoDeadline){
-			answer = answer + "Start: " + this.startdate.toString() + '\n' + "End: " + this.enddate.toString() + '\n';
+			answer = answer + "Start: " + this.startdate.toPrint() + '\n' + "End: " + this.enddate.toPrint() + '\n';
 		}
 		if(hasLocation){
 			answer = answer + "Location: " + this.location + '\n';
