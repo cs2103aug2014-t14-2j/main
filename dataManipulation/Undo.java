@@ -12,6 +12,7 @@ package dataManipulation;
 import java.util.List;
 
 import powerSearch.Searcher;
+import userInterface.CommandHandler;
 import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.BadCommandException;
