@@ -22,7 +22,7 @@ public class Subcommand {
 	public enum TYPE {
 		AND, BYEND, BYNAME, BYSTART, CATEGORY, DATE, DATE_TYPE, END, LOCATION, NAME, NONE, NOTE,
 		FREQUENCY, OR, PAREN, START, TEXT, TITLE,
-		INVALID;
+		INVALID, COMPLETED;
 		
 		@Override
 		public String toString() {
@@ -200,6 +200,10 @@ public class Subcommand {
 			return TYPE.CATEGORY;
 		case ("cat") :
 			return TYPE.CATEGORY;
+		case ("completed") :
+			return TYPE.COMPLETED;
+		case ("complete") :
+			return TYPE.COMPLETED;
 		case ("daily") :
 			return TYPE.FREQUENCY;
 		case ("date") :
