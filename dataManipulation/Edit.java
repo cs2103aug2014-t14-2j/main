@@ -44,7 +44,7 @@ public class Edit extends Command {
 	
 	private Task getTaskToEdit() throws Exception {
 		
-		List<Task> tasks = ExactMatchSearcher.exactSearch(subcommands.get(0), taskList.getList());
+		List<Task> tasks = ExactMatchSearcher.exactSearch(subcommands.get(0), taskList.getAllTasks());
 		if(tasks.size() > 1) {
 			ActionException moreThanOne = new ActionException(taskList.getList(), ActionException.ErrorLocation.EDIT, subcommands);
 			throw moreThanOne;
@@ -59,7 +59,7 @@ public class Edit extends Command {
 		Task editedTask = setTaskAttributes(toEdit, taskAttributes);
 		
 		if(ExactMatchSearcher.isTaskDuplicate(editedTask)) {
-			ActionException moreThanOne = new ActionException(taskList.getList(), ActionException.ErrorLocation.EDIT, taskAttributes);
+			ActionException moreThanOne = new ActionException(taskList.getAllTasks(), ActionException.ErrorLocation.EDIT, taskAttributes);
 			throw moreThanOne;
 		}
 		else {
