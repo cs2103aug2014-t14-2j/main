@@ -160,6 +160,10 @@ public class Task {
 		return hasLocation;
 	}
 	
+	public boolean getIsComplete() {
+		return isComplete;
+	}
+	
 	public String toString(){
 		String answer = new String();
 		answer = answer + "Task: " + this.name + '\n';
