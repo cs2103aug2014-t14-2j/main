@@ -20,10 +20,16 @@ import dataEncapsulation.BadSubcommandException;
 
 public class Subcommand {
 	public enum TYPE {
+<<<<<<< HEAD
+		AND, BYEND, BYNAME, BYSTART, CATEGORY, DATE, DATE_TYPE, END, LOCATION, NAME, NONE, NOTE,
+		FREQUENCY, OR, PAREN, START, TEXT, TITLE,
+		INVALID, COMPLETED;
+=======
 		AND, BYEND, BYNAME, BYSTART, CATEGORY, DATE, DATE_TYPE, END, ENDTIME, 
 		LOCATION, NAME, NONE, NOTE, FREQUENCY, OR, PAREN, START, STARTTIME, 
 		TEXT, TITLE,
 		INVALID;
+>>>>>>> 747a57a5c89899c595acf5a73ced0bd872a7c883
 		
 		@Override
 		public String toString() {
@@ -201,6 +207,10 @@ public class Subcommand {
 			return TYPE.CATEGORY;
 		case ("cat") :
 			return TYPE.CATEGORY;
+		case ("completed") :
+			return TYPE.COMPLETED;
+		case ("complete") :
+			return TYPE.COMPLETED;
 		case ("daily") :
 			return TYPE.FREQUENCY;
 		case ("date") :

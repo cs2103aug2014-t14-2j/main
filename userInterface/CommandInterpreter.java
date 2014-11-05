@@ -226,7 +226,12 @@ public class CommandInterpreter {
 			Subcommand.TYPE sortType = Subcommand.determineComponentType(string
 					.replaceAll("\\s+", "").toLowerCase());
 			components.add(new Subcommand(sortType, ""));
-		} else {
+		} 
+		if (commandType == COMMAND_TYPE.COMPLETED) {
+		
+		}
+		else {
+
 			while (string.length() > 0) {
 				component = getNextComponent(string);
 				if (isQuotationComponent(component)) {
