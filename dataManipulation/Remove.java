@@ -27,7 +27,6 @@ public class Remove extends Command {
 	public String execute() throws Exception {
 		// TODO Auto-generated method stub
 		taskRemoved = remove(sc);
-		UndoRedoList.getInstance().pushUndoCommand(new Remove(sc));
 		return "Just deleted: \n" + taskRemoved.toString();
 	}
 
@@ -38,7 +37,8 @@ public class Remove extends Command {
 	}
 	public static Task remove(List<Subcommand> cc) throws Exception {
 		
-		tasksFound = Searcher.search(cc, TotalTaskList.getInstance().getList());
+		List<Task> combinedTaskList = TotalTaskList.getInstance().getAllTasks();
+		tasksFound = Searcher.search(cc, combinedTaskList);
 		if (tasksFound.size() > 1) {
 			ActionException moreThanOne = new ActionException(tasksFound, ActionException.ErrorLocation.DELETE,
 											cc);
