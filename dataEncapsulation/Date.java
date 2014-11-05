@@ -130,7 +130,7 @@ public class Date {
 		return dmFormat;
 	}
 
-	public static Date determineDate(String dateString) {
+	public Date determineDate(String dateString) {
 		if (dateString == null) {
 			return null;
 		}

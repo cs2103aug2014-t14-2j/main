@@ -7,13 +7,15 @@ import java.util.List;
 
 import org.junit.Test;
 
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 
 public class EditTest {
 
 	@Test
-	public void testEdit() {
+	public void testEdit() throws BadSubcommandException, BadSubcommandArgException {
 		
 		List<Subcommand> listCC = new ArrayList<Subcommand>();
 		listCC.add(new Subcommand(Subcommand.TYPE.NAME, "Buy Milk"));
@@ -24,8 +26,8 @@ public class EditTest {
 		listCC.add(new Subcommand(Subcommand.TYPE.LOCATION, "Clementi"));
 		listCC.add(new Subcommand(Subcommand.TYPE.NOTE, "Meiji Chocolate Milk"));
 		
-		Date startDate = Date.determineDate("01/01/2014");
-		Date endDate = Date.determineDate("02/01/2014");
+		Date startDate = new Date().determineDate("01/01/2014");
+		Date endDate = new Date().determineDate("02/01/2014");
 		Task editTaskExceptName = new Task("Buy Milk", "Groceries", "Clementi", "Meiji Chocolate Milk", startDate, endDate);
 		Task actual = setTaskAttributes(editTaskExceptName, listCC);
 		
@@ -55,7 +57,7 @@ public class EditTest {
 			case LOCATION:	toEdit.setLocation(cc.getContents());
 							break;
 
-			case END:	toEdit.setEndDate(Date.determineDate(cc.getContents()));
+			case END:	toEdit.setEndDate(new Date().determineDate(cc.getContents()));
 						break;
 
 			case NOTE:	toEdit.setNote(cc.getContents());

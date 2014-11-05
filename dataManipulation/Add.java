@@ -63,7 +63,7 @@ public class Add extends Command {
 		
 		Date today = new Date();
 		
-		if(toAdd.getHasNoDeadline() || !(toAdd.getEndDate().isBefore(today))) {
+		if(!toAdd.getHasDeadline() || !(toAdd.getEndDate().isBefore(today))) {
 			taskList.getList().add(toAdd);
 		}
 		else if(toAdd.getEndDate().isBefore(today) && !(toAdd.getIsComplete())) {
@@ -171,11 +171,11 @@ public class Add extends Command {
 	}
 	
 	private void setTaskEnd(String contents) {
-		taskEnd = Date.determineDate(contents);
+		taskEnd = new Date().determineDate(contents);
 	}
 
 	private void setTaskStart(String contents) {
-		taskStart = Date.determineDate(contents);
+		taskStart = new Date().determineDate(contents);
 	}
 
 	private void setTaskNote(String contents) {

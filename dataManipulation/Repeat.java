@@ -126,7 +126,7 @@ public class Repeat extends Command {
 	}
 
 	private String ldParse(String inDateFormat) {
-		Date d = Date.determineDate(inDateFormat);
+		Date d = new Date().determineDate(inDateFormat);
 		int dd = d.getDay();
 		int mm = d.getMonth();
 		int yyyy = d.getYear();

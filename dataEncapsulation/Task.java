@@ -73,6 +73,7 @@ public class Task {
 		this.startdate = start;
 		
 	}
+	
 	//no loc or note
 	public Task(String name, String category, Date start, Date end){
 		this.setName(name);
@@ -91,7 +92,7 @@ public class Task {
 		this.setEndTime(e);
 		
 	}
-	//no start time, loc or note
+	//no start time, loc or note | | GIVEN ONLY ONE DATE = end date.
 	public Task(String name, String category, Date end){
 		this.setName(name);
 		categorylist = new ArrayList<String>();
@@ -100,6 +101,15 @@ public class Task {
 		this.startdate = new Date();
 		enddate = end;
 	}
+	
+	public Task(String name, Date date, Time time) throws Exception {
+		this.setName(name);
+		this.setStartDate(date);
+		this.setEndDate(date);
+		this.setStartTime(time);
+		Time autoEndTime = new Time(time.getHours() + 1, time.getMins());
+		this.setEndTime(autoEndTime);
+	}
 	//no extra details at all
 	public Task(String name, String category){
 		this.setName(name);
@@ -107,7 +117,6 @@ public class Task {
 		categorylist.add(category);
 		this.setCategory(category);
 		this.startdate = new Date();
-		enddate = new Date();
 	}
 	
 	public Task(String name, String first_category, String location){
@@ -116,8 +125,7 @@ public class Task {
 		categorylist.add(first_category);
 		this.setCategory(first_category);
 		this.setLocation(location);
-		this.startdate = new Date();
-		enddate = new Date();
+		this.setStartDate(new Date());
 	}
 	
 	//no start or end time but has loc and note
@@ -128,8 +136,7 @@ public class Task {
 		this.setCategory(first_category);
 		this.setLocation(location);
 		this.setNote(note);
-		this.startdate = new Date();
-		enddate = new Date();
+		this.setStartDate(new Date());;
 	}
 	//No end time
 	public Task(String name, String first_category, String location, String note, Date startdate){
@@ -139,18 +146,17 @@ public class Task {
 		this.setCategory(first_category);
 		this.setLocation(location);
 		this.setNote(note);
-		this.startdate = startdate;
-		enddate = new Date(0,0,0);
+		this.setStartDate(startdate);
 	}
 	
-	public Task(String name, String category, String location, Date startTime, Date endTime){
+	public Task(String name, String category, String location, Date start, Date end){
 		this.setName(name);
 		categorylist = new ArrayList<String>();
 		categorylist.add(category);
 		this.setCategory(category);
-		this.setEndDate(endTime);
+		this.setStartDate(start);
+		this.setEndDate(end);
 		this.setLocation(location);
-		this.startdate = startTime;
 	}
 	
 	public Task(String name, String category, String location, Date startTime){
@@ -160,7 +166,6 @@ public class Task {
 		this.setCategory(category);
 		this.setLocation(location);
 		this.startdate = startTime;
-		enddate = new Date(0,0,0);
 	}
 	
 	///////////////////////////////////////////////////////////GETTER SETTER
