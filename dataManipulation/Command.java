@@ -4,12 +4,12 @@ import java.util.List;
 
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
-import userInterface.CommandType;
-import userInterface.CommandType.COMMAND_TYPE;
+import dataManipulation.CommandType.COMMAND_TYPE;
 
 /**
  * A class for holding the command in an easy-to-manage way.
  * Note that each command type is associated with specific command component
+<<<<<<< HEAD
  * types, as follows:
  *
  * ADD: NAME, CATEGORY, END, LOCATION, NOTE, START
@@ -45,6 +45,12 @@ import userInterface.CommandType.COMMAND_TYPE;
  * @author Natalie Rawle
  *
  */
+=======
+ * See CommandType for list
+*/
+
+//@author A0126720N
+>>>>>>> 747a57a5c89899c595acf5a73ced0bd872a7c883
 
 public abstract class Command {
 	protected COMMAND_TYPE type;

@@ -4,11 +4,9 @@ import java.util.List;
 
 import dataManipulation.Subcommand;
 
-public class ActionException extends Exception {
+//@author A0126720N
 
-	/**
-	 * 
-	 */
+public class ActionException extends Exception {
 	private static final long serialVersionUID = -761775751042015925L;
 	
 	private List<Task> options;
@@ -16,7 +14,7 @@ public class ActionException extends Exception {
 	private List<Subcommand> subcommands;
 	
 	public enum ErrorLocation {
-		DELETE, EDIT, FINISH, ADD, UNDO;
+		DELETE, EDIT, FINISH, ADD;
 		
 		public String toString() {
 			return this.name().toLowerCase();

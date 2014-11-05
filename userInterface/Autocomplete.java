@@ -1,19 +1,21 @@
+package userInterface;
+
 /**
  * Autocomplete takes any command string and returns a list of possible
  * rewrites of that string.
  * 
- * @author Natalie Rawle
  */
 
-package userInterface;
+//@author A0126720N
 
 import java.util.ArrayList;
 import java.util.List;
 
-import userInterface.CommandType.COMMAND_TYPE;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.SuffixTree;
+import dataManipulation.CommandType;
 import dataManipulation.Subcommand;
+import dataManipulation.CommandType.COMMAND_TYPE;
 import dataManipulation.Subcommand.TYPE;
 
 public class Autocomplete {

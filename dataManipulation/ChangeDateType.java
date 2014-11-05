@@ -2,11 +2,11 @@ package dataManipulation;
 
 import java.util.List;
 
-import userInterface.CommandType.COMMAND_TYPE;
 import userInterface.ezCMessages;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
+import dataManipulation.CommandType.COMMAND_TYPE;
 
 public class ChangeDateType extends Command {
 

@@ -3,11 +3,11 @@ package dataManipulation;
 import java.util.ArrayList;
 import java.util.List;
 
-import userInterface.CommandType.COMMAND_TYPE;
 import userInterface.ezCMessages;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Task;
+import dataManipulation.CommandType.COMMAND_TYPE;
 
 public class Completed extends Command {
 

@@ -9,13 +9,13 @@ package dataManipulation;
 import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
-import userInterface.CommandType.COMMAND_TYPE;
 import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
+import dataManipulation.CommandType.COMMAND_TYPE;
 import fileIo.FileIo;
 
 public class Edit extends Command {

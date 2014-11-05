@@ -22,8 +22,9 @@ import java.util.List;
  * 		Copyright (c) 2002-2009, Hirondelle Systems
  * 		All rights reserved.
  * 
- * @author Natalie Rawle
  */
+
+//@author A0126720N-reused
 
 public class TextIoStream {
 

@@ -72,7 +72,7 @@ public class Searcher {
 	//It merges the lists returned according to the OR Command
 	private static List<Task> mergeListsOR(List<List<Task>> answer) throws Exception{
 		if(answer.isEmpty()) {
-			return null;
+			return new ArrayList<Task>();
 		} else {
 		List<Task> list = new ArrayList<Task>();
 		list = answer.get(0);
@@ -84,7 +84,7 @@ public class Searcher {
 			return list;
 		}
 		else if(list.isEmpty())
-			return null;
+			return new ArrayList<Task>();
 		else
 			return list;
 		}
@@ -116,7 +116,7 @@ public class Searcher {
 	//It merges the lists returned according to the AND Command
 	private static List<Task> mergeListsAND(List<List<Task>> answer){
 		if(answer.isEmpty()) {
-			return null;
+			return new ArrayList<Task>();
 		} else {
 		List<Task> list = new ArrayList<Task>();
 		list = answer.get(0);
@@ -128,7 +128,7 @@ public class Searcher {
 			return list;
 		}
 		else if(list.isEmpty())
-			return null;
+			return new ArrayList<Task>();
 		else
 			return list;
 		}

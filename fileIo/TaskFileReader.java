@@ -19,10 +19,10 @@ import dataManipulation.TaskFactory;
  * with a valid one. (dump the invalid lines on the screen for the user to see.
  * After dumping, once more give the option of just deleting the garbage if it
  * is unusable to the user)
- * 
- * @author Natalie Rawle
  *
  */
+
+//@author A0126720N
 
 public class TaskFileReader {
 	private static TaskFileReader tfr;

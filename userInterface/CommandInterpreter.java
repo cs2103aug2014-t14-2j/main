@@ -1,22 +1,22 @@
 package userInterface;
 
+//@author A0126720N
+
 import java.util.ArrayList;
 import java.util.List;
 
-import userInterface.CommandType.COMMAND_TYPE;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandArgException;
 import dataEncapsulation.BadSubcommandException;
 import dataManipulation.Add;
 import dataManipulation.All;
-import dataManipulation.Category;
 import dataManipulation.ChangeDateType;
 import dataManipulation.Command;
+import dataManipulation.CommandType;
 import dataManipulation.Completed;
 import dataManipulation.Edit;
 import dataManipulation.Finish;
 import dataManipulation.Help;
-import dataManipulation.Note;
 import dataManipulation.Remove;
 import dataManipulation.Repeat;
 import dataManipulation.Search;
@@ -24,6 +24,7 @@ import dataManipulation.Sort;
 import dataManipulation.Subcommand;
 import dataManipulation.Today;
 import dataManipulation.Undo;
+import dataManipulation.CommandType.COMMAND_TYPE;
 
 public class CommandInterpreter {
 	private static CommandInterpreter commandInterpreter;
@@ -83,8 +84,6 @@ public class CommandInterpreter {
 			return new Add(subcommands);
 		case ALL:
 			return new All(subcommands);
-		case CATEGORY:
-			return new Category(subcommands);
 		case CHANGE_DATE_TYPE:
 			return new ChangeDateType(subcommands);
 		case COMPLETED:
@@ -95,8 +94,6 @@ public class CommandInterpreter {
 			return new Finish(subcommands);
 		case HELP:
 			return new Help(subcommands);
-		case NOTE:
-			return new Note(subcommands);
 		case REMOVE:
 			return new Remove(subcommands);
 		case REPEAT:
@@ -320,13 +317,9 @@ public class CommandInterpreter {
 		switch (commandType) {
 		case ADD:
 			return Subcommand.TYPE.NAME;
-		case CATEGORY:
-			return Subcommand.TYPE.CATEGORY;
 		case EDIT:
 			return Subcommand.TYPE.NAME;
 		case FINISH:
-			return Subcommand.TYPE.NAME;
-		case NOTE:
 			return Subcommand.TYPE.NAME;
 		case REMOVE:
 			return Subcommand.TYPE.NAME;

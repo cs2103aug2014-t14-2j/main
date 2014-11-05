@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import userInterface.CommandType.COMMAND_TYPE;
 import userInterface.ezCMessages;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
@@ -13,6 +12,7 @@ import dataEncapsulation.Task;
 import dataEncapsulation.sortTaskByEndDate;
 import dataEncapsulation.sortTaskByName;
 import dataEncapsulation.sortTaskByStartDate;
+import dataManipulation.CommandType.COMMAND_TYPE;
 
 
 public class Sort extends Command {

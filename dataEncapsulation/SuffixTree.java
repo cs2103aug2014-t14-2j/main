@@ -5,8 +5,9 @@
  * beginning with that prefix, including that prefix.
  * If no matches are found, it returns and empty list.
  * 
- * @author Natalie Rawle
  */
+
+//@author A0126720N
 
 package dataEncapsulation;
 
