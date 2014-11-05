@@ -1,7 +1,5 @@
 package dataEncapsulation;
 
-import userInterface.CommandHandler;
-import userInterface.UserInterface;
 import dataManipulation.Command;
 import dataManipulation.TotalTaskList;
 import dataManipulation.UndoRedoList;
@@ -14,9 +12,11 @@ public class ezC {
 	private static FileIo fileIo = FileIo.getInstance();
 	
 	public static void main(String[] args) {
+		
 		fileIo.initializeTaskList(totalTaskList.getList());
 		fileIo.initializeCompletedList(totalTaskList.getCompleted());
 		fileIo.initializeOverdueList(totalTaskList.getOverdue());
+		
 		ui.welcomeUser();
 		while(true) {
 			String feedback = new String();
