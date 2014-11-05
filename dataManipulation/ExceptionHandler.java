@@ -1,84 +1,62 @@
 package dataManipulation;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
+import javax.swing.AbstractAction;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+import userInterface.ActionToggler;
 import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
-import dataEncapsulation.Mediator;
 import dataEncapsulation.Task;
 
 public class ExceptionHandler {
 	
-	private Mediator med;
-	public void setMediator(Mediator mediator) {
-		med = mediator;
+	private JTextField userInput;
+	private JTextArea display;
+	private JLabel status;
+	private ActionToggler enterToggle;
+	
+	public ExceptionHandler(JTextField input, JLabel stat, 
+			JTextArea disp, ActionToggler toggle) {
+		userInput = input;
+		display = disp;
+		enterToggle = toggle;
+		status = stat;
 	}
 	
-	private static ExceptionHandler handler;
-	private ExceptionHandler() {
-	}
-	
-	public static ExceptionHandler getInstance() {
-		if (handler == null) {
-			handler= new ExceptionHandler();
-		}
-		return handler;
-	}
-	
-	private static Scanner inputSc = new Scanner(System.in);
-	
-	public String furtherAction(ActionException e) {
+	public void furtherAction(ActionException e) {
 		List<Task> opts = e.getOptions();
 		List<Subcommand> cc = e.getSubcommands();
 		
 		String ofTasks = ezCMessages.getInstance().getStringOfTasks(opts);
-		String message = "That was a bit too vague - please choose which of these you would like to " 
-							+ e.getLocation().toString() + ": " + "\n" + ofTasks;
-		String userChoice = med.call(message);
-		ArrayList<Task> choices = getChoices(userChoice, opts);
+		String message = "That was a bit too vague - please choose which of "
+				+ "these you would like to " 
+							+ e.getLocation().toString() + ": " + "\n" + 
+				ofTasks;
+		display.setText(message);
 		
-		String cmdHandlerOut;
 		switch(e.getLocation()) {
 		case DELETE:
-			cmdHandlerOut = deleteFurther(choices, cc);
+			FurtherDeleter furtherDeleter = new FurtherDeleter(opts, cc);
+			enterToggle.initializeLesser(furtherDeleter);
 			break;
 		case EDIT:
-			cmdHandlerOut = editFurther(choices, cc);
+			FurtherEditer furtherEditer = new FurtherEditer(opts, cc);
+			enterToggle.initializeLesser(furtherEditer);
+			break;
+		case UNDO:
+			//TODO
 			break;
 		default:
-			cmdHandlerOut = "wat";
 			break;
 		}
 		
-		return cmdHandlerOut;
-	}
-	public String editFurther(ArrayList<Task> ch, List<Subcommand> cc) {
-		String ret = "";
-		for (Task t : ch) {
-			try {
-				Task edited = new Edit(cc).editTask(t, cc);
-				ret = ret + "\n " + edited.toString();
-			} catch ( Exception e) {
-				med.send("Sorry, you've entered something wrong again. Please try editing again!");
-			}
-		}
-		return "Successfully edited: \n" + ret;
-	}
-	
-	public String deleteFurther(ArrayList<Task> ch, List<Subcommand> cc) {
-		String ret = "";
-		for (Task t : ch) {
-			
-			try {
-				Task deleted = Remove.doDeleteTask(t) ;
-				ret = ret + "\n " + deleted.toString();
-			} catch (Exception e) {
-				med.send("Sorry, you've entered something wrong again. Please try deleting again!");
-			}
-		}
-		return "Successfully deleted: \n" + ret;
+		enterToggle.setLesser();
 	}
 	
 	public ArrayList<Task> getChoices(String input, List<Task> opts) {
@@ -94,5 +72,67 @@ public class ExceptionHandler {
 			ch.add(cur);
 		}
 		return ch;
+	}
+	
+	@SuppressWarnings("serial")
+	class FurtherEditer extends AbstractAction {
+		List<Task> options;
+		List<Subcommand> subcommands;
+		
+		public FurtherEditer(List<Task> opts, List<Subcommand> subs) {
+			options = opts;
+			subcommands = subs;
+		}
+		
+		public void actionPerformed(ActionEvent ev)  {
+			String userChoice = userInput.getText();
+			
+			ArrayList<Task> choices = getChoices(userChoice, options);
+			
+			String ret = "";
+			for (Task t : choices) {
+				try {
+					Task edited = new Edit(subcommands).editTask(t, 
+							subcommands);
+					ret = ret + "\n " + edited.toString();
+				} catch ( Exception e ) {
+					status.setText("Sorry, you've entered something wrong "
+							+ "again. Please try editing again!");
+					return;
+				}
+			}
+			display.setText("Successfully edited: \n" + ret);
+		}
+	}
+	
+	@SuppressWarnings("serial")
+	class FurtherDeleter extends AbstractAction {
+		List<Task> options;
+		List<Subcommand> subcommands;
+		
+		public FurtherDeleter(List<Task> opts, List<Subcommand> subs) {
+			options = opts;
+			subcommands = subs;
+		}
+		
+		public void actionPerformed(ActionEvent ev)  {
+				String userChoice = userInput.getText();
+			
+			ArrayList<Task> choices = getChoices(userChoice, options);
+			
+			String ret = "";
+			for (Task t : choices) {
+				
+				try {
+					Task deleted = Remove.doDeleteTask(t) ;
+					ret = ret + "\n " + deleted.toString();
+				} catch (Exception e) {
+					status.setText("Sorry, you've entered something wrong "
+							+ "again. Please try deleting again!");
+					return;
+				}
+			}
+			display.setText("Successfully deleted: \n" + ret);
+		}
 	}
 }

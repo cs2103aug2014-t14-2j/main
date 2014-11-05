@@ -2,41 +2,28 @@ package userInterface;
 
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.util.Collections;
-import java.util.List;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.ActionMap;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import dataEncapsulation.Mediator;
-import dataManipulation.Command;
-import dataManipulation.ExceptionHandler;
 import dataManipulation.TotalTaskList;
-import dataManipulation.UndoRedoList;
 import fileIo.FileIo;
 
-
 @SuppressWarnings("serial")
-public class ezCWindow extends JFrame
-	implements DocumentListener, Mediator {
+public class ezCWindow extends JFrame {
 
 	private JTextField entry;
 	private JLabel jLabel1;
@@ -49,82 +36,62 @@ public class ezCWindow extends JFrame
 	final static String TAB_ACTION = "toggle-autocomplete";
 	final static String ENTER_MEDIATOR_ACTION = "enter-mediator";
 
-	private UserInterface ui = UserInterface.getInstance();
 	private TotalTaskList totalTaskList = TotalTaskList.getInstance();
 	private FileIo fileIo = FileIo.getInstance();
 	private ezCMessages messages = ezCMessages.getInstance();
-	private CommandInterpreter interpreter = CommandInterpreter.getInstance();
-	
-	private boolean hasResponse = false;
 
-	public ezCWindow() {
+	private static ezCWindow window;
+
+	private ezCWindow() {
 		initComponents();
-
-		entry.getDocument().addDocumentListener(this);
 	}
 
-	/** This method is called from within the constructor to
-	 * initialize the form.
-	 */
-	
-	@Override
-	public synchronized String call(String message) {
-		InputMap im = entry.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		ActionMap am = entry.getActionMap();
-		im.put(KeyStroke.getKeyStroke("ENTER"), ENTER_MEDIATOR_ACTION);
-		am.put(ENTER_MEDIATOR_ACTION, new MediatorEnter());
-		
-		entry.setText(message);
-		while (!hasResponse) {
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	public static ezCWindow getInstance() {
+		if (window == null) {
+			window = new ezCWindow();
 		}
-		String response = entry.getText();
-		entry.setText("");
-		
-		im = entry.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		am = entry.getActionMap();
-		im.put(KeyStroke.getKeyStroke("ENTER"), ENTER_ACTION);
-		am.put(ENTER_ACTION, new EnterAction());
-		
-		return response;
+
+		return window;
 	}
 
-	@Override
-	public void send(String message) {
-		entry.setText(message);
-	}
-	
 	private void initComponents() {
 		initializeStaticMembers();
 
 		initializeLayout();
-		
+
 		initializeActions();
-		
+
 		fileIo.initializeTaskList(totalTaskList.getList());
-		
+
 		pack();
 	}
 
 	private void initializeActions() {
-		
-		InputMap im = entry.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		entry.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, Collections.emptySet());
-		ActionMap am = entry.getActionMap();
 		
-		im.put(KeyStroke.getKeyStroke("ENTER"), ENTER_ACTION);
-		am.put(ENTER_ACTION, new EnterAction());
+		ActionToggler mainEnterToggle = new ActionToggler();
+		ActionToggler autocompleteEnterToggle = new ActionToggler();
+		ActionToggler tabToggle = new ActionToggler();
+		ActionToggler escapeToggle = new ActionToggler();
+
+		AutocompleteAction tabAction = new AutocompleteAction(tabToggle, 
+				autocompleteEnterToggle, escapeToggle, entry, status);
+		CommandHandlingAction enterAction = new CommandHandlingAction(status, 
+				textArea, entry, mainEnterToggle);
+		CancelAction escAction = new CancelAction();
 		
-		im.put(KeyStroke.getKeyStroke("TAB"), TAB_ACTION);
-		am.put(TAB_ACTION, new TabAction());
+		mainEnterToggle.initializeMaster(entry, "ENTER", ENTER_ACTION, 
+				enterAction);
+		autocompleteEnterToggle.initializeMaster(entry, "ENTER", 
+				ENTER_ACTION, enterAction);
+		tabToggle.initializeMaster(entry, "TAB", TAB_ACTION, tabAction);
+		escapeToggle.initializeMaster(entry, "ESCAPE", CANCEL_ACTION, 
+				escAction);
 		
-		im.put(KeyStroke.getKeyStroke("ESCAPE"), CANCEL_ACTION);
-		am.put(CANCEL_ACTION, new CancelAction());
+		mainEnterToggle.setMaster();
+		tabToggle.setMaster();
+		escapeToggle.setMaster();
+		autocompleteEnterToggle.setMaster();
 	}
 
 	private void initializeLayout() {
@@ -151,9 +118,6 @@ public class ezCWindow extends JFrame
 		textArea.setWrapStyleWord(true);
 		textArea.setEditable(false);
 		jScrollPane1 = new JScrollPane(textArea);
-		
-		ExceptionHandler handler = ExceptionHandler.getInstance();
-		handler.setMediator(this);
 	}
 
 	private void initializeVerticalGroup(GroupLayout layout) {
@@ -214,130 +178,12 @@ public class ezCWindow extends JFrame
 		layout.setHorizontalGroup(hGroup);
 	}
 
-	void message(String msg) {
-		status.setText(msg);
-	}
-
-	// DocumentListener methods
-
-	public void insertUpdate(DocumentEvent ev) {
-
-	}
-
-	public void removeUpdate(DocumentEvent ev) {
-
-	}
-
-	public void changedUpdate(DocumentEvent ev) {
-	}
-
 	class CancelAction extends AbstractAction {
 		public void actionPerformed(ActionEvent ev) {
 			entry.setText("");
 		}
 	}
 	
-	class TabAction extends AbstractAction {
-		
-		final static String EXIT_ACTION = "exit-entry";
-		
-		private String initialText;
-		private Autocomplete autocomplete = Autocomplete.getInstance();
-		
-		private int counter = 0;
-		private List<String> completionList;
-		
-		private void initializeActions() {
-			InputMap im = entry.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-			ActionMap am = entry.getActionMap();
-			
-			im.put(KeyStroke.getKeyStroke("ENTER"), ENTER_ACTION);
-			am.put(ENTER_ACTION, new AcceptAction());
-			
-			im.put(KeyStroke.getKeyStroke("TAB"), TAB_ACTION);
-			am.put(TAB_ACTION, new ContinueAction());
-			
-			im.put(KeyStroke.getKeyStroke("ESCAPE"), CANCEL_ACTION);
-			am.put(CANCEL_ACTION, new ExitAction());
-		}
-		
-		private void endDependencies() {
-			InputMap im = entry.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-			ActionMap am = entry.getActionMap();
-			
-			im.put(KeyStroke.getKeyStroke("ENTER"), ENTER_ACTION);
-			am.put(ENTER_ACTION, new EnterAction());
-			
-			im.put(KeyStroke.getKeyStroke("TAB"), TAB_ACTION);
-			am.put(TAB_ACTION, new TabAction());
-			
-			im.put(KeyStroke.getKeyStroke("ESCAPE"), CANCEL_ACTION);
-			am.put(CANCEL_ACTION, new CancelAction());
-		}
-		
-		public void actionPerformed(ActionEvent ev) {
-			status.setText("autocomplete mode");
-			initialText = entry.getText();
-			initializeActions();
-			completionList = autocomplete.complete(initialText);
-			entry.setText(completionList.get(counter));
-		}
-		
-		class AcceptAction extends AbstractAction {
-			public void actionPerformed(ActionEvent ev)  {
-				status.setText("accepted");
-				endDependencies();
-			}
-		}
-		
-		private void incrementCounter() {
-			if (counter >= completionList.size() - 1) {
-				counter = 0;
-			} else {
-				++counter;
-			}
-		}
-		
-		class ContinueAction extends AbstractAction {
-			public void actionPerformed(ActionEvent ev)  {
-				incrementCounter();
-				entry.setText(completionList.get(counter));
-			}
-		}
-		
-		class ExitAction extends AbstractAction {
-			public void actionPerformed(ActionEvent ev)  {
-				status.setText("exiting");
-				entry.setText(initialText);
-				endDependencies();
-			}
-		}
-		
-	}
-	
-	class EnterAction extends AbstractAction {
-		public void actionPerformed(ActionEvent ev)  {
-			try {
-				String input = entry.getText();
-				Command command = interpreter.formCommand(input);
-				String feedback = CommandHandler.executeCommand(command);
-				UndoRedoList.getInstance().pushUndoCommand(command);	// Adds the command to the undo command stack
-				textArea.setText(feedback);
-				entry.setText("");
-			} catch (Exception e) {
-				status.setText(e.getMessage());
-			}
-		}
-	}
-	
-	class MediatorEnter extends AbstractAction {
-		public synchronized void actionPerformed(ActionEvent ev)  {
-			hasResponse = true;
-			notifyAll();
-		}
-	}
-
-
 	public static void main(String args[]) {
 		//Schedule a job for the event dispatch thread:
 		//creating and showing this application's GUI.

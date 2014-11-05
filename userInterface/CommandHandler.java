@@ -14,14 +14,8 @@ public class CommandHandler {
 	 * @return a string containing the feedback returned by the called method
 	 * @throws Exception 
 	 */
-	public static String executeCommand(Command cmd) {
-		try {
-			ret = cmd.execute();
-		} catch (ActionException e) {
-			ret = ExceptionHandler.getInstance().furtherAction(e);
-		} catch (Exception e) {
-			ret = ezCMessages.getInstance().getErrorMessage(e);
-		}
+	public static String executeCommand(Command cmd) throws Exception {
+		ret = cmd.execute();
 		return ret;
 	}
 
