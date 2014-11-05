@@ -49,9 +49,6 @@ public class ExceptionHandler {
 			FurtherEditer furtherEditer = new FurtherEditer(opts, cc);
 			enterToggle.initializeLesser(furtherEditer);
 			break;
-		case UNDO:
-			//TODO
-			break;
 		default:
 			break;
 		}
