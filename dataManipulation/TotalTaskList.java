@@ -3,18 +3,19 @@ package dataManipulation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import dataEncapsulation.Task;
 import dataEncapsulation.sortTaskByEndDate;
 
 public class TotalTaskList {
-	private ArrayList<Task> overdue;	// List of overdue tasks
-	private ArrayList<Task> completed;	// List of completed tasks
-	private ArrayList<Task> list;	// List of uncompleted, not yet overdue tasks
+	private List<Task> overdue;	// List of overdue tasks
+	private List<Task> completed;	// List of completed tasks
+	private List<Task> notCompleted;	// List of uncompleted, not yet overdue tasks
 	private static TotalTaskList ttl;
 	
 	private TotalTaskList() {
-		list = new ArrayList<Task>();
+		notCompleted = new ArrayList<Task>();
 		overdue = new ArrayList<Task>();
 		completed = new ArrayList<Task>();
 	}
@@ -28,8 +29,8 @@ public class TotalTaskList {
 	}
 	
 	public void add(Task newTask) {
-		list.add(newTask);
-		Collections.sort(list, new sortTaskByEndDate());
+		notCompleted.add(newTask);
+		Collections.sort(notCompleted, new sortTaskByEndDate());
 	}
 	
 	public void addCompleted(Task doneTask) {
@@ -43,7 +44,7 @@ public class TotalTaskList {
 	}
 	
 	public void remove(Task badTask) {
-		list.remove(badTask);
+		notCompleted.remove(badTask);
 	}
 	
 	public void removeCompleted(Task badDoneTask) {
@@ -55,19 +56,26 @@ public class TotalTaskList {
 	}
 	
 	public void addAll(Collection<Task> tasks) {
-		list.addAll(tasks);
+		notCompleted.addAll(tasks);
 	}
 	
-	public ArrayList<Task> getList() {
-		return list;
+	public List<Task> getList() {
+		return notCompleted;
 	}
 	
-	public ArrayList<Task> getCompleted() {
+	public List<Task> getCompleted() {
 		return completed;
 	}
 	
-	public ArrayList<Task> getOverdue() {
+	public List<Task> getOverdue() {
 		return overdue;
+	}
+	
+	public List<Task> getAllTasks() {
+		List<Task> totalList = overdue;
+		totalList.addAll(notCompleted);
+		totalList.addAll(completed);
+		return totalList;
 	}
 
 }
