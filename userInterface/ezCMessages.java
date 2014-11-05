@@ -8,7 +8,6 @@ import dataEncapsulation.Task;
  * Holds all of the messages associated with the program.
  * 
  * Should not contain any action methods - only access methods
- * @author Natalie Rawle
  *
  */
 public class ezCMessages {
