@@ -50,10 +50,11 @@ public class Add extends Command {
 		}
 
 		else {
-			taskList.add(newTask);
+			taskList.getList().add(newTask);
 			FileIo IoStream = FileIo.getInstance();
 			IoStream.rewriteFile();
 			flushSubcommand();
+			UndoRedoList.getInstance().pushUndoCommand(new Add(subcommands));	// Adds an 'ADD' Command into the UndoRedoList
 			String returnMessage = message.getAddMessage(newTask);
 			return returnMessage;
 		}
