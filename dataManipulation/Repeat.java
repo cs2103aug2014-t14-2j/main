@@ -175,6 +175,8 @@ public class Repeat extends Command {
 			t = tasks.get(0);
 		}
 	}
+	
+	private String originalTask_dayofweek
 
 	private void getSubcommands() throws BadSubcommandException, BadSubcommandArgException, BadCommandException {
 		sc = new Add(subcommands).dismantleTask(t);
