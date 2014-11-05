@@ -27,6 +27,7 @@ public class Remove extends Command {
 	public String execute() throws Exception {
 		// TODO Auto-generated method stub
 		taskRemoved = remove(sc);
+		UndoRedoList.getInstance().pushUndoCommand(new Remove(sc));
 		return "Just deleted: \n" + taskRemoved.toString();
 	}
 
