@@ -15,6 +15,8 @@ public class ezC {
 	
 	public static void main(String[] args) {
 		fileIo.initializeTaskList(totalTaskList.getList());
+		fileIo.initializeCompletedList(totalTaskList.getCompleted());
+		fileIo.initializeOverdueList(totalTaskList.getOverdue());
 		ui.welcomeUser();
 		while(true) {
 			String feedback = new String();
