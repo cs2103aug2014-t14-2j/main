@@ -227,8 +227,21 @@ public class CommandInterpreter {
 					.replaceAll("\\s+", "").toLowerCase());
 			components.add(new Subcommand(sortType, ""));
 		} 
-		if (commandType == COMMAND_TYPE.COMPLETED) {
-		
+		if (commandType == COMMAND_TYPE.SEARCH) {
+			component = getFirstComponent(commandType, string);
+			if(isQuotationComponent(component)) {
+				string = eraseQuoteComponent(string);
+			} else {
+				string = eraseNoQuoteComponent(component, string);
+			}
+			if(string == "complete" || string == "completed") {
+				Subcommand.TYPE searchType = Subcommand.determineComponentType(string
+						.replaceAll("\\s+", "").toLowerCase());
+				components.add(new Subcommand(searchType, ""));
+			}
+			else {
+				components.add(component);
+			}
 		}
 		else {
 
@@ -324,6 +337,8 @@ public class CommandInterpreter {
 		case REMOVE:
 			return Subcommand.TYPE.NAME;
 		case REPEAT:
+			return Subcommand.TYPE.NAME;
+		case SEARCH:
 			return Subcommand.TYPE.NAME;
 		default:
 			return Subcommand.TYPE.INVALID;
