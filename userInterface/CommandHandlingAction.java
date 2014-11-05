@@ -43,8 +43,6 @@ public class CommandHandlingAction extends AbstractAction {
 		} catch (ActionException e) {
 			entry.setText("");
 			exceptionHandler.furtherAction(e);
-			enterToggle.setMaster();
-			entry.setText("");
 		} catch (Exception e) {
 			String message = ezCMessages.getInstance().getErrorMessage(e);
 			status.setText(message);

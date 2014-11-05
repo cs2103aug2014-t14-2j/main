@@ -98,10 +98,12 @@ public class ExceptionHandler {
 				} catch ( Exception e ) {
 					status.setText("Sorry, you've entered something wrong "
 							+ "again. Please try editing again!");
+					endExceptionHandling();
 					return;
 				}
 			}
 			display.setText("Successfully edited: \n" + ret);
+			endExceptionHandling();
 		}
 	}
 	
@@ -117,7 +119,6 @@ public class ExceptionHandler {
 		
 		public void actionPerformed(ActionEvent ev)  {
 				String userChoice = userInput.getText();
-			
 			ArrayList<Task> choices = getChoices(userChoice, options);
 			
 			String ret = "";
@@ -129,10 +130,17 @@ public class ExceptionHandler {
 				} catch (Exception e) {
 					status.setText("Sorry, you've entered something wrong "
 							+ "again. Please try deleting again!");
+					endExceptionHandling();
 					return;
 				}
 			}
 			display.setText("Successfully deleted: \n" + ret);
+			endExceptionHandling();
 		}
+	}
+	
+	public void endExceptionHandling() {
+		enterToggle.setMaster();
+		userInput.setText("");
 	}
 }
