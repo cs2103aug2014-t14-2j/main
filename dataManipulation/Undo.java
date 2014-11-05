@@ -39,19 +39,19 @@ public class Undo extends Command {
 		
 			case ADD :
 				Command negatedAddCommand = new Remove(commandToUndo.getComponents());
-				returnMessage = CommandHandler.executeCommand(negatedAddCommand);
+				returnMessage = negatedAddCommand.execute();
 				break;
 				
 			case REMOVE :
 				Command negatedRemoveCommand = new Add(commandToUndo.getComponents());
-				returnMessage = CommandHandler.executeCommand(negatedRemoveCommand);
+				returnMessage = negatedRemoveCommand.execute();
 				break;
 				
 			case EDIT :
 				Command negatedEditCommandRemove = negatedEditRemovePreProcess(commandToUndo);
 				Command negatedEditCommandAdd = negatedEditAddPreProcess(commandToUndo);
-				CommandHandler.executeCommand(negatedEditCommandRemove);
-				returnMessage = CommandHandler.executeCommand(negatedEditCommandAdd);
+				negatedEditCommandRemove.execute();
+				returnMessage = negatedEditCommandAdd.execute();
 				break;
 				
 			case FINISH :
