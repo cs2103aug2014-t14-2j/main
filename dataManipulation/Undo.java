@@ -16,12 +16,13 @@ import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 import dataManipulation.CommandType.COMMAND_TYPE;
 
 public class Undo extends Command {
 	
-	private static List<Task> taskList = TotalTaskList.getInstance().getList();
+	private static TotalTaskList taskList = TotalTaskList.getInstance();
 	private static String returnMessage;
 	
 	public Undo(List<Subcommand> commandComponents)
@@ -55,9 +56,10 @@ public class Undo extends Command {
 				break;
 				
 			case FINISH :
-				List<Task> tasks = Searcher.search(commandToUndo.getComponents(), taskList);
+				List<Task> tasks = Searcher.search(commandToUndo.getComponents(), taskList.getCompleted());
 				Task toMarkAsInComplete = tasks.get(0);
 				toMarkAsInComplete.setIncomplete();
+				reassignTask(toMarkAsInComplete);
 				returnMessage = ezCMessages.getInstance().getUnfinishMessage(toMarkAsInComplete);
 				break;
 				
@@ -67,6 +69,18 @@ public class Undo extends Command {
 		}
 		
 		return returnMessage;
+	}
+	
+	private void reassignTask(Task toReassign) {
+		Date today = new Date();
+		if(toReassign.getEndDate().isBefore(today)) {
+			taskList.getCompleted().remove(toReassign);
+			taskList.getOverdue().add(toReassign);
+		}
+		else {
+			taskList.getCompleted().remove(toReassign);
+			taskList.getList().add(toReassign);
+		}
 	}
 
 	private Command negatedEditRemovePreProcess(Command commandToUndo) throws Exception {
@@ -88,9 +102,10 @@ public class Undo extends Command {
 	
 	private Task getTaskToRemove(List<Subcommand> subC) throws Exception {
 		
-		List<Task> tasks = Searcher.search(subC, taskList);
+		List<Task> combinedTaskList = taskList.getAllTasks();
+		List<Task> tasks = Searcher.search(subC, combinedTaskList);
 		if(tasks.size() > 1) {
-			ActionException moreThanOne = new ActionException(taskList, ActionException.ErrorLocation.UNDO, subcommands);
+			ActionException moreThanOne = new ActionException(combinedTaskList, ActionException.ErrorLocation.UNDO, subcommands);
 			throw moreThanOne;
 		}
 		else {
