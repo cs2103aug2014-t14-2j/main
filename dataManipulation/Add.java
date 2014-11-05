@@ -99,7 +99,7 @@ public class Add extends Command {
 		
 		if(taskToDismantle.getEndDate().getDay() != 0) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.END, taskToDismantle.getEndDate().toString()));
-		}/*
+		}
 		
 		if(taskToDismantle.getStartTime() != null) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.STARTTIME, taskToDismantle.getStartTime().toString()));
@@ -107,7 +107,7 @@ public class Add extends Command {
 		
 		if(taskToDismantle.getEndTime() != null) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.ENDTIME, taskToDismantle.getEndTime().toString()));
-		}*/
+		}
 		
 		if(taskToDismantle.getNote() != null) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.NOTE, taskToDismantle.getNote()));
