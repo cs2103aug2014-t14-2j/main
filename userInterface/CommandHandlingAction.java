@@ -39,7 +39,6 @@ public class CommandHandlingAction extends AbstractAction {
 			Command command = interpreter.formCommand(input);
 			String feedback = command.execute();
 			entry.setText("");
-			UndoRedoList.getInstance().pushUndoCommand(command);	// Adds the command to the undo command stack
 
 			textArea.setText(feedback);
 		} catch (ActionException e) {
