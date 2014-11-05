@@ -20,8 +20,8 @@ import dataEncapsulation.BadSubcommandException;
 
 public class Subcommand {
 	public enum TYPE {
-		AND, BYEND, BYNAME, BYSTART, CATEGORY, DATE, DATE_TYPE, END, LOCATION, NAME, NONE, NOTE,
-		FREQUENCY, OR, PAREN, START, TEXT, TITLE,
+		AND, BYEND, BYNAME, BYSTART, CATEGORY, DATE, DATE_TYPE, END, ENDTIME, LOCATION, NAME, NONE, NOTE,
+		FREQUENCY, OR, PAREN, START, STARTTIME, TEXT, TITLE,
 		INVALID;
 		
 		@Override
@@ -208,6 +208,8 @@ public class Subcommand {
 			return TYPE.END;
 		case ("end") :
 			return TYPE.END;
+		case ("from") : 
+			return TYPE.STARTTIME;
 		case ("location") :
 			return TYPE.LOCATION;
 		case ("monthly") :
@@ -222,6 +224,8 @@ public class Subcommand {
 			return TYPE.START;
 		case ("title") :
 			return TYPE.TITLE;
+		case ("to") : 
+			return TYPE.ENDTIME;
 		case ("weekly") :
 			return TYPE.FREQUENCY;
 		default :

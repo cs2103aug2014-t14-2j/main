@@ -16,6 +16,7 @@ import dataEncapsulation.BadSubcommandArgException;
 import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
+import dataEncapsulation.Time;
 import fileIo.FileIo;
 
 public class Add extends Command {
@@ -26,6 +27,8 @@ public class Add extends Command {
 	private String taskNote = null;
 	private Date taskStart = null;
 	private Date taskEnd = null;
+	private Time startTime = null;
+	private Time endTime = null;
 	private static TotalTaskList taskList = TotalTaskList.getInstance();
 	private static List<Task> tasks = TotalTaskList.getInstance().getList();
 	private static TaskFactory makeMyTask = TaskFactory.getInstance();
@@ -56,7 +59,7 @@ public class Add extends Command {
 		}
 	}
 	
-	public Task buildTask(List<Subcommand> taskAttributes) {
+	public Task buildTask(List<Subcommand> taskAttributes) throws Exception {
 
 		assembleAttributes(taskAttributes);
 
@@ -72,6 +75,8 @@ public class Add extends Command {
 		taskLocation = null;
 		taskNote = null;
 		taskStart = null;
+		taskEnd = null;
+		startTime = null;
 		taskEnd = null;
 	}
 	
@@ -93,7 +98,15 @@ public class Add extends Command {
 		
 		if(taskToDismantle.getEndDate().getDay() != 0) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.END, taskToDismantle.getEndDate().toString()));
+		}/*
+		
+		if(taskToDismantle.getStartTime() != null) {
+			taskDetails.add(new Subcommand(Subcommand.TYPE.STARTTIME, taskToDismantle.getStartTime().toString()));
 		}
+		
+		if(taskToDismantle.getEndTime() != null) {
+			taskDetails.add(new Subcommand(Subcommand.TYPE.ENDTIME, taskToDismantle.getEndTime().toString()));
+		}*/
 		
 		if(taskToDismantle.getNote() != null) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.NOTE, taskToDismantle.getNote()));
@@ -102,7 +115,7 @@ public class Add extends Command {
 		return taskDetails;
 	}
 	
-	private void assembleAttributes(List<Subcommand> taskAttributes) {
+	private void assembleAttributes(List<Subcommand> taskAttributes) throws Exception {
 		
 		for(Subcommand cc : taskAttributes) {
 
@@ -125,6 +138,12 @@ public class Add extends Command {
 			
 			case END:	setTaskEnd(cc.getContents());
 						break;
+						
+			case STARTTIME: setTaskStartTime(cc.getContents());
+							break;
+			
+			case ENDTIME:	setTaskEndTime(cc.getContents());
+							break;
 			
 			default:
 				break;
@@ -157,6 +176,14 @@ public class Add extends Command {
 
 	private void setTaskName(String contents) {
 		taskName = contents;
+	}
+	
+	private void setTaskStartTime(String contents) throws Exception {
+		startTime = new Time().determineTime(contents);
+	}
+	
+	private void setTaskEndTime(String contents) throws Exception {
+		endTime = new Time().determineTime(contents);
 	}
 
 	@Override
