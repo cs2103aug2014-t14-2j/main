@@ -84,14 +84,20 @@ public class FileIo {
 		}
 	}
 	
-	public void initializeTaskList(List<Task> taskList) {
+	public void initializeTaskList(TotalTaskList taskList) {
 		List<String> fileContents;
 		try {
 			fileContents = fileStream.readFromFile();
 			Date today = new Date();
 			for(Task t : (reader.getAllTasks(fileContents))) {
 				if(t.getIsComplete() == false && !(t.getEndDate().isBefore(today))) {
-					taskList.add(t);
+					taskList.getList().add(t);
+				}
+				else if(t.getIsComplete() == true) {
+					taskList.getCompleted().add(t);
+				}
+				else if(t.getIsComplete() == false && t.getEndDate().isBefore(today)) {
+					taskList.getOverdue().add(t);
 				}
 			}
 			return;
@@ -104,42 +110,4 @@ public class FileIo {
 		}
 	}
 	
-	public void initializeCompletedList(List<Task> taskList) {
-		List<String> fileContents;
-		try {
-			fileContents = fileStream.readFromFile();
-			for(Task t : (reader.getAllTasks(fileContents))) {
-				if(t.getIsComplete() == true) {
-					taskList.add(t);
-				}
-			}
-			return;
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	public void initializeOverdueList(List<Task> taskList) {
-		List<String> fileContents;
-		try {
-			fileContents = fileStream.readFromFile();
-			Date today = new Date();
-			for(Task t : (reader.getAllTasks(fileContents))) {
-				if(t.getIsComplete() == false && t.getEndDate().isBefore(today)) {
-					taskList.add(t);
-				}
-			}
-			return;
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }
