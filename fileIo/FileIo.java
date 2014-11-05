@@ -51,7 +51,7 @@ public class FileIo {
 	// Takes the lines of text from the task file and creates tasks from them.
 		public void rewriteFile() {
 			try {
-				fileStream.rewriteFile(list.getList());
+				fileStream.rewriteFile(list.getAllTasks());
 				return;
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
