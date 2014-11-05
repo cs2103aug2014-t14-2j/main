@@ -20,7 +20,7 @@ import fileIo.FileIo;
 
 public class Edit extends Command {
 	
-	private static List<Task> taskList = TotalTaskList.getInstance().getList();
+	private static TotalTaskList taskList = TotalTaskList.getInstance();
 	private static ezCMessages messages = ezCMessages.getInstance();
 
 	public Edit(List<Subcommand> commandComponents)
@@ -44,9 +44,9 @@ public class Edit extends Command {
 	
 	private Task getTaskToEdit() throws Exception {
 		
-		List<Task> tasks = ExactMatchSearcher.exactSearch(subcommands.get(0), taskList);
+		List<Task> tasks = ExactMatchSearcher.exactSearch(subcommands.get(0), taskList.getAllTasks());
 		if(tasks.size() > 1) {
-			ActionException moreThanOne = new ActionException(taskList, ActionException.ErrorLocation.EDIT, subcommands);
+			ActionException moreThanOne = new ActionException(taskList.getList(), ActionException.ErrorLocation.EDIT, subcommands);
 			throw moreThanOne;
 		}
 		else {
@@ -59,7 +59,7 @@ public class Edit extends Command {
 		Task editedTask = setTaskAttributes(toEdit, taskAttributes);
 		
 		if(ExactMatchSearcher.isTaskDuplicate(editedTask)) {
-			ActionException moreThanOne = new ActionException(taskList, ActionException.ErrorLocation.EDIT, taskAttributes);
+			ActionException moreThanOne = new ActionException(taskList.getAllTasks(), ActionException.ErrorLocation.EDIT, taskAttributes);
 			throw moreThanOne;
 		}
 		else {
@@ -96,9 +96,16 @@ public class Edit extends Command {
 			return toEdit;
 	}
 	
-	private void addEditedTask(Task oldTask, Task newTask) {
-		taskList.remove(oldTask);
-		taskList.add(newTask);
+	private void addEditedTask(Task oldTask, Task newTask) throws Exception {
+		
+		List<Subcommand> oldTaskSubC = new Add(subcommands).dismantleTask(oldTask);
+		List<Subcommand> newTaskSubC = new Add(subcommands).dismantleTask(newTask);
+		Command removeOldTask = new Remove(oldTaskSubC);
+		Command addNewTask = new Add(newTaskSubC);
+		
+		removeOldTask.execute();
+		addNewTask.execute();
+		
 		FileIo IoStream = FileIo.getInstance();
 		IoStream.rewriteFile();
 	}

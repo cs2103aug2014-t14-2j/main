@@ -50,14 +50,29 @@ public class Add extends Command {
 		}
 
 		else {
-			taskList.getList().add(newTask);
+			addTaskToList(newTask);
 			FileIo IoStream = FileIo.getInstance();
 			IoStream.rewriteFile();
 			flushSubcommand();
-			UndoRedoList.getInstance().pushUndoCommand(new Add(subcommands));	// Adds an 'ADD' Command into the UndoRedoList
 			String returnMessage = message.getAddMessage(newTask);
 			return returnMessage;
 		}
+	}
+	
+	private void addTaskToList(Task toAdd) {
+		
+		Date today = new Date();
+		
+		if(toAdd.getHasNoDeadline() || !(toAdd.getEndDate().isBefore(today))) {
+			taskList.getList().add(toAdd);
+		}
+		else if(toAdd.getEndDate().isBefore(today) && !(toAdd.getIsComplete())) {
+			taskList.getOverdue().add(toAdd);
+		}
+		else if((toAdd.getEndDate().isBefore(today) && toAdd.getIsComplete()) || toAdd.getIsComplete()) {
+			taskList.getCompleted().add(toAdd);
+		}
+		
 	}
 	
 	public Task buildTask(List<Subcommand> taskAttributes) throws Exception {
