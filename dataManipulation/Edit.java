@@ -6,6 +6,7 @@
 
 package dataManipulation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
@@ -35,7 +36,8 @@ public class Edit extends Command {
 		Task taskToEdit = new Add(subcommands).buildTask(taskToEditSubcommands);
 		Task postEdit = editTask(taskToEdit, subcommands);
 		
-		addEditedTask(preEdit, postEdit);
+		addEditedTask(preEdit, postEdit);	// problem here
+		
 		UndoRedoList.getInstance().pushPreEditedTask(preEdit);	// Add the pre-edited task into the pre edited task stack
 		
 		String editComplete = messages.getEditMessage(preEdit, postEdit);
@@ -102,12 +104,12 @@ public class Edit extends Command {
 		List<Subcommand> newTaskSubC = new Add(subcommands).dismantleTask(newTask);
 		Command removeOldTask = new Remove(oldTaskSubC);
 		Command addNewTask = new Add(newTaskSubC);
-		
+
 		removeOldTask.execute();
 		addNewTask.execute();
 		
 		FileIo IoStream = FileIo.getInstance();
-		IoStream.rewriteFile();
+		IoStream.rewriteFile(); 
 	}
 
 	@Override
