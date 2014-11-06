@@ -33,7 +33,7 @@ public class ExactMatchSearcher {
 		case END:
 			return simpleSearchEndDate(key.getContents()); 
 		case START:
-			return simpleSearchStartDate(key.getContents()); 
+			return simpleSearchStartDate(key.getContents());
 		case DATE:
 			return simpleSearchDate(key.getContents());
 		default :
@@ -49,7 +49,7 @@ public class ExactMatchSearcher {
 			if (key.toLowerCase().equals(taskList.get(i).getName().toLowerCase())) {
 				answer.add(taskList.get(i));
 			}
-			if(taskList.get(i).getName().toLowerCase().contains(temp)){
+			else if(taskList.get(i).getName().toLowerCase().contains(temp)){
 				answer.add(taskList.get(i));
 			}
 		}
