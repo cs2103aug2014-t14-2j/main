@@ -1,5 +1,6 @@
 package dataManipulation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import powerSearch.Searcher;
@@ -37,8 +38,22 @@ public class Remove extends Command {
 	}
 	public static Task remove(List<Subcommand> cc) throws Exception {
 		
-		List<Task> combinedTaskList = TotalTaskList.getInstance().getAllTasks();
-		tasksFound = Searcher.search(cc, combinedTaskList);
+		List<Task> completedTasks = TotalTaskList.getInstance().getCompleted();
+		List<Task> currentTasks = TotalTaskList.getInstance().getList();
+		List<Task> overdueTasks = TotalTaskList.getInstance().getOverdue();
+		List<List<Task>> categorizedTasks = new ArrayList<List<Task>>();
+		categorizedTasks.add(completedTasks);
+		categorizedTasks.add(currentTasks);
+		categorizedTasks.add(overdueTasks);
+		int i = 0;
+		
+		for(i = 0; i < categorizedTasks.size(); i++) {
+			tasksFound = Searcher.search(cc, categorizedTasks.get(i));
+			if(tasksFound.size() > 0) {
+				break;
+			}
+		}
+		
 		if (tasksFound.size() > 1) {
 			ActionException moreThanOne = new ActionException(tasksFound, ActionException.ErrorLocation.DELETE,
 											cc);
@@ -46,16 +61,31 @@ public class Remove extends Command {
 		}
 		taskToRemove = tasksFound.get(0) ;
 		taskRemoved = taskToRemove;
-		doDeleteTask(taskToRemove);
+		doDeleteTask(taskToRemove, i);
 		return taskRemoved;
 		
 	}
-	public static Task doDeleteTask(Task toRemove) {
+	public static Task doDeleteTask(Task toRemove, int i) {
 		Task a = toRemove;
-		TotalTaskList.getInstance().remove(toRemove);
+		
+		switch(i) {
+			case 0 :
+				TotalTaskList.getInstance().removeCompleted(a);
+				break;
+				
+			case 1 :
+				TotalTaskList.getInstance().remove(a);
+				break;
+				
+			case 2 :
+				TotalTaskList.getInstance().removeOverdue(a);
+				break;
+				
+		}
+	//	TotalTaskList.getInstance().remove(toRemove);
 		
 		FileIo stream = FileIo.getInstance();
-		TotalTaskList.getInstance().remove(toRemove);
+	//	TotalTaskList.getInstance().remove(toRemove);
 		stream.rewriteFile();
 		return a;
 	}
