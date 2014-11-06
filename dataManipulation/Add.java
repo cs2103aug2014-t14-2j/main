@@ -64,13 +64,13 @@ public class Add extends Command {
 		Date today = new Date();
 		
 		if(!toAdd.getHasDeadline() || !(toAdd.getEndDate().isBefore(today))) {
-			taskList.getList().add(toAdd);
+			taskList.addNotCompleted(toAdd);
 		}
 		else if(toAdd.getEndDate().isBefore(today) && !(toAdd.getIsComplete())) {
-			taskList.getOverdue().add(toAdd);
+			taskList.addOverdue(toAdd);
 		}
 		else if((toAdd.getEndDate().isBefore(today) && toAdd.getIsComplete()) || toAdd.getIsComplete()) {
-			taskList.getCompleted().add(toAdd);
+			taskList.addCompleted(toAdd);
 		}
 		
 	}
