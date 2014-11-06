@@ -6,6 +6,7 @@ import java.util.List;
 import userInterface.Autocomplete;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
+import dataEncapsulation.Time;
 import dataManipulation.TaskFactory;
 
 /**
@@ -63,6 +64,9 @@ public class TaskFileReader {
 	private final String MESSAGE_COMPLETED = "Yes";
 	
 	private final int FIRST_POSITION = 0;
+	private final String TIME_DELIMITER = "@";
+	
+	private boolean hasNewInfo = false;
 
 	private List<String> taskComponents = new ArrayList<String>();
 	private TaskFactory factory = TaskFactory.getInstance();
@@ -74,13 +78,13 @@ public class TaskFileReader {
 		for (int i = 0; i < componentsFromFile.size(); ++i) {
 			String currentLine = componentsFromFile.get(i);
 			
-			if (currentLine.equals(EMPTY_STRING)) {
+			if (currentLine.equals(EMPTY_STRING) && hasNewInfo) {
 				Task newTask = createTask();
 				if (newTask != null) {
 					taskList.add(newTask);
 				}
 				clearTaskComponents();
-			} else {
+			} else if (!currentLine.equals(EMPTY_STRING)){
 				addComponent(currentLine);
 			}
 		}
@@ -98,11 +102,16 @@ public class TaskFileReader {
 		String startDateString = getStartDateString();
 		String endDateString = getEndDateString();
 		String completed = getCompleted();
+		String startTimeString = getStartTimeString();
+		String endTimeString = getEndTimeString();
 		
 		Date start = (new Date()).determineDate(startDateString);
 		Date end = (new Date()).determineDate(endDateString);
 		
-		Task newTask = factory.makeTask(name, category, location, note, start, end, null, null);
+		Time startTime = (new Time()).determineTime(startTimeString);
+		Time endTime = (new Time()).determineTime(endTimeString);
+		
+		Task newTask = factory.makeTask(name, category, location, note, start, end, startTime, endTime);
 		addToAutocomplete(name, category, location);
 		
 		if (completed.equalsIgnoreCase(MESSAGE_COMPLETED)) {
@@ -156,30 +165,48 @@ public class TaskFileReader {
 		int index = component.getIndex();
 		String componentData = getComponentData(currentLine);
 		
-		if (component == TASK_COMPONENT.START) {
-			component = TASK_COMPONENT.START_TIME;
-			index = component.getIndex();
-			componentData = getTimeData(currentLine);
-			
+		if (component == TASK_COMPONENT.START || 
+				component == TASK_COMPONENT.END) {
+			componentData = getDateData(currentLine);
 			taskComponents.set(index, componentData);
 			
-			componentData = getDateData(currentLine);
+			component = getTimeCounterpart(component);
+			index = component.getIndex();
+			componentData = getTimeData(currentLine);
 		}
 			
 		taskComponents.set(index, componentData);
 		
+		hasNewInfo = true;
+		
 		return;
 	}
 
+	private TASK_COMPONENT getTimeCounterpart(TASK_COMPONENT component) {
+		if (component == TASK_COMPONENT.START) {
+			return TASK_COMPONENT.START_TIME;
+		} else if (component == TASK_COMPONENT.END) {
+			return TASK_COMPONENT.END_TIME;
+		} else {
+			return component;
+		}
+	}
+
 	private String getDateData(String currentLine) {
-		String[] split = currentLine.split("@");
-		String time = split[0];
-		time = time.trim();
-		return time;
+		currentLine = getComponentData(currentLine);
+		String[] split = currentLine.split(TIME_DELIMITER);
+		String date = split[0];
+		date = date.trim();
+		
+		return date;
 	}
 
 	private String getTimeData(String currentLine) {
-		String[] split = currentLine.split("@");
+		if (!currentLine.contains(TIME_DELIMITER)) {
+			return null;
+		}
+		
+		String[] split = currentLine.split(TIME_DELIMITER);
 		String time = split[1];
 		time = time.trim();
 		return time;
@@ -244,6 +271,8 @@ public class TaskFileReader {
 			taskComponents.add(null);
 		}
 		
+		hasNewInfo = false;
+		
 		return;
 	}
 	
@@ -273,6 +302,14 @@ public class TaskFileReader {
 	
 	private String getCompleted() {
 		return taskComponents.get(TASK_COMPONENT.COMPLETED.getIndex());
+	}
+	
+	private String getStartTimeString() {
+		return taskComponents.get(TASK_COMPONENT.START_TIME.getIndex());
+	}
+	
+	private String getEndTimeString() {
+		return taskComponents.get(TASK_COMPONENT.END_TIME.getIndex());
 	}
 
 }
