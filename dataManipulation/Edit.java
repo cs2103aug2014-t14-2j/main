@@ -20,8 +20,8 @@ import fileIo.FileIo;
 
 public class Edit extends Command {
 	
-	private static TotalTaskList taskList = TotalTaskList.getInstance();
-	private static ezCMessages messages = ezCMessages.getInstance();
+	private TotalTaskList taskList = TotalTaskList.getInstance();
+	private ezCMessages messages = ezCMessages.getInstance();
 
 	public Edit(List<Subcommand> commandComponents)
 			throws BadCommandException, BadSubcommandException {

@@ -91,13 +91,13 @@ public class FileIo {
 			Date today = new Date();
 			for(Task t : (reader.getAllTasks(fileContents))) {
 				if(t.getIsComplete() == false && !(t.getEndDate().isBefore(today))) {
-					taskList.getList().add(t);
+					taskList.add(t);;
 				}
 				else if(t.getIsComplete() == true) {
-					taskList.getCompleted().add(t);
+					taskList.addCompleted(t);
 				}
 				else if(t.getIsComplete() == false && t.getEndDate().isBefore(today)) {
-					taskList.getOverdue().add(t);
+					taskList.addOverdue(t);
 				}
 			}
 			return;

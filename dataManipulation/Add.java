@@ -29,10 +29,10 @@ public class Add extends Command {
 	private Date taskEnd = null;
 	private Time startTime = null;
 	private Time endTime = null;
-	private static TotalTaskList taskList = TotalTaskList.getInstance();
-	private static List<Task> tasks = TotalTaskList.getInstance().getList();
-	private static TaskFactory makeMyTask = TaskFactory.getInstance();
-	private static ezCMessages message = ezCMessages.getInstance();
+	private TotalTaskList taskList = TotalTaskList.getInstance();
+	private List<Task> tasks = TotalTaskList.getInstance().getList();
+	private TaskFactory makeMyTask = TaskFactory.getInstance();
+	private ezCMessages message = ezCMessages.getInstance();
 
 	public Add(List<Subcommand> subcommands)
 					throws BadCommandException, BadSubcommandException {
@@ -55,6 +55,9 @@ public class Add extends Command {
 			IoStream.rewriteFile();
 			flushSubcommand();
 			String returnMessage = message.getAddMessage(newTask);
+		/*	System.out.println("Completed Size: " + taskList.getCompleted().size());
+			System.out.println("Overdue Size: " + taskList.getOverdue().size());
+			System.out.println("Current Size: " + taskList.getList().size()); */
 			return returnMessage;
 		}
 	}
