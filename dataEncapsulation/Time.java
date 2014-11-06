@@ -82,8 +82,13 @@ public class Time {
 			if (input.contains(":")) {
 				input = cleanUp(input);
 			}
-			h = input.substring(0, 2);
-			m = input.substring(2);
+			if (input.length() == 3) {
+				h = input.substring(0, 1);
+				m = input.substring(1);
+			} else {
+				h = input.substring(0, 2);
+				m = input.substring(2);
+			}
 			hrs = Integer.parseInt(h);
 			mins = Integer.parseInt(m);
 		}

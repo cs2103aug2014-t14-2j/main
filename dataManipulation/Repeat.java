@@ -26,6 +26,7 @@ import dataEncapsulation.Task;
 import dataEncapsulation.Time;
 import dataManipulation.CommandType.COMMAND_TYPE;
 import dataManipulation.Subcommand.FREQUENCY;
+import dataManipulation.Subcommand.TYPE;
 
 public class Repeat extends Command {
 
@@ -43,6 +44,15 @@ public class Repeat extends Command {
 
 	private Task t;
 	private List<Subcommand> sc;
+	
+	// elements of copied task
+	String repeatName;
+	String repeatCategory;
+	String repeatLocation;
+	String repeatNote;
+	Time repeatStart;
+	Time repeatEnd;
+	List<Subcommand> repeatSubcommands;
 
 	private static List<Task> taskList = TotalTaskList.getInstance().getList();
 
@@ -55,6 +65,7 @@ public class Repeat extends Command {
 	public String execute() throws Exception {
 		assembleCCs(subcommands);
 		getTask();
+		initializerepeatSubcommands();
 		getTaskDuration();
 		getSubcommands();
 		checkStartEnd();
@@ -94,7 +105,29 @@ public class Repeat extends Command {
 		return unimplemented;
 	}
 
-	private void assembleCCs(List<Subcommand> ccs) {
+	private void initializerepeatSubcommands() throws BadSubcommandException, BadSubcommandArgException {
+		repeatName = t.getName();
+		repeatCategory = t.getCategory();
+		repeatLocation = t.getLocation();
+		repeatNote = t.getNote();
+		repeatStart = t.getStartTime();
+		repeatEnd = t.getEndTime();
+		
+		Subcommand sc = new Subcommand(TYPE.NAME, repeatName);
+		repeatSubcommands.add(sc);
+		sc = new Subcommand(TYPE.CATEGORY, repeatCategory);
+		repeatSubcommands.add(sc);
+		sc = new Subcommand(TYPE.LOCATION, repeatLocation);
+		repeatSubcommands.add(sc);
+		sc = new Subcommand(TYPE.NOTE, repeatNote);
+		repeatSubcommands.add(sc);
+		sc = new Subcommand(TYPE.STARTTIME, repeatStart.toString());
+		repeatSubcommands.add(sc);
+		sc = new Subcommand(TYPE.ENDTIME, repeatEnd.toString());
+		repeatSubcommands.add(sc);
+	}
+
+	private void assembleCCs(List<Subcommand> ccs) throws BadSubcommandException {
 		for (Subcommand cc : ccs) {
 			switch (cc.getType()) {
 			case FREQUENCY:
@@ -112,7 +145,7 @@ public class Repeat extends Command {
 				e = LocalDate.parse(end);
 				break;
 			default:
-				System.out.println("SHOULD PROBABLY THROW EXCEPTION HERE INSTEAD!!!");
+				throw new BadSubcommandException("invalid repeat subcommand");
 			}
 		}
 	}
@@ -190,7 +223,7 @@ public class Repeat extends Command {
 	}
 
 	private void getSubcommands() throws BadSubcommandException, BadSubcommandArgException, BadCommandException {
-		sc = new Add(subcommands).dismantleTask(t);
+		sc = new Add(repeatSubcommands).dismantleTask(t);
 	}
 	
 	private List<Subcommand> modifyDate(String newstart, String newend) throws BadSubcommandException, BadSubcommandArgException {
@@ -235,7 +268,7 @@ public class Repeat extends Command {
 			checkForNoDuplicateSubcommands();
 			checkRepeatTwoComponents();
 			checkFrequencyIsNotOnly();
-		} catch (IllegalArgumentException e) {
+		} catch (Exception e) {
 			checkRepeatFourComponents();
 			checkFrequencyIsOnly();
 		}
