@@ -36,11 +36,39 @@ public class ExactMatchSearcher {
 			return simpleSearchStartDate(key.getContents());
 		case DATE:
 			return simpleSearchDate(key.getContents());
+		case STARTTIME:
+			return simpleSearchStartTime(key.getContents());
+		case ENDTIME:
+			return simpleSearchEndTime(key.getContents());
 		default :
 			throw new 
 			IllegalArgumentException("invalid subcommand for search");
 		}
 	}
+	private static ArrayList<Task> simpleSearchStartTime(String key) throws Exception{
+		ArrayList<Task> answer = new ArrayList<Task>();
+		Time comp = new Time();
+		comp = comp.determineTime(key);
+		for (int i = 0; i < taskList.size(); ++i) {
+			if (comp.compareTo(taskList.get(i).getStartTime())==0) {
+				answer.add(taskList.get(i));
+			}
+		}
+		return answer;
+	}
+	
+	private static ArrayList<Task> simpleSearchEndTime(String key) throws Exception{
+		ArrayList<Task> answer = new ArrayList<Task>();
+		Time comp = new Time();
+		comp = comp.determineTime(key);
+		for (int i = 0; i < taskList.size(); ++i) {
+			if (comp.compareTo(taskList.get(i).getEndTime())==0) {
+				answer.add(taskList.get(i));
+			}
+		}
+		return answer;
+	}
+
 
 	private static ArrayList<Task> simpleSearchName(String key){
 		ArrayList<Task> answer = new ArrayList<Task>();
