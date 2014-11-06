@@ -90,7 +90,7 @@ public class ExceptionHandler {
 			String ret = "";
 			for (Task t : choices) {
 				try {
-					Task edited = new Edit(subcommands).editTask(t, 
+					Task edited = new Edit(subcommands).furtherEdit(t, 
 							subcommands);
 					ret = ret + "\n " + edited.toString();
 				} catch ( Exception e ) {
