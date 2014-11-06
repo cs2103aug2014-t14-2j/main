@@ -35,7 +35,7 @@ public class TaskFactory {
 	public Task makeTask(String name, String category, 
 			String location, String note, Date startTime, Date endTime,
 			Time beginning, Time ending) 
-					throws IllegalArgumentException {
+					throws Exception {
 		category = checkVitalComponents(name, category);
 		
 		Task newTask;

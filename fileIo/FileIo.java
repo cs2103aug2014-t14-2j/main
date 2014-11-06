@@ -43,7 +43,7 @@ public class FileIo {
 	}
 	
 	// Takes the lines of text from the task file and creates tasks from them.
-	public List<Task> getAllTasks(List<String> linesOfText) {
+	public List<Task> getAllTasks(List<String> linesOfText) throws Exception {
 		List<Task> taskList = reader.getAllTasks(linesOfText);
 		return taskList;
 	}
@@ -84,7 +84,7 @@ public class FileIo {
 		}
 	}
 	
-	public void initializeTaskList(TotalTaskList taskList) {
+	public void initializeTaskList(TotalTaskList taskList) throws Exception {
 		List<String> fileContents;
 		try {
 			fileContents = fileStream.readFromFile();
