@@ -28,7 +28,7 @@ public class TotalTaskList {
 		return ttl;
 	}
 	
-	public void add(Task newTask) {
+	public void addNotCompleted(Task newTask) {
 		notCompleted.add(newTask);
 		Collections.sort(notCompleted, new sortTaskByEndDate());
 	}
@@ -43,7 +43,7 @@ public class TotalTaskList {
 		Collections.sort(overdue, new sortTaskByEndDate());
 	}
 	
-	public void remove(Task badTask) {
+	public void removeNotCompleted(Task badTask) {
 		notCompleted.remove(badTask);
 	}
 	
