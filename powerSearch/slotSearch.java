@@ -76,4 +76,8 @@ class Slot {
 	public Time getEnd() {
 		return slotEnd;
 	}
+	
+	public String toString() {
+		return "From [ " + getStart().toString() + " ] to [ " + getEnd().toString();
+	}
 } 

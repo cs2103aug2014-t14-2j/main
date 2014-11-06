@@ -284,22 +284,25 @@ public class Task {
 		answer = answer + "Task: " + this.name + '\n';
 		answer = answer + "Category: " + this.category + '\n';
 		if(!hasDeadline){
-		answer = answer + "Start: " + this.startdate.toString() + '\n' + "End: " + "No Specified End Date" + '\n';
+		answer = answer + "Start: " + this.getStartDate().toString() + '\n' + "End: " + MESSAGE_NO_END + '\n';
 		}
 		if(hasDeadline){
-			answer = answer + "Start: " + this.startdate.toString() + '\n' + "End: " + this.enddate.toString() + '\n';
+			answer = answer + "Start: " + this.getStartDate().toString() + '\n' + "End: " + this.getEndDate().toString() + '\n';
+		}
+		if(hasStartTime) {
+			answer = answer + "From: " + this.getStartTime().toString() + '\n' + "To: " + this.getEndTime().toString() + '\n';
 		}
 		if(hasLocation){
-			answer = answer + "Location: " + this.location + '\n';
+			answer = answer + "Location: " + this.getLocation() + '\n';
 		}
 		if(!hasLocation){
-			answer = answer + "Location: No Specified Location" + '\n';
+			answer = answer + MESSAGE_NO_LOCATION + '\n';
 		}
 		if(hasNote){
-			answer = answer + "Note: " + this.note + '\n';
+			answer = answer + "Note: " + this.getNote() + '\n';
 		}
 		if(!hasNote){
-			answer = answer + "Note: No Specified Note" + '\n';
+			answer = answer + MESSAGE_NO_NOTE + '\n';
 		}
 		if(isComplete) {
 			answer = answer + "Completed: Yes\n";

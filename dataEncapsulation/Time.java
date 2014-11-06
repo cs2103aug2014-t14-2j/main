@@ -47,14 +47,18 @@ public class Time {
 	public Time determineTime(String input) throws Exception {
 		String h, m, ap;
 		int hrs, mins;
-		input = input.toLowerCase();
+		input = input.toLowerCase().replaceAll(" ", "");
 		if (input.contains("am")
 				|| input.contains("pm")) {
 			// 12 hour input
-			if (input.length() <= 4) {
+			if (input.length() == 4) {
 				h = input.substring(0, 2);
 				ap = input.substring(2);
 				m = "00";
+			} else if (input.length() == 3) {
+				h = input.substring(0, 1);
+				m = "00";
+				ap = input.substring(1);
 			} else {
 				String timeStr[] = input.split(":", 2);
 				h = timeStr[0];

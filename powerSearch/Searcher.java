@@ -150,12 +150,12 @@ public class Searcher {
 		}
 		for(int i=0; i<search.size(); i++){
 			if(search.get(i).getEndDate().isEquals(dt) && search.get(i).getStartDate().isEquals(dt)){ //the task starts and ends on same day
-				Date edtemp = search.get(i).getEndDate();
-				Date sdtemp = search.get(i).getStartDate();
+				Time edtemp = search.get(i).getEndTime();
+				Time sdtemp = search.get(i).getStartTime();
 
 				int sdhours = sdtemp.getHours();
 				int sdmins = sdtemp.getMinutes();
-				int sdseconds = sdtemp.getSeconds();
+				
 				int totalsdseconds = sdseconds + sdhours*60*60 + sdmins*60;
 
 				int edhours = edtemp.getHours();
