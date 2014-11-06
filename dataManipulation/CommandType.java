@@ -170,6 +170,8 @@ public class CommandType {
 		list.add(Subcommand.TYPE.LOCATION.toString());
 		list.add(Subcommand.TYPE.NOTE.toString());
 		list.add(Subcommand.TYPE.START.toString());
+		list.add(Subcommand.TYPE.STARTTIME.toString());
+		list.add(Subcommand.TYPE.ENDTIME.toString());
 		
 		return list;
 	}

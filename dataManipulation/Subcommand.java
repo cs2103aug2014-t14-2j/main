@@ -30,6 +30,10 @@ public class Subcommand {
 			if (name().equals(INVALID.name())) {
 				String nothing = "";
 				return nothing;
+			} else if (name().equals(ENDTIME.name())) {
+				return "to";
+			} else if (name().equals(STARTTIME.name())) {
+				return "from";
 			}
 			
 			return name().toLowerCase();
