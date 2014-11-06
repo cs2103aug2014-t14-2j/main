@@ -89,7 +89,7 @@ public class Task {
 	
 	
 	//has every field except TIME
-	public Task(String name, String first_category, String location, String note, Date start, Date end) {
+	public Task(String name, String first_category, String location, String note, Date start, Date end) throws Exception {
 		this.setName(name);
 		categorylist = new ArrayList<String>();
 		categorylist.add(first_category);
@@ -98,17 +98,21 @@ public class Task {
 		this.setNote(note);
 		this.setEndDate(end);
 		this.startdate = start;
+		this.setStartTime(new Time());
+		this.setEndTime(new Time(23, 59));
 		
 	}
 	
 	//no loc or note or no Time
-	public Task(String name, String category, Date start, Date end){
+	public Task(String name, String category, Date start, Date end) throws Exception{
 		this.setName(name);
 		categorylist = new ArrayList<String>();
 		categorylist.add(category);
 		this.setCategory(category);
 		this.setEndDate(end);
 		this.setStartDate(start);
+		this.setStartTime(new Time());
+		this.setEndTime(new Time(23, 59));
 	}
 	//no location or note but has time
 	public Task(String name, String category, Date start, Date end, Time s, Time e) throws Exception{
@@ -143,13 +147,15 @@ public class Task {
 		
 	}
 	//no start time, loc or note | | GIVEN ONLY ONE DATE = end date.
-	public Task(String name, String category, Date end){
+	public Task(String name, String category, Date end) throws Exception{
 		this.setName(name);
 		categorylist = new ArrayList<String>();
 		categorylist.add(category);
 		this.setCategory(category);
 		this.startdate = new Date();
 		enddate = end;
+		this.setStartTime(new Time());
+		this.setEndTime(new Time(23, 59));
 	}
 	
 	public Task(String name, Date date, Time time) throws Exception {
@@ -161,25 +167,29 @@ public class Task {
 		this.setEndTime(autoEndTime);
 	}
 	//no extra details at all
-	public Task(String name, String category){
+	public Task(String name, String category) throws Exception{
 		this.setName(name);
 		categorylist = new ArrayList<String>();
 		categorylist.add(category);
 		this.setCategory(category);
 		this.startdate = new Date();
+		this.setStartTime(new Time());
+		this.setEndTime(new Time(23, 59));
 	}
 	
-	public Task(String name, String first_category, String location){
+	public Task(String name, String first_category, String location) throws Exception{
 		this.setName(name);
 		categorylist = new ArrayList<String>();
 		categorylist.add(first_category);
 		this.setCategory(first_category);
 		this.setLocation(location);
 		this.setStartDate(new Date());
+		this.setStartTime(new Time());
+		this.setEndTime(new Time(23, 59));
 	}
 	
 	//no start or end time but has loc and note
-	public Task(String name, String first_category, String location, String note){
+	public Task(String name, String first_category, String location, String note) throws Exception{
 		this.setName(name);
 		categorylist = new ArrayList<String>();
 		categorylist.add(first_category);
@@ -187,9 +197,11 @@ public class Task {
 		this.setLocation(location);
 		this.setNote(note);
 		this.setStartDate(new Date());
+		this.setStartTime(new Time());
+		this.setEndTime(new Time(23, 59));
 	}
 	//No end date
-	public Task(String name, String first_category, String location, String note, Date startdate){
+	public Task(String name, String first_category, String location, String note, Date startdate) throws Exception{
 		this.setName(name);
 		categorylist = new ArrayList<String>();
 		categorylist.add(first_category);
@@ -197,9 +209,11 @@ public class Task {
 		this.setLocation(location);
 		this.setNote(note);
 		this.setStartDate(startdate);
+		this.setStartTime(new Time());
+		this.setEndTime(new Time(23, 59));
 	}
 	
-	public Task(String name, String category, String location, Date start, Date end){
+	public Task(String name, String category, String location, Date start, Date end) throws Exception{
 		this.setName(name);
 		categorylist = new ArrayList<String>();
 		categorylist.add(category);
@@ -207,15 +221,19 @@ public class Task {
 		this.setStartDate(start);
 		this.setEndDate(end);
 		this.setLocation(location);
+		this.setStartTime(new Time());
+		this.setEndTime(new Time(23, 59));
 	}
 	
-	public Task(String name, String category, String location, Date startTime){
+	public Task(String name, String category, String location, Date startTime) throws Exception{
 		this.setName(name);
 		categorylist = new ArrayList<String>();
 		categorylist.add(category);
 		this.setCategory(category);
 		this.setLocation(location);
 		this.startdate = startTime;
+		this.setStartTime(new Time());
+		this.setEndTime(new Time(23, 59));
 	}
 	
 	///////////////////////////////////////////////////////////GETTER SETTER
@@ -333,13 +351,10 @@ public class Task {
 		answer = answer + "Task: " + this.name + '\n';
 		answer = answer + "Category: " + this.category + '\n';
 		if(!hasDeadline){
-		answer = answer + "Start: " + this.getStartDate().toString() + '\n' + "End: " + MESSAGE_NO_END + '\n';
+		answer = answer + "Start: " + this.getStartDate().toString() + " @ " + this.getStartTime().toString() + '\n' + "End: " + MESSAGE_NO_END + '\n';
 		}
 		if(hasDeadline){
-			answer = answer + "Start: " + this.getStartDate().toString() + '\n' + "End: " + this.getEndDate().toString() + '\n';
-		}
-		if(hasStartTime) {
-			answer = answer + "From: " + this.getStartTime().toString()  + " to: " + this.getEndTime().toString() + '\n';
+			answer = answer + "Start: " + this.getStartDate().toString() + " @ " + this.getStartTime().toString() + '\n' + "End: " + this.getEndDate().toString() + " @ " + this.getEndTime().toString() +'\n';
 		}
 		if(hasLocation){
 			answer = answer + "Location: " + this.getLocation() + '\n';
@@ -365,11 +380,11 @@ public class Task {
 		String answer = new String();
 		answer = answer + "Task: " + this.name + '\n';
 		answer = answer + "Category: " + this.category + '\n';
-		if(hasDeadline){
-			answer = answer + "Start: " + this.startdate.toPrint() + '\n' + "End: " + this.enddate.toPrint() + '\n';
+		if(!hasDeadline){
+			answer = answer + "Start: " + this.getStartDate().toString() + " @ " + this.getStartTime().toString() + '\n' + "End: " + MESSAGE_NO_END + '\n';
 		}
-		if(hasStartTime) {
-			answer = answer + "From: " + this.getStartTime().toString() + " to: " + this.getEndTime().toString() + '\n';
+		if(hasDeadline){
+			answer = answer + "Start: " + this.getStartDate().toString() + " @ " + this.getStartTime().toString() + '\n' + "End: " + this.getEndDate().toString() + " @ " + this.getEndTime().toString() +'\n';
 		}
 		if(hasLocation){
 			answer = answer + "Location: " + this.location + '\n';

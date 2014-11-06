@@ -49,7 +49,7 @@ public class ExactMatchSearcher {
 			if (key.toLowerCase().equals(taskList.get(i).getName().toLowerCase())) {
 				answer.add(taskList.get(i));
 			}
-			else if(taskList.get(i).getName().toLowerCase().contains(temp)){
+			if(taskList.get(i).getName().toLowerCase().contains(temp)){
 				answer.add(taskList.get(i));
 			}
 		}
@@ -110,9 +110,12 @@ public class ExactMatchSearcher {
 		int i;
 		for(i=0; i<taskList.size(); i++){
 			if(taskList.get(i).getHasDeadline()){
-				if(lookfordate.isEqual(taskList.get(i).getEndDate()) || lookfordate.isBefore(taskList.get(i).getEndDate())){
-					tasksedited.add(taskList.get(i));
+				if((lookfordate.isBefore(taskList.get(i).getEndDate()) && taskList.get(i).getStartDate().isBefore(lookfordate)) || lookfordate.isEquals(taskList.get(i).getEndDate()) || lookfordate.isEquals(taskList.get(i).getStartDate())){
+					tasksedited.add(taskList.get(i)); //supposed to show all the tasks that have an endDate after the date searched for
 				}
+			}
+			else if(lookfordate.isEquals(taskList.get(i).getStartDate())){
+				tasksedited.add(taskList.get(i));
 			}
 		}
 		return tasksedited;
@@ -135,7 +138,7 @@ public class ExactMatchSearcher {
 		ArrayList<Task> tasksedited = new ArrayList<Task>();
 		int i;
 		for(i=0; i<list.size(); i++){
-			if(lookfordate.isBefore(list.get(i).getEndDate()) || lookfordate.isEquals(list.get(i).getEndDate()) || lookfordate.isEquals(list.get(i).getStartDate())){
+			if((lookfordate.isBefore(list.get(i).getEndDate()) && list.get(i).getStartDate().isBefore(lookfordate)) || lookfordate.isEquals(list.get(i).getEndDate()) || lookfordate.isEquals(list.get(i).getStartDate())){
 				tasksedited.add(list.get(i)); //supposed to show all the tasks that have an endDate after the date searched for
 			}
 		}

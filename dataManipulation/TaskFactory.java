@@ -84,7 +84,7 @@ public class TaskFactory {
 	// Does not have:
 	// May have: note, startTime, endTime
 	private Task makeLocationTask(String name, String category,
-			String location, String note, Date startTime, Date endTime) {
+			String location, String note, Date startTime, Date endTime) throws Exception {
 		Task newTask;
 		
 		if (note == null) {
@@ -102,7 +102,7 @@ public class TaskFactory {
 	// Does not have: location
 	// May have: note, startTime, endTime
 	private Task makeNoLocationTask(String name, String category,
-			String note, Date startTime, Date endTime) {
+			String note, Date startTime, Date endTime) throws Exception {
 		Task newTask;
 		
 		if (note == null) {
@@ -118,7 +118,7 @@ public class TaskFactory {
 	// Does not have:
 	// May have: startTime, endTime
 	private Task makeNoteTask(String name, String category,
-			String location, String note, Date startTime, Date endTime) {
+			String location, String note, Date startTime, Date endTime) throws Exception {
 		Task newTask;
 		
 		if (startTime == null) {
@@ -134,7 +134,7 @@ public class TaskFactory {
 	// Does not have: location
 	// May have: startTime, endTime
 	private Task makeNoteTask(String name, String category, String note,
-			Date startTime, Date endTime) {
+			Date startTime, Date endTime) throws Exception {
 		Task newTask;
 		
 		if (startTime == null) {
@@ -150,7 +150,7 @@ public class TaskFactory {
 	// Does not have: note
 	// May have: startTime, endTime
 	private Task makeNoNoteTask(String name, String category,
-			String location, Date startTime, Date endTime) {
+			String location, Date startTime, Date endTime) throws Exception {
 		Task newTask;
 		
 		if (startTime == null) {
@@ -166,7 +166,7 @@ public class TaskFactory {
 	// Does not have: location, note
 	// May have: startTime, endTime
 	private Task makeNoNoteTask(String name, String category,
-			Date startTime, Date endTime) {
+			Date startTime, Date endTime) throws Exception {
 		Task newTask;
 		
 		if (startTime == null) {
@@ -182,7 +182,7 @@ public class TaskFactory {
 	// Does not have:
 	// May have: endTime
 	private Task makeLocNoteStartTask(String name, String category,
-			String location, String note, Date startTime, Date endTime) {
+			String location, String note, Date startTime, Date endTime) throws Exception {
 		Task newTask;
 		
 		if (endTime == null) {
@@ -199,7 +199,7 @@ public class TaskFactory {
 	// Does not have: startTime
 	// May have: endTime
 	private Task makeLocNoteNoStartTask(String name, String category,
-			String location, String note, Date endTime) {
+			String location, String note, Date endTime) throws Exception {
 		Task newTask;
 		Date startDate = new Date();	// default is today
 		
@@ -216,7 +216,7 @@ public class TaskFactory {
 	// Does not have: location
 	// May have: endTime
 	private Task makeNoteStartTask(String name, String category,
-			String location, Date startTime, Date endTime) {
+			String location, Date startTime, Date endTime) throws Exception {
 		Task newTask;
 		
 		if (endTime == null) {
@@ -232,7 +232,7 @@ public class TaskFactory {
 	// Does not have: location, startTime
 	// May have: endTime
 	private Task makeNoteNoStartTask(String name, String category,
-			String note, Date endTime) {
+			String note, Date endTime) throws Exception {
 		Task newTask;
 		Date startDate = new Date();	// default is today
 		
@@ -251,7 +251,7 @@ public class TaskFactory {
 	// Does not have: note
 	// May have: endTime
 	private Task makeLocStartTask(String name, String category,
-			String location, Date startTime, Date endTime) {
+			String location, Date startTime, Date endTime) throws Exception {
 		Task newTask;
 		
 		if (endTime == null) {
@@ -267,7 +267,7 @@ public class TaskFactory {
 	// Does not have: note, startTime
 	// May have: endTime
 	private Task makeLocNoStartTask(String name, String category,
-			String location, Date endTime) {
+			String location, Date endTime) throws Exception {
 		Task newTask;
 		Date startDate = new Date();	// default is today
 		
@@ -284,7 +284,7 @@ public class TaskFactory {
 	// Does not have: location, note
 	// May have: endTime
 	private Task makeStartTask(String name, String category,
-			Date startTime, Date endTime) {
+			Date startTime, Date endTime) throws Exception {
 		Task newTask;
 		
 		if (endTime == null) {
@@ -300,7 +300,7 @@ public class TaskFactory {
 	// Does not have: location, note, startTime
 	// May have: endTime
 	private Task makeNoStartTask(String name, String category,
-			Date endTime) {
+			Date endTime) throws Exception {
 		Task newTask;
 		Date startDate = new Date();	// default is today
 		

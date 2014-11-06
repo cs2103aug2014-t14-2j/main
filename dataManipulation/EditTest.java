@@ -15,7 +15,7 @@ import dataEncapsulation.Task;
 public class EditTest {
 
 	@Test
-	public void testEdit() throws BadSubcommandException, BadSubcommandArgException {
+	public void testEdit() throws Exception {
 		
 		List<Subcommand> listCC = new ArrayList<Subcommand>();
 		listCC.add(new Subcommand(Subcommand.TYPE.NAME, "Buy Milk"));

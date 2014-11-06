@@ -28,7 +28,6 @@ public class Searcher {
 		assert(list!=null);
 		String command = new String();
 		for(i=0; i<keylist.size(); i++){
-			//System.out.println(keylist.get(i));
 			switch(keylist.get(i).getType()){
 			case AND:
 				command = "AND";
@@ -42,7 +41,6 @@ public class Searcher {
 		}
 		if(answer.get(0).isEmpty()){
 			for(i=0; i<keylist.size(); i++){
-				//System.out.println(keylist.get(i));
 				switch(keylist.get(i).getType()){
 				case AND:
 					command = "AND";
@@ -142,7 +140,6 @@ public class Searcher {
 		for(int k=1; k<=86400; k++){
 			seconds[k] = 0;
 		}
-		
 		search = ExactMatchSearcher.simpleSearchDate(dt, list);
 		if(search.isEmpty()){
 			answer = "All slots on " + dt.toString() + " are free to be scheduled.\n";
@@ -216,7 +213,7 @@ public class Searcher {
 					seconds[j]++;
 				}
 			}
-			else if(dt.isBefore(search.get(i).getEndDate())){
+			else if(dt.isBefore(search.get(i).getEndDate()) && search.get(i).getStartDate().isBefore(dt)){
 				answer = "None of the slots on " + dt.toString() + " are free to be scheduled.\n";
 				return answer;
 			}
@@ -224,13 +221,13 @@ public class Searcher {
 		int start, end;
 		start = 86402;
 		end = 86402;
-		for(int i=25200; i<seconds.length; i++){ //25200 is the time from 6am onwards - assume that no one would work from 00:00 to 07:00
-			if(i>=25200 && i<86400){
+		for(int i=1; i<seconds.length; i++){
+			if(i>0 && i<86400){
 				if(seconds[i]==0 && seconds[i-1]>0){
 					start = i;
 				}
 				else if(seconds[i]==0 && seconds[i+1]>0){
-					end = i;
+					end = i+1;
 					break;
 				}
 			}
@@ -239,12 +236,17 @@ public class Searcher {
 			answer = "None of the slots on " + dt.toString() + " are free to be scheduled.\n";
 			return answer;
 		}
-		if(end - start <60){
+		if(Math.abs(end - start)<60){
 			answer = "None of the slots on " + dt.toString() + " are free to be scheduled.\n";
 			return answer;
 		}
+		if(start == 86402){
+			start = 0;
+		}
+		if(end == 86402){
+			end = 0;
+		}
 		int starthour, startmin, startsec, endhour, endmin, endsec;
-		
 		starthour = start/3600;
 		startmin = start/60 - starthour*60;
 		startsec = start - startmin*60 - starthour*3600;
@@ -257,8 +259,11 @@ public class Searcher {
 		String endTime = getTimeString(endhour, endmin);
 		
 		answer = "Free Slot Found on " + dt.toString() + '\n';
-		answer = answer + startTime + " to " + endTime + '\n';
-
+		if(endTime.equals("00:00")){
+			answer = answer + startTime + " to " + endTime + "(Next Day)" + '\n';
+		}
+		else
+			answer = answer + startTime + " to " + endTime + '\n';
 		return answer;
 	}
 
