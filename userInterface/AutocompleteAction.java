@@ -3,8 +3,6 @@ package userInterface;
 //@author A0126720N
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -15,9 +13,8 @@ import javax.swing.JTextField;
 class AutocompleteAction extends AbstractAction {	
 	final static String EXIT_ACTION = "exit-entry";
 	
-	private ActionToggler tabToggle;
-	
 	private JTextField entry;
+	private JLabel status;
 	
 	private String initialText;
 	private String lastText;
@@ -26,9 +23,9 @@ class AutocompleteAction extends AbstractAction {
 	private int counter = 0;
 	private List<String> completionList;
 	
-	public AutocompleteAction(ActionToggler tab, JTextField ent) {
+	public AutocompleteAction(JLabel stat, JTextField ent) {
 		entry = ent;
-		tabToggle = tab;
+		status = stat;
 		
 		initialText = entry.getText();
 		completionList = autocomplete.complete(initialText);
@@ -38,6 +35,7 @@ class AutocompleteAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent ev) {
+		status.setText(" ");
 		if (entry.getText().equalsIgnoreCase(lastText)) {
 			incrementCounter();
 			entry.setText(completionList.get(counter));

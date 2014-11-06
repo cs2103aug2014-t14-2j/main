@@ -35,6 +35,7 @@ public class CommandHandlingAction extends AbstractAction {
 	
 	public void actionPerformed(ActionEvent ev)  {
 		try {
+			status.setText(" ");
 			String input = entry.getText();
 			Command command = interpreter.formCommand(input);
 			String feedback = command.execute();

@@ -28,10 +28,8 @@ import dataManipulation.CommandType.COMMAND_TYPE;
 
 public class CommandInterpreter {
 	private static CommandInterpreter commandInterpreter;
-	private CommandType commands;
 
 	private CommandInterpreter() {
-		commands = CommandType.getInstance();
 	}
 
 	public static CommandInterpreter getInstance() {

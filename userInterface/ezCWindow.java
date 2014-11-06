@@ -79,8 +79,7 @@ public class ezCWindow extends JFrame {
 		ActionToggler tabToggle = new ActionToggler();
 		ActionToggler escapeToggle = new ActionToggler();
 
-		AutocompleteAction tabAction = new AutocompleteAction(tabToggle, 
-				userInput);
+		AutocompleteAction tabAction = new AutocompleteAction(status, userInput);
 		CommandHandlingAction enterAction = new CommandHandlingAction(status, 
 				display, userInput, enterToggle);
 		CancelAction escAction = new CancelAction();
@@ -103,6 +102,8 @@ public class ezCWindow extends JFrame {
 		initializeHorizontalGroup(layout);
 
 		initializeVerticalGroup(layout);
+		
+		status.setText(" ");
 	}
 
 	private void initializeStaticMembers() {
@@ -185,6 +186,7 @@ public class ezCWindow extends JFrame {
 	class CancelAction extends AbstractAction {
 		public void actionPerformed(ActionEvent ev) {
 			userInput.setText("");
+			status.setText(" ");
 		}
 	}
 	
