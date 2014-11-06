@@ -334,7 +334,7 @@ public class Task {
 			answer = answer + "Start: " + this.getStartDate().toString() + '\n' + "End: " + this.getEndDate().toString() + '\n';
 		}
 		if(hasStartTime) {
-			answer = answer + "From: " + this.getStartTime().toString() + '\n' + "To: " + this.getEndTime().toString() + '\n';
+			answer = answer + "From: " + this.getStartTime().toString()  + " to: " + this.getEndTime().toString() + '\n';
 		}
 		if(hasLocation){
 			answer = answer + "Location: " + this.getLocation() + '\n';
@@ -362,6 +362,9 @@ public class Task {
 		answer = answer + "Category: " + this.category + '\n';
 		if(hasDeadline){
 			answer = answer + "Start: " + this.startdate.toPrint() + '\n' + "End: " + this.enddate.toPrint() + '\n';
+		}
+		if(hasStartTime) {
+			answer = answer + "From: " + this.getStartTime().toString() + " to: " + this.getEndTime().toString() + '\n';
 		}
 		if(hasLocation){
 			answer = answer + "Location: " + this.location + '\n';
