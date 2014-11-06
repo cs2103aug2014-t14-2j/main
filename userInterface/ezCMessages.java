@@ -33,17 +33,16 @@ public class ezCMessages {
 			+ "Add\n"
 			+ "All\n"
 			+ "Category\n"
-			+ "Complete\n"
 			+ "Edit\n"
 			+ "Filter\n"
 			+ "Finish\n"
 			+ "Help\n"
-			+ "Note\n"
 			+ "Remove\n"
 			+ "Search\n"
 			+ "Sort\n"
 			+ "Today\n"
 			+ "Undo\n"
+			+ "Unfinish\n"
 			+ "View\n\n";
 	
 	// Task Error Messages
