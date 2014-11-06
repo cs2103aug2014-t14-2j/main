@@ -33,7 +33,7 @@ public class Task {
 	private static ArrayList<String> categorylist = new ArrayList<String>();
 	
 	//has every field
-	public Task(String name, String first_category, String location, String note, Date start, Date end, Time s, Time e) {
+	public Task(String name, String first_category, String location, String note, Date start, Date end, Time s, Time e) throws Exception {
 		this.setName(name);
 		categorylist = new ArrayList<String>();
 		categorylist.add(first_category);
@@ -84,7 +84,7 @@ public class Task {
 		this.setStartDate(start);
 	}
 	
-	public Task(String name, Date start, Date end, Time s, Time e) {
+	public Task(String name, Date start, Date end, Time s, Time e) throws Exception {
 		this.setName(name);
 		this.setEndDate(end);
 		this.startdate = start;
@@ -110,6 +110,7 @@ public class Task {
 		Time autoEndTime = new Time(time.getHours() + 1, time.getMins());
 		this.setEndTime(autoEndTime);
 	}
+	
 	//no extra details at all
 	public Task(String name, String category){
 		this.setName(name);
@@ -240,13 +241,18 @@ public class Task {
 		return starttime;
 	}
 	
-	public void setStartTime(Time s) {
+	public void setStartTime(Time s) throws Exception {
 		if(s == null) {
 			hasStartTime = false;
 		} else { 
 			hasStartTime = true;
 		}
 		starttime = s;
+		
+		if (!hasEndTime) {
+			Time autoEndTime = new Time(s.getHours() + 1, s.getMins());
+			this.setEndTime(autoEndTime);
+		}
 	}
 	
 	public Time getEndTime() {
