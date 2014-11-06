@@ -105,10 +105,11 @@ public class ExactMatchSearcher {
 
 	private static ArrayList<Task> simpleSearchDate(String comm) {
 		ArrayList<Task> tasksedited = new ArrayList<Task>();
-		Date lookfordate = Date.determineDate(comm); //create the Date class which he is looking for
+		Date lookfordate = new Date(); //create the Date class which he is looking for
+		lookfordate = lookfordate.determineDate(comm);
 		int i;
 		for(i=0; i<taskList.size(); i++){
-			if(!taskList.get(i).getHasNoDeadline()){
+			if(taskList.get(i).getHasDeadline()){
 				if(lookfordate.isEqual(taskList.get(i).getEndDate()) || lookfordate.isBefore(taskList.get(i).getEndDate())){
 					tasksedited.add(taskList.get(i));
 				}
@@ -119,8 +120,8 @@ public class ExactMatchSearcher {
 
 	private static ArrayList<Task> simpleSearchEndDate(String comm) {
 		ArrayList<Task> tasksedited = new ArrayList<Task>();
-		Date lookfordate = Date.determineDate(comm); //create the Date class which he is looking for
-
+		Date lookfordate = new Date(); //create the Date class which he is looking for
+		lookfordate = lookfordate.determineDate(comm);
 		int i;
 		for(i=0; i<taskList.size(); i++){
 			if(lookfordate.isEqual(taskList.get(i).getEndDate())){
@@ -143,8 +144,8 @@ public class ExactMatchSearcher {
 	
 	private static ArrayList<Task> simpleSearchStartDate(String comm) {
 		ArrayList<Task> tasksedited = new ArrayList<Task>();
-		Date lookfordate = Date.determineDate(comm); //create the Date class which he is looking for
-
+		Date lookfordate = new Date(); //create the Date class which he is looking for
+		lookfordate = lookfordate.determineDate(comm);
 		int i;
 		for(i=0; i<taskList.size(); i++){
 			if(lookfordate.isEqual(taskList.get(i).getStartDate())){
