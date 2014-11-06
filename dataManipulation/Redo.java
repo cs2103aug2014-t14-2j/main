@@ -15,7 +15,6 @@ import java.util.List;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
 import dataManipulation.CommandType.COMMAND_TYPE;
-import userInterface.CommandHandler;
 
 public class Redo extends Command {
 	
@@ -35,19 +34,19 @@ public class Redo extends Command {
 		switch(commandToRedo.getType()) {
 		
 		case ADD :
-			returnMessage = CommandHandler.executeCommand(commandToRedo);
+			returnMessage = commandToRedo.execute();
 			break;
 			
 		case REMOVE :
-			returnMessage = CommandHandler.executeCommand(commandToRedo);
+			returnMessage = commandToRedo.execute();
 			break;
 			
 		case EDIT :
-			returnMessage = CommandHandler.executeCommand(commandToRedo);
+			returnMessage = commandToRedo.execute();
 			break;
 			
 		case FINISH :
-			returnMessage = CommandHandler.executeCommand(commandToRedo);
+			returnMessage = commandToRedo.execute();
 			break;
 	
 		default:

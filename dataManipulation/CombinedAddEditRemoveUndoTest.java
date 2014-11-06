@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import userInterface.CommandHandler;
 import dataEncapsulation.Task;
 
 public class CombinedAddEditRemoveUndoTest {
@@ -26,14 +25,14 @@ public class CombinedAddEditRemoveUndoTest {
 		Subcommands.add(new Subcommand(Subcommand.TYPE.NAME, "Buy Milk"));
 		
 		Command addTestCaseOne = new Add(Subcommands);
-		CommandHandler.executeCommand(addTestCaseOne);
+		addTestCaseOne.execute();
 		
 		// EDITING category "Groceries"
 		
 		Subcommands.add(new Subcommand(Subcommand.TYPE.CATEGORY, "Groceries"));
 		
 		Command editTestCaseOne = new Edit(Subcommands);
-		CommandHandler.executeCommand(editTestCaseOne);
+		editTestCaseOne.execute();
 		
 		Task result = TotalTaskList.getInstance().getList().get(0);
 		Task expected = new Task("Buy Milk", "Groceries");
