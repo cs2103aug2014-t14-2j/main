@@ -104,10 +104,9 @@ public class Edit extends Command {
 		Command removeOldTask = new Remove(oldTaskSubC);
 		Command addNewTask = new Add(newTaskSubC);
 
+		FileIo IoStream = FileIo.getInstance();
 		removeOldTask.execute();
 		addNewTask.execute();
-		
-		FileIo IoStream = FileIo.getInstance();
 		IoStream.rewriteFile(); 
 	}
 
