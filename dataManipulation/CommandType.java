@@ -170,6 +170,8 @@ public class CommandType {
 		list.add(Subcommand.TYPE.LOCATION.toString());
 		list.add(Subcommand.TYPE.NOTE.toString());
 		list.add(Subcommand.TYPE.START.toString());
+		list.add(Subcommand.TYPE.STARTTIME.toString());
+		list.add(Subcommand.TYPE.ENDTIME.toString());
 		
 		return list;
 	}
@@ -228,6 +230,7 @@ public class CommandType {
 		List<String> list = getEditSubcommands();
 		list.add(Subcommand.TYPE.AND.toString());
 		list.add(Subcommand.TYPE.OR.toString());
+		list.add(Subcommand.TYPE.COMPLETED.toString());
 		
 		return list;
 	}
@@ -337,6 +340,8 @@ public class CommandType {
 			case AND :
 				return true;
 			case CATEGORY :
+				return true;
+			case COMPLETED :
 				return true;
 			case DATE :
 				return true;
