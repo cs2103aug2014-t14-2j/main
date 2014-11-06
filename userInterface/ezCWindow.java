@@ -75,29 +75,25 @@ public class ezCWindow extends JFrame {
 				KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, 
 				Collections.emptySet());
 		
-		ActionToggler mainEnterToggle = new ActionToggler();
-		ActionToggler autocompleteEnterToggle = new ActionToggler();
+		ActionToggler enterToggle = new ActionToggler();
 		ActionToggler tabToggle = new ActionToggler();
 		ActionToggler escapeToggle = new ActionToggler();
 
 		AutocompleteAction tabAction = new AutocompleteAction(tabToggle, 
-				autocompleteEnterToggle, escapeToggle, userInput, status);
+				userInput);
 		CommandHandlingAction enterAction = new CommandHandlingAction(status, 
-				display, userInput, mainEnterToggle);
+				display, userInput, enterToggle);
 		CancelAction escAction = new CancelAction();
 		
-		mainEnterToggle.initializeMaster(userInput, "ENTER", ENTER_ACTION, 
+		enterToggle.initializeMaster(userInput, "ENTER", ENTER_ACTION, 
 				enterAction);
-		autocompleteEnterToggle.initializeMaster(userInput, "ENTER", 
-				ENTER_ACTION, enterAction);
 		tabToggle.initializeMaster(userInput, "TAB", TAB_ACTION, tabAction);
 		escapeToggle.initializeMaster(userInput, "ESCAPE", CANCEL_ACTION, 
 				escAction);
 		
-		mainEnterToggle.setMaster();
+		enterToggle.setMaster();
 		tabToggle.setMaster();
 		escapeToggle.setMaster();
-		autocompleteEnterToggle.setMaster();
 	}
 
 	private void initializeLayout() {
@@ -141,9 +137,9 @@ public class ezCWindow extends JFrame {
 		//Add the group v2 tp the group v1
 		v1.addGroup(v2);
 		v1.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
+		v1.addComponent(status);
 		v1.addComponent(scroller, GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE);
 		v1.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
-		v1.addComponent(status);
 		v1.addContainerGap();
 
 		//Add the group v1 to the group vGroup
