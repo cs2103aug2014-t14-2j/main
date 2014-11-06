@@ -340,13 +340,13 @@ public class Task {
 			answer = answer + "Location: " + this.getLocation() + '\n';
 		}
 		if(!hasLocation){
-			answer = answer + MESSAGE_NO_LOCATION + '\n';
+			answer = answer + "Location: " + MESSAGE_NO_LOCATION + '\n';
 		}
 		if(hasNote){
 			answer = answer + "Note: " + this.getNote() + '\n';
 		}
 		if(!hasNote){
-			answer = answer + MESSAGE_NO_NOTE + '\n';
+			answer = answer + "Note: " + MESSAGE_NO_NOTE + '\n';
 		}
 		if(isComplete) {
 			answer = answer + "Completed: Yes\n";
