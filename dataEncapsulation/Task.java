@@ -33,13 +33,25 @@ public class Task {
 	private static ArrayList<String> categorylist = new ArrayList<String>();
 	
 	//has every field
-	public Task(String name, String first_category, String location, String note, Date start, Date end, Time s, Time e) throws Exception {
+	public Task(String name, String first_category, String location, String note, Date start, Date end, Time s, Time e) {
 		this.setName(name);
 		categorylist = new ArrayList<String>();
 		categorylist.add(first_category);
 		this.setCategory(first_category);
 		this.setLocation(location);
 		this.setNote(note);
+		this.setEndDate(end);
+		this.startdate = start;
+		this.setStartTime(s);
+		this.setEndTime(e);
+	}
+	
+	public Task(String name, String first_category, String location, Date start, Date end, Time s, Time e) {
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(first_category);
+		this.setCategory(first_category);
+		this.setLocation(location);
 		this.setEndDate(end);
 		this.startdate = start;
 		this.setStartTime(s);
@@ -61,6 +73,21 @@ public class Task {
 		this.setEndTime(autoEndTime);
 	}
 	
+	public Task(String name, String first_category, String location, Date start, Date end, Time s) throws Exception {
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(first_category);
+		this.setCategory(first_category);
+		this.setLocation(location);
+		this.setEndDate(end);
+		this.startdate = start;
+		this.setStartTime(s);
+		Time autoEndTime = new Time(s.getHours() + 1, s.getMins());
+		this.setEndTime(autoEndTime);
+	}
+	
+	
+	
 	//has every field except TIME
 	public Task(String name, String first_category, String location, String note, Date start, Date end) {
 		this.setName(name);
@@ -74,7 +101,7 @@ public class Task {
 		
 	}
 	
-	//no loc or note
+	//no loc or note or no Time
 	public Task(String name, String category, Date start, Date end){
 		this.setName(name);
 		categorylist = new ArrayList<String>();
@@ -83,8 +110,31 @@ public class Task {
 		this.setEndDate(end);
 		this.setStartDate(start);
 	}
+	//no location or note but has time
+	public Task(String name, String category, Date start, Date end, Time s, Time e){
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(category);
+		this.setCategory(category);
+		this.setEndDate(end);
+		this.setStartDate(start);
+		this.setStartTime(s);
+		this.setEndTime(e);
+	}
+	//no loc or note but has start time
+	public Task(String name, String category, Date start, Date end, Time s) throws Exception{
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(category);
+		this.setCategory(category);
+		this.setEndDate(end);
+		this.setStartDate(start);
+		this.setStartTime(s);
+		Time autoEndTime = new Time(s.getHours() + 1, s.getMins());
+		this.setEndTime(autoEndTime);
+	}
 	
-	public Task(String name, Date start, Date end, Time s, Time e) throws Exception {
+	public Task(String name, Date start, Date end, Time s, Time e) {
 		this.setName(name);
 		this.setEndDate(end);
 		this.startdate = start;
@@ -110,7 +160,6 @@ public class Task {
 		Time autoEndTime = new Time(time.getHours() + 1, time.getMins());
 		this.setEndTime(autoEndTime);
 	}
-	
 	//no extra details at all
 	public Task(String name, String category){
 		this.setName(name);
@@ -137,9 +186,9 @@ public class Task {
 		this.setCategory(first_category);
 		this.setLocation(location);
 		this.setNote(note);
-		this.setStartDate(new Date());;
+		this.setStartDate(new Date());
 	}
-	//No end time
+	//No end date
 	public Task(String name, String first_category, String location, String note, Date startdate){
 		this.setName(name);
 		categorylist = new ArrayList<String>();
@@ -237,22 +286,17 @@ public class Task {
 	}
 	
 	public Time getStartTime() {
-		hasStartTime = true;
+		setHasStartTime(true);
 		return starttime;
 	}
 	
-	public void setStartTime(Time s) throws Exception {
+	public void setStartTime(Time s) {
 		if(s == null) {
-			hasStartTime = false;
+			setHasStartTime(false);
 		} else { 
-			hasStartTime = true;
+			setHasStartTime(true);
 		}
 		starttime = s;
-		
-		if (!hasEndTime) {
-			Time autoEndTime = new Time(s.getHours() + 1, s.getMins());
-			this.setEndTime(autoEndTime);
-		}
 	}
 	
 	public Time getEndTime() {
@@ -261,9 +305,9 @@ public class Task {
 	
 	public void setEndTime(Time e) {
 		if(e == null) {
-			hasEndTime = false;
+			setHasEndTime(false);
 		} else {
-			hasEndTime = true;
+			setHasEndTime(true);
 		}
 		endtime = e;
 	}
@@ -348,6 +392,20 @@ public class Task {
 	public boolean equals(Task a){
 		return this.name.toLowerCase().equals(a.getName().toLowerCase());
 	}
-	
-	
+
+	public boolean isHasStartTime() {
+		return hasStartTime;
+	}
+
+	public void setHasStartTime(boolean hasStartTime) {
+		this.hasStartTime = hasStartTime;
+	}
+
+	public boolean isHasEndTime() {
+		return hasEndTime;
+	}
+
+	public void setHasEndTime(boolean hasEndTime) {
+		this.hasEndTime = hasEndTime;
+	}
 }
