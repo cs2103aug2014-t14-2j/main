@@ -85,10 +85,8 @@ public class Remove extends Command {
 				break;
 				
 		}
-	//	TotalTaskList.getInstance().remove(toRemove);
 		
 		FileIo stream = FileIo.getInstance();
-	//	TotalTaskList.getInstance().remove(toRemove);
 		stream.rewriteFile();
 		return a;
 	}
