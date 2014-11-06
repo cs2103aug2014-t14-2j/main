@@ -205,6 +205,7 @@ public class TaskFileReader {
 		} else if (lineTitle.equalsIgnoreCase("completed")) {
 			return TASK_COMPONENT.COMPLETED;
 		} else {
+			System.out.println(lineTitle);
 			throw new RuntimeException("Invalid task in file");
 		}
 	}
