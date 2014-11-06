@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import userInterface.ActionToggler;
 import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
+import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 
 public class ExceptionHandler {
@@ -117,12 +118,20 @@ public class ExceptionHandler {
 		public void actionPerformed(ActionEvent ev)  {
 				String userChoice = userInput.getText();
 			ArrayList<Task> choices = getChoices(userChoice, options);
+			Date today = new Date();
+			int i = 0;
 			
 			String ret = "";
 			for (Task t : choices) {
-				
+				if(!t.getHasDeadline() || !(t.getEndDate().isBefore(today))) {
+					i = 1;
+				}
+				else if(t.getEndDate().isBefore(today) && !(t.getIsComplete())) {
+					i = 2;
+				}
+	
 				try {
-					Task deleted = Remove.doDeleteTask(t) ;
+					Task deleted = Remove.doDeleteTask(t, i) ;
 					ret = ret + "\n " + deleted.toString();
 				} catch (Exception e) {
 					status.setText("Sorry, you've entered something wrong "
@@ -130,6 +139,7 @@ public class ExceptionHandler {
 					endExceptionHandling();
 					return;
 				}
+				
 			}
 			display.setText("Successfully deleted: \n" + ret);
 			endExceptionHandling();
