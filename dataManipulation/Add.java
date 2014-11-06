@@ -79,7 +79,7 @@ public class Add extends Command {
 
 		assembleAttributes(taskAttributes);
 
-		Task toBeAdded = makeMyTask.makeTask(taskName, taskCategory, taskLocation, taskNote, taskStart, taskEnd);
+		Task toBeAdded = makeMyTask.makeTask(taskName, taskCategory, taskLocation, taskNote, taskStart, taskEnd, startTime, endTime);
 
 		return toBeAdded;
 

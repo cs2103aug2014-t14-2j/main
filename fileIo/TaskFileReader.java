@@ -99,8 +99,8 @@ public class TaskFileReader {
 		String endDateString = getEndDateString();
 		String completed = getCompleted();
 		
-		Date start = new Date().determineDate(startDateString);
-		Date end = new Date().determineDate(endDateString);
+		Date start = (new Date()).determineDate(startDateString);
+		Date end = (new Date()).determineDate(endDateString);
 		
 		Task newTask = factory.makeTask(name, category, location, note, start, end);
 		addToAutocomplete(name, category, location);
