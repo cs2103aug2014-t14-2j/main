@@ -91,7 +91,7 @@ public class FileIo {
 			Date today = new Date();
 			for(Task t : (reader.getAllTasks(fileContents))) {
 				if(t.getIsComplete() == false && !(t.getEndDate().isBefore(today))) {
-					taskList.add(t);;
+					taskList.addNotCompleted(t);;
 				}
 				else if(t.getIsComplete() == true) {
 					taskList.addCompleted(t);
