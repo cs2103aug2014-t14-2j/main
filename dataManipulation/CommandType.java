@@ -258,6 +258,10 @@ public class CommandType {
 				return true;
 			case START :
 				return true;
+			case STARTTIME :
+				return true;
+			case ENDTIME :
+				return true;
 			default :
 				return false;
 		}
@@ -338,6 +342,8 @@ public class CommandType {
 				return true;
 			case END :
 				return true;
+			case ENDTIME :
+				return true;
 			case LOCATION :
 				return true;
 			case NAME :
@@ -349,6 +355,8 @@ public class CommandType {
 			case PAREN :
 				return true;
 			case START :
+				return true;
+			case STARTTIME :
 				return true;
 			case TEXT:
 				return true;
