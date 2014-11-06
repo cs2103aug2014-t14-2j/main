@@ -263,10 +263,10 @@ public class Searcher {
 	}
 
 	/**
-	 * @author Natalie Rawle
 	 * Takes time in hours and minutes and returns the string of that time
 	 * @return format: "hour:min" (ex. "10:04")
 	 */
+	//@author A0126720N
 	private static String getTimeString(int hour, int min) {
 		String hourString = String.valueOf(hour);
 		String minuteString = String.valueOf(min);
