@@ -45,6 +45,10 @@ public class Time {
 	}
 
 	public Time determineTime(String input) throws Exception {
+		if (input == null) {
+			return null;
+		}
+		
 		String h, m, ap;
 		int hrs, mins;
 		input = input.toLowerCase().replaceAll(" ", "");
@@ -60,7 +64,7 @@ public class Time {
 				m = "00";
 				ap = input.substring(1);
 			} else {
-				String timeStr[] = input.split(":", 2);
+				String timeStr[] = input.split(":");
 				h = timeStr[0];
 				m = timeStr[1].substring(0, 2);
 				ap = timeStr[1].substring(2);
