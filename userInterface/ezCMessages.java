@@ -135,10 +135,6 @@ public class ezCMessages {
 		
 		firstLine = task.getName();
 		
-		if (firstLine.length() < 20) {
-			firstLine = firstLine + "\t";
-		}
-		
 		if (!task.getCategory().equalsIgnoreCase("no category")) {
 			firstLine = firstLine + "\t" + "Category: " + task.getCategory();
 		}
