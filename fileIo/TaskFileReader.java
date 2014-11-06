@@ -42,7 +42,7 @@ public class TaskFileReader {
 	// component list
 	public enum TASK_COMPONENT {
 		NAME(0), CATEGORY(1), START(2), END(3), LOCATION(4), NOTE(5), 
-		COMPLETED(6);
+		COMPLETED(6), START_TIME(7), END_TIME(8);
 		private int value;
 		
 		private TASK_COMPONENT(int val) {
@@ -156,8 +156,33 @@ public class TaskFileReader {
 		int index = component.getIndex();
 		String componentData = getComponentData(currentLine);
 		
+		if (component == TASK_COMPONENT.START) {
+			component = TASK_COMPONENT.START_TIME;
+			index = component.getIndex();
+			componentData = getTimeData(currentLine);
+			
+			taskComponents.set(index, componentData);
+			
+			componentData = getDateData(currentLine);
+		}
+			
 		taskComponents.set(index, componentData);
+		
 		return;
+	}
+
+	private String getDateData(String currentLine) {
+		String[] split = currentLine.split("@");
+		String time = split[0];
+		time = time.trim();
+		return time;
+	}
+
+	private String getTimeData(String currentLine) {
+		String[] split = currentLine.split("@");
+		String time = split[1];
+		time = time.trim();
+		return time;
 	}
 
 	// made public for testing purposes. May have use outside of this class
