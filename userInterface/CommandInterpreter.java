@@ -208,11 +208,25 @@ public class CommandInterpreter {
 
 		List<Subcommand> components = new ArrayList<Subcommand>();
 
-		Subcommand component;
 		// Search and Sort must label their first subcommands
-		if (commandType != COMMAND_TYPE.SEARCH
-				&& commandType != COMMAND_TYPE.SORT) {
-			component = getFirstComponent(commandType, string);
+		if (commandType == COMMAND_TYPE.SORT) {
+			handleSort(string, components);
+		} else if (commandType == COMMAND_TYPE.SEARCH) {
+			handleSearch(string, commandType, components);
+		} else {
+			string = handleInitialTitle(string, commandType, components);
+			string = handleRestOfCommand(string, components);
+		}
+
+		return components;
+	}
+
+	private String handleRestOfCommand(String string,
+			List<Subcommand> components) throws BadSubcommandArgException,
+			BadSubcommandException, IndexOutOfBoundsException {
+		Subcommand component;
+		while (string.length() > 0) {
+			component = getNextComponent(string);
 			if (isQuotationComponent(component)) {
 				string = eraseQuoteComponent(string);
 			} else {
@@ -220,41 +234,33 @@ public class CommandInterpreter {
 			}
 			components.add(component);
 		}
-		if (commandType == COMMAND_TYPE.SORT) {
-			Subcommand.TYPE sortType = Subcommand.determineComponentType(string
-					.replaceAll("\\s+", "").toLowerCase());
-			components.add(new Subcommand(sortType, ""));
-		} 
-		if (commandType == COMMAND_TYPE.SEARCH) {
-			component = getFirstComponent(commandType, string);
-			if(isQuotationComponent(component)) {
-				string = eraseQuoteComponent(string);
-			} else {
-				string = eraseNoQuoteComponent(component, string);
-			}
-			if(string == "complete" || string == "completed") {
-				Subcommand.TYPE searchType = Subcommand.determineComponentType(string
-						.replaceAll("\\s+", "").toLowerCase());
-				components.add(new Subcommand(searchType, ""));
-			}
-			else {
-				components.add(component);
-			}
-		}
-		else {
+		return string;
+	}
 
-			while (string.length() > 0) {
-				component = getNextComponent(string);
-				if (isQuotationComponent(component)) {
-					string = eraseQuoteComponent(string);
-				} else {
-					string = eraseNoQuoteComponent(component, string);
-				}
-				components.add(component);
-			}
-		}
+	private void handleSearch(String string, COMMAND_TYPE commandType,
+			List<Subcommand> components) throws BadSubcommandArgException,
+			BadSubcommandException, IndexOutOfBoundsException {
+		handleRestOfCommand(string, components);
+	}
 
-		return components;
+	private void handleSort(String string, List<Subcommand> components)
+			throws BadSubcommandException, BadSubcommandArgException {
+		Subcommand.TYPE sortType = Subcommand.determineComponentType(string);
+		components.add(new Subcommand(sortType, ""));
+	}
+
+	private String handleInitialTitle(String string, COMMAND_TYPE commandType,
+			List<Subcommand> components) throws BadSubcommandArgException,
+			BadSubcommandException, IndexOutOfBoundsException {
+		Subcommand component;
+		component = getFirstComponent(commandType, string);
+		if (isQuotationComponent(component)) {
+			string = eraseQuoteComponent(string);
+		} else {
+			string = eraseNoQuoteComponent(component, string);
+		}
+		components.add(component);
+		return string;
 	}
 
 	private List<Subcommand> getNoSubcommands(String input) throws 
@@ -459,12 +465,7 @@ public class CommandInterpreter {
 
 	private String getComponentData(String userCommand,
 			Subcommand.TYPE componentType) throws BadSubcommandArgException {
-		if (componentType == Subcommand.TYPE.START
-				|| componentType == Subcommand.TYPE.END
-				|| componentType == Subcommand.TYPE.DATE
-				|| componentType == Subcommand.TYPE.FREQUENCY
-				|| componentType == Subcommand.TYPE.AND
-				|| componentType == Subcommand.TYPE.OR) {
+		if (isNoQuoteSubcommand(componentType)) {
 			return getNoQuoteComponentData(userCommand);
 		}
 
@@ -555,6 +556,29 @@ public class CommandInterpreter {
 		growingMatch = growingMatch.trim();
 
 		return growingMatch;
+	}
+	
+	private boolean isNoQuoteSubcommand(Subcommand.TYPE type) {
+		switch (type) {
+			case START :
+				return true;
+			case END :
+				return true;
+			case DATE :
+				return true;
+			case FREQUENCY :
+				return true;
+			case AND :
+				return true;
+			case OR :
+				return true;
+			case STARTTIME :
+				return true;
+			case ENDTIME :
+				return true;
+			default :
+				return false;
+		}
 	}
 
 	// -----------------------------------------------------------------------------
