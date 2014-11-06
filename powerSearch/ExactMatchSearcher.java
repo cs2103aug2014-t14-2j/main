@@ -8,6 +8,7 @@ package powerSearch;
 
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
+import dataEncapsulation.Time;
 import dataManipulation.Subcommand;
 import dataManipulation.TotalTaskList;
 
