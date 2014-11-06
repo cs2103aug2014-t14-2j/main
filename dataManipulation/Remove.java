@@ -48,6 +48,9 @@ public class Remove extends Command {
 		int i = 0;
 		
 		for(i = 0; i < categorizedTasks.size(); i++) {
+			if(categorizedTasks.get(i) == null) {
+				break;
+			}
 			tasksFound = Searcher.search(cc, categorizedTasks.get(i));
 			if(tasksFound.size() > 0) {
 				break;
@@ -74,7 +77,7 @@ public class Remove extends Command {
 				break;
 				
 			case 1 :
-				TotalTaskList.getInstance().remove(a);
+				TotalTaskList.getInstance().removeNotCompleted(a);
 				break;
 				
 			case 2 :
