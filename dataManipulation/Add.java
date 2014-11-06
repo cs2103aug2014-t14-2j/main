@@ -52,12 +52,9 @@ public class Add extends Command {
 		else {
 			addTaskToList(newTask);
 			FileIo IoStream = FileIo.getInstance();
-			IoStream.rewriteFile();
+			IoStream.rewriteFile();	//Causing write errors
 			flushSubcommand();
 			String returnMessage = message.getAddMessage(newTask);
-		/*	System.out.println("Completed Size: " + taskList.getCompleted().size());
-			System.out.println("Overdue Size: " + taskList.getOverdue().size());
-			System.out.println("Current Size: " + taskList.getList().size()); */
 			return returnMessage;
 		}
 	}
