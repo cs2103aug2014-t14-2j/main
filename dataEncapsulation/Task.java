@@ -33,7 +33,7 @@ public class Task {
 	private static ArrayList<String> categorylist = new ArrayList<String>();
 	
 	//has every field
-	public Task(String name, String first_category, String location, String note, Date start, Date end, Time s, Time e) {
+	public Task(String name, String first_category, String location, String note, Date start, Date end, Time s, Time e) throws Exception {
 		this.setName(name);
 		categorylist = new ArrayList<String>();
 		categorylist.add(first_category);
@@ -46,7 +46,7 @@ public class Task {
 		this.setEndTime(e);
 	}
 	
-	public Task(String name, String first_category, String location, Date start, Date end, Time s, Time e) {
+	public Task(String name, String first_category, String location, Date start, Date end, Time s, Time e) throws Exception {
 		this.setName(name);
 		categorylist = new ArrayList<String>();
 		categorylist.add(first_category);
@@ -111,7 +111,7 @@ public class Task {
 		this.setStartDate(start);
 	}
 	//no location or note but has time
-	public Task(String name, String category, Date start, Date end, Time s, Time e){
+	public Task(String name, String category, Date start, Date end, Time s, Time e) throws Exception{
 		this.setName(name);
 		categorylist = new ArrayList<String>();
 		categorylist.add(category);
@@ -134,7 +134,7 @@ public class Task {
 		this.setEndTime(autoEndTime);
 	}
 	
-	public Task(String name, Date start, Date end, Time s, Time e) {
+	public Task(String name, Date start, Date end, Time s, Time e) throws Exception {
 		this.setName(name);
 		this.setEndDate(end);
 		this.startdate = start;
@@ -290,13 +290,18 @@ public class Task {
 		return starttime;
 	}
 	
-	public void setStartTime(Time s) {
+	public void setStartTime(Time s) throws Exception {
 		if(s == null) {
 			setHasStartTime(false);
 		} else { 
 			setHasStartTime(true);
 		}
 		starttime = s;
+		
+		if (!hasEndTime) {
+			Time autoEndTime = new Time(s.getHours() + 1, s.getMins());
+			this.setEndTime(autoEndTime);
+		}
 	}
 	
 	public Time getEndTime() {
@@ -340,13 +345,13 @@ public class Task {
 			answer = answer + "Location: " + this.getLocation() + '\n';
 		}
 		if(!hasLocation){
-			answer = answer + MESSAGE_NO_LOCATION + '\n';
+			answer = answer + "Location: " + MESSAGE_NO_LOCATION + '\n';
 		}
 		if(hasNote){
 			answer = answer + "Note: " + this.getNote() + '\n';
 		}
 		if(!hasNote){
-			answer = answer + MESSAGE_NO_NOTE + '\n';
+			answer = answer + "Note: " + MESSAGE_NO_NOTE + '\n';
 		}
 		if(isComplete) {
 			answer = answer + "Completed: Yes\n";

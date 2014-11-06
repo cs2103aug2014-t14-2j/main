@@ -2,6 +2,7 @@ package userInterface;
 
 import java.util.List;
 
+import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 
 /**
@@ -114,15 +115,71 @@ public class ezCMessages {
 			return "nothing to print" + NEW_LINE;
 		}
 		
-		String allTasks = tasks.get(0).toPrint();
+		//String allTasks = tasks.get(0).toPrint();
+		String allTasks = makePrintableTask(tasks.get(0));
 		
 		for (int i = 1; i < tasks.size(); ++i) {
 			Task nextTask = tasks.get(i);
-			String taskToPrint = nextTask.toPrint();
-			allTasks = allTasks + NEW_LINE + taskToPrint;
+			//String taskToPrint = nextTask.toPrint();
+			String taskToPrint = makePrintableTask(nextTask);
+			allTasks = allTasks + NEW_LINE + NEW_LINE + taskToPrint;
 		}
 		
 		return allTasks;
+	}
+	
+	public String makePrintableTask(Task task) {
+		String firstLine = task.getName();
+		String secondLine = new String();
+		Date today = new Date();
+		
+		firstLine = task.getName();
+		
+		if (firstLine.length() < 20) {
+			firstLine = firstLine + "\t";
+		}
+		
+		if (!task.getCategory().equalsIgnoreCase("no category")) {
+			firstLine = firstLine + "\t" + "Category: " + task.getCategory();
+		}
+		
+		if (!task.getHasDeadline()) {
+			// don't print
+		} else if (task.getStartDate().isEquals(task.getEndDate())) {
+			firstLine = firstLine + "\tOn " + task.getStartDate().toString();
+		} else if (today.isBefore(task.getStartDate())) {
+			firstLine = firstLine + "\tFrom " + task.getStartDate().toString() + " to " + task.getEndDate().toString();
+		} else {
+			firstLine = firstLine + "\tDue " + task.getEndDate().toString();
+		}
+		
+		if (task.isHasStartTime()) {
+			firstLine = firstLine + "\t" + task.getStartTime().toString() + " to " + task.getEndTime().toString();
+		} else {
+			if (!task.getHasDeadline()) {
+				firstLine = firstLine + "\t" + "No Deadline";
+			}
+		}
+		
+		if (task.isCompleted()) {
+			firstLine = firstLine + "\t" + "Complete";
+		} else {
+			firstLine = firstLine + "\t" + "Incomplete";
+		}
+		
+		if (task.getHasLocation()) {
+			secondLine = secondLine + "\tLocation: " + task.getLocation();
+		}
+		
+		if (task.getHasNote()) {
+			secondLine = secondLine + "\tNote: " + task.getNote();
+		}
+		
+		if (!secondLine.isEmpty()) {
+			//secondLine = secondLine + "\n";
+		}
+		
+		return firstLine + "\t" + secondLine;
 	}
 	
 	public String getFinishMessage(Task completed) {
