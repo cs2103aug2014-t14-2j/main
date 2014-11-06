@@ -3,6 +3,8 @@ package userInterface;
 //@author A0126720N
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -14,42 +16,38 @@ class AutocompleteAction extends AbstractAction {
 	final static String EXIT_ACTION = "exit-entry";
 	
 	private ActionToggler tabToggle;
-	private ActionToggler enterToggle;
-	private ActionToggler escapeToggle;
 	
 	private JTextField entry;
-	private JLabel status;
 	
-	public AutocompleteAction(ActionToggler tab, ActionToggler enter, 
-			ActionToggler escape, JTextField ent, JLabel stat) {
-		tabToggle = tab;
-		enterToggle = enter;
-		escapeToggle = escape;
-		
-		initializeToggles();
-		
-		entry = ent;
-		status = stat;
-	}
-
 	private String initialText;
+	private String lastText;
 	private Autocomplete autocomplete = Autocomplete.getInstance();
 
 	private int counter = 0;
 	private List<String> completionList;
-
-	public void actionPerformed(ActionEvent ev) {
-		status.setText("autocomplete mode");
+	
+	public AutocompleteAction(ActionToggler tab, JTextField ent) {
+		entry = ent;
+		tabToggle = tab;
+		
 		initialText = entry.getText();
-		toggleOn();
 		completionList = autocomplete.complete(initialText);
+		counter = 0;
 		entry.setText(completionList.get(counter));
+		lastText = entry.getText();
 	}
 
-	class AcceptAction extends AbstractAction {
-		public void actionPerformed(ActionEvent ev)  {
-			status.setText("accepted");
-			toggleOff();
+	public void actionPerformed(ActionEvent ev) {
+		if (entry.getText().equalsIgnoreCase(lastText)) {
+			incrementCounter();
+			entry.setText(completionList.get(counter));
+			lastText = entry.getText();
+		} else {
+			counter = 0;
+			initialText = entry.getText();
+			completionList = autocomplete.complete(initialText);
+			entry.setText(completionList.get(counter));
+			lastText = entry.getText();
 		}
 	}
 
@@ -59,39 +57,6 @@ class AutocompleteAction extends AbstractAction {
 		} else {
 			++counter;
 		}
-	}
-
-	class ContinueAction extends AbstractAction {
-		public void actionPerformed(ActionEvent ev)  {
-			incrementCounter();
-			entry.setText(completionList.get(counter));
-		}
-	}
-
-	class ExitAction extends AbstractAction {
-		public void actionPerformed(ActionEvent ev)  {
-			status.setText("exiting");
-			entry.setText(initialText);
-			toggleOff();
-		}
-	}
-	
-	private void initializeToggles() {
-		tabToggle.initializeLesser(new ContinueAction());
-		enterToggle.initializeLesser(new AcceptAction());
-		escapeToggle.initializeLesser(new ExitAction());
-	}
-	
-	private void toggleOn() {
-		tabToggle.setLesser();
-		enterToggle.setLesser();
-		escapeToggle.setLesser();
-	}
-	
-	private void toggleOff() {
-		tabToggle.setMaster();
-		enterToggle.setMaster();
-		escapeToggle.setMaster();
 	}
 
 }
