@@ -43,6 +43,18 @@ public class Edit extends Command {
 		return editComplete;
 	}
 	
+	public Task furtherEdit(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
+		
+		Task postEdit = editTask(toEdit, subcommands);
+		
+		addEditedTask(toEdit, postEdit);
+		
+		UndoRedoList.getInstance().pushPreEditedTask(toEdit);	// Add the pre-edited task into the pre edited task stack
+		
+		return postEdit;
+		
+	}
+	
 	private Task getTaskToEdit() throws Exception {
 		
 		List<Task> tasks = ExactMatchSearcher.exactSearch(subcommands.get(0), taskList.getAllTasks());
@@ -55,7 +67,7 @@ public class Edit extends Command {
 		}
 	}
 	
-	public Task editTask(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
+	private Task editTask(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
 		
 		Task editedTask = setTaskAttributes(toEdit, taskAttributes);
 		
@@ -103,10 +115,10 @@ public class Edit extends Command {
 		List<Subcommand> newTaskSubC = new Add(subcommands).dismantleTask(newTask);
 		Command removeOldTask = new Remove(oldTaskSubC);
 		Command addNewTask = new Add(newTaskSubC);
-
-		FileIo IoStream = FileIo.getInstance();
+		
 		removeOldTask.execute();
 		addNewTask.execute();
+		FileIo IoStream = FileIo.getInstance();
 		IoStream.rewriteFile(); 
 	}
 
