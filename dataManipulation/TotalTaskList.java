@@ -72,7 +72,8 @@ public class TotalTaskList {
 	}
 	
 	public List<Task> getAllTasks() {
-		List<Task> totalList = overdue;
+		List<Task> totalList = new ArrayList<Task>();
+		totalList.addAll(overdue);
 		totalList.addAll(notCompleted);
 		totalList.addAll(completed);
 		return totalList;
