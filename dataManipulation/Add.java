@@ -52,7 +52,7 @@ public class Add extends Command {
 		else {
 			addTaskToList(newTask);
 			FileIo IoStream = FileIo.getInstance();
-			IoStream.rewriteFile();	//Causing write errors
+			IoStream.rewriteFile();
 			flushSubcommand();
 			String returnMessage = message.getAddMessage(newTask);
 			return returnMessage;
