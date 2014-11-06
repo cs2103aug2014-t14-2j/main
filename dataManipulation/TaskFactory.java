@@ -2,6 +2,7 @@ package dataManipulation;
 
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
+import dataEncapsulation.Time;
 
 /**
  * Decides which constructor of Task to call based on which arguments are
@@ -32,8 +33,9 @@ public class TaskFactory {
 	// expects null arguments if location, note, startTime, or endTime are not 
 	// specified
 	public Task makeTask(String name, String category, 
-			String location, String note, Date startTime, Date endTime) 
-					throws IllegalArgumentException {
+			String location, String note, Date startTime, Date endTime,
+			Time beginning, Time ending) 
+					throws Exception {
 		category = checkVitalComponents(name, category);
 		
 		Task newTask;
@@ -44,6 +46,14 @@ public class TaskFactory {
 		} else {
 			newTask = makeLocationTask(name, category, location, note, 
 					startTime, endTime);
+		}
+		
+		if (beginning != null) {
+			newTask.setStartTime(beginning);
+		}
+		
+		if (ending != null) {
+			newTask.setEndTime(ending);
 		}
 		
 		return newTask;

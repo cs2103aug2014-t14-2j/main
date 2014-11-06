@@ -66,7 +66,7 @@ public class Add extends Command {
 		
 		Date today = new Date();
 		
-		if(toAdd.getHasNoDeadline() || !(toAdd.getEndDate().isBefore(today))) {
+		if(!toAdd.getHasDeadline() || !(toAdd.getEndDate().isBefore(today))) {
 			taskList.getList().add(toAdd);
 		}
 		else if(toAdd.getEndDate().isBefore(today) && !(toAdd.getIsComplete())) {
@@ -82,7 +82,7 @@ public class Add extends Command {
 
 		assembleAttributes(taskAttributes);
 
-		Task toBeAdded = makeMyTask.makeTask(taskName, taskCategory, taskLocation, taskNote, taskStart, taskEnd);
+		Task toBeAdded = makeMyTask.makeTask(taskName, taskCategory, taskLocation, taskNote, taskStart, taskEnd, startTime, endTime);
 
 		return toBeAdded;
 
@@ -117,7 +117,7 @@ public class Add extends Command {
 		
 		if(taskToDismantle.getEndDate().getDay() != 0) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.END, taskToDismantle.getEndDate().toString()));
-		}/*
+		}
 		
 		if(taskToDismantle.getStartTime() != null) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.STARTTIME, taskToDismantle.getStartTime().toString()));
@@ -125,7 +125,7 @@ public class Add extends Command {
 		
 		if(taskToDismantle.getEndTime() != null) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.ENDTIME, taskToDismantle.getEndTime().toString()));
-		}*/
+		}
 		
 		if(taskToDismantle.getNote() != null) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.NOTE, taskToDismantle.getNote()));
@@ -174,11 +174,11 @@ public class Add extends Command {
 	}
 	
 	private void setTaskEnd(String contents) {
-		taskEnd = Date.determineDate(contents);
+		taskEnd = new Date().determineDate(contents);
 	}
 
 	private void setTaskStart(String contents) {
-		taskStart = Date.determineDate(contents);
+		taskStart = new Date().determineDate(contents);
 	}
 
 	private void setTaskNote(String contents) {

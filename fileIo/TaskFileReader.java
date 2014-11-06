@@ -67,7 +67,7 @@ public class TaskFileReader {
 	private List<String> taskComponents = new ArrayList<String>();
 	private TaskFactory factory = TaskFactory.getInstance();
 
-	public List<Task> getAllTasks(List<String> componentsFromFile) {
+	public List<Task> getAllTasks(List<String> componentsFromFile) throws Exception {
 		List<Task> taskList = new ArrayList<Task>();
 		clearTaskComponents();
 		
@@ -88,7 +88,7 @@ public class TaskFileReader {
 		return taskList;
 	}
 
-	private Task createTask() {
+	private Task createTask() throws Exception {
 		checkForMissingComponents();
 		
 		String name = getName();
@@ -99,10 +99,10 @@ public class TaskFileReader {
 		String endDateString = getEndDateString();
 		String completed = getCompleted();
 		
-		Date start = Date.determineDate(startDateString);
-		Date end = Date.determineDate(endDateString);
+		Date start = (new Date()).determineDate(startDateString);
+		Date end = (new Date()).determineDate(endDateString);
 		
-		Task newTask = factory.makeTask(name, category, location, note, start, end);
+		Task newTask = factory.makeTask(name, category, location, note, start, end, null, null);
 		addToAutocomplete(name, category, location);
 		
 		if (completed.equalsIgnoreCase(MESSAGE_COMPLETED)) {

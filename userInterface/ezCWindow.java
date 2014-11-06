@@ -60,7 +60,12 @@ public class ezCWindow extends JFrame {
 
 		initializeActions();
 
-		fileIo.initializeTaskList(totalTaskList);
+		try {
+			fileIo.initializeTaskList(totalTaskList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		pack();
 	}

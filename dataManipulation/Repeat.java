@@ -10,6 +10,7 @@ package dataManipulation;
  * @author tyuiwei
  */
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import dataEncapsulation.BadSubcommandArgException;
 import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
+import dataEncapsulation.Time;
 import dataManipulation.CommandType.COMMAND_TYPE;
 import dataManipulation.Subcommand.FREQUENCY;
 
@@ -31,6 +33,10 @@ public class Repeat extends Command {
 	private String name;
 	private String start;
 	private String end;
+	
+	private LocalDate s;
+	private LocalDate e;
+	
 	private int hrs;
 	private int mins;
 	private int durationOfTaskInDays;
@@ -51,6 +57,7 @@ public class Repeat extends Command {
 		getTask();
 		getTaskDuration();
 		getSubcommands();
+		checkStartEnd();
 		
 		if (freq.equals(FREQUENCY.DAILY.toString())) {
 			List<LocalDate> daysHappening_daily = repeatStartDates_daily(start, end);
@@ -58,7 +65,13 @@ public class Repeat extends Command {
 				makeRepeat(ld);
 			}
 		} else if (freq.equals(FREQUENCY.WEEKLY.toString())) {
-			List<LocalDate> daysHappening_weekly = repeatStartDates_weekly(start, end);
+			int givenStartToActualStart = findDayOfWeek(t.getStartDate()).getValue() - s.getDayOfWeek().getValue();
+			if (givenStartToActualStart < 0) {
+				givenStartToActualStart = givenStartToActualStart + 7;
+			}
+			LocalDate nStart = s.plusDays(givenStartToActualStart);
+			LocalDate nEnd = LocalDate.parse(ldParse(end));
+			List<LocalDate> daysHappening_weekly = repeatStartDates_weekly(nStart, nEnd);
 			for (LocalDate ld : daysHappening_weekly) {
 				makeRepeat(ld);
 			}
@@ -92,9 +105,11 @@ public class Repeat extends Command {
 				break;
 			case START:
 				start = ldParse(cc.getContents());
+				s = LocalDate.parse(start);
 				break;
 			case END:
 				end = ldParse(cc.getContents());
+				e = LocalDate.parse(end);
 				break;
 			default:
 				System.out.println("SHOULD PROBABLY THROW EXCEPTION HERE INSTEAD!!!");
@@ -102,7 +117,7 @@ public class Repeat extends Command {
 		}
 	}
 	
-	private void makeRepeat(LocalDate ld) throws BadCommandException, BadSubcommandException, BadSubcommandArgException {
+	private void makeRepeat(LocalDate ld) throws Exception {
 		String sd = ld.toString();
 		String ed = ld.plusDays(durationOfTaskInDays).toString();
 		List<Subcommand> lsc = modifyDate(sd, ed);
@@ -111,7 +126,7 @@ public class Repeat extends Command {
 	}
 
 	private String ldParse(String inDateFormat) {
-		Date d = Date.determineDate(inDateFormat);
+		Date d = new Date().determineDate(inDateFormat);
 		int dd = d.getDay();
 		int mm = d.getMonth();
 		int yyyy = d.getYear();
@@ -130,9 +145,7 @@ public class Repeat extends Command {
 		return totalDates;
 	}
 	
-	private List<LocalDate> repeatStartDates_weekly(String st, String en) {
-		LocalDate s = LocalDate.parse(st);
-		LocalDate e = LocalDate.parse(en);
+	private List<LocalDate> repeatStartDates_weekly(LocalDate st, LocalDate en) {
 		List<LocalDate> totalDates = new ArrayList<>();
 		while (!s.isAfter(e)) {
 			totalDates.add(s);
@@ -175,8 +188,6 @@ public class Repeat extends Command {
 			t = tasks.get(0);
 		}
 	}
-	
-	private String originalTask_dayofweek
 
 	private void getSubcommands() throws BadSubcommandException, BadSubcommandArgException, BadCommandException {
 		sc = new Add(subcommands).dismantleTask(t);
@@ -209,11 +220,12 @@ public class Repeat extends Command {
 		LocalDate ex = en.plusDays(1);
 		Period p = Period.between(st, ex);
 		durationOfTaskInDays = p.getDays();
-		
 	}
 	
-	
-	
+	private DayOfWeek findDayOfWeek(Date d) {
+		LocalDate date = LocalDate.parse(ldParse(d.toString()));
+		return date.getDayOfWeek();
+	}
 	
 	
 	
@@ -291,6 +303,12 @@ public class Repeat extends Command {
 					throw new BadSubcommandException("too many subcommands");
 				}
 			}
+		}
+	}
+	
+	private void checkStartEnd() throws Exception {
+		if (s.isAfter(e)) {
+			throw new Exception("Invalid dates - start is after end.");
 		}
 	}
 }

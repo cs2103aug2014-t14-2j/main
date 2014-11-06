@@ -82,7 +82,7 @@ public class Edit extends Command {
 			case LOCATION:	toEdit.setLocation(cc.getContents());
 							break;
 
-			case END:	toEdit.setEndDate(Date.determineDate(cc.getContents()));
+			case END:	toEdit.setEndDate(new Date().determineDate(cc.getContents()));
 						break;
 
 			case NOTE:	toEdit.setNote(cc.getContents());

@@ -150,28 +150,48 @@ public class Searcher {
 		}
 		for(int i=0; i<search.size(); i++){
 			if(search.get(i).getEndDate().isEquals(dt) && search.get(i).getStartDate().isEquals(dt)){ //the task starts and ends on same day
-				Date edtemp = search.get(i).getEndDate();
-				Date sdtemp = search.get(i).getStartDate();
-
-				int sdhours = sdtemp.getHours();
-				int sdmins = sdtemp.getMinutes();
-				int sdseconds = sdtemp.getSeconds();
+				Task edtemp = search.get(i);
+				Task sdtemp = search.get(i);
+				int sdhours, sdmins, sdseconds, edhours, edmins, edseconds;
+				if(sdtemp.isHasStartTime()){
+					sdhours = sdtemp.getStartTime().getHours();
+					sdmins = sdtemp.getStartTime().getMins();
+					sdseconds = 0;
+				}
+				else{
+					sdhours = 0;
+					sdmins = 0;
+					sdseconds = 0;
+				}
 				int totalsdseconds = sdseconds + sdhours*60*60 + sdmins*60;
-
-				int edhours = edtemp.getHours();
-				int edmins = edtemp.getMinutes();
-				int edseconds = edtemp.getSeconds();
+				if(sdtemp.isHasEndTime()){
+					edhours = sdtemp.getEndTime().getHours();
+					edmins = sdtemp.getEndTime().getMins();
+					edseconds = 0;
+				}
+				else{
+					edhours = 23;
+					edmins = 59;
+					edseconds = 59;
+				}
 				int totaledseconds = edseconds + edhours*60*60 + edmins*60;
-
 				for(int j=totalsdseconds; j<=totaledseconds; j++){
 					seconds[j]++;
 				}
 			}
 			else if(search.get(i).getStartDate().isEquals(dt)){ //the task starts on the mentioned date
-				Date sdtemp = search.get(i).getStartDate();
-				int sdhours = sdtemp.getHours();
-				int sdmins = sdtemp.getMinutes();
-				int sdseconds = sdtemp.getSeconds();
+				Task sdtemp = search.get(i);
+				int sdhours, sdmins, sdseconds;
+				if(sdtemp.isHasStartTime()){
+					sdhours = sdtemp.getStartTime().getHours();
+					sdmins = sdtemp.getStartTime().getMins();
+					sdseconds = 0;
+				}
+				else{
+					sdhours = 0;
+					sdmins = 0;
+					sdseconds = 0;
+				}
 				int totalsdseconds = sdseconds + sdhours*60*60 + sdmins*60;
 
 				for(int j=totalsdseconds; j<seconds.length; j++){
@@ -179,13 +199,19 @@ public class Searcher {
 				}
 			}
 			else if(search.get(i).getEndDate().isEquals(dt)){ //the task ends on the mentioned date
-				Date edtemp = search.get(i).getEndDate();
-
-				int edhours = edtemp.getHours();
-				int edmins = edtemp.getMinutes();
-				int edseconds = edtemp.getSeconds();
+				Task edtemp = search.get(i);
+				int edhours, edmins, edseconds;
+				if(edtemp.isHasEndTime()){
+					edhours = edtemp.getEndTime().getHours();
+					edmins = edtemp.getEndTime().getMins();
+					edseconds = 0;
+				}
+				else{
+					edhours = 23;
+					edmins = 59;
+					edseconds = 59;
+				}
 				int totaledseconds = edseconds + edhours*60*60 + edmins*60;
-
 				for(int j=1; j<=totaledseconds; j++){
 					seconds[j]++;
 				}
@@ -196,13 +222,10 @@ public class Searcher {
 			}
 		}
 		int start, end;
-		start = 0;
-		end = 0;
-		for(int i=0; i<seconds.length; i++){
-			if(seconds[i]==0 && i==0){
-				start = i;
-			}
-			if(i>=1 && i<86400){
+		start = 86402;
+		end = 86402;
+		for(int i=25200; i<seconds.length; i++){ //25200 is the time from 6am onwards - assume that no one would work from 00:00 to 07:00
+			if(i>=25200 && i<86400){
 				if(seconds[i]==0 && seconds[i-1]>0){
 					start = i;
 				}
@@ -212,7 +235,11 @@ public class Searcher {
 				}
 			}
 		}
-		if(end==0 && start==0){
+		if(end==86402 && start==86402){
+			answer = "None of the slots on " + dt.toString() + " are free to be scheduled.\n";
+			return answer;
+		}
+		if(end - start <60){
 			answer = "None of the slots on " + dt.toString() + " are free to be scheduled.\n";
 			return answer;
 		}
