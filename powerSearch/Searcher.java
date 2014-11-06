@@ -64,7 +64,7 @@ public class Searcher {
 		default:
 			results = mergeListsOR(answer);
 		}
-		return results;
+		return Searcher.removeDuplicates(results);
 	}
 	//Parameters: List of Lists which have Tasks
 	//It merges the lists returned according to the OR Command
