@@ -6,13 +6,14 @@
 package powerSearch;
 
 
-import dataEncapsulation.Date;
-import dataEncapsulation.Task;
-import dataManipulation.Subcommand;
-import dataManipulation.TotalTaskList;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
+import dataEncapsulation.Time;
+import dataManipulation.Subcommand;
+import dataManipulation.TotalTaskList;
 
 public class ExactMatchSearcher {
 	public static List<Task> taskList;
