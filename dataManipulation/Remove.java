@@ -46,7 +46,7 @@ public class Remove extends Command {
 		categorizedTasks.add(currentTasks);
 		categorizedTasks.add(overdueTasks);
 		int i = 0;
-		
+				
 		for(i = 0; i < categorizedTasks.size(); i++) {
 			if(categorizedTasks.get(i) == null) {
 				break;
