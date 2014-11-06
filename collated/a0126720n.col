@@ -1,0 +1,3418 @@
+//@author: a0126720n
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\ActionException.java
+	 */
+
+
+public class ActionException extends Exception {
+	private static final long serialVersionUID = -761775751042015925L;
+	
+	private List<Task> options;
+	private ErrorLocation location;
+	private List<Subcommand> subcommands;
+	
+	public enum ErrorLocation {
+		DELETE, EDIT, FINISH, ADD, UNDO;
+		
+		public String toString() {
+			return this.name().toLowerCase();
+		}
+	}
+
+	public ActionException(List<Task> taskList, ErrorLocation loc, List<Subcommand> sc) {
+		options = taskList;
+		location = loc;
+		subcommands = sc;
+	}
+	
+	
+	public List<Task> getOptions() {
+		return options;
+	}
+	
+	public ErrorLocation getLocation() {
+		return location;
+	}
+	
+	public List<Subcommand> getSubcommands() {
+		return subcommands;
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\ActionException.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\BadCommandException.java
+	 */
+
+
+@SuppressWarnings("serial")
+public class BadCommandException extends Exception {
+	public BadCommandException(String args) {
+		super(args);
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\BadCommandException.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\BadSubcommandArgException.java
+	 */
+
+
+public class BadSubcommandArgException extends Exception {
+	public BadSubcommandArgException(String args) {
+		super(args);
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\BadSubcommandArgException.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\BadSubcommandException.java
+	 */
+
+
+@SuppressWarnings("serial")
+public class BadSubcommandException extends Exception {
+	public BadSubcommandException(String args) {
+		super(args);
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\BadSubcommandException.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\SuffixTree.java
+	 */
+
+
+package dataEncapsulation;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SuffixTree {
+	private List<SuffixTree> tree;
+
+	private String match;
+
+	private static final String EMPTY_STRING = "";
+
+	public SuffixTree() {
+		match = EMPTY_STRING;
+		tree = new ArrayList<SuffixTree>();
+	}
+
+	public void add(String string) {
+		if (tree.isEmpty()) {
+			initializeTree(string);
+			return;
+		}
+
+		String newChar = getFirstCharString(string);
+
+		int index = 0;
+		for (; index < tree.size(); ++index) {
+			String currentChar = tree.get(index).match;
+
+			int comparison = newChar.compareTo(currentChar);
+			int equal = 0;
+
+			if (comparison > equal ) {
+				// do nothing, keep going
+			} else if (comparison < equal) {
+				insertBefore(string, index);
+				return;
+			} else if (comparison == equal && !newChar.isEmpty()) {
+				tree.get(index).add(getAfterFirstChar(string));
+				return;
+			}
+		}
+
+		// made it out of the loop, insert at end
+		if (!newChar.isEmpty()) {
+			insertAtEnd(string);
+		}
+	}
+
+	public void remove(String string) {
+		string = string.toLowerCase();
+		
+		if (string.isEmpty() && tree.isEmpty()) {
+			return;
+		}
+		
+		if (tree.size() == 1) {
+			deleteFinalBranch(string);
+			deleteIfSubtreeIsEmpty(0);
+			return;
+		}
+		
+		String firstChar = getFirstCharString(string);
+		
+		for (int i = 0; i < tree.size(); ++i) {
+			SuffixTree subTree = tree.get(i);
+			
+			if (firstChar.equalsIgnoreCase(subTree.match)) {
+				String stringMinusFirstChar = getAfterFirstChar(string);
+				subTree.remove(stringMinusFirstChar);
+				
+				// if calling remove deleted everything in the subtree, 
+				//delete subtree
+				deleteIfSubtreeIsEmpty(i);
+			}
+		}
+		
+		return;
+	}
+
+	public List<String> getMatchList(String key) {
+		return getMatchList(key, EMPTY_STRING);
+	}
+	
+	private void deleteIfSubtreeIsEmpty(int i) {
+		if (tree.size() <= i) {
+			return;
+		}
+		
+		SuffixTree subTree = tree.get(i);
+		
+		if (subTree.tree.isEmpty()) {
+			tree.remove(i);
+		}
+	}
+	
+	private boolean deleteFinalBranch(String string) {
+		boolean shouldDelete = true;
+		
+		if (tree.size() != 1) {
+			remove(string);	// tree splits further down, don't delete path
+			return false;
+		} else if (tree.get(0).tree.isEmpty() && string.isEmpty()) {
+			return true;	// complete match
+		} else if (string.isEmpty()) {
+			return false;	// string terminated early, not a match
+		} else if (tree.get(0).tree.isEmpty() && !string.isEmpty()) {
+			return false;	// string did not terminate at end of tree
+		}
+		
+		SuffixTree nextTree = tree.get(0);
+		String withoutFirst = getAfterFirstChar(string);
+		shouldDelete = nextTree.deleteFinalBranch(withoutFirst);
+		
+		if (shouldDelete) {
+			tree.remove(0);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private List<String> getMatchList(String key, String masterKey) {
+		List<String> list = new ArrayList<String>();
+
+		if (key.isEmpty()) {
+			if (!masterKey.isEmpty()) {
+				// prevent duplication of last letter
+				masterKey = masterKey.substring(0,masterKey.length() - 1);
+			}
+			
+			list = getTree(masterKey);
+			return list;
+		}
+		
+		String firstChar = getFirstCharString(key);
+
+		for (int i = 0; i < tree.size(); ++i) {
+			SuffixTree subTree = tree.get(i);
+			if (firstChar.equalsIgnoreCase(subTree.match)) {
+				String keyMinusFirstChar = getAfterFirstChar(key);
+				list.addAll(subTree.getMatchList(keyMinusFirstChar, masterKey + firstChar));
+			}
+		}
+
+		return list;
+	}
+
+	private List<String> getTree(String prefix) {
+		List<String> list = new ArrayList<String>();
+
+		if (tree.isEmpty()) {
+			list.add(prefix);
+		}
+
+		for (int i = 0; i < tree.size(); ++i) {
+			list.addAll(tree.get(i).getTree(prefix + match));
+		}
+
+		return list;
+	}
+
+	private SuffixTree(String string) {
+		match = getFirstCharString(string).toLowerCase();
+
+		if (string.isEmpty()) {
+			tree = new ArrayList<SuffixTree>();
+		} else {
+			initializeTree(getAfterFirstChar(string));
+		}
+	}
+	
+	private String getAfterFirstChar(String string) {
+		if (string.isEmpty()) {
+			return EMPTY_STRING;
+		}
+		
+		return string.substring(1);
+	}
+	
+	private String getFirstCharString(String string) {
+		if (string.isEmpty()) {
+			return EMPTY_STRING;
+		}
+		
+		return string.substring(0, 1);
+	}
+
+	private void initializeTree(String string) {
+		SuffixTree subTree = new SuffixTree(string);
+		tree = new ArrayList<SuffixTree>();
+		tree.add(subTree);
+	}
+
+	private void insertAtEnd(String string) {
+		SuffixTree newTree = new SuffixTree(string);
+		tree.add(newTree);
+	}
+
+	private void insertBefore(String string, int index) {
+		SuffixTree newTree = new SuffixTree(string);
+		tree.add(index, newTree);
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\SuffixTree.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\SuffixTreeTest.java
+	 */
+
+
+public class SuffixTreeTest {
+	SuffixTree tree;
+	List<String> list;
+	List<String> expected;
+	
+	final String emptyString = "";
+
+	@Before
+	public void setUp() {
+		tree = new SuffixTree();
+		expected = new ArrayList<String>();
+	}
+
+	@Test
+	public void noElementTest() {
+		setUp();
+		expected.add(emptyString);
+		list = tree.getMatchList(emptyString);
+		assertEquals("Test no added elements", expected, list);
+	}
+
+	@Test
+	public void singleElementTest() {
+		setUp();
+		tree.add("A");
+		expected.add("a");
+		list = tree.getMatchList(emptyString);
+		assertEquals("Single alpha character", expected, list);
+		
+		setUp();
+		tree.add(emptyString);
+		list = tree.getMatchList(emptyString);
+		expected.add(emptyString);
+		assertEquals("Add preexisting empty string", expected, list);
+		
+		setUp();
+		tree.add("&");
+		expected.add("&");
+		list = tree.getMatchList(emptyString);
+		assertEquals("Single nonalpha character", expected, list);
+	}
+	
+	@Test
+	public void singleLengthElementsTest() {
+		setUp();
+		tree.add("A");
+		tree.add("a");
+		tree.add("a");
+		expected.add("a");
+		list = tree.getMatchList(emptyString);
+		assertEquals("Two of same alpha character", expected, list);
+		
+		setUp();
+		tree.add("c");
+		tree.add("%");
+		tree.add("8");
+		expected.add("%");
+		expected.add("8");
+		expected.add("c");
+		list = tree.getMatchList(emptyString);
+		assertEquals("Three different single-characters", expected, list);
+	}
+	
+	@Test
+	public void multipleLengthElementsTest() {
+		setUp();
+		tree.add("And");
+		tree.add("a");
+		tree.add("atr");
+		expected.add("a");
+		expected.add("and");
+		expected.add("atr");
+		list = tree.getMatchList(emptyString);
+		assertEquals("words with same start letter", expected, list);
+		
+		setUp();
+		tree.add("And");
+		tree.add("a");
+		tree.add("atr");
+		tree.add("atr");
+		expected.add("a");
+		expected.add("and");
+		expected.add("atr");
+		list = tree.getMatchList(emptyString);
+		assertEquals("duplicate word", expected, list);
+		
+		tree.add("break it up");
+		tree.add("digger through all");
+		tree.add("creation it is");
+		expected.add("break it up");
+		expected.add("creation it is");
+		expected.add("digger through all");
+		list = tree.getMatchList(emptyString);
+		assertEquals("sentences", expected, list);
+		
+		// symbols used to be treated differently
+		tree.add("%^&$(");
+		tree.add("575");
+		expected.add("%^&$(");
+		expected.add("575");
+		expected.sort(null);
+		list = tree.getMatchList(emptyString);
+		assertEquals("symbols", expected, list);
+	}
+	
+	@Test
+	public void shorterListTest() {
+		setUp();
+		tree.add("complete");
+		tree.add("completed");
+		tree.add("completes");
+		tree.add("compliment");
+		tree.add("complimented");
+		
+		expected.add("complete");
+		expected.add("completed");
+		expected.add("completes");
+		expected.add("compliment");
+		expected.add("complimented");
+		list = tree.getMatchList("comp");
+		assertEquals("request from middle of word", expected, list);
+		
+		expected.clear();
+		expected.add("compliment");
+		expected.add("complimented");
+		list = tree.getMatchList("compliment");
+		assertEquals("request noninclusive list from middle", expected, list);
+		
+		expected.clear();
+		expected.add("complimented");
+		list = tree.getMatchList("complimented");
+		assertEquals("request the entirety of a unique word", expected, list);
+		
+		list = tree.getMatchList("testing");
+		assertEquals("no matches", true, list.isEmpty());
+	}
+	
+	@Test
+	public void deleteTest() {
+		setUp();
+		tree.add("c");
+		tree.add("%");
+		tree.add("8");
+		tree.remove("%");
+		expected.add("8");
+		expected.add("c");
+		list = tree.getMatchList(emptyString);
+		assertEquals("Delete single branch", expected, list);
+		
+		setUp();
+		tree.add("And");
+		tree.add("a");
+		tree.add("atr");
+		tree.remove("aND");
+		expected.add("a");
+		expected.add("atr");
+		list = tree.getMatchList(emptyString);
+		assertEquals("remove more complex word", expected, list);
+		
+		setUp();
+		tree.add("And");
+		tree.add("a");
+		tree.add("atr");
+		tree.remove("aNDD");
+		expected.add("a");
+		expected.add("and");
+		expected.add("atr");
+		list = tree.getMatchList(emptyString);
+		assertEquals("remove a nonexistant word", expected, list);
+		
+		setUp();
+		tree.add("And");
+		tree.add("a");
+		tree.add("atr");
+		tree.remove("an");
+		expected.add("a");
+		expected.add("and");
+		expected.add("atr");
+		list = tree.getMatchList(emptyString);
+		assertEquals("remove a word that was part of another", expected, list);
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\SuffixTreeTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Command.java
+	 */
+
+
+public abstract class Command {
+	protected COMMAND_TYPE type;
+	protected List<Subcommand> subcommands;
+	
+	public abstract String execute() throws Exception;
+	
+	public Command(COMMAND_TYPE commandType, 
+			List<Subcommand> commandComponents) 
+					throws BadCommandException, BadSubcommandException {
+		if (commandType == null || commandComponents == null) {
+			throw new IllegalArgumentException("null argument for Command constructor");
+		}
+		
+		type = commandType;
+		subcommands = commandComponents;
+		
+		checkValidity();
+	}
+	
+	public COMMAND_TYPE getType() {
+		return type;
+	}
+	
+	public List<Subcommand> getComponents() {
+		return subcommands;
+	}
+	
+	protected void checkValidity() throws BadSubcommandException {
+		for (int i = 0; i < subcommands.size(); ++i) {
+			Subcommand component = subcommands.get(i);
+			CommandType checker = CommandType.getInstance();
+
+			if (!checker.isSubcommand(type, component.getType())) {
+				throw new BadSubcommandException("invalid subcommand");
+			}
+		}
+	}
+
+	protected void checkForNoComponents() throws BadSubcommandException {
+		if (!subcommands.isEmpty()) {
+			throw new BadSubcommandException("too many subcommands");
+		}
+	}
+	
+	protected boolean checkForSpecificComponent(Subcommand.TYPE givenType) {
+		for (int i = 0; i < subcommands.size(); ++i) {
+			Subcommand currentComponent = subcommands.get(i);
+			
+			if (currentComponent.getType() == givenType) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	protected void checkForNoDuplicateSubcommands() throws BadSubcommandException {
+		if (subcommands.size() == 0) {
+			return;
+		}
+		
+		Subcommand current;
+		Subcommand temp;
+		
+		for (int i = 0; i < subcommands.size() - 1; ++i) {
+			current = subcommands.get(i);
+			for (int j = i + 1; j < subcommands.size(); ++j) {
+				temp = subcommands.get(j);
+				if (current.getType().toString().equals(temp.getType().toString())) {
+					throw new BadSubcommandException("duplicate subcommands");
+				}
+			}
+		}
+		
+		return;
+	}
+	
+	protected void checkForComponentAmount(int amount) throws BadSubcommandException {
+		if (subcommands.size() > amount) {
+			throw new BadSubcommandException("too many subcommands");
+		} else if (subcommands.size() < amount) {
+			throw new BadSubcommandException("not enough information");
+		}
+	}
+	
+	@Override
+	public String toString() {
+		String formattedType = "Command Type: " + type;
+		String newLine = "\n";
+		String fullMessage = new String(formattedType + newLine);
+		
+		for (int i = 0; i < subcommands.size(); ++i) {
+			fullMessage = fullMessage + subcommands.get(i).toString() + newLine;
+		}
+		
+		return fullMessage;
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Command.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\CommandType.java
+	 */
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import dataManipulation.Subcommand.TYPE;
+
+import dataEncapsulation.BadCommandException;
+
+public class CommandType {
+	private static CommandType records;
+
+	public enum COMMAND_TYPE {
+		ADD, ALL, CHANGE_DATE_TYPE, COMPLETED, EDIT, FINISH, 
+		HELP, REDO, REMOVE, REPEAT, SEARCH, SORT, TODAY, UNFINISH, UNDO,
+		INVALID;
+
+		@Override
+		public String toString() {
+			if (name().equals("INVALID")) {
+				String nothing = "";
+				return nothing;
+			} else if (name().contains("_")) {
+				return name().replace("_", " ").toLowerCase();
+			}
+			
+			return this.name().toLowerCase();
+		}
+	}
+
+	private CommandType() {}
+
+	public static CommandType getInstance() {
+		if (records == null) {
+			records = new CommandType();
+		}
+		return records;
+	}
+
+	public static COMMAND_TYPE determineCommandType(String commandTypeString) 
+			throws BadCommandException {
+		assert(commandTypeString != null);
+		commandTypeString = commandTypeString.trim();
+		String lowerCaseCommand = commandTypeString.toLowerCase();
+
+		switch (lowerCaseCommand) {
+		case "add" :
+			return COMMAND_TYPE.ADD;
+		case "all" :
+			return COMMAND_TYPE.ALL;
+		case "completed" :
+			return COMMAND_TYPE.COMPLETED;
+		case "delete" :
+			return COMMAND_TYPE.REMOVE;
+		case "edit" :
+			return COMMAND_TYPE.EDIT;
+		case "filter" :
+			return COMMAND_TYPE.SEARCH;
+		case "finish" :
+			return COMMAND_TYPE.FINISH;
+		case "help" :
+			return COMMAND_TYPE.HELP;
+		case "redo" :
+			return COMMAND_TYPE.REDO;
+		case "remove" :
+			return COMMAND_TYPE.REMOVE;
+		case "repeat" :
+			return COMMAND_TYPE.REPEAT;
+		case "search" :
+			return COMMAND_TYPE.SEARCH;
+		case "sort" :
+			return COMMAND_TYPE.SORT;
+		case "today" :
+			return COMMAND_TYPE.TODAY;
+		case "unfinish" :
+			return COMMAND_TYPE.UNFINISH;
+		case "undo" :
+			return COMMAND_TYPE.UNDO;
+		case "view" :
+			return COMMAND_TYPE.SEARCH;
+		default :
+			throw new BadCommandException("unrecognized command type");
+		}
+	}
+
+	public boolean isSubcommand(COMMAND_TYPE commandType, Subcommand.TYPE subcommandType) {
+		switch (commandType) {
+		case ADD :
+			return isAddType(subcommandType);
+		case ALL :
+			return isAllType(subcommandType);
+		case CHANGE_DATE_TYPE :
+			return isChangeDateTypeType(subcommandType);
+		case COMPLETED :
+			return isCompletedType(subcommandType);
+		case EDIT :
+			return isEditType(subcommandType);
+		case FINISH :
+			return isFinishType(subcommandType);
+		case HELP :
+			return isHelpType(subcommandType);
+		case REDO :
+			return isRedoType(subcommandType);
+		case REMOVE :
+			return isRemoveType(subcommandType);
+		case REPEAT :
+			return isRepeatType(subcommandType);
+		case SEARCH :
+			return isSearchType(subcommandType);
+		case SORT :
+			return isSortType(subcommandType);
+		case TODAY :
+			return isTodayType(subcommandType);
+		case UNFINISH :
+			return isUnfinishType(subcommandType);
+		case UNDO :
+			return isUndoType(subcommandType);
+		default :
+			return false;
+		}
+	}
+
+	/**
+	 * This method returns the name of all subcommand types
+	 * as they are visible to the user. That is, instead of returning
+	 * Subcommand.TYPE.FREQUENCY, it will return a list of the strings
+	 * once, weekly, monthly, yearly, and so on.
+	 * @param commandType
+	 * @return
+	 */
+	public List<String> getSubcommands(COMMAND_TYPE commandType) {
+		switch (commandType) {
+		case ADD :
+			return getAddSubcommands();
+		case ALL :
+			return getAllSubcommands();
+		case CHANGE_DATE_TYPE :
+			return getChangeDateTypeSubcommands();
+		case COMPLETED :
+			return getCompletedSubcommands();
+		case EDIT :
+			return getEditSubcommands();
+		case FINISH :
+			return getFinishSubcommands();
+		case HELP :
+			return getHelpSubcommands();
+		case REMOVE :
+			return getRemoveSubcommands();
+		case REPEAT :
+			return getRepeatSubcommands();
+		case SEARCH :
+			return getSearchSubcommands();
+		case SORT :
+			return getSortSubcommands();
+		case TODAY :
+			return getTodaySubcommands();
+		case UNDO :
+			return getUndoSubcommands();
+		default :
+			return new ArrayList<String>();
+		}
+	}
+	
+	private List<String> getAddSubcommands() {
+		List<String> list = new ArrayList<String>();
+		list.add(Subcommand.TYPE.CATEGORY.toString());
+		list.add(Subcommand.TYPE.END.toString());
+		list.add(Subcommand.TYPE.LOCATION.toString());
+		list.add(Subcommand.TYPE.NOTE.toString());
+		list.add(Subcommand.TYPE.START.toString());
+		
+		return list;
+	}
+
+	private List<String> getAllSubcommands() {
+		return new ArrayList<String>();
+	}
+
+	private List<String> getChangeDateTypeSubcommands() {
+		List<String> list = new ArrayList<String>();
+		for (Subcommand.DATE_TYPE type : Subcommand.DATE_TYPE.values()) {
+			list.add(type.toString());
+		}
+		
+		return list;
+	}
+
+	private List<String> getCompletedSubcommands() {
+		return new ArrayList<String>();
+	}
+
+	private List<String> getEditSubcommands() {
+		List<String> list = getAddSubcommands();
+		list.add(Subcommand.TYPE.TITLE.toString());
+		
+		return list;
+	}
+
+	private List<String> getFinishSubcommands() {
+		return getAddSubcommands();
+	}
+
+	private List<String> getHelpSubcommands() {
+		return new ArrayList<String>();
+	}
+
+	private List<String> getRemoveSubcommands() {
+		return getAddSubcommands();
+	}
+
+	private List<String> getRepeatSubcommands() {
+		List<String> list = new ArrayList<String>();
+		
+		for (Subcommand.FREQUENCY type : Subcommand.FREQUENCY.values()) {
+			list.add(type.toString());
+		}
+		
+		list.add(Subcommand.TYPE.NAME.toString());
+		list.add(Subcommand.TYPE.START.toString());
+		list.add(Subcommand.TYPE.END.toString());
+		
+		return list;
+	}
+
+	private List<String> getSearchSubcommands() {
+		List<String> list = getEditSubcommands();
+		list.add(Subcommand.TYPE.AND.toString());
+		list.add(Subcommand.TYPE.OR.toString());
+		
+		return list;
+	}
+
+	private List<String> getSortSubcommands() {
+		return new ArrayList<String>();
+	}
+
+	private List<String> getTodaySubcommands() {
+		return new ArrayList<String>();
+	}
+
+	private List<String> getUndoSubcommands() {
+		return new ArrayList<String>();
+	}
+
+	private boolean isAddType(TYPE subcommandType) {
+		switch (subcommandType) {
+			case NAME :
+				return true;
+			case CATEGORY :
+				return true;
+			case END :
+				return true;
+			case LOCATION :
+				return true;
+			case NOTE :
+				return true;
+			case START :
+				return true;
+			default :
+				return false;
+		}
+	}
+
+	private boolean isAllType(TYPE subcommandType) {
+		return false;
+	}
+
+	private boolean isChangeDateTypeType(TYPE subcommandType) {
+		switch (subcommandType) {
+		case DATE_TYPE :
+			return true;
+		default :
+			return false;
+		}
+	}
+
+	private boolean isCompletedType(TYPE subcommandType) {
+		return false;
+	}
+
+	private boolean isEditType(TYPE subcommandType) {
+		switch (subcommandType) {
+		case NAME :
+			return true;
+		case CATEGORY :
+			return true;
+		case END :
+			return true;
+		case LOCATION :
+			return true;
+		case NOTE :
+			return true;
+		case START :
+			return true;
+		case TITLE :
+			return true;
+		default :
+			return false;
+		}
+	}
+
+	private boolean isFinishType(TYPE subcommandType) {
+		return isAddType(subcommandType);
+	}
+
+	private boolean isHelpType(TYPE subcommandType) {
+		return false;
+	}
+
+	private boolean isRemoveType(TYPE subcommandType) {
+		return isAddType(subcommandType);
+	}
+
+	private boolean isRepeatType(TYPE subcommandType) {
+		switch (subcommandType) {
+			case FREQUENCY :	 // valid
+				return true;
+			case NAME :
+				return true;
+			case START :
+				return true;
+			case END :
+				return true;
+			default :
+				return false;
+		}
+	}
+
+	private boolean isSearchType(TYPE subcommandType) {
+		switch (subcommandType) {
+			case AND :
+				return true;
+			case CATEGORY :
+				return true;
+			case DATE :
+				return true;
+			case END :
+				return true;
+			case LOCATION :
+				return true;
+			case NAME :
+				return true;
+			case NOTE :
+				return true;
+			case OR :
+				return true;
+			case PAREN :
+				return true;
+			case START :
+				return true;
+			case TEXT:
+				return true;
+			case TITLE :
+				return true;
+			default :
+				return false;
+		}
+	}
+
+	private boolean isSortType(TYPE subcommandType) {
+		switch (subcommandType) {
+			case BYNAME :
+				return true;
+			case BYSTART :
+				return true;
+			case BYEND :
+				return true;
+			default :
+				return false;
+		}
+	}
+
+	private boolean isTodayType(TYPE subcommandType) {
+		return false;
+	}
+
+	private boolean isUndoType(TYPE subcommandType) {
+		return false;
+	}
+	
+	private boolean isRedoType(TYPE subcommandType) {
+		return false;
+	}
+
+	private boolean isUnfinishType(TYPE subcommandType) {
+		return isAddType(subcommandType);
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\CommandType.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Subcommand.java
+	 */
+
+
+public class Subcommand {
+	public enum TYPE {
+		AND, BYEND, BYNAME, BYSTART, CATEGORY, COMPLETED, DATE, DATE_TYPE, END,
+		ENDTIME, FREE, LOCATION, NAME, NONE, NOTE, FREQUENCY, OR, PAREN, START, 
+		STARTTIME, TEXT, TITLE,
+		INVALID;
+		
+		@Override
+		public String toString() {
+			if (name().equals(INVALID.name())) {
+				String nothing = "";
+				return nothing;
+			}
+			
+			return name().toLowerCase();
+		}
+	}
+	
+	// All possibilities for the frequency keyword
+	public enum FREQUENCY {
+		DAILY, WEEKLY, MONTHLY, ANNUALLY, ONCE;
+		
+		@Override
+		public String toString() {
+			return this.name().toLowerCase();
+		}
+	}
+	
+	public enum PAREN {
+		OPEN_PAREN, CLOSE_PAREN;
+		
+		@Override
+		public String toString() {
+			if (this.name().equals("OPEN_PAREN")) {
+				return "(";
+			} else {
+				return ")";
+			}
+		}
+	}
+	
+	// The two possibilities (plus invalid) for the date display/read type
+	public enum DATE_TYPE {
+		DAY_MONTH, MONTH_DAY;
+		
+		@Override
+		public String toString() {
+			switch(this) {
+				case DAY_MONTH :
+					return "d/m";
+				case MONTH_DAY :
+					return "m/d";
+				default :
+					return this.name().toLowerCase();
+			}
+		}
+	}
+	
+	private TYPE type;
+	private String contents;
+	
+	public Subcommand(TYPE componentType, 
+			String componentContents) throws BadSubcommandException, BadSubcommandArgException {
+		type = componentType;
+		contents = componentContents;
+		
+		checkValidity();
+	}
+
+	public TYPE getType() {
+		return type;
+	}
+	
+	public String getContents() {
+		return contents;
+	}
+	
+	private void checkValidity() throws BadSubcommandException, BadSubcommandArgException {
+		if (type == TYPE.INVALID) {
+			throw new BadSubcommandException("invalid subcommand type");
+		}
+		
+		switch (type) {
+			case FREQUENCY :
+				checkFrequencyContents();
+				break;
+			case DATE_TYPE :
+				checkDateTypeContents();
+				break;
+			case PAREN :
+				checkParenContents();
+			default :
+				break;	// no restrictions on contents
+		}
+		
+		return;
+	}
+	
+	private void checkParenContents() throws BadSubcommandArgException {
+		boolean isValid = false;
+		
+		if (contents.equals(PAREN.OPEN_PAREN.toString())) {
+			isValid = true;
+		} else if (contents.equals(PAREN.CLOSE_PAREN.toString())) {
+			isValid = true;
+		}
+		
+		if (!isValid) {
+			throw new BadSubcommandArgException("invalid paren specified");
+		}
+	}
+
+	private void checkFrequencyContents() throws BadSubcommandArgException {
+		boolean isValid = false;
+		
+		if (contents.equals(FREQUENCY.DAILY.toString())) {
+			isValid = true;
+		} else if (contents.equals(FREQUENCY.WEEKLY.toString())) {
+			isValid = true;
+		} else if (contents.equals(FREQUENCY.MONTHLY.toString())) {
+			isValid = true;
+		} else if (contents.equals(FREQUENCY.ANNUALLY.toString())) {
+			isValid = true;
+		} else if (contents.equals(FREQUENCY.ONCE.toString())) {
+			isValid = true;
+		}
+		
+		if (!isValid) {
+			throw new BadSubcommandArgException("invalid frequency specified");
+		}
+	}
+	
+	private void checkDateTypeContents() throws BadSubcommandArgException {
+		boolean isValid = false;
+		
+		if (contents.equals(DATE_TYPE.DAY_MONTH.toString())) {
+			isValid = true;
+		} else if (contents.equals(DATE_TYPE.MONTH_DAY.toString())) {
+			isValid = true;
+		}
+		
+		if (!isValid) {
+			throw new BadSubcommandArgException("invalid date format specified");
+		}
+	}
+	
+	@Override
+	public String toString() {
+		String formattedType = "Component Type: " + type;
+		String newLine = "\n";
+		String formattedContents = "Contents: " + contents;
+		
+		String total = formattedType + newLine + formattedContents;
+		return total;
+	}
+	
+	public static Subcommand.TYPE determineComponentType(
+			String componentTypeString) {
+		componentTypeString = componentTypeString.trim();
+		
+		switch (componentTypeString.toLowerCase()) {
+		case ("(") :
+			return TYPE.PAREN;
+		case (")") :
+			return TYPE.PAREN;
+		case ("byname") :
+			return TYPE.BYNAME;
+		case ("byend") :
+			return TYPE.BYEND;
+		case ("bystart") :
+			return TYPE.BYSTART;
+		case ("and") :
+			return TYPE.AND;
+		case ("&") :
+			return TYPE.AND;
+		case ("annually") :
+			return TYPE.FREQUENCY;
+		case ("begin") :
+			return TYPE.START;
+		case ("category") :
+			return TYPE.CATEGORY;
+		case ("cat") :
+			return TYPE.CATEGORY;
+		case ("completed") :
+			return TYPE.COMPLETED;
+		case ("complete") :
+			return TYPE.COMPLETED;
+		case ("daily") :
+			return TYPE.FREQUENCY;
+		case ("date") :
+			return TYPE.DATE;
+		case ("deadline") :
+			return TYPE.END;
+		case ("end") :
+			return TYPE.END;
+		case ("free") :
+			return TYPE.FREE;
+		case ("from") : 
+			return TYPE.STARTTIME;
+		case ("location") :
+			return TYPE.LOCATION;
+		case ("monthly") :
+			return TYPE.FREQUENCY;
+		case ("note") :
+			return TYPE.NOTE;
+		case ("or") :
+			return TYPE.OR;
+		case ("once") :
+			return TYPE.FREQUENCY;
+		case ("start") :
+			return TYPE.START;
+		case ("title") :
+			return TYPE.TITLE;
+		case ("to") : 
+			return TYPE.ENDTIME;
+		case ("weekly") :
+			return TYPE.FREQUENCY;
+		default :
+			return TYPE.INVALID;
+		}
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Subcommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\TaskFactory.java
+	 */
+
+
+public class TaskFactory {
+	private static TaskFactory factory;
+	
+	private TaskFactory() {}
+	
+	public static TaskFactory getInstance() {
+		if (factory == null) {
+			factory = new TaskFactory();
+		}
+		
+		return factory;
+	}
+	
+	
+	// expects null arguments if location, note, startTime, or endTime are not 
+	// specified
+	public Task makeTask(String name, String category, 
+			String location, String note, Date startTime, Date endTime,
+			Time beginning, Time ending) 
+					throws Exception {
+		category = checkVitalComponents(name, category);
+		
+		Task newTask;
+		
+		if (location == null) {
+			newTask = makeNoLocationTask(name, category, note, startTime, 
+					endTime);
+		} else {
+			newTask = makeLocationTask(name, category, location, note, 
+					startTime, endTime);
+		}
+		
+		if (beginning != null) {
+			newTask.setStartTime(beginning);
+		}
+		
+		if (ending != null) {
+			newTask.setEndTime(ending);
+		}
+		
+		return newTask;
+	}
+
+	/**
+	 * Ensures that no task will ever be without a name or category, which are
+	 * not optional for the class. If no category is specified (as it IS
+	 * optional for the user), it gives it the category of "no category".
+	 * @param name
+	 * @param category
+	 * @return the value that category should be
+	 */
+	private String checkVitalComponents(String name, String category) 
+			throws IllegalArgumentException {
+		if (name == null) {
+			throw new IllegalArgumentException("task does not have name");
+		}
+			
+		if (category == null) {
+			return "no category";
+		}
+		
+		return category;
+	}
+
+	// Has: location
+	// Does not have:
+	// May have: note, startTime, endTime
+	private Task makeLocationTask(String name, String category,
+			String location, String note, Date startTime, Date endTime) {
+		Task newTask;
+		
+		if (note == null) {
+			newTask = makeNoNoteTask(name, category, location, startTime, 
+					endTime);
+		} else {
+			newTask = makeNoteTask(name, category, location, note, startTime, 
+					endTime);
+		}
+
+		return newTask;
+	}
+	
+	// Has:
+	// Does not have: location
+	// May have: note, startTime, endTime
+	private Task makeNoLocationTask(String name, String category,
+			String note, Date startTime, Date endTime) {
+		Task newTask;
+		
+		if (note == null) {
+			newTask = makeNoNoteTask(name, category, startTime, endTime);
+		} else {
+			newTask = makeNoteTask(name, category, note, startTime, endTime);
+		}
+
+		return newTask;
+	}
+	
+	// Has: location, note
+	// Does not have:
+	// May have: startTime, endTime
+	private Task makeNoteTask(String name, String category,
+			String location, String note, Date startTime, Date endTime) {
+		Task newTask;
+		
+		if (startTime == null) {
+			newTask = makeLocNoteNoStartTask(name, category, location, note, endTime);
+		} else {
+			newTask = makeLocNoteStartTask(name, category, location, note, startTime, endTime);
+		}
+		
+		return newTask;
+	}
+
+	// Has: note
+	// Does not have: location
+	// May have: startTime, endTime
+	private Task makeNoteTask(String name, String category, String note,
+			Date startTime, Date endTime) {
+		Task newTask;
+		
+		if (startTime == null) {
+			newTask = makeNoteNoStartTask(name, category, note, endTime);
+		} else {
+			newTask = makeNoteStartTask(name, category, note, startTime, endTime);
+		}
+		
+		return newTask;
+	}
+
+	// Has: location
+	// Does not have: note
+	// May have: startTime, endTime
+	private Task makeNoNoteTask(String name, String category,
+			String location, Date startTime, Date endTime) {
+		Task newTask;
+		
+		if (startTime == null) {
+			newTask = makeLocNoStartTask(name, category, location, endTime);
+		} else {
+			newTask = makeLocStartTask(name, category, location, startTime, endTime);
+		}
+		
+		return newTask;
+	}
+	
+	// Has:
+	// Does not have: location, note
+	// May have: startTime, endTime
+	private Task makeNoNoteTask(String name, String category,
+			Date startTime, Date endTime) {
+		Task newTask;
+		
+		if (startTime == null) {
+			newTask = makeNoStartTask(name, category, endTime);
+		} else {
+			newTask = makeStartTask(name, category, startTime, endTime);
+		}
+		
+		return newTask;
+	}
+	
+	// Has: location, note, startTime
+	// Does not have:
+	// May have: endTime
+	private Task makeLocNoteStartTask(String name, String category,
+			String location, String note, Date startTime, Date endTime) {
+		Task newTask;
+		
+		if (endTime == null) {
+			newTask = new Task(name, category, location, note, startTime);
+		} else {
+			newTask = new Task(name, category, location, note, startTime, endTime);
+		}
+		
+		return newTask;
+	}
+	
+	
+	// Has: location, note
+	// Does not have: startTime
+	// May have: endTime
+	private Task makeLocNoteNoStartTask(String name, String category,
+			String location, String note, Date endTime) {
+		Task newTask;
+		Date startDate = new Date();	// default is today
+		
+		if (endTime == null) {
+			newTask = new Task(name, category, location, note, startDate);
+		} else {
+			newTask = new Task(name, category, location, note, startDate, endTime);
+		}
+		
+		return newTask;
+	}
+	
+	// Has: note, startTime
+	// Does not have: location
+	// May have: endTime
+	private Task makeNoteStartTask(String name, String category,
+			String location, Date startTime, Date endTime) {
+		Task newTask;
+		
+		if (endTime == null) {
+			newTask = new Task(name, category, location, startTime);
+		} else {
+			newTask = new Task(name, category, location, startTime, endTime);
+		}
+		
+		return newTask;
+	}
+	
+	// Has: note
+	// Does not have: location, startTime
+	// May have: endTime
+	private Task makeNoteNoStartTask(String name, String category,
+			String note, Date endTime) {
+		Task newTask;
+		Date startDate = new Date();	// default is today
+		
+		if (endTime == null) {
+			newTask = new Task(name, category, startDate);
+			newTask.setNote(note);
+		} else {
+			newTask = new Task(name, category, startDate, endTime);
+			newTask.setNote(note);
+		}
+		
+		return newTask;
+	}
+	
+	// Has: location, startTime
+	// Does not have: note
+	// May have: endTime
+	private Task makeLocStartTask(String name, String category,
+			String location, Date startTime, Date endTime) {
+		Task newTask;
+		
+		if (endTime == null) {
+			newTask = new Task(name, category, location, startTime);
+		} else {
+			newTask = new Task(name, category, location, startTime, endTime);
+		}
+		
+		return newTask;
+	}
+	
+	// Has: location
+	// Does not have: note, startTime
+	// May have: endTime
+	private Task makeLocNoStartTask(String name, String category,
+			String location, Date endTime) {
+		Task newTask;
+		Date startDate = new Date();	// default is today
+		
+		if (endTime == null) {
+			newTask = new Task(name, category, location, startDate);
+		} else {
+			newTask = new Task(name, category, location, startDate, endTime);
+		}
+		
+		return newTask;
+	}
+	
+	// Has: startTime
+	// Does not have: location, note
+	// May have: endTime
+	private Task makeStartTask(String name, String category,
+			Date startTime, Date endTime) {
+		Task newTask;
+		
+		if (endTime == null) {
+			newTask = new Task(name, category, startTime);
+		} else {
+			newTask = new Task(name, category, startTime, endTime);
+		}
+		
+		return newTask;
+	}
+	
+	// Has:
+	// Does not have: location, note, startTime
+	// May have: endTime
+	private Task makeNoStartTask(String name, String category,
+			Date endTime) {
+		Task newTask;
+		Date startDate = new Date();	// default is today
+		
+		if (endTime == null) {
+			newTask = new Task(name, category, startDate);
+		} else {
+			newTask = new Task(name, category, startDate, endTime);
+		}
+		
+		return newTask;
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\TaskFactory.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\fileIo\TaskFileReader.java
+	 */
+
+
+public class TaskFileReader {
+	private static TaskFileReader tfr;
+	
+	private TaskFileReader() {}
+	
+	public static TaskFileReader getInstance() {
+		if (tfr == null) {
+			tfr = new TaskFileReader();
+		}
+		
+		return tfr;
+	}
+	
+	
+	// integers are indexes for their corresponding location in the task 
+	// component list
+	public enum TASK_COMPONENT {
+		NAME(0), CATEGORY(1), START(2), END(3), LOCATION(4), NOTE(5), 
+		COMPLETED(6);
+		private int value;
+		
+		private TASK_COMPONENT(int val) {
+			value = val;
+		}
+		
+		public int getIndex() {
+			return value;
+		}
+	}
+	
+	private final String LINE_TITLE_DELIMITER = ":";
+	private final String EMPTY_STRING = "";
+	
+	private final String MESSAGE_NO_END = "No Specified End Date";
+	private final String MESSAGE_NO_LOCATION = "No Specified Location";
+	private final String MESSAGE_NO_NOTE = "No Specified Note";
+	private final String MESSAGE_COMPLETED = "Yes";
+	
+	private final int FIRST_POSITION = 0;
+
+	private List<String> taskComponents = new ArrayList<String>();
+	private TaskFactory factory = TaskFactory.getInstance();
+
+	public List<Task> getAllTasks(List<String> componentsFromFile) throws Exception {
+		List<Task> taskList = new ArrayList<Task>();
+		clearTaskComponents();
+		
+		for (int i = 0; i < componentsFromFile.size(); ++i) {
+			String currentLine = componentsFromFile.get(i);
+			
+			if (currentLine.equals(EMPTY_STRING)) {
+				Task newTask = createTask();
+				if (newTask != null) {
+					taskList.add(newTask);
+				}
+				clearTaskComponents();
+			} else {
+				addComponent(currentLine);
+			}
+		}
+		
+		return taskList;
+	}
+
+	private Task createTask() throws Exception {
+		checkForMissingComponents();
+		
+		String name = getName();
+		String category = getCategory();
+		String location = getLocation();
+		String note = getNote();
+		String startDateString = getStartDateString();
+		String endDateString = getEndDateString();
+		String completed = getCompleted();
+		
+		Date start = (new Date()).determineDate(startDateString);
+		Date end = (new Date()).determineDate(endDateString);
+		
+		Task newTask = factory.makeTask(name, category, location, note, start, end, null, null);
+		addToAutocomplete(name, category, location);
+		
+		if (completed.equalsIgnoreCase(MESSAGE_COMPLETED)) {
+			newTask.setComplete();
+		}
+		
+		return newTask;
+	}
+
+	private void addToAutocomplete(String name,
+			String category, String location) {
+		Autocomplete autocomplete = Autocomplete.getInstance();
+		
+		if (category != null) {
+			autocomplete.addCategory(category);
+		}
+		if (location != null) {
+			autocomplete.addLocation(location);
+		}
+		if (name != null) {
+			autocomplete.addTitle(name);
+		}
+	}
+
+	// sets missing components to null, as expected by TaskFactory
+	private void checkForMissingComponents() {
+		String location = getLocation();
+		String note = getNote();
+		String end = getEndDateString();
+		
+		if (end.equals(MESSAGE_NO_END)) {
+			taskComponents.set(TASK_COMPONENT.END.getIndex(), null);
+		}
+		
+		if (location.equals(MESSAGE_NO_LOCATION)) {
+			taskComponents.set(TASK_COMPONENT.LOCATION.getIndex(), null);
+		}
+		
+		if (note.equals(MESSAGE_NO_NOTE)) {
+			taskComponents.set(TASK_COMPONENT.NOTE.getIndex(), null);
+		}
+		
+		return;
+		
+	}
+
+	// adds the component from the line to the list of task components, in its
+	// designated location
+	private void addComponent(String currentLine) {
+		TASK_COMPONENT component = determineComponentType(currentLine);
+		int index = component.getIndex();
+		String componentData = getComponentData(currentLine);
+		
+		taskComponents.set(index, componentData);
+		return;
+	}
+
+	// made public for testing purposes. May have use outside of this class
+	public TASK_COMPONENT determineComponentType(String string) {
+		String lineTitle = getFirstWord(string);
+		TASK_COMPONENT lineType = interpretTitle(lineTitle);
+		return lineType;
+	}
+	
+	// made public for testing purposes. May have use outside of this class
+	public String getComponentData(String currentLine) {
+		String lineTitle = getFirstWord(currentLine) + LINE_TITLE_DELIMITER;
+		
+		String lineData = 
+				currentLine.replaceFirst(lineTitle, EMPTY_STRING);
+		
+		String noWhitespaceData = lineData.trim();
+		
+		return noWhitespaceData;
+	}
+
+	// made public for testing purposes. May have use outside of this class
+	public String getFirstWord(String string) {
+		String[] stringDividedAtFirstWord = string.split(LINE_TITLE_DELIMITER);
+		
+		String lineTitle = stringDividedAtFirstWord[FIRST_POSITION];
+		
+		return lineTitle;
+	}
+	
+	// made public for testing purposes. May have use outside of this class
+	public TASK_COMPONENT interpretTitle(String lineTitle) {
+		if (lineTitle.equalsIgnoreCase("task")) {
+			return TASK_COMPONENT.NAME;
+		} else if (lineTitle.equalsIgnoreCase("category")) {
+			return TASK_COMPONENT.CATEGORY;
+		} else if (lineTitle.equalsIgnoreCase("start")) {
+			return TASK_COMPONENT.START;
+		} else if (lineTitle.equalsIgnoreCase("end")) {
+			return TASK_COMPONENT.END;
+		} else if (lineTitle.equalsIgnoreCase("location")) {
+			return TASK_COMPONENT.LOCATION;
+		} else if (lineTitle.equalsIgnoreCase("note")) {
+			return TASK_COMPONENT.NOTE;
+		} else if (lineTitle.equalsIgnoreCase("completed")) {
+			return TASK_COMPONENT.COMPLETED;
+		} else {
+			System.out.println(lineTitle);
+			throw new RuntimeException("Invalid task in file");
+		}
+	}
+
+	@SuppressWarnings("unused")
+	// resets the task component list to have a space for each component
+	private void clearTaskComponents() {
+		taskComponents.clear();
+		
+		for (TASK_COMPONENT i : TASK_COMPONENT.values()) {
+			taskComponents.add(null);
+		}
+		
+		return;
+	}
+	
+	private String getName() {
+		return taskComponents.get(TASK_COMPONENT.NAME.getIndex());
+	}
+	
+	private String getCategory() {
+		return taskComponents.get(TASK_COMPONENT.CATEGORY.getIndex());
+	}
+	
+	private String getLocation() {
+		return taskComponents.get(TASK_COMPONENT.LOCATION.getIndex());
+	}
+	
+	private String getNote() {
+		return taskComponents.get(TASK_COMPONENT.NOTE.getIndex());
+	}
+	
+	private String getStartDateString() {
+		return taskComponents.get(TASK_COMPONENT.START.getIndex());
+	}
+	
+	private String getEndDateString() {
+		return taskComponents.get(TASK_COMPONENT.END.getIndex());
+	}
+	
+	private String getCompleted() {
+		return taskComponents.get(TASK_COMPONENT.COMPLETED.getIndex());
+	}
+
+}
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\fileIo\TaskFileReader.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\powerSearch\Searcher.java
+	 */
+
+	private static String getTimeString(int hour, int min) {
+		String hourString = String.valueOf(hour);
+		String minuteString = String.valueOf(min);
+		
+		if (min < 10) {
+			minuteString = "0" + minuteString;
+		}
+		
+		return hourString + ":" + minuteString;
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\powerSearch\Searcher.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ActionToggler.java
+	 */
+
+
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+
+public class ActionToggler {
+	private JTextField textField;
+	
+	private String actionKey;
+	private String label;
+	
+	private AbstractAction masterAction;
+	private AbstractAction lesserAction;
+	
+	private boolean hasLesser = false;
+	private boolean hasMaster = false;
+	
+	public ActionToggler() {}
+	
+	public ActionToggler(JTextField field, String key, String lab, 
+			AbstractAction action) {
+		textField = field;
+		actionKey = key;
+		label = lab;
+		masterAction = action;
+		
+		hasMaster = true;
+	}
+	
+	public void initializeLesser(AbstractAction action) {
+		lesserAction = action;
+		hasLesser = true;
+	}
+	
+	public void initializeMaster(JTextField field, String key, String lab, 
+			AbstractAction action) {
+		textField = field;
+		actionKey = key;
+		label = lab;
+		masterAction = action;
+		
+		hasMaster = true;
+	}
+	
+	public void setMaster() {
+		if (!hasMaster) {
+			return;
+		}
+		
+		InputMap im = textField.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap am = textField.getActionMap();
+		im.put(KeyStroke.getKeyStroke(actionKey), label);
+		am.put(label, masterAction);
+	}
+	
+	public void setLesser() {
+		if (!hasLesser) {
+			return;
+		}
+		
+		InputMap im = textField.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap am = textField.getActionMap();
+		im.put(KeyStroke.getKeyStroke(actionKey), label);
+		am.put(label, lesserAction);
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ActionToggler.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\userInterface\Autocomplete.java
+	 */
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.SuffixTree;
+import dataManipulation.CommandType;
+import dataManipulation.Subcommand;
+import dataManipulation.CommandType.COMMAND_TYPE;
+import dataManipulation.Subcommand.TYPE;
+
+public class Autocomplete {
+	private SuffixTree commands = new SuffixTree();
+	private List<SuffixTree> subcommands = new ArrayList<SuffixTree>();
+	private SuffixTree titles = new SuffixTree();
+	private SuffixTree categories = new SuffixTree();
+	private SuffixTree locations = new SuffixTree();
+	
+	private static Autocomplete autoComp;
+	
+	public static Autocomplete getInstance() {
+		if (autoComp == null) {
+			autoComp = new Autocomplete();
+		}
+		
+		return autoComp;
+	}
+	
+	public void addTitle(String newTitle) {
+		titles.add(newTitle);
+	}
+	
+	public void addCategory(String newCat) {
+		categories.add(newCat);
+	}
+	
+	public void addLocation(String newLoc) {
+		locations.add(newLoc);
+	}
+	
+	public void removeTitle(String oldTitle) {
+		titles.remove(oldTitle);
+	}
+	
+	public void removeCategory(String oldCategory) {
+		categories.remove(oldCategory);
+	}
+	
+	public void removeLocation(String oldLocation) {
+		locations.remove(oldLocation);
+	}
+	
+	public List<String> complete(String toComplete) {
+		if (!hasCommand(toComplete)) {
+			return getMatch(commands, toComplete);
+		} if (isAwaitingArg(toComplete)) {
+			 return getSubcommandArgMatches(toComplete);
+		}
+		
+		return getSubcommandMatches(toComplete);
+	}
+
+	private List<String> getSubcommandArgMatches(String toComplete) {
+		String quote = getLastQuote(toComplete);
+		String lastWordRemoved = removeLastWord(toComplete, quote);
+		Subcommand.TYPE subcommandType = getSubcommandType(lastWordRemoved);
+		SuffixTree tree = getSubcommandArgTree(subcommandType);
+		
+		List<String> lastWordReplacements = getMatch(tree, quote);
+		List<String> formattedOutput = formatArgOutput(lastWordReplacements, 
+				lastWordRemoved);
+		
+		return formattedOutput;
+	}
+
+	private String removeLastWord(String toComplete, String quote) {
+		String lastWordRemoved = toComplete;
+		boolean quoteNotStarted = quote.isEmpty() && !toComplete.endsWith("\"");
+		boolean quoteWasStarted = !quoteNotStarted;
+		if (quoteWasStarted) {
+			lastWordRemoved = removeLastMatch("\"" + quote, toComplete);
+		}
+		return lastWordRemoved;
+	}
+
+	private List<String> formatArgOutput(List<String> lastWordReplacements,
+			String lastWordRemoved) {
+		List<String> formattedTotal = new ArrayList<String>();
+		String quote = "\"";
+		
+		for (int i = 0; i < lastWordReplacements.size(); ++i) {
+			String suffix = lastWordReplacements.get(i);
+			String formattedString = lastWordRemoved + quote + suffix + quote;
+			formattedTotal.add(formattedString);
+		}
+		
+		return formattedTotal;
+	}
+
+	private TYPE getSubcommandType(String sentence) {
+		sentence = sentence.trim();
+		String lastWord = getLastWord(sentence);
+		Subcommand.TYPE type = Subcommand.determineComponentType(lastWord);
+		
+		if (type == Subcommand.TYPE.INVALID) {
+			type = checkForNameType(lastWord, sentence);
+		}
+		
+		return type;
+	}
+
+	private Subcommand.TYPE checkForNameType(String lastWord, 
+			String sentence) {
+		String emptyString = "";
+		String withoutLast = sentence.replaceFirst(lastWord, emptyString);
+		withoutLast = withoutLast.trim();
+		
+		if (!withoutLast.equals(getFirstWord(sentence)) && !withoutLast.isEmpty()) {
+			return Subcommand.TYPE.INVALID;
+		}
+		
+		COMMAND_TYPE commandType = getCommandType(sentence);
+		if (isNameType(commandType)) {
+			return Subcommand.TYPE.NAME;
+		} else {
+			return Subcommand.TYPE.INVALID;
+		}
+	}
+
+	private boolean isNameType(COMMAND_TYPE commandType) {
+		switch (commandType) {
+		case ADD :
+			return true;
+		case EDIT :
+			return true;
+		case FINISH :
+			return true;
+		case REMOVE :
+			return true;
+		case REPEAT :
+			return true;
+		default :
+			return false;	// no match
+		}
+	}
+
+	private SuffixTree getSubcommandArgTree(TYPE subcommandType) {
+		switch (subcommandType) {
+			case NAME :
+				return titles;
+			case TITLE :
+				return titles;
+			case LOCATION :
+				return locations;
+			case CATEGORY :
+				return categories;
+			default :
+				return new SuffixTree();	// no match
+		}
+	}
+
+	private String getLastQuote(String sentence) {
+		String quote = "\"";
+		
+		boolean hasStartedQuote = checkHasStartedQuote(sentence);
+		if (sentence.endsWith(quote) || !hasStartedQuote) {
+			String nothing = "";
+			return nothing;
+		}
+		
+		String[] split = sentence.split(quote);
+		int lastIndex = split.length - 1;
+		return split[lastIndex];
+	}
+
+	private boolean checkHasStartedQuote(String sentence) {
+		int numberQuotes = getNumberOfOccurrences("\"", sentence);
+		if (isEven(numberQuotes)) {
+			return false;
+		} else {
+			return true;	// one unmatched quote
+		}
+	}
+
+	private boolean isAwaitingArg(String toComplete) {
+		int numberQuotes = getNumberOfOccurrences("\"", toComplete);
+		if (isEven(numberQuotes)) {
+			return isLastWordSubcommand(toComplete);	// all started quotes end
+		} else {
+			return true;	// one unmatched quote
+		}
+	}
+
+	private boolean isLastWordSubcommand(String sentence) {
+		sentence = sentence.trim();
+		String lastWord = getLastWord(sentence);
+		if (Subcommand.determineComponentType(lastWord) != Subcommand.TYPE.INVALID) {
+			return true;
+		} else if (checkForNameType(lastWord, sentence) == Subcommand.TYPE.INVALID) {
+			return false;
+		} else {
+			return false;
+		}
+	}
+
+	private boolean isEven(int number) {
+		if (number%2 == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private int getNumberOfOccurrences(String splitter, String sentence) {
+		int count = 0;
+		
+		if (sentence.endsWith(splitter)) {
+			++count;
+		}
+		
+		if (sentence.startsWith(splitter)) {
+			++count;
+		}
+		
+		String[] split = sentence.split(splitter);
+		
+		count = count + split.length - 1;
+		
+		return count;
+	}
+
+	private List<String> getSubcommandMatches(String toComplete) {
+		COMMAND_TYPE commandType = getCommandType(toComplete);
+		SuffixTree tree = getSubcommandTree(commandType);
+		String lastWord = getLastWord(toComplete);
+		List<String> lastWordReplacements = getMatch(tree, lastWord);
+		String lastWordRemoved = removeLastMatch(lastWord, toComplete);
+		List<String> formattedOutput = formatOutput(lastWordReplacements, 
+				lastWordRemoved);
+		
+		return formattedOutput;
+	}
+
+	private COMMAND_TYPE getCommandType(String toComplete) {
+		String commandString = getFirstWord(toComplete);
+		
+		try {
+			return CommandType.determineCommandType(commandString);
+		} catch (BadCommandException e) {
+			return COMMAND_TYPE.INVALID;
+		}
+	}
+
+	private String getFirstWord(String sentence) {
+		String space = " ";
+		String[] splitString = sentence.split(space);
+		
+		return splitString[0];
+	}
+
+	private SuffixTree getSubcommandTree(COMMAND_TYPE commandType) {
+		int index = 0;
+		
+		for (COMMAND_TYPE type : COMMAND_TYPE.values()) {
+			if (commandType.equals(type)) {
+				return subcommands.get(index);
+			}
+			
+			++index;
+		}
+		
+		return new SuffixTree();
+	}
+
+	private String getLastWord(String sentence) {
+		String space = " ";
+		
+		if (sentence.endsWith(space)) {
+			return "";	// no last word
+		}
+		
+		String[] splitString = sentence.split(space);
+		int lastIndex = splitString.length - 1;
+		
+		return splitString[lastIndex];
+	}
+
+	private String removeLastMatch(String lastWord, String toTruncate) {
+		int removedSize = lastWord.length();
+		int lastIndex = toTruncate.length() - removedSize;
+		return toTruncate.substring(0, lastIndex);
+	}
+
+	private List<String> formatOutput(List<String> lastWordReplacements, 
+			String toComplete) {
+		List<String> formattedTotal = new ArrayList<String>();
+		
+		for (int i = 0; i < lastWordReplacements.size(); ++i) {
+			String suffix = lastWordReplacements.get(i);
+			String formattedString = toComplete + suffix;
+			formattedTotal.add(formattedString);
+		}
+		
+		return formattedTotal;
+	}
+
+	private List<String> getMatch(SuffixTree findFrom, String toComplete) {
+		List<String> matches = findFrom.getMatchList(toComplete);
+		if (matches.isEmpty()) {
+			matches.add(toComplete);
+		}
+		
+		return matches;
+	}
+
+	private boolean hasCommand(String toComplete) {
+		String space = " ";
+		
+		if (toComplete.contains(space)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	private Autocomplete() {
+		initializeCommands();
+		initializeSubcommands();
+	}
+
+	private void initializeSubcommands() {
+		CommandType records = CommandType.getInstance();
+		
+		int index = 0;
+		
+		for (COMMAND_TYPE type : COMMAND_TYPE.values()) {
+			List<String> list = records.getSubcommands(type);
+			SuffixTree tree = subcommands.get(index);
+			
+			for (int i = 0; i < list.size(); ++i) {
+				tree.add(list.get(i));
+			}
+			
+			++index;
+		}
+	}
+
+	private void initializeCommands() {
+		for (COMMAND_TYPE type : COMMAND_TYPE.values()) {
+			commands.add(type.toString());
+			subcommands.add(new SuffixTree());
+		}
+	}
+	
+	public static void main(String[] args) {
+		Autocomplete.getInstance();
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\userInterface\Autocomplete.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\userInterface\AutocompleteAction.java
+	 */
+
+
+import java.awt.event.ActionEvent;
+import java.util.List;
+
+import javax.swing.AbstractAction;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+@SuppressWarnings("serial")
+class AutocompleteAction extends AbstractAction {	
+	final static String EXIT_ACTION = "exit-entry";
+	
+	private ActionToggler tabToggle;
+	private ActionToggler enterToggle;
+	private ActionToggler escapeToggle;
+	
+	private JTextField entry;
+	private JLabel status;
+	
+	public AutocompleteAction(ActionToggler tab, ActionToggler enter, 
+			ActionToggler escape, JTextField ent, JLabel stat) {
+		tabToggle = tab;
+		enterToggle = enter;
+		escapeToggle = escape;
+		
+		initializeToggles();
+		
+		entry = ent;
+		status = stat;
+	}
+
+	private String initialText;
+	private Autocomplete autocomplete = Autocomplete.getInstance();
+
+	private int counter = 0;
+	private List<String> completionList;
+
+	public void actionPerformed(ActionEvent ev) {
+		status.setText("autocomplete mode");
+		initialText = entry.getText();
+		toggleOn();
+		completionList = autocomplete.complete(initialText);
+		entry.setText(completionList.get(counter));
+	}
+
+	class AcceptAction extends AbstractAction {
+		public void actionPerformed(ActionEvent ev)  {
+			status.setText("accepted");
+			toggleOff();
+		}
+	}
+
+	private void incrementCounter() {
+		if (counter >= completionList.size() - 1) {
+			counter = 0;
+		} else {
+			++counter;
+		}
+	}
+
+	class ContinueAction extends AbstractAction {
+		public void actionPerformed(ActionEvent ev)  {
+			incrementCounter();
+			entry.setText(completionList.get(counter));
+		}
+	}
+
+	class ExitAction extends AbstractAction {
+		public void actionPerformed(ActionEvent ev)  {
+			status.setText("exiting");
+			entry.setText(initialText);
+			toggleOff();
+		}
+	}
+	
+	private void initializeToggles() {
+		tabToggle.initializeLesser(new ContinueAction());
+		enterToggle.initializeLesser(new AcceptAction());
+		escapeToggle.initializeLesser(new ExitAction());
+	}
+	
+	private void toggleOn() {
+		tabToggle.setLesser();
+		enterToggle.setLesser();
+		escapeToggle.setLesser();
+	}
+	
+	private void toggleOff() {
+		tabToggle.setMaster();
+		enterToggle.setMaster();
+		escapeToggle.setMaster();
+	}
+
+}
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\userInterface\AutocompleteAction.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\userInterface\AutocompleteTest.java
+	 */
+
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import dataManipulation.CommandType;
+import dataManipulation.CommandType.COMMAND_TYPE;
+
+public class AutocompleteTest {
+	Autocomplete autocomplete;
+	List<String> key;
+	
+	@Before
+	public void setUp() {
+		autocomplete = Autocomplete.getInstance();
+		key = new ArrayList<String>();
+	}
+	
+	@Test
+	public void getCommandTest() {
+		for (COMMAND_TYPE type : COMMAND_TYPE.values()) {
+			key.add(type.toString());
+		}
+		
+		key.sort(null);
+		
+		String command = "";
+		assertEquals("No given command", key, autocomplete.complete(command));
+		
+		key.clear();
+		key.add("add");
+		key.add("all");
+		command = "a";
+		assertEquals("beginning of a command", key, autocomplete.complete(command));
+		
+		key.clear();
+		command = "bak";
+		key.add("bak");
+		assertEquals("beginning of an incommand", key, autocomplete.complete(command));
+	}
+	
+	@Test
+	public void getSubcommandTest() {
+		key.clear();
+		CommandType records = CommandType.getInstance();
+		List<String> list = records.getSubcommands(COMMAND_TYPE.SEARCH);
+			
+		for (int i = 0; i < list.size(); ++i) {
+			key.add("search " + list.get(i));
+		}
+		key.sort(null);
+		
+		String command = "search ";
+		assertEquals("all search subcommands", key, autocomplete.complete(command));
+
+		key.clear();
+		key.add("search location");
+		command = "search l";
+		assertEquals("one add subcommands", key, autocomplete.complete(command));
+	}
+	
+	@Test
+	public void getSubcommandArgTest() {
+		key.clear();
+		autocomplete.addCategory("my cat");
+		autocomplete.addCategory("my dog");
+		autocomplete.addCategory("their cat");
+		key.add("add \"new task\" category \"my cat\"");
+		key.add("add \"new task\" category \"my dog\"");
+		
+		String command = "add \"new task\" category \"m";
+		assertEquals("complete a category request with first quote", key, autocomplete.complete(command));
+		
+		// with first quote and without treated differently
+		key.add("add \"new task\" category \"their cat\"");
+		command = "add \"new task\" category ";
+		assertEquals("complete a category request without first quote", key, autocomplete.complete(command));
+		
+		key.clear();
+		autocomplete.addTitle("Go shopping");
+		autocomplete.addTitle("Study for quiz");
+		autocomplete.addTitle("Study for exam");
+		key.add("add \"study for quiz\"");
+		key.add("add \"study for exam\"");
+		command = "add \"s";
+		key.sort(null);
+		assertEquals("complete a category request without first quote", key, autocomplete.complete(command));
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\userInterface\AutocompleteTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\userInterface\CommandHandlingAction.java
+	 */
+
+
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+import dataEncapsulation.ActionException;
+import dataManipulation.Command;
+import dataManipulation.ExceptionHandler;
+import dataManipulation.UndoRedoList;
+
+@SuppressWarnings("serial")
+public class CommandHandlingAction extends AbstractAction {
+	private CommandInterpreter interpreter = CommandInterpreter.getInstance();
+	
+	private JLabel status;
+	private JTextArea textArea;
+	private JTextField entry;
+	
+	private ActionToggler enterToggle;
+	private ExceptionHandler exceptionHandler;
+	
+	public CommandHandlingAction(JLabel stat, JTextArea txtArea, JTextField ent, ActionToggler toggle) {
+		status = stat;
+		textArea = txtArea;
+		entry = ent;
+		enterToggle = toggle;
+		exceptionHandler = new ExceptionHandler(ent, stat, txtArea, enterToggle);
+	}
+	
+	public void actionPerformed(ActionEvent ev)  {
+		try {
+			String input = entry.getText();
+			Command command = interpreter.formCommand(input);
+			String feedback = command.execute();
+			entry.setText("");
+			
+			UndoRedoList.getInstance().pushUndoCommand(command);	//Push command into UndoRedoList
+			
+			textArea.setText(feedback);
+		} catch (ActionException e) {
+			entry.setText("");
+			exceptionHandler.furtherAction(e);
+		} catch (Exception e) {
+			String message = ezCMessages.getInstance().getErrorMessage(e);
+			status.setText(message);
+		}
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\userInterface\CommandHandlingAction.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\userInterface\CommandInterpreter.java
+	 */
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
+import dataManipulation.Add;
+import dataManipulation.All;
+import dataManipulation.ChangeDateType;
+import dataManipulation.Command;
+import dataManipulation.CommandType;
+import dataManipulation.Completed;
+import dataManipulation.Edit;
+import dataManipulation.Finish;
+import dataManipulation.Help;
+import dataManipulation.Remove;
+import dataManipulation.Repeat;
+import dataManipulation.Search;
+import dataManipulation.Sort;
+import dataManipulation.Subcommand;
+import dataManipulation.Today;
+import dataManipulation.Undo;
+import dataManipulation.CommandType.COMMAND_TYPE;
+
+public class CommandInterpreter {
+	private static CommandInterpreter commandInterpreter;
+	private CommandType commands;
+
+	private CommandInterpreter() {
+		commands = CommandType.getInstance();
+	}
+
+	public static CommandInterpreter getInstance() {
+		if (commandInterpreter == null) {
+			commandInterpreter = new CommandInterpreter();
+		}
+		return commandInterpreter;
+	}
+
+	public Command formCommand(String input) throws BadCommandException, 
+		BadSubcommandException, BadSubcommandArgException {
+		assert (input != null);
+		if (input.isEmpty()) {
+			throw new BadCommandException("no command given");
+		}
+
+		if (isSpecialCommand(input)) {
+			Command command = determineSpecialCommand(input);
+			return command;
+		}
+
+		String commandTypeString = getFirstWord(input);
+		COMMAND_TYPE commandType = 
+				CommandType.determineCommandType(commandTypeString);
+		Command command;
+
+		List<Subcommand> components;
+
+		if (isNoComponentCommand(commandType)) {
+			components = getNoSubcommands(input);
+		} else {
+			input = removeFirstWord(input);
+			components = getComponents(input, commandType);
+		}
+
+		command = makeCommand(commandType, components);
+
+		return command;
+	}
+
+	// -----------------------------------------------------------------------------
+	// ---------------- Command Related Methods
+	// ------------------------------------
+	// -----------------------------------------------------------------------------
+
+	private Command makeCommand(COMMAND_TYPE type, List<Subcommand> subcommands) 
+			throws BadCommandException, BadSubcommandException {
+		switch (type) {
+		case ADD:
+			return new Add(subcommands);
+		case ALL:
+			return new All(subcommands);
+		case CHANGE_DATE_TYPE:
+			return new ChangeDateType(subcommands);
+		case COMPLETED:
+			return new Completed(subcommands);
+		case EDIT:
+			return new Edit(subcommands);
+		case FINISH:
+			return new Finish(subcommands);
+		case HELP:
+			return new Help(subcommands);
+		case REMOVE:
+			return new Remove(subcommands);
+		case REPEAT:
+			return new Repeat(subcommands);
+		case SEARCH:
+			return new Search(subcommands);
+		case SORT:
+			return new Sort(subcommands);
+		case TODAY:
+			return new Today(subcommands);
+		case UNDO:
+			return new Undo(subcommands);
+		default:
+			throw new BadCommandException("invalid command type");
+		}
+	}
+
+	private boolean isSpecialCommand(String input) {
+		input = input.toLowerCase();
+
+		String[] splitInput = splitString(input);
+
+		if (isChangeDateType(splitInput)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private boolean isChangeDateType(String[] splitInput) {
+		String[] changeDateTypeExample = makeChangeDateTypeExample();
+
+		if (splitInput.length != changeDateTypeExample.length) {
+			return false;
+		}
+
+		// last element of command is a variable and not the command itself
+		int commandLength = splitInput.length - 1;
+		int lastPosition = splitInput.length - 1;
+
+		for (int i = 0; i < commandLength; ++i) {
+			if (!splitInput[i].equals(changeDateTypeExample[i])) {
+				return false;
+			}
+		}
+
+		String firstOption = "d/m";
+		String secondOption = "m/d";
+		String usersOption = splitInput[lastPosition];
+
+		if (!usersOption.equals(firstOption)
+				&& !usersOption.equals(secondOption)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private String[] makeChangeDateTypeExample() {
+		int length = 4; // "change" "date" "type" "D/M", etc
+		String[] example = new String[length];
+
+		int iterator = 0;
+
+		example[iterator++] = "change";
+		example[iterator++] = "date";
+		example[iterator++] = "type";
+		example[iterator++] = "d/m";
+
+		return example;
+	}
+
+	/**
+	 * assumes that input has already been checked to match the special command
+	 * formats. Will only check variables.
+	 * 
+	 * Currently, there is only one special command, so it directly asks for
+	 * "change date type d/m" at "d/m" (position index 3)
+	 * 
+	 * @param input
+	 * @return
+	 * @throws BadSubcommandException 
+	 * @throws BadCommandException 
+	 * @throws BadSubcommandArgException 
+	 */
+	private Command determineSpecialCommand(String input) 
+			throws BadCommandException, BadSubcommandException, 
+			BadSubcommandArgException {
+		input = input.toLowerCase();
+
+		String[] splitInput = splitString(input);
+		int lastPosition = splitInput.length - 1;
+
+		Subcommand component = new Subcommand(Subcommand.TYPE.DATE_TYPE,
+				splitInput[lastPosition]);
+
+		List<Subcommand> list = new ArrayList<Subcommand>();
+		list.add(component);
+
+		Command command = new ChangeDateType(list);
+
+		return command;
+	}
+
+	// -----------------------------------------------------------------------------
+	// ------------------ Subcommand Related Methods
+	// -------------------------------
+	// -----------------------------------------------------------------------------
+
+	private List<Subcommand> getComponents(String string,
+			COMMAND_TYPE commandType) throws BadSubcommandArgException, BadSubcommandException {
+		assert (string != null);
+		assert (!string.isEmpty());
+
+		List<Subcommand> components = new ArrayList<Subcommand>();
+
+		Subcommand component;
+		// Search and Sort must label their first subcommands
+		if (commandType != COMMAND_TYPE.SEARCH
+				&& commandType != COMMAND_TYPE.SORT) {
+			component = getFirstComponent(commandType, string);
+			if (isQuotationComponent(component)) {
+				string = eraseQuoteComponent(string);
+			} else {
+				string = eraseNoQuoteComponent(component, string);
+			}
+			components.add(component);
+		}
+		if (commandType == COMMAND_TYPE.SORT) {
+			Subcommand.TYPE sortType = Subcommand.determineComponentType(string
+					.replaceAll("\\s+", "").toLowerCase());
+			components.add(new Subcommand(sortType, ""));
+		} 
+		if (commandType == COMMAND_TYPE.SEARCH) {
+			component = getFirstComponent(commandType, string);
+			if(isQuotationComponent(component)) {
+				string = eraseQuoteComponent(string);
+			} else {
+				string = eraseNoQuoteComponent(component, string);
+			}
+			if(string == "complete" || string == "completed") {
+				Subcommand.TYPE searchType = Subcommand.determineComponentType(string
+						.replaceAll("\\s+", "").toLowerCase());
+				components.add(new Subcommand(searchType, ""));
+			}
+			else {
+				components.add(component);
+			}
+		}
+		else {
+
+			while (string.length() > 0) {
+				component = getNextComponent(string);
+				if (isQuotationComponent(component)) {
+					string = eraseQuoteComponent(string);
+				} else {
+					string = eraseNoQuoteComponent(component, string);
+				}
+				components.add(component);
+			}
+		}
+
+		return components;
+	}
+
+	private List<Subcommand> getNoSubcommands(String input) throws 
+		BadSubcommandException {
+		assert (input != null);
+
+		try {
+			input = removeFirstWord(input); // will throw if there's no input
+		} catch (BadSubcommandException e) {
+			input = ""; // ok - just means that the command was the last one
+		}
+
+		return createNoComponent(input);
+	}
+
+	private static List<Subcommand> createNoComponent(String string) throws BadSubcommandException {
+		assert (string != null);
+
+		string = string.trim();
+
+		if (!string.isEmpty()) {
+			throw new BadSubcommandException("too many arguments");
+		}
+
+		List<Subcommand> componentList = new ArrayList<Subcommand>();
+
+		return componentList;
+	}
+
+	private boolean isNoComponentCommand(COMMAND_TYPE commandType) {
+		switch (commandType) {
+		case ALL:
+			return true;
+		case COMPLETED:
+			return true;
+		case HELP:
+			return true;
+		case TODAY:
+			return true;
+		case UNDO:
+			return true;
+		default:
+			return false;
+		}
+	}
+
+	/**
+	 * The first component should be directly after the command type Will be
+	 * surrounded by quotations if formatted correctly
+	 * 
+	 * Assumes that the command type has already been removed from the string
+	 * 
+	 * @param string
+	 * @return
+	 * @throws BadSubcommandArgException 
+	 * @throws BadSubcommandException 
+	 */
+	private Subcommand getFirstComponent(COMMAND_TYPE commandType, String string) 
+			throws BadSubcommandArgException, BadSubcommandException {
+		string = string.trim(); // remove whitespace
+
+		Subcommand.TYPE componentType = determineFirstComponentType(commandType);
+
+		String componentData = getComponentData(string, componentType);
+
+		Subcommand component = new Subcommand(componentType, componentData);
+		return component;
+	}
+
+	private Subcommand.TYPE determineFirstComponentType(COMMAND_TYPE commandType) {
+		switch (commandType) {
+		case ADD:
+			return Subcommand.TYPE.NAME;
+		case EDIT:
+			return Subcommand.TYPE.NAME;
+		case FINISH:
+			return Subcommand.TYPE.NAME;
+		case REMOVE:
+			return Subcommand.TYPE.NAME;
+		case REPEAT:
+			return Subcommand.TYPE.NAME;
+		case SEARCH:
+			return Subcommand.TYPE.NAME;
+		default:
+			return Subcommand.TYPE.INVALID;
+		}
+	}
+
+	private Subcommand getNextComponent(String componentSentence) throws 
+		BadSubcommandArgException, BadSubcommandException {
+		String componentTypeString = getFirstWord(componentSentence);
+		Subcommand.TYPE componentType = Subcommand
+				.determineComponentType(componentTypeString);
+
+		if (componentType != Subcommand.TYPE.FREQUENCY
+				&& componentType != Subcommand.TYPE.AND
+				&& componentType != Subcommand.TYPE.OR) {
+			componentSentence = removeFirstWord(componentSentence);
+		}
+
+		String componentData = getComponentData(componentSentence,
+				componentType);
+
+		Subcommand component = new Subcommand(componentType, componentData);
+		return component;
+	}
+
+	/**
+	 * Assumes that the String is not between quotation marks (which would allow
+	 * the user to write subcommand keywords)
+	 * 
+	 * @param componentPart
+	 * @return
+	 */
+	private boolean isSubcommand(String possibleSubcommand) {
+		Subcommand.TYPE possibleType = Subcommand
+				.determineComponentType(possibleSubcommand);
+
+		if (possibleType == Subcommand.TYPE.INVALID) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	private String eraseNoQuoteComponent(Subcommand component, String sentence) {
+		assert (sentence != null);
+		assert (component != null);
+
+		String match = extractComponentMatch(component, sentence);
+
+		String emptyString = "";
+
+		sentence = sentence.replaceFirst(match, emptyString);
+
+		if (sentence.equals(match)) {
+			return emptyString; // replaceFirst will not replace the entire
+								// string
+		}
+
+		sentence = sentence.trim();
+
+		return sentence;
+	}
+
+	private String eraseQuoteComponent(String sentence)
+			throws IndexOutOfBoundsException, BadSubcommandArgException {
+		assert (sentence != null);
+		char quote = '"';
+
+		int indexOfNextQuote = sentence.indexOf(quote);
+		if (indexOfNextQuote == -1) {
+			throw new BadSubcommandArgException("No double quote found");
+		}
+
+		String withoutUntilFirstQuote = sentence
+				.substring(indexOfNextQuote + 1);
+
+		indexOfNextQuote = withoutUntilFirstQuote.indexOf(quote);
+		int indexOfEnd = withoutUntilFirstQuote.length() - 1;
+		// if the component is the last component
+		if (indexOfNextQuote == indexOfEnd) {
+			String emptyString = "";
+			return emptyString;
+		}
+
+		if (indexOfNextQuote == -1) {
+			throw new BadSubcommandArgException("No double quote found");
+		}
+
+		String withoutUntilSecondQuote = withoutUntilFirstQuote
+				.substring(indexOfNextQuote + 1);
+
+		withoutUntilSecondQuote = withoutUntilSecondQuote.trim();
+
+		return withoutUntilSecondQuote;
+	}
+
+	private boolean isQuotationComponent(Subcommand component) {
+		Subcommand.TYPE type = component.getType();
+
+		switch (type) {
+		case CATEGORY:
+			return true;
+		case LOCATION:
+			return true;
+		case NAME:
+			return true;
+		case NOTE:
+			return true;
+		case TITLE:
+			return true;
+		default:
+			return false;
+		}
+	}
+
+	// -----------------------------------------------------------------------------
+	// ------------------ Subcommand Data Related Methods
+	// --------------------------
+	// -----------------------------------------------------------------------------
+
+	private String getComponentData(String userCommand,
+			Subcommand.TYPE componentType) throws BadSubcommandArgException {
+		if (componentType == Subcommand.TYPE.START
+				|| componentType == Subcommand.TYPE.END
+				|| componentType == Subcommand.TYPE.DATE
+				|| componentType == Subcommand.TYPE.FREQUENCY
+				|| componentType == Subcommand.TYPE.AND
+				|| componentType == Subcommand.TYPE.OR) {
+			return getNoQuoteComponentData(userCommand);
+		}
+
+		userCommand = userCommand.trim();
+		return getBetweenQuoteData(userCommand);
+	}
+
+	private String getNoQuoteComponentData(String userCommand) {
+		assert (!userCommand.isEmpty());
+
+		String[] splitCommand = splitString(userCommand);
+		String removedWhitespace = " ";
+
+		String wholeData = splitCommand[0];
+		String dataPart = new String();
+		for (int i = 1; (i < splitCommand.length) && (!isSubcommand(dataPart)); ++i) {
+			dataPart = splitCommand[i];
+			if (!isSubcommand(dataPart)) {
+				wholeData = wholeData + removedWhitespace + dataPart;
+			}
+		}
+		wholeData = wholeData.trim();
+
+		return wholeData;
+	}
+
+	private String getBetweenQuoteData(String userCommand)
+			throws BadSubcommandArgException {
+		String emptyString = "";
+		String doubleQuoteMark = "\"";
+
+		userCommand = userCommand.trim();
+
+		checkFirstQuotation(userCommand); // first character should be a
+											// quotation
+		userCommand = userCommand.replaceFirst(doubleQuoteMark, emptyString);
+		String commandData = getUntilQuotation(userCommand);
+
+		return commandData;
+	}
+
+	private void checkFirstQuotation(String userCommand) throws BadSubcommandArgException {
+		String doubleQuote = "\"";
+		if (!userCommand.startsWith(doubleQuote)) {
+			throw new BadSubcommandArgException(
+					"invalid subcommand argument: double quotes");
+		}
+	}
+
+	private String getUntilQuotation(String userCommand) throws BadSubcommandArgException {
+		assert (userCommand != null);
+		if (userCommand.isEmpty()) {
+			throw new BadSubcommandArgException(
+					"invalid subcommand argument: double quotes");
+		}
+
+		String fullString = userCommand.substring(0, 1);
+		String singleChar = new String();
+		String doubleQuote = "\"";
+
+		for (int i = 1; (i != userCommand.length())
+				&& (!singleChar.equals(doubleQuote)); ++i) {
+			fullString = fullString + singleChar;
+			singleChar = userCommand.substring(i, i + 1);
+		}
+
+		// check to see if it ever saw another quotation mark
+		if (!singleChar.equals(doubleQuote)) {
+			throw new BadSubcommandArgException(
+					"invalid subcommand argument: double quotes");
+		}
+
+		return fullString;
+	}
+
+	private String extractComponentMatch(Subcommand component, String sentence) {
+		String[] splitSentence = splitString(sentence);
+		String matchingString = component.getContents();
+		String growingMatch = splitSentence[0];
+		String space = " ";
+
+		assert (sentence.contains(matchingString));
+
+		for (int i = 1; ((!growingMatch.contains(matchingString)) && (i < splitSentence.length)); ++i) {
+			growingMatch = growingMatch.concat(space);
+			growingMatch = growingMatch.concat(splitSentence[i]);
+		}
+		growingMatch = growingMatch.trim();
+
+		return growingMatch;
+	}
+
+	// -----------------------------------------------------------------------------
+	// ------------------ General Methods
+	// ------------------------------------------
+	// -----------------------------------------------------------------------------
+
+	/**
+	 * Gets the first word from the string
+	 * 
+	 * @param sentence
+	 *            with length > 0
+	 * @return a String of all characters before the first whitespace (or the
+	 *         end)
+	 */
+	private String getFirstWord(String sentence) {
+		assert (sentence != null);
+		assert (!sentence.isEmpty());
+
+		String[] dividedSentence = splitString(sentence);
+		String commandTypeString = dividedSentence[0];
+
+		return commandTypeString;
+	}
+
+	/**
+	 * Removes the first substring before whitespace, as well as end whitespace
+	 * 
+	 * @param input
+	 * @return
+	 * @throws BadSubcommandException 
+	 */
+	private String removeFirstWord(String sentence) throws BadSubcommandException {
+		assert (sentence != null);
+
+		String[] splitSentence = splitString(sentence);
+
+		int minimumSize = 2; // must be at least 2 words in command;
+		if (splitSentence.length < minimumSize) {
+			throw new BadSubcommandException("too short of argument");
+		}
+
+		String shorterString = new String();
+		String space = " ";
+		for (int i = 1; i < splitSentence.length; ++i) {
+			shorterString = shorterString.concat(space);
+			shorterString = shorterString.concat(splitSentence[i]);
+		}
+		shorterString = shorterString.trim();
+
+		return shorterString;
+	}
+
+	/**
+	 * Splits string at whitespace.
+	 * 
+	 * @param toSplit
+	 * @return
+	 */
+	private String[] splitString(String toSplit) {
+		assert (toSplit != null);
+		assert (!toSplit.isEmpty());
+		String whiteSpace = "\\s+";
+
+		String noEndWhitespace = toSplit.trim();
+
+		String[] dividedString = noEndWhitespace.split(whiteSpace);
+
+		return dividedString;
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\userInterface\CommandInterpreter.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\userInterface\CommandInterpreterInteractiveTester.java
+	 */
+
+
+import java.util.Scanner;
+
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
+import dataManipulation.Command;
+import dataManipulation.TaskFactory;
+
+public class CommandInterpreterInteractiveTester {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		while(true) {
+			 String newLine = sc.nextLine();
+			 if(newLine.equals("exit")) {
+				 sc.close();
+				 System.exit(0);
+			 }
+			 try {
+				 CommandInterpreter ci = CommandInterpreter.getInstance();
+				 Command madeCommand = ci.formCommand(newLine);
+				 System.out.println(madeCommand);
+			 } catch (BadCommandException ex) {
+				 System.out.println(ex);
+			} catch (BadSubcommandException ex) {
+				System.out.println(ex);
+			} catch (BadSubcommandArgException ex) {
+				System.out.println(ex);
+			}
+		}
+	}
+}
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\userInterface\CommandInterpreterInteractiveTester.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\userInterface\CommandInterpreterTest.java
+	 */
+
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.junit.Test;
+
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
+import dataEncapsulation.sortTaskByName;
+import dataManipulation.Add;
+import dataManipulation.ChangeDateType;
+import dataManipulation.Completed;
+import dataManipulation.Subcommand;
+
+/**
+ * 
+ * Search
+ * 		duplicate subcommands
+ * 		AND
+ * 		OR
+ * 		DATE (unique to Search)
+ * 
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\userInterface\CommandInterpreterTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ezCWindow.java
+	 */
+
+
+import java.awt.KeyboardFocusManager;
+import java.awt.event.ActionEvent;
+import java.util.Collections;
+
+import javax.swing.AbstractAction;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.ParallelGroup;
+import javax.swing.GroupLayout.SequentialGroup;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.WindowConstants;
+
+import dataManipulation.TotalTaskList;
+import fileIo.FileIo;
+
+@SuppressWarnings("serial")
+public class ezCWindow extends JFrame {
+
+	private JTextField userInput;
+	private JLabel headerLabel;
+	private JScrollPane scroller;
+	private JLabel status;
+	private JTextArea display;
+
+	final static String CANCEL_ACTION = "cancel-userInput";
+	final static String ENTER_ACTION = "enter-command";
+	final static String TAB_ACTION = "toggle-autocomplete";
+
+	private TotalTaskList totalTaskList = TotalTaskList.getInstance();
+	private FileIo fileIo = FileIo.getInstance();
+	private ezCMessages messages = ezCMessages.getInstance();
+
+	private static ezCWindow window;
+
+	private ezCWindow() {
+		initComponents();
+	}
+
+	public static ezCWindow getInstance() {
+		if (window == null) {
+			window = new ezCWindow();
+		}
+
+		return window;
+	}
+
+	private void initComponents() {
+		initializeStaticMembers();
+
+		initializeLayout();
+
+		initializeActions();
+
+		try {
+			fileIo.initializeTaskList(totalTaskList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		pack();
+	}
+
+	private void initializeActions() {
+		userInput.setFocusTraversalKeys(
+				KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, 
+				Collections.emptySet());
+		
+		ActionToggler mainEnterToggle = new ActionToggler();
+		ActionToggler autocompleteEnterToggle = new ActionToggler();
+		ActionToggler tabToggle = new ActionToggler();
+		ActionToggler escapeToggle = new ActionToggler();
+
+		AutocompleteAction tabAction = new AutocompleteAction(tabToggle, 
+				autocompleteEnterToggle, escapeToggle, userInput, status);
+		CommandHandlingAction enterAction = new CommandHandlingAction(status, 
+				display, userInput, mainEnterToggle);
+		CancelAction escAction = new CancelAction();
+		
+		mainEnterToggle.initializeMaster(userInput, "ENTER", ENTER_ACTION, 
+				enterAction);
+		autocompleteEnterToggle.initializeMaster(userInput, "ENTER", 
+				ENTER_ACTION, enterAction);
+		tabToggle.initializeMaster(userInput, "TAB", TAB_ACTION, tabAction);
+		escapeToggle.initializeMaster(userInput, "ESCAPE", CANCEL_ACTION, 
+				escAction);
+		
+		mainEnterToggle.setMaster();
+		tabToggle.setMaster();
+		escapeToggle.setMaster();
+		autocompleteEnterToggle.setMaster();
+	}
+
+	private void initializeLayout() {
+		GroupLayout layout = new GroupLayout(getContentPane());
+		getContentPane().setLayout(layout);
+
+		initializeHorizontalGroup(layout);
+
+		initializeVerticalGroup(layout);
+	}
+
+	private void initializeStaticMembers() {
+		userInput = new JTextField();
+		display = new JTextArea(messages.getUserHelpMessage());
+		status = new JLabel();
+		headerLabel = new JLabel();
+
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		setTitle("ezC");
+
+		display.setColumns(20);
+		display.setLineWrap(true);
+		display.setRows(5);
+		display.setWrapStyleWord(true);
+		display.setEditable(false);
+		scroller = new JScrollPane(display);
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ezCWindow.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ezCWindow.java
+	 */
+
+	class CancelAction extends AbstractAction {
+		public void actionPerformed(ActionEvent ev) {
+			userInput.setText("");
+		}
+	}
+	
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ezCWindow.java
+
+
+
+
+

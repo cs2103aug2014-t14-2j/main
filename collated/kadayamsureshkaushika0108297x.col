@@ -1,0 +1,1208 @@
+//@author: kadayamsureshkaushika0108297x
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+	 */
+
+ * Date Class (Instant) containing Constructor and all methods.
+ * @return format: Depends on which method is being used.
+ */
+package dataEncapsulation;
+
+import java.time.*;
+import java.util.*;
+
+import powerSearch.Searcher;
+
+public class Date {
+	private int day, month, year;
+	private Calendar cal = GregorianCalendar.getInstance();
+
+	private static boolean dmFormat = true;
+
+	public Date(int userday, int usermonth, int useryear) {
+		if (dateValid(userday, usermonth, useryear)) {
+			this.setDay(userday);
+			this.setMonth(usermonth);
+			this.setYear(useryear);
+			cal.set(useryear, usermonth, userday);
+		}
+	}
+
+	public Date() {
+		cal = Calendar.getInstance();
+		this.day = cal.get(Calendar.DATE);
+		this.month = cal.get(Calendar.MONTH) + 1;
+		this.year = cal.get(Calendar.YEAR);
+		getClass();
+		cal.set(year, month, day);
+	}
+
+	public boolean dateValid(int userday, int usermonth, int useryear) {
+		boolean dateIsValid = true;
+		try {
+			LocalDate.of(useryear, usermonth, userday);
+		} catch (DateTimeException e) {
+			dateIsValid = false;
+		}
+		return dateIsValid;
+	}
+
+	public boolean isBefore(Date anotherdate) {
+		boolean answer = false;
+		if (anotherdate instanceof Date && anotherdate.getDay() != 0) { // avoids
+																		// the
+																		// case
+																		// whereby
+																		// the
+																		// enddate
+																		// has
+																		// not
+																		// been
+																		// stated
+																		// by
+																		// the
+																		// user
+			Calendar calcompare = anotherdate.getCal();
+			if (cal.before(calcompare)) {
+				return true;
+			}
+		}
+		return answer;
+	}
+
+	public boolean isEqual(Date anotherdate) {
+		if (anotherdate.getDay() == day && anotherdate.getMonth() == month
+				&& anotherdate.getYear() == year) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+	 */
+
+	 * 
+	 * Task Class (Instant) containing Constructor and all methods. - Uses the Date Class
+	 * @return format: Depends on which method is being used.
+	 * 
+	 * 
+	 * name, category, location, note, startdate, enddate, starttime, endtime
+	 * name, emptylist, null, null, today, null, null, null
+	 */
+package dataEncapsulation;
+
+import java.util.*;
+
+import dataEncapsulation.Date;
+public class Task {
+	
+	private final String MESSAGE_NO_END = "No Specified End Date";
+	private final String MESSAGE_NO_LOCATION = "No Specified Location";
+	private final String MESSAGE_NO_NOTE = "No Specified Note";
+	
+	private Date startdate, enddate;
+	private String name, location, note, category;
+	private Time starttime, endtime;
+	
+	private boolean hasDeadline = false;
+	private boolean isComplete = false;
+	private boolean hasNote = false;
+	private boolean hasLocation = false; 
+	private boolean hasStartTime = false;
+	private boolean hasEndTime = false;
+	
+	private static ArrayList<String> categorylist = new ArrayList<String>();
+	
+	//has every field
+	public Task(String name, String first_category, String location, String note, Date start, Date end, Time s, Time e) throws Exception {
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(first_category);
+		this.setCategory(first_category);
+		this.setLocation(location);
+		this.setNote(note);
+		this.setEndDate(end);
+		this.startdate = start;
+		this.setStartTime(s);
+		this.setEndTime(e);
+	}
+	
+	public Task(String name, String first_category, String location, Date start, Date end, Time s, Time e) throws Exception {
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(first_category);
+		this.setCategory(first_category);
+		this.setLocation(location);
+		this.setEndDate(end);
+		this.startdate = start;
+		this.setStartTime(s);
+		this.setEndTime(e);
+	}
+	
+	//has every field except END TIME
+	public Task(String name, String first_category, String location, String note, Date start, Date end, Time s) throws Exception {
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(first_category);
+		this.setCategory(first_category);
+		this.setLocation(location);
+		this.setNote(note);
+		this.setEndDate(end);
+		this.startdate = start;
+		this.setStartTime(s);
+		Time autoEndTime = new Time(s.getHours() + 1, s.getMins());
+		this.setEndTime(autoEndTime);
+	}
+	
+	public Task(String name, String first_category, String location, Date start, Date end, Time s) throws Exception {
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(first_category);
+		this.setCategory(first_category);
+		this.setLocation(location);
+		this.setEndDate(end);
+		this.startdate = start;
+		this.setStartTime(s);
+		Time autoEndTime = new Time(s.getHours() + 1, s.getMins());
+		this.setEndTime(autoEndTime);
+	}
+	
+	
+	
+	//has every field except TIME
+	public Task(String name, String first_category, String location, String note, Date start, Date end) {
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(first_category);
+		this.setCategory(first_category);
+		this.setLocation(location);
+		this.setNote(note);
+		this.setEndDate(end);
+		this.startdate = start;
+		
+	}
+	
+	//no loc or note or no Time
+	public Task(String name, String category, Date start, Date end){
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(category);
+		this.setCategory(category);
+		this.setEndDate(end);
+		this.setStartDate(start);
+	}
+	//no location or note but has time
+	public Task(String name, String category, Date start, Date end, Time s, Time e) throws Exception{
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(category);
+		this.setCategory(category);
+		this.setEndDate(end);
+		this.setStartDate(start);
+		this.setStartTime(s);
+		this.setEndTime(e);
+	}
+	//no loc or note but has start time
+	public Task(String name, String category, Date start, Date end, Time s) throws Exception{
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(category);
+		this.setCategory(category);
+		this.setEndDate(end);
+		this.setStartDate(start);
+		this.setStartTime(s);
+		Time autoEndTime = new Time(s.getHours() + 1, s.getMins());
+		this.setEndTime(autoEndTime);
+	}
+	
+	public Task(String name, Date start, Date end, Time s, Time e) throws Exception {
+		this.setName(name);
+		this.setEndDate(end);
+		this.startdate = start;
+		this.setStartTime(s);
+		this.setEndTime(e);
+		
+	}
+	//no start time, loc or note | | GIVEN ONLY ONE DATE = end date.
+	public Task(String name, String category, Date end){
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(category);
+		this.setCategory(category);
+		this.startdate = new Date();
+		enddate = end;
+	}
+	
+	public Task(String name, Date date, Time time) throws Exception {
+		this.setName(name);
+		this.setStartDate(date);
+		this.setEndDate(date);
+		this.setStartTime(time);
+		Time autoEndTime = new Time(time.getHours() + 1, time.getMins());
+		this.setEndTime(autoEndTime);
+	}
+	//no extra details at all
+	public Task(String name, String category){
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(category);
+		this.setCategory(category);
+		this.startdate = new Date();
+	}
+	
+	public Task(String name, String first_category, String location){
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(first_category);
+		this.setCategory(first_category);
+		this.setLocation(location);
+		this.setStartDate(new Date());
+	}
+	
+	//no start or end time but has loc and note
+	public Task(String name, String first_category, String location, String note){
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(first_category);
+		this.setCategory(first_category);
+		this.setLocation(location);
+		this.setNote(note);
+		this.setStartDate(new Date());
+	}
+	//No end date
+	public Task(String name, String first_category, String location, String note, Date startdate){
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(first_category);
+		this.setCategory(first_category);
+		this.setLocation(location);
+		this.setNote(note);
+		this.setStartDate(startdate);
+	}
+	
+	public Task(String name, String category, String location, Date start, Date end){
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(category);
+		this.setCategory(category);
+		this.setStartDate(start);
+		this.setEndDate(end);
+		this.setLocation(location);
+	}
+	
+	public Task(String name, String category, String location, Date startTime){
+		this.setName(name);
+		categorylist = new ArrayList<String>();
+		categorylist.add(category);
+		this.setCategory(category);
+		this.setLocation(location);
+		this.startdate = startTime;
+	}
+	
+	///////////////////////////////////////////////////////////GETTER SETTER
+	
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
+		hasNote = true;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+		hasLocation = true;
+	}
+	public Date getEndDate() {
+		return enddate;
+	}
+	
+	public Date getStartDate() {
+		return startdate;
+	}
+	
+	public void setStartDate(Date start) {
+		startdate = start;
+	}
+	
+	public void setEndDate(Date end) {
+		this.enddate = end;
+		if(end == null) {
+			hasDeadline = false;
+		} else {
+			hasDeadline = true;
+		}
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public boolean getHasDeadline() {
+		return hasDeadline;
+	}
+	
+	public boolean getHasNote() {
+		return hasNote;
+	}
+	
+	public boolean getHasLocation() {
+		return hasLocation;
+	}
+	
+	public boolean getIsComplete() {
+		return isComplete;
+	}
+	
+	public Time getStartTime() {
+		setHasStartTime(true);
+		return starttime;
+	}
+	
+	public void setStartTime(Time s) throws Exception {
+		if(s == null) {
+			setHasStartTime(false);
+		} else { 
+			setHasStartTime(true);
+		}
+		starttime = s;
+		
+		if (!hasEndTime) {
+			Time autoEndTime = new Time(s.getHours() + 1, s.getMins());
+			this.setEndTime(autoEndTime);
+		}
+	}
+	
+	public Time getEndTime() {
+		return endtime;
+	}
+	
+	public void setEndTime(Time e) {
+		if(e == null) {
+			setHasEndTime(false);
+		} else {
+			setHasEndTime(true);
+		}
+		endtime = e;
+	}
+	
+	
+	public void setComplete(){
+		this.isComplete = true;
+	}
+	
+	public void setIncomplete() {	// Using this for the undo command
+		this.isComplete = false;
+	}
+	
+	///////////////////////////////////////////////////////////TOSTRING, TOPRINT, EQUALS
+	
+	public String toString(){
+		String answer = new String();
+		answer = answer + "Task: " + this.name + '\n';
+		answer = answer + "Category: " + this.category + '\n';
+		if(!hasDeadline){
+		answer = answer + "Start: " + this.getStartDate().toString() + '\n' + "End: " + MESSAGE_NO_END + '\n';
+		}
+		if(hasDeadline){
+			answer = answer + "Start: " + this.getStartDate().toString() + '\n' + "End: " + this.getEndDate().toString() + '\n';
+		}
+		if(hasStartTime) {
+			answer = answer + "From: " + this.getStartTime().toString()  + " to: " + this.getEndTime().toString() + '\n';
+		}
+		if(hasLocation){
+			answer = answer + "Location: " + this.getLocation() + '\n';
+		}
+		if(!hasLocation){
+			answer = answer + "Location: " + MESSAGE_NO_LOCATION + '\n';
+		}
+		if(hasNote){
+			answer = answer + "Note: " + this.getNote() + '\n';
+		}
+		if(!hasNote){
+			answer = answer + "Note: " + MESSAGE_NO_NOTE + '\n';
+		}
+		if(isComplete) {
+			answer = answer + "Completed: Yes\n";
+		} else {
+			answer = answer + "Completed: No\n";
+		}
+		return answer;
+	}
+	
+	public String toPrint(){
+		String answer = new String();
+		answer = answer + "Task: " + this.name + '\n';
+		answer = answer + "Category: " + this.category + '\n';
+		if(hasDeadline){
+			answer = answer + "Start: " + this.startdate.toPrint() + '\n' + "End: " + this.enddate.toPrint() + '\n';
+		}
+		if(hasStartTime) {
+			answer = answer + "From: " + this.getStartTime().toString() + " to: " + this.getEndTime().toString() + '\n';
+		}
+		if(hasLocation){
+			answer = answer + "Location: " + this.location + '\n';
+		}
+		if(hasNote){
+			answer = answer + "Note: " + this.note + '\n';
+		}
+		if(isComplete) {
+			answer = answer + "Completed: Yes\n";
+		} else {
+			answer = answer + "Completed: No\n";
+		}
+		return answer;
+	}
+	
+	public boolean isCompleted(){
+		if (isComplete == true) {
+			return isComplete;
+		} else if (hasDeadline != true) {
+			return isComplete;
+		}
+		Date today = new Date();
+		if(enddate.isBefore(today) && !enddate.isEqual(today))
+			isComplete = true;
+		return isComplete;
+	}
+	
+	public boolean equals(Task a){
+		return this.name.toLowerCase().equals(a.getName().toLowerCase());
+	}
+
+	public boolean isHasStartTime() {
+		return hasStartTime;
+	}
+
+	public void setHasStartTime(boolean hasStartTime) {
+		this.hasStartTime = hasStartTime;
+	}
+
+	public boolean isHasEndTime() {
+		return hasEndTime;
+	}
+
+	public void setHasEndTime(boolean hasEndTime) {
+		this.hasEndTime = hasEndTime;
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\powerSearch\ExactMatchSearcher.java
+	 */
+
+	 * Performs an Exact Search on a List<Task> based on Different Keys given
+	 * @return format: List<Task>
+	 */
+package powerSearch;
+
+
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
+import dataManipulation.Subcommand;
+import dataManipulation.TotalTaskList;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ExactMatchSearcher {
+	public static List<Task> taskList;
+	public static List<Task> exactSearch(Subcommand key, List<Task> list) throws Exception {
+		taskList = list;
+		ArrayList<Task> answer = new ArrayList<Task>();
+		switch (key.getType()) {
+		case NAME:
+			return simpleSearchName(key.getContents());
+		case TITLE:
+			return simpleSearchName(key.getContents());
+		case CATEGORY:
+			return simpleSearchCategory(key.getContents());
+		case LOCATION:
+			return simpleSearchLocation(key.getContents());
+		case NOTE:
+			return simpleSearchNote(key.getContents()); //returns all Tasks that have the key as a substring within Notes
+		case END:
+			return simpleSearchEndDate(key.getContents()); 
+		case START:
+			return simpleSearchStartDate(key.getContents()); 
+		case DATE:
+			return simpleSearchDate(key.getContents());
+		default :
+			throw new 
+			IllegalArgumentException("invalid subcommand for search");
+		}
+	}
+
+	private static ArrayList<Task> simpleSearchName(String key){
+		ArrayList<Task> answer = new ArrayList<Task>();
+		CharSequence temp = key;
+		for (int i = 0; i < taskList.size(); ++i) {
+			if (key.toLowerCase().equals(taskList.get(i).getName().toLowerCase())) {
+				answer.add(taskList.get(i));
+			}
+			else if(taskList.get(i).getName().toLowerCase().contains(temp)){
+				answer.add(taskList.get(i));
+			}
+		}
+		return answer;
+	}
+
+	private static ArrayList<Task> simpleSearchCategory(String key) {
+		ArrayList<Task> answer = new ArrayList<Task>();
+		CharSequence temp = key;
+		for (int i = 0; i < taskList.size(); ++i) {
+			if (key.toLowerCase().equals(taskList.get(i).getCategory().toLowerCase())) {
+				answer.add(taskList.get(i));
+			}
+			else if(taskList.get(i).getCategory().toLowerCase().contains(temp)){
+				answer.add(taskList.get(i));
+			}
+		}
+		return answer;
+	}
+
+	private static ArrayList<Task> simpleSearchLocation(String key){
+		ArrayList<Task> answer = new ArrayList<Task>();
+		CharSequence temp = key;
+		for (int i = 0; i < taskList.size(); ++i) {
+			if(taskList.get(i).getHasLocation()){
+				if (key.toLowerCase().equals(taskList.get(i).getLocation().toLowerCase())) {
+					answer.add(taskList.get(i));
+				}
+				else if(taskList.get(i).getLocation().toLowerCase().contains(temp)){
+					answer.add(taskList.get(i));
+				}
+			}
+		}
+		return answer;
+	}
+
+	private static ArrayList<Task> simpleSearchNote(String key) {
+		ArrayList<Task> answer = new ArrayList<Task>();
+		CharSequence temp = key;
+		key = key.toLowerCase();
+		for (int i = 0; i < taskList.size(); ++i) {
+			if(taskList.get(i).getHasNote()){
+				if (taskList.get(i).getNote().toLowerCase().contains(key.subSequence(0, key.length()))) {
+					answer.add(taskList.get(i));
+				}
+				else if(taskList.get(i).getNote().toLowerCase().contains(temp)){
+					answer.add(taskList.get(i));
+				}
+			}
+		}
+		return answer;
+	}
+
+	private static ArrayList<Task> simpleSearchDate(String comm) {
+		ArrayList<Task> tasksedited = new ArrayList<Task>();
+		Date lookfordate = new Date(); //create the Date class which he is looking for
+		lookfordate = lookfordate.determineDate(comm);
+		int i;
+		for(i=0; i<taskList.size(); i++){
+			if(taskList.get(i).getHasDeadline()){
+				if(lookfordate.isEqual(taskList.get(i).getEndDate()) || lookfordate.isBefore(taskList.get(i).getEndDate())){
+					tasksedited.add(taskList.get(i));
+				}
+			}
+		}
+		return tasksedited;
+	}
+
+	private static ArrayList<Task> simpleSearchEndDate(String comm) {
+		ArrayList<Task> tasksedited = new ArrayList<Task>();
+		Date lookfordate = new Date(); //create the Date class which he is looking for
+		lookfordate = lookfordate.determineDate(comm);
+		int i;
+		for(i=0; i<taskList.size(); i++){
+			if(lookfordate.isEqual(taskList.get(i).getEndDate())){
+				tasksedited.add(taskList.get(i)); //supposed to show all the tasks that have an endDate after the date searched for
+			}
+		}
+		return tasksedited;
+	}
+	
+	public static ArrayList<Task> simpleSearchDate(Date lookfordate, List<Task> list) {
+		ArrayList<Task> tasksedited = new ArrayList<Task>();
+		int i;
+		for(i=0; i<list.size(); i++){
+			if(lookfordate.isBefore(list.get(i).getEndDate()) || lookfordate.isEquals(list.get(i).getEndDate()) || lookfordate.isEquals(list.get(i).getStartDate())){
+				tasksedited.add(list.get(i)); //supposed to show all the tasks that have an endDate after the date searched for
+			}
+		}
+		return tasksedited;
+	}
+	
+	private static ArrayList<Task> simpleSearchStartDate(String comm) {
+		ArrayList<Task> tasksedited = new ArrayList<Task>();
+		Date lookfordate = new Date(); //create the Date class which he is looking for
+		lookfordate = lookfordate.determineDate(comm);
+		int i;
+		for(i=0; i<taskList.size(); i++){
+			if(lookfordate.isEqual(taskList.get(i).getStartDate())){
+				tasksedited.add(taskList.get(i)); //supposed to show all the tasks that have an endDate after the date searched for
+			}
+		}
+		return tasksedited;
+	}
+
+	public static boolean isTaskDuplicate(Task taskToCheck) {
+
+		for(Task t : TotalTaskList.getInstance().getList()) {
+			
+			if(t.getName().toLowerCase().equals(taskToCheck.getName().toLowerCase())) {
+				
+				if(taskToCheck.getCategory() == null) {	// If task's category is null
+					if(t.getCategory() != null) {		// Check if one of the task's category in the list is NOT null
+						break;							// Break if they are different
+					}
+				}
+					
+				else if(t.getCategory() == null) {		// ELSE, this means that the task's category is not null and we check for one of the task's category in the list being null, i.e. different
+					break;
+				}
+					
+				else {									// ELSE, this means both are not null
+					if(t.getCategory().toLowerCase().equals(taskToCheck.getCategory().toLowerCase())) { 	// Check for whether both categories are the same
+					
+						if(taskToCheck.getHasLocation() == false) {
+							if(t.getHasLocation() == true) {
+								break;
+							}
+						}
+					
+						else if(t.getHasLocation() == false) {
+							break;
+						}
+						
+						else {
+							if(t.getLocation().toLowerCase().equals(taskToCheck.getLocation().toLowerCase())) {
+							
+								if(taskToCheck.getHasNote() == false) {
+									if(t.getHasNote() == true) {
+										break;
+									}
+								}
+						
+								else if(t.getHasNote() == false) {
+									break;
+								}
+								
+								else {
+									if(t.getNote().toLowerCase().equals(taskToCheck.getNote().toLowerCase())) {
+							
+										if(t.getStartDate().toString().toLowerCase().equals(taskToCheck.getStartDate().toString().toLowerCase())) {
+								
+											if(taskToCheck.getEndDate().getDay() == 0) {
+												if(t.getEndDate().getDay() != 0) {
+													break;
+												}
+											}
+											
+											else if(t.getEndDate().getDay() == 0) {
+												break;
+											}
+											
+											else {
+												if(t.getEndDate().isEqual(taskToCheck.getEndDate())) {
+													return true;
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\powerSearch\ExactMatchSearcher.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\powerSearch\NearMatchSearcher.java
+	 */
+
+	 * Performs an Near Search on a List<Task> based on different Keys given
+	 * @return format: List<Task>
+	 */
+package powerSearch;
+
+import dataEncapsulation.Task;
+import dataManipulation.Subcommand;
+import dataManipulation.TotalTaskList;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class NearMatchSearcher{
+	public static List<Task> taskList;
+	public static List<Task> nearSearch(Subcommand key, List<Task> list) throws Exception {
+		taskList = list;
+		List<Task> answer = new ArrayList<Task>();
+		switch (key.getType()){
+		case TITLE:
+			answer.add(nearSearchName(key.getContents()));
+			return answer;
+		case CATEGORY:
+			return nearSearchCategory(key.getContents());
+		case LOCATION:
+			return nearSearchLocation(key.getContents());
+		case NOTE:
+			return nearSearchNote(key.getContents());
+		default:
+			break;
+		}
+		return answer;
+	}
+	
+	private static Task nearSearchName(String key){
+		int length1, length2, diff;
+		length2 = key.length();
+		Task temp = null;
+		for (int i = 0; i < taskList.size(); ++i) {
+			length1 = taskList.get(i).getName().length();
+			diff = Math.abs(length2 - length1);
+			if (diff <= 2) {
+				temp = taskList.get(i);
+				return temp;
+			}
+		}
+		return temp;
+	}
+	
+	private static List<Task> nearSearchCategory(String key){
+		List<Task> answer = new ArrayList<Task>();
+		int length1, length2, diff;
+		length2 = key.length();
+		for (int i = 0; i < taskList.size(); ++i) {
+			length1 = taskList.get(i).getCategory().length();
+			diff = Math.abs(length2 - length1);
+			if (diff <= 2) {
+				answer.add(taskList.get(i));
+			}
+		}
+		return answer;
+	}
+	
+	private static List<Task> nearSearchNote(String key){
+		List<Task> answer = new ArrayList<Task>();
+		int length1, length2, diff;
+		length2 = key.length();
+		for (int i = 0; i < taskList.size(); ++i) {
+			length1 = taskList.get(i).getNote().length();
+			diff = Math.abs(length2 - length1);
+			if (diff <= 2) {
+				answer.add(taskList.get(i));
+			}
+		}
+		return answer;
+	}
+	
+	private static List<Task> nearSearchLocation(String key){
+		List<Task> answer = new ArrayList<Task>();
+		int length1, length2, diff;
+		length2 = key.length();
+		for (int i = 0; i < taskList.size(); ++i) {
+			length1 = taskList.get(i).getLocation().length();
+			diff = Math.abs(length2 - length1);
+			if (diff <= 2) {
+				answer.add(taskList.get(i));
+			}
+		}
+		return answer;
+	}
+	
+	public static boolean isTaskDuplicate(Task taskToCheck) {
+		for(Task t : TotalTaskList.getInstance().getList()) {
+			if(t.getName().toLowerCase().equals(taskToCheck.getName().toLowerCase())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\powerSearch\NearMatchSearcher.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\powerSearch\Searcher.java
+	 */
+
+	 * Takes a list and searches for various details
+	 * @return format: String or List of Tasks
+	 */
+package powerSearch;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.collections.ListUtils;
+
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
+import dataManipulation.Subcommand;
+
+public class Searcher {
+	/**
+	 * searches for exact/near matches to search key
+	 * @param keylist and a list of tasks
+	 * @return a list of all matches for that key
+	 * @throws Exception 
+	 */
+	public static List<Task> search(List<Subcommand> keylist, List<Task> list) throws Exception {
+		int i;
+		List<List<Task>> answer = new ArrayList<List<Task>>();
+		assert(keylist!=null);
+		assert(list!=null);
+		String command = new String();
+		for(i=0; i<keylist.size(); i++){
+			//System.out.println(keylist.get(i));
+			switch(keylist.get(i).getType()){
+			case AND:
+				command = "AND";
+				break;
+			case OR:
+				command = "OR";
+				break;
+			default:
+				answer.add(ExactMatchSearcher.exactSearch(keylist.get(i), list));
+			}
+		}
+		if(answer.get(0).isEmpty()){
+			for(i=0; i<keylist.size(); i++){
+				//System.out.println(keylist.get(i));
+				switch(keylist.get(i).getType()){
+				case AND:
+					command = "AND";
+					break;
+				case OR:
+					command = "OR";
+					break;
+				default:
+					answer.add(NearMatchSearcher.nearSearch(keylist.get(i), list));
+				}
+			}
+		}
+		List<Task> results = new ArrayList<Task>();
+		switch(command){
+		case "OR":
+			results = mergeListsOR(answer);
+			break;
+		case "AND":
+			results = mergeListsAND(answer);
+			break;
+		default:
+			results = mergeListsOR(answer);
+		}
+		return results;
+	}
+	//Parameters: List of Lists which have Tasks
+	//It merges the lists returned according to the OR Command
+	private static List<Task> mergeListsOR(List<List<Task>> answer) throws Exception{
+		if(answer.isEmpty()) {
+			return new ArrayList<Task>();
+		} else {
+		List<Task> list = new ArrayList<Task>();
+		list = answer.get(0);
+		for(int i = 1; i < answer.size(); i++){
+			list = ListUtils.union(list, answer.get(i));
+		}
+		if(list.size()>=2){
+			list = removeDuplicates(list);
+			return list;
+		}
+		else if(list.isEmpty())
+			return new ArrayList<Task>();
+		else
+			return list;
+		}
+	}
+	//Parameters: List which has Tasks
+	//It removes any duplicates in the final answer
+	private static List<Task> removeDuplicates(List<Task> list){
+		int k=0;
+		Task t1;
+		while(k<=list.size()-1){
+			if(list.get(k)!=null)
+				t1 = list.get(k);
+			else
+				t1 = list.get(++k);
+			for(int i = 0; i < list.size(); i++){
+				if(list.get(i)!=null){
+					if(t1.equals(list.get(i)) && i!=k){
+						list.remove(i);
+					}
+				}
+				else
+					list.remove(i);
+			}
+			k++;
+		}
+		return list;
+	}
+	//Parameters: List of Lists which have Tasks
+	//It merges the lists returned according to the AND Command
+	private static List<Task> mergeListsAND(List<List<Task>> answer){
+		if(answer.isEmpty()) {
+			return new ArrayList<Task>();
+		} else {
+		List<Task> list = new ArrayList<Task>();
+		list = answer.get(0);
+		for(int i = 1; i < answer.size(); i++){
+			list = ListUtils.intersection(list, answer.get(i));
+		}
+		if(list.size()>=2){
+			list = removeDuplicates(list);
+			return list;
+		}
+		else if(list.isEmpty())
+			return new ArrayList<Task>();
+		else
+			return list;
+		}
+	}
+	//Parameters: List of Tasks and the Date which is to be searched
+	//Searches for the next available free slot on a specified date.
+	public static String searchTimeSlot(List<Task> list, Date dt){
+		String answer = new String();
+		List<Task> search = new ArrayList<Task>();
+		int[] seconds = new int[86401];
+		for(int k=1; k<=86400; k++){
+			seconds[k] = 0;
+		}
+		
+		search = ExactMatchSearcher.simpleSearchDate(dt, list);
+		if(search.isEmpty()){
+			answer = "All slots on " + dt.toString() + " are free to be scheduled.\n";
+			return answer;
+		}
+		for(int i=0; i<search.size(); i++){
+			if(search.get(i).getEndDate().isEquals(dt) && search.get(i).getStartDate().isEquals(dt)){ //the task starts and ends on same day
+				Task edtemp = search.get(i);
+				Task sdtemp = search.get(i);
+				int sdhours, sdmins, sdseconds, edhours, edmins, edseconds;
+				if(sdtemp.isHasStartTime()){
+					sdhours = sdtemp.getStartTime().getHours();
+					sdmins = sdtemp.getStartTime().getMins();
+					sdseconds = 0;
+				}
+				else{
+					sdhours = 0;
+					sdmins = 0;
+					sdseconds = 0;
+				}
+				int totalsdseconds = sdseconds + sdhours*60*60 + sdmins*60;
+				if(sdtemp.isHasEndTime()){
+					edhours = sdtemp.getEndTime().getHours();
+					edmins = sdtemp.getEndTime().getMins();
+					edseconds = 0;
+				}
+				else{
+					edhours = 23;
+					edmins = 59;
+					edseconds = 59;
+				}
+				int totaledseconds = edseconds + edhours*60*60 + edmins*60;
+				for(int j=totalsdseconds; j<=totaledseconds; j++){
+					seconds[j]++;
+				}
+			}
+			else if(search.get(i).getStartDate().isEquals(dt)){ //the task starts on the mentioned date
+				Task sdtemp = search.get(i);
+				int sdhours, sdmins, sdseconds;
+				if(sdtemp.isHasStartTime()){
+					sdhours = sdtemp.getStartTime().getHours();
+					sdmins = sdtemp.getStartTime().getMins();
+					sdseconds = 0;
+				}
+				else{
+					sdhours = 0;
+					sdmins = 0;
+					sdseconds = 0;
+				}
+				int totalsdseconds = sdseconds + sdhours*60*60 + sdmins*60;
+
+				for(int j=totalsdseconds; j<seconds.length; j++){
+					seconds[j]++;
+				}
+			}
+			else if(search.get(i).getEndDate().isEquals(dt)){ //the task ends on the mentioned date
+				Task edtemp = search.get(i);
+				int edhours, edmins, edseconds;
+				if(edtemp.isHasEndTime()){
+					edhours = edtemp.getEndTime().getHours();
+					edmins = edtemp.getEndTime().getMins();
+					edseconds = 0;
+				}
+				else{
+					edhours = 23;
+					edmins = 59;
+					edseconds = 59;
+				}
+				int totaledseconds = edseconds + edhours*60*60 + edmins*60;
+				for(int j=1; j<=totaledseconds; j++){
+					seconds[j]++;
+				}
+			}
+			else if(dt.isBefore(search.get(i).getEndDate())){
+				answer = "None of the slots on " + dt.toString() + " are free to be scheduled.\n";
+				return answer;
+			}
+		}
+		int start, end;
+		start = 86402;
+		end = 86402;
+		for(int i=25200; i<seconds.length; i++){ //25200 is the time from 6am onwards - assume that no one would work from 00:00 to 07:00
+			if(i>=25200 && i<86400){
+				if(seconds[i]==0 && seconds[i-1]>0){
+					start = i;
+				}
+				else if(seconds[i]==0 && seconds[i+1]>0){
+					end = i;
+					break;
+				}
+			}
+		}
+		if(end==86402 && start==86402){
+			answer = "None of the slots on " + dt.toString() + " are free to be scheduled.\n";
+			return answer;
+		}
+		if(end - start <60){
+			answer = "None of the slots on " + dt.toString() + " are free to be scheduled.\n";
+			return answer;
+		}
+		int starthour, startmin, startsec, endhour, endmin, endsec;
+		
+		starthour = start/3600;
+		startmin = start/60 - starthour*60;
+		startsec = start - startmin*60 - starthour*3600;
+		
+		endhour = end/3600;
+		endmin = end/60 - endhour*60;
+		endsec = end - endmin*60 - endhour*3600;
+		
+		String startTime = getTimeString(starthour, startmin);
+		String endTime = getTimeString(endhour, endmin);
+		
+		answer = "Free Slot Found on " + dt.toString() + '\n';
+		answer = answer + startTime + " to " + endTime + '\n';
+
+		return answer;
+	}
+
+	/**
+	 * Takes time in hours and minutes and returns the string of that time
+	 * @return format: "hour:min" (ex. "10:04")
+	 */
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\powerSearch\Searcher.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\powerSearch\SearcherTest.java
+	 */
+
+	 * Tests the different searches within Searcher Class
+	 * @return format: String
+	 */
+package powerSearch;
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
+import dataEncapsulation.Time;
+import dataManipulation.Subcommand;
+
+public class SearcherTest {
+
+	@Test
+	public void testSearch() throws Exception {
+		List<Task> tasks = new ArrayList<Task>();
+		Date temp1 = new Date();
+		String location = new String("CSC");
+		tasks.add(new Task("Andrew", "A", location, temp1, new Date(25,9,2018)));
+		tasks.add(new Task("Bravo", "B", temp1, new Date(26,9,2015)));
+		tasks.add(new Task("Charlie", "C", temp1, new Date(25,12,2014)));
+		
+		List<Subcommand> listCC = new ArrayList<Subcommand>();
+		listCC.add(new Subcommand(Subcommand.TYPE.LOCATION, "CSC"));
+		System.out.println(Searcher.search(listCC, tasks));
+	}
+
+	@Test
+	public void testSearchTimeSlots() throws Exception {
+		List<Task> tasks = new ArrayList<Task>();
+		Date temp1 = new Date(7, 11, 2014);
+		Date end1 = new Date(7,11,2014);
+		Date start2 = new Date(7, 11, 2014);
+		Date end2 = new Date(7, 11, 2014);
+		Time time1 = new Time(7, 0);
+		Time time2 = new Time(11, 45);
+		Time time3 = new Time(18, 40);
+		Time time4 = new Time(23, 0);
+		String location = new String("CSC");
+		tasks.add(new Task("Andrew", "A", location, temp1, end1, time1, time2));
+		tasks.add(new Task("Bravo", "B", location, start2, end2, time3, time4));
+		
+		System.out.println(Searcher.searchTimeSlot(tasks, temp1));
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\powerSearch\SearcherTest.java
+
+
+
+
+

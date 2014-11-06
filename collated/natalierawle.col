@@ -1,0 +1,234 @@
+//@author: natalierawle
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\userInterface\CommandInterpreterTest.java
+	 */
+
+ *
+ */
+
+public class CommandInterpreterTest {
+	CommandInterpreter interpreter = CommandInterpreter.getInstance();
+	
+	@Test
+	/**
+	 * Test special commands:
+	 * change date type m/d (or d/m)
+	 */
+	public void testSpecialCommand() throws BadCommandException, BadSubcommandException, BadSubcommandArgException {
+		List<Subcommand> subcommands = new ArrayList<Subcommand>();
+		Subcommand changeDate = new 
+				Subcommand(Subcommand.TYPE.DATE_TYPE, "m/d");
+		subcommands.add(changeDate);
+		
+		ChangeDateType specialCommand = new ChangeDateType(subcommands);
+		String command = "change date type m/d";
+		
+		assertEquals("Checking special command", specialCommand.toString(), 
+				interpreter.formCommand(command).toString());
+	}
+	
+	@Test
+	/**
+	 * test no input
+	 */
+	public void testNoInput() {
+		IllegalArgumentException exception = new 
+				IllegalArgumentException("no command given");
+		
+		String command = "";
+		
+		try {
+			interpreter.formCommand(command);
+		} catch (Exception e) {
+			assertEquals("Checking no command", exception.getMessage(), 
+					e.getMessage());
+		}
+	}
+	
+	@Test
+	/**
+	 * test invalid command (unrelated word)
+	 * test invalid command but valid subcommand
+	 */
+	public void testBadCommand() {
+		IllegalArgumentException exception = new 
+				IllegalArgumentException("unrecognized command type");
+		
+		String unrecognizedCommandType = "testing";
+		String recognizedSubcommandType = "Start";
+		
+		try {
+			interpreter.formCommand(unrecognizedCommandType);
+		} catch (Exception e) {
+			assertEquals("Checking no command", exception.getMessage(), 
+					e.getMessage());
+		}
+		
+		try {
+			interpreter.formCommand(recognizedSubcommandType);
+		} catch (Exception e) {
+			assertEquals("Checking no command", exception.getMessage(), 
+					e.getMessage());
+		}
+	}
+	
+	@Test
+	/**
+	 * Commands which don't get subcommands
+	 * 		having no subcommand
+	 * 		having a subcommand
+	 */
+	public void testNoSubcommands() throws BadCommandException, BadSubcommandException, BadSubcommandArgException {
+		IllegalArgumentException exception = new 
+				IllegalArgumentException("too many arguments");
+		List<Subcommand> subcommands = new ArrayList<Subcommand>();
+		Subcommand subcommandTest = new Subcommand(Subcommand.TYPE.TITLE, 
+				"test title");
+		subcommands.add(subcommandTest);
+		
+		String stringCommand = "completed \"test title\"";
+		
+		try {
+			interpreter.formCommand(stringCommand);
+		} catch (Exception e) {
+			assertEquals("Checking extra subcommand for no subcommand-command",
+					exception.getMessage(), e.getMessage());
+		}
+	
+		subcommands.clear();
+		Completed command = new Completed(subcommands);
+		stringCommand = "completed";
+		
+		assertEquals("Checking special command", command.toString(), 
+				interpreter.formCommand(stringCommand).toString());
+	}
+	
+	@Test
+	/**
+	 * Commands which require subcommands
+	 * 		*having exactly what they need
+	 * 		*having less subcommands than they need
+	 * 		*having duplicate subcommands
+	 * 		*having illegal subcommands
+	 * 		ending in quote subcommand
+	 * 		*ending in date
+	 * 		different date types
+	 */
+	public void testNeedingSubcommands() throws BadCommandException, BadSubcommandException, BadSubcommandArgException {
+		List<Subcommand> subcommands = new ArrayList<Subcommand>();
+		Add command;
+		
+		
+		Subcommand subcommandTest = new Subcommand(Subcommand.TYPE.NAME, 
+				"test name");
+		subcommands.add(subcommandTest);
+		subcommandTest = new Subcommand(Subcommand.TYPE.CATEGORY,
+				"test category");
+		subcommands.add(subcommandTest);
+		subcommandTest = new Subcommand(Subcommand.TYPE.LOCATION,
+				"test location");
+		subcommands.add(subcommandTest);
+		subcommandTest = new Subcommand(Subcommand.TYPE.NOTE,
+				"test note");
+		subcommands.add(subcommandTest);
+		subcommandTest = new Subcommand(Subcommand.TYPE.START,
+				"1/1/2014");
+		subcommands.add(subcommandTest);
+		subcommandTest = new Subcommand(Subcommand.TYPE.END,
+				"1/2/2014");
+		subcommands.add(subcommandTest);
+		
+		command = new Add(subcommands);
+		
+		String stringCommand = "add \"test name\" cat \"test category\" "
+				+ "location \"test location\" note \"test note\" "
+				+ "start 1/1/2014 end 1/2/2014";
+		
+		assertEquals("Checking add command normal input", command.toString(), 
+				interpreter.formCommand(stringCommand).toString());
+		
+		stringCommand = "add cat \"test category\" "
+				+ "location \"test location\" note \"test note\" "
+				+ "start 1/1/2014 end 1/2/2014";
+		
+		IllegalArgumentException exception = new 
+				IllegalArgumentException("invalid subcommand argument");
+		
+		try {
+			interpreter.formCommand(stringCommand);
+		} catch (Exception e) {
+			assertEquals("Checking not enough subcommands",
+					exception.getMessage(), e.getMessage());
+		}
+		
+		stringCommand = "add \"test name\" cat \"test category\" "
+				+ "cat \"test category\""
+				+ "location \"test location\" note \"test note\" "
+				+ "start 1/1/2014 end 1/2/2014";
+		
+		exception = new 
+				IllegalArgumentException("duplicate subcommands");
+		
+		try {
+			command = new Add(subcommands);
+		} catch (Exception e) {
+			assertEquals("Checking duplicate subcommands",
+					exception.getMessage(), e.getMessage());
+		}
+		
+		stringCommand = "add \"test name\" title \"test title \" "
+				+ "cat \"test category\" "
+				+ "location \"test location\" note \"test note\" "
+				+ "start 1/1/2014 end 1/2/2014";
+		
+		exception = new 
+				IllegalArgumentException("invalid subcommand");
+		
+		try {
+			interpreter.formCommand(stringCommand);
+		} catch (Exception e) {
+			assertEquals("Checking duplicate subcommands",
+					exception.getMessage(), e.getMessage());
+		}
+		
+		subcommands.clear();
+		subcommandTest = new Subcommand(Subcommand.TYPE.NAME, 
+				"test name");
+		subcommands.add(subcommandTest);
+		subcommandTest = new Subcommand(Subcommand.TYPE.CATEGORY,
+				"test category");
+		subcommands.add(subcommandTest);
+		subcommandTest = new Subcommand(Subcommand.TYPE.LOCATION,
+				"test location");
+		subcommands.add(subcommandTest);
+		subcommandTest = new Subcommand(Subcommand.TYPE.NOTE,
+				"test note");
+		subcommands.add(subcommandTest);
+		subcommandTest = new Subcommand(Subcommand.TYPE.START,
+				"January 1, 2013");
+		subcommands.add(subcommandTest);
+		subcommandTest = new Subcommand(Subcommand.TYPE.END,
+				"January 1, 2014");
+		subcommands.add(subcommandTest);
+		
+		command = new Add(subcommands);
+		
+		stringCommand = "add \"test name\" end January 1, 2014 "
+				+ "location \"test location\" note \"test note\" "
+				+ "start January 1, 2013 cat \"test category\" ";
+		
+		assertEquals("Checking add command normal input", command.toString(), 
+				interpreter.formCommand(stringCommand).toString());
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\userInterface\CommandInterpreterTest.java
+
+
+
+
+

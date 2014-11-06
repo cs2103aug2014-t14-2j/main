@@ -1,0 +1,673 @@
+//@author: nellystix
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Add.java
+	 */
+
+ */
+
+package dataManipulation;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import powerSearch.ExactMatchSearcher;
+import userInterface.ezCMessages;
+import dataEncapsulation.ActionException;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
+import dataEncapsulation.Time;
+import dataManipulation.CommandType.COMMAND_TYPE;
+import fileIo.FileIo;
+
+public class Add extends Command {
+	
+	private String taskName = null;
+	private String taskCategory = null;
+	private String taskLocation = null;
+	private String taskNote = null;
+	private Date taskStart = null;
+	private Date taskEnd = null;
+	private Time startTime = null;
+	private Time endTime = null;
+	private TotalTaskList taskList = TotalTaskList.getInstance();
+	private List<Task> tasks = TotalTaskList.getInstance().getList();
+	private TaskFactory makeMyTask = TaskFactory.getInstance();
+	private ezCMessages message = ezCMessages.getInstance();
+
+	public Add(List<Subcommand> subcommands)
+					throws BadCommandException, BadSubcommandException {
+		super(COMMAND_TYPE.ADD, subcommands);
+	}
+
+	@Override
+	public String execute() throws Exception {
+		
+		Task newTask = buildTask(subcommands);
+		
+		if(ExactMatchSearcher.isTaskDuplicate(newTask)) {	// If the task list already contains this task, throw an error
+			ActionException moreThanOne = new ActionException(tasks, ActionException.ErrorLocation.ADD, subcommands);
+			throw moreThanOne;
+		}
+
+		else {
+			addTaskToList(newTask);
+			FileIo IoStream = FileIo.getInstance();
+			IoStream.rewriteFile();	//Causing write errors
+			flushSubcommand();
+			String returnMessage = message.getAddMessage(newTask);
+			return returnMessage;
+		}
+	}
+	
+	private void addTaskToList(Task toAdd) {
+		
+		Date today = new Date();
+		
+		if(!toAdd.getHasDeadline() || !(toAdd.getEndDate().isBefore(today))) {
+			taskList.getList().add(toAdd);
+		}
+		else if(toAdd.getEndDate().isBefore(today) && !(toAdd.getIsComplete())) {
+			taskList.getOverdue().add(toAdd);
+		}
+		else if((toAdd.getEndDate().isBefore(today) && toAdd.getIsComplete()) || toAdd.getIsComplete()) {
+			taskList.getCompleted().add(toAdd);
+		}
+		
+	}
+	
+	public Task buildTask(List<Subcommand> taskAttributes) throws Exception {
+
+		assembleAttributes(taskAttributes);
+
+		Task toBeAdded = makeMyTask.makeTask(taskName, taskCategory, taskLocation, taskNote, taskStart, taskEnd, startTime, endTime);
+
+		return toBeAdded;
+
+	}
+	
+	private void flushSubcommand() {
+		taskName = null;
+		taskCategory = null;
+		taskLocation = null;
+		taskNote = null;
+		taskStart = null;
+		taskEnd = null;
+		startTime = null;
+		taskEnd = null;
+	}
+	
+	public List<Subcommand> dismantleTask(Task taskToDismantle) throws BadSubcommandException, BadSubcommandArgException {
+		
+		List<Subcommand> taskDetails = new ArrayList<Subcommand>();
+		
+		taskDetails.add(new Subcommand(Subcommand.TYPE.NAME, taskToDismantle.getName()));
+		
+		if(taskToDismantle.getCategory() != null) {
+			taskDetails.add(new Subcommand(Subcommand.TYPE.CATEGORY, taskToDismantle.getCategory()));
+		}
+		
+		if(taskToDismantle.getLocation() != null) { 
+			taskDetails.add(new Subcommand(Subcommand.TYPE.LOCATION, taskToDismantle.getLocation()));
+		}
+		
+		taskDetails.add(new Subcommand(Subcommand.TYPE.START, taskToDismantle.getStartDate().toString()));
+		
+		if(taskToDismantle.getEndDate().getDay() != 0) {
+			taskDetails.add(new Subcommand(Subcommand.TYPE.END, taskToDismantle.getEndDate().toString()));
+		}
+		
+		if(taskToDismantle.getStartTime() != null) {
+			taskDetails.add(new Subcommand(Subcommand.TYPE.STARTTIME, taskToDismantle.getStartTime().toString()));
+		}
+		
+		if(taskToDismantle.getEndTime() != null) {
+			taskDetails.add(new Subcommand(Subcommand.TYPE.ENDTIME, taskToDismantle.getEndTime().toString()));
+		}
+		
+		if(taskToDismantle.getNote() != null) {
+			taskDetails.add(new Subcommand(Subcommand.TYPE.NOTE, taskToDismantle.getNote()));
+		}
+		
+		return taskDetails;
+	}
+	
+	private void assembleAttributes(List<Subcommand> taskAttributes) throws Exception {
+		
+		for(Subcommand cc : taskAttributes) {
+
+			switch (cc.getType()) {
+
+			case NAME:	setTaskName(cc.getContents());
+						break;
+			
+			case CATEGORY:	setTaskCategory(cc.getContents());
+							break;
+			
+			case LOCATION:	setTaskLocation(cc.getContents());
+							break;
+			
+			case NOTE:	setTaskNote(cc.getContents());
+						break;
+			
+			case START:	setTaskStart(cc.getContents());
+						break;
+			
+			case END:	setTaskEnd(cc.getContents());
+						break;
+						
+			case STARTTIME: setTaskStartTime(cc.getContents());
+							break;
+			
+			case ENDTIME:	setTaskEndTime(cc.getContents());
+							break;
+			
+			default:
+				break;
+			
+			}
+
+		}
+		
+	}
+	
+	private void setTaskEnd(String contents) {
+		taskEnd = new Date().determineDate(contents);
+	}
+
+	private void setTaskStart(String contents) {
+		taskStart = new Date().determineDate(contents);
+	}
+
+	private void setTaskNote(String contents) {
+		taskNote = contents;
+	}
+
+	private void setTaskLocation(String contents) {
+		taskLocation = contents;
+	}
+
+	private void setTaskCategory(String contents) {
+		taskCategory = contents;
+	}
+
+	private void setTaskName(String contents) {
+		taskName = contents;
+	}
+	
+	private void setTaskStartTime(String contents) throws Exception {
+		startTime = new Time().determineTime(contents);
+	}
+	
+	private void setTaskEndTime(String contents) throws Exception {
+		endTime = new Time().determineTime(contents);
+	}
+
+	@Override
+	protected void checkValidity() throws BadSubcommandException {
+		super.checkValidity();
+		checkForNoDuplicateSubcommands();
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Add.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Edit.java
+	 */
+
+ * 
+ **/
+
+package dataManipulation;
+
+import java.util.List;
+
+import powerSearch.ExactMatchSearcher;
+import userInterface.ezCMessages;
+import dataEncapsulation.ActionException;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
+import dataManipulation.CommandType.COMMAND_TYPE;
+import fileIo.FileIo;
+
+public class Edit extends Command {
+	
+	private TotalTaskList taskList = TotalTaskList.getInstance();
+	private ezCMessages messages = ezCMessages.getInstance();
+
+	public Edit(List<Subcommand> commandComponents)
+			throws BadCommandException, BadSubcommandException {
+		super(COMMAND_TYPE.EDIT, commandComponents);
+	}
+
+	@Override
+	public String execute() throws Exception {
+		Task preEdit = getTaskToEdit();
+		List<Subcommand> taskToEditSubcommands = new Add(subcommands).dismantleTask(preEdit);
+		Task taskToEdit = new Add(subcommands).buildTask(taskToEditSubcommands);
+		Task postEdit = editTask(taskToEdit, subcommands);
+		
+		addEditedTask(preEdit, postEdit);
+		UndoRedoList.getInstance().pushPreEditedTask(preEdit);	// Add the pre-edited task into the pre edited task stack
+		
+		String editComplete = messages.getEditMessage(preEdit, postEdit);
+		return editComplete;
+	}
+	
+	private Task getTaskToEdit() throws Exception {
+		
+		List<Task> tasks = ExactMatchSearcher.exactSearch(subcommands.get(0), taskList.getAllTasks());
+		if(tasks.size() > 1) {
+			ActionException moreThanOne = new ActionException(taskList.getList(), ActionException.ErrorLocation.EDIT, subcommands);
+			throw moreThanOne;
+		}
+		else {
+			return tasks.get(0);
+		}
+	}
+	
+	public Task editTask(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
+		
+		Task editedTask = setTaskAttributes(toEdit, taskAttributes);
+		
+		if(ExactMatchSearcher.isTaskDuplicate(editedTask)) {
+			ActionException moreThanOne = new ActionException(taskList.getAllTasks(), ActionException.ErrorLocation.EDIT, taskAttributes);
+			throw moreThanOne;
+		}
+		else {
+			return editedTask;
+		}
+	}
+	
+	private static Task setTaskAttributes(Task toEdit, List<Subcommand> taskAttributes) {
+		
+		for(Subcommand cc : taskAttributes) {
+
+			switch (cc.getType()) {
+
+			case TITLE:	toEdit.setName(cc.getContents());
+						break;
+
+			case CATEGORY:	toEdit.setCategory(cc.getContents());
+							break;
+
+			case LOCATION:	toEdit.setLocation(cc.getContents());
+							break;
+
+			case END:	toEdit.setEndDate(new Date().determineDate(cc.getContents()));
+						break;
+
+			case NOTE:	toEdit.setNote(cc.getContents());
+						break;
+
+			default:
+				break;
+			}
+		}
+			
+			return toEdit;
+	}
+	
+	private void addEditedTask(Task oldTask, Task newTask) throws Exception {
+		
+		List<Subcommand> oldTaskSubC = new Add(subcommands).dismantleTask(oldTask);
+		List<Subcommand> newTaskSubC = new Add(subcommands).dismantleTask(newTask);
+		Command removeOldTask = new Remove(oldTaskSubC);
+		Command addNewTask = new Add(newTaskSubC);
+		
+		removeOldTask.execute();
+		addNewTask.execute();
+		
+		FileIo IoStream = FileIo.getInstance();
+		IoStream.rewriteFile();
+	}
+
+	@Override
+	protected void checkValidity() throws BadSubcommandException {
+		super.checkValidity();
+		checkForNoDuplicateSubcommands();
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Edit.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Redo.java
+	 */
+
+ * 
+ * This class processes the redo functions of the program that allows the user to redo 
+ * as many commands as has been executed AS LONG AS the program has not been quit. All changes
+ * made after quitting the program are final.
+ *
+ */
+
+package dataManipulation;
+
+import java.util.List;
+
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
+import dataManipulation.CommandType.COMMAND_TYPE;
+import userInterface.CommandHandler;
+
+public class Redo extends Command {
+	
+	private static String returnMessage;
+	
+	public Redo(List<Subcommand> commandComponents)
+			throws IllegalArgumentException, BadCommandException, BadSubcommandException {
+		super(COMMAND_TYPE.REDO, commandComponents);
+	}
+
+	@Override
+	public String execute() throws Exception {
+		
+		Command commandToRedo = UndoRedoList.getInstance().peekRedoCommand();
+		UndoRedoList.getInstance().pushUndoCommand(UndoRedoList.getInstance().popRedoCommand());
+		
+		switch(commandToRedo.getType()) {
+		
+		case ADD :
+			returnMessage = CommandHandler.executeCommand(commandToRedo);
+			break;
+			
+		case REMOVE :
+			returnMessage = CommandHandler.executeCommand(commandToRedo);
+			break;
+			
+		case EDIT :
+			returnMessage = CommandHandler.executeCommand(commandToRedo);
+			break;
+			
+		case FINISH :
+			returnMessage = CommandHandler.executeCommand(commandToRedo);
+			break;
+	
+		default:
+			break;
+			
+		}
+	
+		return returnMessage;
+	}
+
+	@Override
+	protected void checkValidity() throws BadSubcommandException {
+		checkForNoComponents();
+	}
+	
+}
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Redo.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Undo.java
+	 */
+
+ * 
+ * This class processes the undo functions of the program that allows the user to undo 
+ * as many commands as has been executed AS LONG AS the program has not been quit. All changes
+ * made after quitting the program are final.
+ * 
+ */
+
+package dataManipulation;
+
+import java.util.List;
+
+import powerSearch.Searcher;
+import userInterface.ezCMessages;
+import dataEncapsulation.ActionException;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
+import dataManipulation.CommandType.COMMAND_TYPE;
+
+public class Undo extends Command {
+	
+	private static TotalTaskList taskList = TotalTaskList.getInstance();
+	private static String returnMessage;
+	
+	public Undo(List<Subcommand> commandComponents)
+			throws IllegalArgumentException, BadCommandException, BadSubcommandException {
+		super(COMMAND_TYPE.UNDO, commandComponents);
+	}
+
+	@Override
+	public String execute() throws Exception {
+		
+		Command commandToUndo = UndoRedoList.getInstance().peekUndoCommand();
+		UndoRedoList.getInstance().pushRedoCommand(UndoRedoList.getInstance().popUndoCommand());
+		
+		switch(commandToUndo.getType()) {
+		
+			case ADD :
+				Command negatedAddCommand = new Remove(commandToUndo.getComponents());
+				returnMessage = negatedAddCommand.execute();
+				break;
+				
+			case REMOVE :
+				Command negatedRemoveCommand = new Add(commandToUndo.getComponents());
+				returnMessage = negatedRemoveCommand.execute();
+				break;
+				
+			case EDIT :
+				Command negatedEditCommandRemove = negatedEditRemovePreProcess(commandToUndo);
+				Command negatedEditCommandAdd = negatedEditAddPreProcess(commandToUndo);
+				negatedEditCommandRemove.execute();
+				returnMessage = negatedEditCommandAdd.execute();
+				break;
+				
+			case FINISH :
+				List<Task> tasks = Searcher.search(commandToUndo.getComponents(), taskList.getCompleted());
+				Task toMarkAsInComplete = tasks.get(0);
+				toMarkAsInComplete.setIncomplete();
+				reassignTask(toMarkAsInComplete);
+				returnMessage = ezCMessages.getInstance().getUnfinishMessage(toMarkAsInComplete);
+				break;
+				
+			default:
+				break;
+				
+		}
+		
+		return returnMessage;
+	}
+	
+	private void reassignTask(Task toReassign) {
+		Date today = new Date();
+		if(toReassign.getEndDate().isBefore(today)) {
+			taskList.getCompleted().remove(toReassign);
+			taskList.getOverdue().add(toReassign);
+		}
+		else {
+			taskList.getCompleted().remove(toReassign);
+			taskList.getList().add(toReassign);
+		}
+	}
+
+	private Command negatedEditRemovePreProcess(Command commandToUndo) throws Exception {
+		Task taskToRemove = getTaskToRemove(commandToUndo.getComponents());
+		List<Subcommand> listOfSubC = new Add(subcommands).dismantleTask(taskToRemove);
+		Subcommand componentOne = listOfSubC.get(0);
+		listOfSubC.clear();
+		listOfSubC.add(componentOne);
+		Command negatedEditCommandRemove = new Remove(listOfSubC);
+		return negatedEditCommandRemove;
+	}
+	
+	private Command negatedEditAddPreProcess(Command commandToUndo) throws Exception {
+		Task preEditedTask = UndoRedoList.getInstance().popPreEditedTask();
+		List<Subcommand> listOfSubC = new Add(subcommands).dismantleTask(preEditedTask);
+		Command negatedEditCommandAdd = new Add(listOfSubC);
+		return negatedEditCommandAdd;
+	}
+	
+	private Task getTaskToRemove(List<Subcommand> subC) throws Exception {
+		
+		List<Task> combinedTaskList = taskList.getAllTasks();
+		List<Task> tasks = Searcher.search(subC, combinedTaskList);
+		if(tasks.size() > 1) {
+			ActionException moreThanOne = new ActionException(combinedTaskList, ActionException.ErrorLocation.UNDO, subcommands);
+			throw moreThanOne;
+		}
+		else {
+			return tasks.get(0);
+		}
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Undo.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\UndoRedoList.java
+	 */
+
+ * 
+ * This class processes the methods within the Undo and Redo classes and holds the stack of
+ * commands to undo and redo.
+ *
+ */
+
+package dataManipulation;
+
+import java.util.Stack;
+
+import dataEncapsulation.Task;
+
+public class UndoRedoList {
+	
+	private Stack<Command> undoCommandStack;
+	private Stack<Task> preEditTaskStack;
+	private Stack<Command> redoCommandStack;
+	private static UndoRedoList url;
+
+	private UndoRedoList() {
+		
+		undoCommandStack = new Stack<Command>();
+		preEditTaskStack = new Stack<Task>();
+		redoCommandStack = new Stack<Command>();
+		
+	}
+	
+	public static UndoRedoList getInstance() {
+		
+		if(url == null) {
+			url = new UndoRedoList();
+		}
+
+			return url;
+			
+	}
+	
+	public void pushUndoCommand(Command commandToUndo) {
+		
+		switch(commandToUndo.getType()) {
+		
+		case ADD :
+			undoCommandStack.add(commandToUndo);
+			break;
+		
+		case REMOVE :
+			undoCommandStack.add(commandToUndo);
+			break;
+			
+		case EDIT :
+			undoCommandStack.add(commandToUndo);
+			break;
+			
+		case FINISH :
+			undoCommandStack.add(commandToUndo);
+			break;
+			
+		default :
+			break;
+			
+		}
+		
+	}
+	
+	public Command popUndoCommand() {
+		
+		return undoCommandStack.pop();
+		
+	}
+	
+	public Command peekUndoCommand() {
+		
+		return undoCommandStack.peek();
+		
+	}
+	
+	public void pushRedoCommand(Command commandToRedo) {
+		
+		redoCommandStack.add(commandToRedo);
+		
+	}
+	
+	public Command popRedoCommand() {
+		
+		return redoCommandStack.pop();
+		
+	}
+	
+	public Command peekRedoCommand() {
+		
+		return redoCommandStack.peek();
+		
+	}
+	
+	public void pushPreEditedTask(Task taskToAdd) {
+		
+		preEditTaskStack.add(taskToAdd);
+		
+	}
+	
+	public Task popPreEditedTask() {
+		
+		return preEditTaskStack.pop();
+		
+	}
+	
+	public Task peekPreEditedTask() {
+		
+		return preEditTaskStack.peek();
+		
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\UndoRedoList.java
+
+
+
+
+
