@@ -14,7 +14,8 @@ public class CommandType {
 
 	public enum COMMAND_TYPE {
 		ADD, ALL, CHANGE_DATE_TYPE, COMPLETED, EDIT, FINISH, 
-		HELP, REDO, REMOVE, REPEAT, SEARCH, SORT, TODAY, UNFINISH, UNDO,
+		HELP, OVERDUE, REDO, REMOVE, REPEAT, SEARCH, SORT, TODAY, UNFINISH,
+		UNDO,
 		INVALID;
 
 		@Override
@@ -62,6 +63,8 @@ public class CommandType {
 			return COMMAND_TYPE.FINISH;
 		case "help" :
 			return COMMAND_TYPE.HELP;
+		case "overdue" :
+			return COMMAND_TYPE.OVERDUE;
 		case "redo" :
 			return COMMAND_TYPE.REDO;
 		case "remove" :
@@ -89,20 +92,12 @@ public class CommandType {
 		switch (commandType) {
 		case ADD :
 			return isAddType(subcommandType);
-		case ALL :
-			return isAllType(subcommandType);
 		case CHANGE_DATE_TYPE :
 			return isChangeDateTypeType(subcommandType);
-		case COMPLETED :
-			return isCompletedType(subcommandType);
 		case EDIT :
 			return isEditType(subcommandType);
 		case FINISH :
 			return isFinishType(subcommandType);
-		case HELP :
-			return isHelpType(subcommandType);
-		case REDO :
-			return isRedoType(subcommandType);
 		case REMOVE :
 			return isRemoveType(subcommandType);
 		case REPEAT :
@@ -111,12 +106,8 @@ public class CommandType {
 			return isSearchType(subcommandType);
 		case SORT :
 			return isSortType(subcommandType);
-		case TODAY :
-			return isTodayType(subcommandType);
 		case UNFINISH :
 			return isUnfinishType(subcommandType);
-		case UNDO :
-			return isUndoType(subcommandType);
 		default :
 			return false;
 		}
@@ -134,18 +125,12 @@ public class CommandType {
 		switch (commandType) {
 		case ADD :
 			return getAddSubcommands();
-		case ALL :
-			return getAllSubcommands();
 		case CHANGE_DATE_TYPE :
 			return getChangeDateTypeSubcommands();
-		case COMPLETED :
-			return getCompletedSubcommands();
 		case EDIT :
 			return getEditSubcommands();
 		case FINISH :
 			return getFinishSubcommands();
-		case HELP :
-			return getHelpSubcommands();
 		case REMOVE :
 			return getRemoveSubcommands();
 		case REPEAT :
@@ -154,10 +139,6 @@ public class CommandType {
 			return getSearchSubcommands();
 		case SORT :
 			return getSortSubcommands();
-		case TODAY :
-			return getTodaySubcommands();
-		case UNDO :
-			return getUndoSubcommands();
 		default :
 			return new ArrayList<String>();
 		}
@@ -165,6 +146,7 @@ public class CommandType {
 	
 	private List<String> getAddSubcommands() {
 		List<String> list = new ArrayList<String>();
+		list.add(Subcommand.TYPE.DATE.toString());
 		list.add(Subcommand.TYPE.CATEGORY.toString());
 		list.add(Subcommand.TYPE.END.toString());
 		list.add(Subcommand.TYPE.LOCATION.toString());
@@ -176,10 +158,6 @@ public class CommandType {
 		return list;
 	}
 
-	private List<String> getAllSubcommands() {
-		return new ArrayList<String>();
-	}
-
 	private List<String> getChangeDateTypeSubcommands() {
 		List<String> list = new ArrayList<String>();
 		for (Subcommand.DATE_TYPE type : Subcommand.DATE_TYPE.values()) {
@@ -187,10 +165,6 @@ public class CommandType {
 		}
 		
 		return list;
-	}
-
-	private List<String> getCompletedSubcommands() {
-		return new ArrayList<String>();
 	}
 
 	private List<String> getEditSubcommands() {
@@ -202,10 +176,6 @@ public class CommandType {
 
 	private List<String> getFinishSubcommands() {
 		return getAddSubcommands();
-	}
-
-	private List<String> getHelpSubcommands() {
-		return new ArrayList<String>();
 	}
 
 	private List<String> getRemoveSubcommands() {
@@ -239,19 +209,13 @@ public class CommandType {
 		return new ArrayList<String>();
 	}
 
-	private List<String> getTodaySubcommands() {
-		return new ArrayList<String>();
-	}
-
-	private List<String> getUndoSubcommands() {
-		return new ArrayList<String>();
-	}
-
 	private boolean isAddType(TYPE subcommandType) {
 		switch (subcommandType) {
 			case NAME :
 				return true;
 			case CATEGORY :
+				return true;
+			case DATE :
 				return true;
 			case END :
 				return true;
@@ -270,10 +234,6 @@ public class CommandType {
 		}
 	}
 
-	private boolean isAllType(TYPE subcommandType) {
-		return false;
-	}
-
 	private boolean isChangeDateTypeType(TYPE subcommandType) {
 		switch (subcommandType) {
 		case DATE_TYPE :
@@ -283,37 +243,18 @@ public class CommandType {
 		}
 	}
 
-	private boolean isCompletedType(TYPE subcommandType) {
-		return false;
-	}
-
 	private boolean isEditType(TYPE subcommandType) {
+		boolean isEditType = isAddType(subcommandType);
 		switch (subcommandType) {
-		case NAME :
-			return true;
-		case CATEGORY :
-			return true;
-		case END :
-			return true;
-		case LOCATION :
-			return true;
-		case NOTE :
-			return true;
-		case START :
-			return true;
 		case TITLE :
 			return true;
 		default :
-			return false;
+			return isEditType;
 		}
 	}
 
 	private boolean isFinishType(TYPE subcommandType) {
 		return isAddType(subcommandType);
-	}
-
-	private boolean isHelpType(TYPE subcommandType) {
-		return false;
 	}
 
 	private boolean isRemoveType(TYPE subcommandType) {
@@ -336,39 +277,18 @@ public class CommandType {
 	}
 
 	private boolean isSearchType(TYPE subcommandType) {
+		boolean isSearchType = isEditType(subcommandType);
 		switch (subcommandType) {
 			case AND :
 				return true;
-			case CATEGORY :
-				return true;
 			case COMPLETED :
-				return true;
-			case DATE :
-				return true;
-			case END :
-				return true;
-			case ENDTIME :
-				return true;
-			case LOCATION :
-				return true;
-			case NAME :
-				return true;
-			case NOTE :
 				return true;
 			case OR :
 				return true;
-			case PAREN :
-				return true;
-			case START :
-				return true;
-			case STARTTIME :
-				return true;
 			case TEXT:
 				return true;
-			case TITLE :
-				return true;
 			default :
-				return false;
+				return isSearchType;
 		}
 	}
 
@@ -383,18 +303,6 @@ public class CommandType {
 			default :
 				return false;
 		}
-	}
-
-	private boolean isTodayType(TYPE subcommandType) {
-		return false;
-	}
-
-	private boolean isUndoType(TYPE subcommandType) {
-		return false;
-	}
-	
-	private boolean isRedoType(TYPE subcommandType) {
-		return false;
 	}
 
 	private boolean isUnfinishType(TYPE subcommandType) {

@@ -17,6 +17,7 @@ import dataManipulation.Completed;
 import dataManipulation.Edit;
 import dataManipulation.Finish;
 import dataManipulation.Help;
+import dataManipulation.Overdue;
 import dataManipulation.Remove;
 import dataManipulation.Repeat;
 import dataManipulation.Search;
@@ -76,7 +77,7 @@ public class CommandInterpreter {
 	// -----------------------------------------------------------------------------
 
 	private Command makeCommand(COMMAND_TYPE type, List<Subcommand> subcommands) 
-			throws BadCommandException, BadSubcommandException {
+			throws BadCommandException, BadSubcommandException, BadSubcommandArgException {
 		switch (type) {
 		case ADD:
 			return new Add(subcommands);
@@ -92,6 +93,8 @@ public class CommandInterpreter {
 			return new Finish(subcommands);
 		case HELP:
 			return new Help(subcommands);
+		case OVERDUE:
+			return new Overdue(subcommands);
 		case REMOVE:
 			return new Remove(subcommands);
 		case REPEAT:
@@ -297,6 +300,8 @@ public class CommandInterpreter {
 		case COMPLETED:
 			return true;
 		case HELP:
+			return true;
+		case OVERDUE:
 			return true;
 		case TODAY:
 			return true;

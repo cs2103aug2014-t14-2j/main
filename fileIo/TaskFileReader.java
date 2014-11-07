@@ -6,6 +6,7 @@ import java.util.List;
 import userInterface.Autocomplete;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
+import dataEncapsulation.TaskFileErrorException;
 import dataEncapsulation.Time;
 import dataManipulation.TaskFactory;
 
@@ -37,7 +38,6 @@ public class TaskFileReader {
 		
 		return tfr;
 	}
-	
 	
 	// integers are indexes for their corresponding location in the task 
 	// component list
@@ -71,22 +71,43 @@ public class TaskFileReader {
 	private List<String> taskComponents = new ArrayList<String>();
 	private TaskFactory factory = TaskFactory.getInstance();
 
-	public List<Task> getAllTasks(List<String> componentsFromFile) throws Exception {
+	public List<Task> getAllTasks(List<String> componentsFromFile) throws TaskFileErrorException {
 		List<Task> taskList = new ArrayList<Task>();
+		List<String> errorList = new ArrayList<String>();
+		List<String> possibleError = new ArrayList<String>();
 		clearTaskComponents();
 		
 		for (int i = 0; i < componentsFromFile.size(); ++i) {
 			String currentLine = componentsFromFile.get(i);
 			
 			if (currentLine.equals(EMPTY_STRING) && hasNewInfo) {
-				Task newTask = createTask();
-				if (newTask != null) {
-					taskList.add(newTask);
+				try {
+					Task newTask = createTask();
+					if (newTask != null) {
+						taskList.add(newTask);
+						possibleError.clear();
+					}
+				} catch (Exception e) {
+					possibleError.add("\n");
+					errorList.addAll(possibleError);
+					possibleError.clear();
 				}
 				clearTaskComponents();
 			} else if (!currentLine.equals(EMPTY_STRING)){
-				addComponent(currentLine);
+				try {	
+					possibleError.add(currentLine);
+					addComponent(currentLine);
+				} catch (Exception e) {
+					clearTaskComponents();
+					errorList.addAll(possibleError);
+					possibleError.clear();
+				}
+				
 			}
+		}
+		
+		if (!errorList.isEmpty()) {
+			throw new TaskFileErrorException(errorList, taskList);
 		}
 		
 		return taskList;
@@ -137,7 +158,11 @@ public class TaskFileReader {
 	}
 
 	// sets missing components to null, as expected by TaskFactory
-	private void checkForMissingComponents() {
+	private void checkForMissingComponents() throws Exception {
+		if (isAnyElementNull()) {
+			throw new Exception("Data missing from task");
+		}
+		
 		String location = getLocation();
 		String note = getNote();
 		String end = getEndDateString();
@@ -156,6 +181,24 @@ public class TaskFileReader {
 		
 		return;
 		
+	}
+
+	private boolean isAnyElementNull() {
+		String name = getName();
+		String category = getCategory();
+		String location = getLocation();
+		String note = getNote();
+		String startDateString = getStartDateString();
+		String endDateString = getEndDateString();
+		String completed = getCompleted();
+		
+		if (name == null || category == null || location == null ||
+				note == null || startDateString == null || 
+				endDateString == null || completed == null) {
+			return true;
+		}
+		
+		return false;
 	}
 
 	// adds the component from the line to the list of task components, in its
@@ -257,7 +300,6 @@ public class TaskFileReader {
 		} else if (lineTitle.equalsIgnoreCase("completed")) {
 			return TASK_COMPONENT.COMPLETED;
 		} else {
-			System.out.println(lineTitle);
 			throw new RuntimeException("Invalid task in file");
 		}
 	}

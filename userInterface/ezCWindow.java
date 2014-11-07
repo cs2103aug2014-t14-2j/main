@@ -19,6 +19,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
+import dataEncapsulation.TaskFileErrorException;
 import dataManipulation.TotalTaskList;
 import fileIo.FileIo;
 
@@ -62,9 +63,23 @@ public class ezCWindow extends JFrame {
 
 		try {
 			fileIo.initializeTaskList(totalTaskList);
+		} catch (TaskFileErrorException e) {
+			String errorMessage = e.getMessage() + "\n\n" + display.getText();
+			display.setText(errorMessage);
+			try {
+				fileIo.recover(e);
+			} catch (Exception failure) {
+				errorMessage = e.getMessage() + "\nAttempt failed.\n\n" 
+						+ messages.getUserHelpMessage();
+				display.setText(errorMessage);
+			}
+			errorMessage = e.getMessage() + "\nAttempt succeeded.\n\n" 
+					+ messages.getUserHelpMessage();
+			display.setText(errorMessage);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			String errorMessage = "There was an error in reading your file. "
+					+ "Please restart.";
+			display.setText(errorMessage);
 		}
 
 		pack();

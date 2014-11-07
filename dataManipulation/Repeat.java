@@ -65,11 +65,11 @@ public class Repeat extends Command {
 	public String execute() throws Exception {
 		assembleCCs(subcommands);
 		getTask();
-		initializerepeatSubcommands();
+		//initializerepeatSubcommands();
 		getTaskDuration();
-		getSubcommands();
+		getSubcommands();		
+
 		checkStartEnd();
-		
 		if (freq.equals(FREQUENCY.DAILY.toString())) {
 			List<LocalDate> daysHappening_daily = repeatStartDates_daily(start, end);
 			for (LocalDate ld : daysHappening_daily) { //each ld is a new start date
@@ -160,9 +160,10 @@ public class Repeat extends Command {
 
 	private String ldParse(String inDateFormat) {
 		Date d = new Date().determineDate(inDateFormat);
-		int dd = d.getDay();
+		int ddd = d.getDay();
 		int mm = d.getMonth();
 		int yyyy = d.getYear();
+		String dd = String.format("%02d", ddd);
 		String inLocalDateFormat = "" + yyyy + "-" + mm + "-" + dd;
 		return inLocalDateFormat;
 	}
@@ -266,7 +267,7 @@ public class Repeat extends Command {
 	protected void checkValidity() throws BadSubcommandException {
 		try {
 			checkForNoDuplicateSubcommands();
-			checkRepeatTwoComponents();
+			checkRepeatFourComponents();
 			checkFrequencyIsNotOnly();
 		} catch (Exception e) {
 			checkRepeatFourComponents();
@@ -295,7 +296,7 @@ public class Repeat extends Command {
 			}
 		}
 	}
-
+/*
 	protected void checkRepeatTwoComponents() throws BadSubcommandException {
 		checkForComponentAmount(2);
 
@@ -311,7 +312,7 @@ public class Repeat extends Command {
 				throw new BadSubcommandException("invalid subcommand");
 			}
 		}
-	}
+	} */
 
 	protected void checkFrequencyIsNotOnly() throws BadSubcommandException {
 		for (int i = 0; i < subcommands.size(); ++i) {
