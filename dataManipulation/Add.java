@@ -35,8 +35,12 @@ public class Add extends Command {
 	private ezCMessages message = ezCMessages.getInstance();
 
 	public Add(List<Subcommand> subcommands)
-					throws BadCommandException, BadSubcommandException {
+					throws BadCommandException, BadSubcommandException, BadSubcommandArgException {
 		super(COMMAND_TYPE.ADD, subcommands);
+		boolean hasDateSubcommand = checkForSpecificComponent(Subcommand.TYPE.DATE);
+		if (hasDateSubcommand) {
+			parseDateToStartAndEnd();
+		}
 	}
 
 	@Override
@@ -206,6 +210,36 @@ public class Add extends Command {
 	protected void checkValidity() throws BadSubcommandException {
 		super.checkValidity();
 		checkForNoDuplicateSubcommands();
+		checkDateMatches();
+	}
+
+	//@author A0126720N
+	private void checkDateMatches() throws BadSubcommandException {
+		boolean hasGeneralDate = checkForSpecificComponent(Subcommand.TYPE.DATE);
+		boolean hasStartDate = checkForSpecificComponent(Subcommand.TYPE.START);
+		boolean hasEndDate = checkForSpecificComponent(Subcommand.TYPE.END);
+		
+		if ((hasGeneralDate && hasStartDate) || (hasGeneralDate && hasEndDate)) {
+			throw new BadSubcommandException("cannot specify start and/or end when specifying \"date\"");
+		}
+	}
+	
+	private void parseDateToStartAndEnd() throws BadSubcommandException, BadSubcommandArgException {
+		int index = 0;
+		for (; index < subcommands.size(); ++index) {
+			if (subcommands.get(index).getType() == Subcommand.TYPE.DATE) {
+				break;
+			}
+		}
+		
+		Subcommand date = subcommands.get(index);
+		String dateString = date.getContents();
+		Subcommand start = new Subcommand(Subcommand.TYPE.START, dateString);
+		Subcommand end = new Subcommand(Subcommand.TYPE.END, dateString);
+		
+		subcommands.remove(index);
+		subcommands.add(start);
+		subcommands.add(end);
 	}
 
 }

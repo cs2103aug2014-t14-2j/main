@@ -165,6 +165,7 @@ public class CommandType {
 	
 	private List<String> getAddSubcommands() {
 		List<String> list = new ArrayList<String>();
+		list.add(Subcommand.TYPE.DATE.toString());
 		list.add(Subcommand.TYPE.CATEGORY.toString());
 		list.add(Subcommand.TYPE.END.toString());
 		list.add(Subcommand.TYPE.LOCATION.toString());
@@ -253,6 +254,8 @@ public class CommandType {
 				return true;
 			case CATEGORY :
 				return true;
+			case DATE :
+				return true;
 			case END :
 				return true;
 			case LOCATION :
@@ -288,23 +291,12 @@ public class CommandType {
 	}
 
 	private boolean isEditType(TYPE subcommandType) {
+		boolean isEditType = isAddType(subcommandType);
 		switch (subcommandType) {
-		case NAME :
-			return true;
-		case CATEGORY :
-			return true;
-		case END :
-			return true;
-		case LOCATION :
-			return true;
-		case NOTE :
-			return true;
-		case START :
-			return true;
 		case TITLE :
 			return true;
 		default :
-			return false;
+			return isEditType;
 		}
 	}
 
@@ -336,39 +328,18 @@ public class CommandType {
 	}
 
 	private boolean isSearchType(TYPE subcommandType) {
+		boolean isSearchType = isEditType(subcommandType);
 		switch (subcommandType) {
 			case AND :
 				return true;
-			case CATEGORY :
-				return true;
 			case COMPLETED :
-				return true;
-			case DATE :
-				return true;
-			case END :
-				return true;
-			case ENDTIME :
-				return true;
-			case LOCATION :
-				return true;
-			case NAME :
-				return true;
-			case NOTE :
 				return true;
 			case OR :
 				return true;
-			case PAREN :
-				return true;
-			case START :
-				return true;
-			case STARTTIME :
-				return true;
 			case TEXT:
 				return true;
-			case TITLE :
-				return true;
 			default :
-				return false;
+				return isSearchType;
 		}
 	}
 

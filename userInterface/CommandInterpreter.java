@@ -76,7 +76,7 @@ public class CommandInterpreter {
 	// -----------------------------------------------------------------------------
 
 	private Command makeCommand(COMMAND_TYPE type, List<Subcommand> subcommands) 
-			throws BadCommandException, BadSubcommandException {
+			throws BadCommandException, BadSubcommandException, BadSubcommandArgException {
 		switch (type) {
 		case ADD:
 			return new Add(subcommands);
