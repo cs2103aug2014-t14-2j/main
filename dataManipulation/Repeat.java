@@ -65,11 +65,9 @@ public class Repeat extends Command {
 	public String execute() throws Exception {
 		assembleCCs(subcommands);
 		getTask();
-		System.out.println("HELLO HELLO");
 		//initializerepeatSubcommands();
 		getTaskDuration();
-		System.out.println("minus2");
-		getSubcommands();		System.out.println("minusone");
+		getSubcommands();		
 
 		checkStartEnd();
 		if (freq.equals(FREQUENCY.DAILY.toString())) {
@@ -78,17 +76,13 @@ public class Repeat extends Command {
 				makeRepeat(ld);
 			}
 		} else if (freq.equals(FREQUENCY.WEEKLY.toString())) {
-			System.out.println("zero");
 			int givenStartToActualStart = findDayOfWeek(t.getStartDate()).getValue() - s.getDayOfWeek().getValue();
 			if (givenStartToActualStart < 0) {
 				givenStartToActualStart = givenStartToActualStart + 7;
 			}
 			LocalDate nStart = s.plusDays(givenStartToActualStart);
-			System.out.println("one");
 			LocalDate nEnd = LocalDate.parse(ldParse(end));
-			System.out.println("two");
 			List<LocalDate> daysHappening_weekly = repeatStartDates_weekly(nStart, nEnd);
-			System.out.println("three");
 			for (LocalDate ld : daysHappening_weekly) {
 				makeRepeat(ld);
 			}
@@ -255,14 +249,9 @@ public class Repeat extends Command {
 	}
 	
 	private void getTaskDuration() {
-		System.out.println("HELLO HELLO HELLO");
-		System.out.println(t.getStartDate().toString());
 		LocalDate st = LocalDate.parse(ldParse(t.getStartDate().toString()));
-		System.out.println("1");
 		LocalDate en = LocalDate.parse(ldParse(t.getEndDate().toString()));
-		System.out.println("2");
 		LocalDate ex = en.plusDays(1);
-		System.out.println("3");
 		Period p = Period.between(st, ex);
 		durationOfTaskInDays = p.getDays();
 	}
