@@ -65,24 +65,30 @@ public class Repeat extends Command {
 	public String execute() throws Exception {
 		assembleCCs(subcommands);
 		getTask();
-		initializerepeatSubcommands();
+		System.out.println("HELLO HELLO");
+		//initializerepeatSubcommands();
 		getTaskDuration();
-		getSubcommands();
+		System.out.println("minus2");
+		getSubcommands();		System.out.println("minusone");
+
 		checkStartEnd();
-		
 		if (freq.equals(FREQUENCY.DAILY.toString())) {
 			List<LocalDate> daysHappening_daily = repeatStartDates_daily(start, end);
 			for (LocalDate ld : daysHappening_daily) { //each ld is a new start date
 				makeRepeat(ld);
 			}
 		} else if (freq.equals(FREQUENCY.WEEKLY.toString())) {
+			System.out.println("zero");
 			int givenStartToActualStart = findDayOfWeek(t.getStartDate()).getValue() - s.getDayOfWeek().getValue();
 			if (givenStartToActualStart < 0) {
 				givenStartToActualStart = givenStartToActualStart + 7;
 			}
 			LocalDate nStart = s.plusDays(givenStartToActualStart);
+			System.out.println("one");
 			LocalDate nEnd = LocalDate.parse(ldParse(end));
+			System.out.println("two");
 			List<LocalDate> daysHappening_weekly = repeatStartDates_weekly(nStart, nEnd);
+			System.out.println("three");
 			for (LocalDate ld : daysHappening_weekly) {
 				makeRepeat(ld);
 			}
@@ -160,9 +166,10 @@ public class Repeat extends Command {
 
 	private String ldParse(String inDateFormat) {
 		Date d = new Date().determineDate(inDateFormat);
-		int dd = d.getDay();
+		int ddd = d.getDay();
 		int mm = d.getMonth();
 		int yyyy = d.getYear();
+		String dd = String.format("%02d", ddd);
 		String inLocalDateFormat = "" + yyyy + "-" + mm + "-" + dd;
 		return inLocalDateFormat;
 	}
@@ -248,9 +255,14 @@ public class Repeat extends Command {
 	}
 	
 	private void getTaskDuration() {
+		System.out.println("HELLO HELLO HELLO");
+		System.out.println(t.getStartDate().toString());
 		LocalDate st = LocalDate.parse(ldParse(t.getStartDate().toString()));
+		System.out.println("1");
 		LocalDate en = LocalDate.parse(ldParse(t.getEndDate().toString()));
+		System.out.println("2");
 		LocalDate ex = en.plusDays(1);
+		System.out.println("3");
 		Period p = Period.between(st, ex);
 		durationOfTaskInDays = p.getDays();
 	}
@@ -266,7 +278,7 @@ public class Repeat extends Command {
 	protected void checkValidity() throws BadSubcommandException {
 		try {
 			checkForNoDuplicateSubcommands();
-			checkRepeatTwoComponents();
+			checkRepeatFourComponents();
 			checkFrequencyIsNotOnly();
 		} catch (Exception e) {
 			checkRepeatFourComponents();
@@ -295,7 +307,7 @@ public class Repeat extends Command {
 			}
 		}
 	}
-
+/*
 	protected void checkRepeatTwoComponents() throws BadSubcommandException {
 		checkForComponentAmount(2);
 
@@ -311,7 +323,7 @@ public class Repeat extends Command {
 				throw new BadSubcommandException("invalid subcommand");
 			}
 		}
-	}
+	} */
 
 	protected void checkFrequencyIsNotOnly() throws BadSubcommandException {
 		for (int i = 0; i < subcommands.size(); ++i) {

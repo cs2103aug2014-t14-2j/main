@@ -92,6 +92,8 @@ public abstract class Command {
 	}
 	
 	protected void checkForComponentAmount(int amount) throws BadSubcommandException {
+		System.out.println("SC SIZE: " + subcommands.size());
+		System.out.println("AMT: " + amount);
 		if (subcommands.size() > amount) {
 			throw new BadSubcommandException("too many subcommands");
 		} else if (subcommands.size() < amount) {
