@@ -3,7 +3,7 @@ package dataManipulation;
 import java.util.ArrayList;
 import java.util.List;
 
-import powerSearch.Searcher;
+import powerSearch.ExactMatchSearcher;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
@@ -49,11 +49,9 @@ public class Remove extends Command {
 		int i = 0;
 				
 		for(i = 0; i < categorizedTasks.size(); i++) {
-			if(categorizedTasks.get(i) == null) {
-				break;
-			}
-			tasksFound = Searcher.search(cc, categorizedTasks.get(i));
-			if(tasksFound.size() > 0) {
+			Task exactTask = ExactMatchSearcher.exactTaskSearch(cc, categorizedTasks.get(i));
+			if(exactTask != null) {
+				tasksFound.add(exactTask);
 				break;
 			}
 		}
