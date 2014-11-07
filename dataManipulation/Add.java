@@ -66,7 +66,7 @@ public class Add extends Command {
 		if(!toAdd.getHasDeadline() || !(toAdd.getEndDate().isBefore(today))) {
 			taskList.addNotCompleted(toAdd);
 		}
-		else if(toAdd.getEndDate().isBefore(today) && !(toAdd.getIsComplete())) {
+		else if(toAdd.getEndDate().isBefore(today) && !(toAdd.getIsComplete())) {	// Need to check for a time isBefore too for the task instead of just purely date
 			taskList.addOverdue(toAdd);
 		}
 		else if((toAdd.getEndDate().isBefore(today) && toAdd.getIsComplete()) || toAdd.getIsComplete()) {
