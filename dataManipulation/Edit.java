@@ -16,7 +16,6 @@ import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 import dataManipulation.CommandType.COMMAND_TYPE;
-import fileIo.FileIo;
 
 public class Edit extends Command {
 	
@@ -200,8 +199,7 @@ public class Edit extends Command {
 		
 		removeOldTask.execute();
 		addNewTask.execute();
-		FileIo IoStream = FileIo.getInstance();
-		IoStream.rewriteFile(); 
+		
 	}
 
 	@Override
