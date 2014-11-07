@@ -38,6 +38,7 @@ public class Remove extends Command {
 	}
 	public static Task remove(List<Subcommand> cc) throws Exception {
 		
+		tasksFound = new ArrayList<Task>();
 		List<Task> completedTasks = TotalTaskList.getInstance().getCompleted();
 		List<Task> currentTasks = TotalTaskList.getInstance().getList();
 		List<Task> overdueTasks = TotalTaskList.getInstance().getOverdue();
