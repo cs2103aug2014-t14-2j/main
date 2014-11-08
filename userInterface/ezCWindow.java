@@ -87,6 +87,8 @@ public class ezCWindow extends JFrame {
 		}
 
 		pack();
+		
+		setAesthetics();
 	}
 
 	private void initializeActions() {
@@ -122,7 +124,7 @@ public class ezCWindow extends JFrame {
 
 		initializeVerticalGroup(layout);
 		
-		setAesthetics();
+		//setAesthetics();
 	}
 
 	private void setAesthetics() {
@@ -157,7 +159,7 @@ public class ezCWindow extends JFrame {
 			double screenHeight) {
 		int windowWidth = (int) (screenWidth*2*scaler);
 		int windowHeight = (int) (screenHeight*2*scaler);
-		this.setMinimumSize(new Dimension(windowWidth, windowHeight));
+		this.setSize(new Dimension(windowWidth, windowHeight));
 		
 		this.addComponentListener(new ComponentAdapter(){
 	        public void componentResized(ComponentEvent e){
@@ -186,7 +188,9 @@ public class ezCWindow extends JFrame {
 		display.setRows(5);
 		display.setWrapStyleWord(true);
 		display.setEditable(false);
-		scroller = new JScrollPane(display);
+		scroller = new JScrollPane(display,
+		         JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		         JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	}
 
 	//@author Oracle, with minor edits
