@@ -22,6 +22,8 @@ public class Edit extends Command {
 	
 	private TotalTaskList taskList = TotalTaskList.getInstance();
 	private ezCMessages messages = ezCMessages.getInstance();
+	private Command addNewTask;
+	private Command removeOldTask;
 
 	public Edit(List<Subcommand> commandComponents)
 			throws BadCommandException, BadSubcommandException {
@@ -30,6 +32,7 @@ public class Edit extends Command {
 
 	@Override
 	public String execute() throws Exception {
+		
 		Task preEdit = getTaskToEdit();
 		List<Subcommand> taskToEditSubcommands = new Add(subcommands).dismantleTask(preEdit);
 		Task taskToEdit = new Add(subcommands).buildTask(taskToEditSubcommands);
@@ -37,10 +40,9 @@ public class Edit extends Command {
 		
 		addEditedTask(preEdit, postEdit);
 		
-		UndoRedoList.getInstance().pushPreEditedTask(preEdit);	// Add the pre-edited task into the pre edited task stack
-		
 		String editComplete = messages.getEditMessage(preEdit, postEdit);
 		return editComplete;
+		
 	}
 	
 	public Task furtherEdit(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
@@ -48,8 +50,6 @@ public class Edit extends Command {
 		Task postEdit = editTask(toEdit, subcommands);
 		
 		addEditedTask(toEdit, postEdit);
-		
-		UndoRedoList.getInstance().pushPreEditedTask(toEdit);	// Add the pre-edited task into the pre edited task stack
 		
 		return postEdit;
 		
@@ -117,8 +117,8 @@ public class Edit extends Command {
 		
 		List<Subcommand> oldTaskSubC = new Add(subcommands).dismantleTask(oldTask);
 		List<Subcommand> newTaskSubC = new Add(subcommands).dismantleTask(newTask);
-		Command removeOldTask = new Remove(oldTaskSubC);
-		Command addNewTask = new Add(newTaskSubC);
+		removeOldTask = new Remove(oldTaskSubC);
+		addNewTask = new Add(newTaskSubC);
 		
 		removeOldTask.execute();
 		UndoRedoList.getInstance().pushUndoCommand(removeOldTask);	//Push the remove into the undo stack
@@ -131,6 +131,18 @@ public class Edit extends Command {
 	protected void checkValidity() throws BadSubcommandException {
 		super.checkValidity();
 		checkForNoDuplicateSubcommands();
+	}
+
+	@Override
+	public String undo() throws Exception {
+		
+		Command negatedEditCommandRemove = addNewTask;
+		Command negatedEditCommandAdd = removeOldTask;
+		negatedEditCommandRemove.execute();
+		negatedEditCommandAdd.execute();
+		String returnMessage = "";
+		return returnMessage;
+		
 	}
 
 }
