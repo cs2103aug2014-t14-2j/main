@@ -52,11 +52,9 @@ public class Remove extends Command {
 	public static Task remove(List<Subcommand> cc) throws Exception {
 		
 		tasksFound = new ArrayList<Task>();
-		List<Task> completedTasks = TotalTaskList.getInstance().getCompleted();
 		List<Task> currentTasks = TotalTaskList.getInstance().getList();
 		List<Task> overdueTasks = TotalTaskList.getInstance().getOverdue();
 		List<List<Task>> categorizedTasks = new ArrayList<List<Task>>();
-		categorizedTasks.add(completedTasks);
 		categorizedTasks.add(currentTasks);
 		categorizedTasks.add(overdueTasks);
 		int j = 0;
@@ -85,11 +83,9 @@ public class Remove extends Command {
 	public static void removeForEdit(List<Subcommand> listOfSubs) {
 		
 		Task exactTask = null;
-		List<Task> completedTasks = TotalTaskList.getInstance().getCompleted();
 		List<Task> currentTasks = TotalTaskList.getInstance().getList();
 		List<Task> overdueTasks = TotalTaskList.getInstance().getOverdue();
 		List<List<Task>> categorizedTasks = new ArrayList<List<Task>>();
-		categorizedTasks.add(completedTasks);
 		categorizedTasks.add(currentTasks);
 		categorizedTasks.add(overdueTasks);
 		int i = 0;
@@ -110,15 +106,12 @@ public class Remove extends Command {
 		Task a = toRemove;
 		
 		switch(i) {
-			case 0 :
-				TotalTaskList.getInstance().removeCompleted(a);
-				break;
 				
-			case 1 :
+			case 0 :
 				TotalTaskList.getInstance().removeNotCompleted(a);
 				break;
 				
-			case 2 :
+			case 1 :
 				TotalTaskList.getInstance().removeOverdue(a);
 				break;
 				
