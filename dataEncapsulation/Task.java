@@ -510,4 +510,26 @@ public class Task {
 		
 		return result;
 	}
+	
+	/*
+	 * Checks if the period of the task is valid (doesn't end before it starts)
+	 * @author Yui Wei / A0115696W
+	 */
+	public boolean isValid() {
+		boolean result;
+		Date mySD = this.getStartDate();
+		Date myED = this.getEndDate();
+		Time myST = this.getStartTime();
+		Time myET = this.getEndTime();
+		
+		if (myED.isBefore(mySD)) { //end is before start
+			result = false;
+		} else if (myED.isEquals(mySD)) { //start and end same day
+			if (myET.compareTo(myST) < 0) { //end time before start time
+				result = false;
+			} else { result = true;	}
+		} else { result = true;	}
+		
+		return result;
+	}
 }

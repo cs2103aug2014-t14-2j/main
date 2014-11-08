@@ -14,14 +14,14 @@ public class Date {
 
 	private static boolean dmFormat = true;
 
-	public Date(int userday, int usermonth, int useryear) {
+	public Date(int userday, int usermonth, int useryear) throws Exception {
 		int correctedYear = correctYear(useryear);
 		if (dateValid(userday, usermonth, correctedYear)) {
 			this.setDay(userday);
 			this.setMonth(usermonth);
 			this.setYear(correctedYear);
 			cal.set(correctedYear, usermonth, userday);
-		}
+		} else { throw new Exception("Invalid Date."); }
 	}
 
 	public Date() {
@@ -33,7 +33,6 @@ public class Date {
 		cal.set(year, month, day);
 	}
 
-	//@author A0126720N
 	public boolean dateValid(int userday, int usermonth, int useryear) {
 		boolean dateIsValid = true;
 		try {
@@ -50,18 +49,12 @@ public class Date {
 		return dateIsValid;
 	}
 
-	//@author A0126720N
-	public boolean isBefore(Date other) {
+	public boolean isBefore(Date anotherdate) {
 		boolean answer = false;
-		if (other.year > year) {
-			answer = true;
-		} else if (other.year == year) {
-			if (other.month > month) {
-				answer = true;
-			} else if (other.month == month) {
-				if (other.day > day) {
-					answer = true;
-				}
+		if (anotherdate instanceof Date && anotherdate.getDay() != 0) { // avoids the case where enddate not specified
+			Calendar calcompare = anotherdate.getCal();
+			if (cal.before(calcompare)) {
+				return true;
 			}
 		}
 		return answer;
@@ -130,7 +123,7 @@ public class Date {
 		return dmFormat;
 	}
 
-	public Date determineDate(String dateString) {
+	public Date determineDate(String dateString) throws Exception {
 		if (dateString == null) {
 			return null;
 		}
