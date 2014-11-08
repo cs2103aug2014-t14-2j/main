@@ -18,7 +18,7 @@ import dataManipulation.CommandType.COMMAND_TYPE;
 
 public class Redo extends Command {
 	
-	private static String returnMessage;
+	private String returnMessage;
 	
 	public Redo(List<Subcommand> commandComponents)
 			throws IllegalArgumentException, BadCommandException, BadSubcommandException {
@@ -28,38 +28,21 @@ public class Redo extends Command {
 	@Override
 	public String execute() throws Exception {
 		
-		Command commandToRedo = UndoRedoList.getInstance().peekRedoCommand();
-		UndoRedoList.getInstance().pushUndoCommand(UndoRedoList.getInstance().popRedoCommand());
-		
-		switch(commandToRedo.getType()) {
-		
-		case ADD :
-			returnMessage = commandToRedo.execute();
-			break;
+		Command popped = UndoRedoList.getInstance().popRedoCommand();
+		returnMessage = popped.execute();
+		UndoRedoList.getInstance().pushRedoCommand(popped);
 			
-		case REMOVE :
-			returnMessage = commandToRedo.execute();
-			break;
-			
-		case EDIT :
-			returnMessage = commandToRedo.execute();
-			break;
-			
-		case FINISH :
-			returnMessage = commandToRedo.execute();
-			break;
-	
-		default:
-			break;
-			
-		}
-	
 		return returnMessage;
 	}
 
 	@Override
 	protected void checkValidity() throws BadSubcommandException {
 		checkForNoComponents();
+	}
+
+	@Override
+	public String undo() throws Exception {
+		return null;
 	}
 	
 }
