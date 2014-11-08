@@ -62,7 +62,6 @@ public class ExactMatchSearcher {
 			return null;
 		}
 
-
 		String subcommandName = "";
 		String subcommandCategory = "";
 		String subcommandLocation = "";
@@ -117,31 +116,25 @@ public class ExactMatchSearcher {
 
 		for(Task t : listOfTasks) {
 
-			if(t.getName().equalsIgnoreCase(subcommandName)) {
-
-				if(t.getCategory().toLowerCase().equals(subcommandCategory.toLowerCase())) { // ELSE, this means both are not null, check if both the same thing
-
-					if((t.getLocation() == null && subcommandLocation.equals("")) || (t.getLocation().toLowerCase().equals(subcommandLocation.toLowerCase()))) {
-
-						if((t.getNote() == null && subcommandNote.equals("")) || (t.getNote().toLowerCase().equals(subcommandNote.toLowerCase()))) {
-
-							if(t.getStartDate().toString().equals(subcommandStartDate)) {
-
-								if(t.getEndDate().toString().equals(subcommandEndDate)) {
-
-									if(t.getStartTime().toString().equals(subcommandStartTime)) {
-
-										if(t.getEndTime().toString().equals(subcommandEndTime)) {
-											return t;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+			if(t.getName().equalsIgnoreCase(subcommandName)
+					&&
+				t.getCategory().equalsIgnoreCase(subcommandCategory)
+					&&
+				(!t.getHasLocation() && subcommandLocation.equals("")) || (t.getLocation().equalsIgnoreCase(subcommandLocation))
+					&&
+				(!t.getHasNote() && subcommandNote.equals("")) || (t.getNote().equalsIgnoreCase(subcommandNote))	
+					&&
+				t.getStartDate().toString().equals(subcommandStartDate)
+					&&
+				t.getEndDate().toString().equals(subcommandEndDate)
+					&&
+				t.getStartTime().toString().equals(subcommandStartTime)
+					&&
+				t.getEndTime().toString().equals(subcommandEndTime)) {
+					return t;
 			}
 		}
+						
 		return null;
 	}
 
@@ -297,77 +290,8 @@ public class ExactMatchSearcher {
 
 			for(Task t : lt) {
 
-				if(t.getName().toLowerCase().equals(taskToCheck.getName().toLowerCase())) {
-
-					if(taskToCheck.getCategory() == null) {	// If task's category is null
-						if(t.getCategory() != null) {		// Check if one of the task's category in the list is NOT null
-							break;							// Break if they are different
-						}
-					}
-
-					else if(t.getCategory() == null) {		// ELSE, this means that the task's category is not null and we check for one of the task's category in the list being null, i.e. different
-						break;
-					}
-
-					else {									// ELSE, this means both are not null
-						if(t.getCategory().toLowerCase().equals(taskToCheck.getCategory().toLowerCase())) { 	// Check for whether both categories are the same
-
-							if(taskToCheck.getHasLocation() == false) {
-								if(t.getHasLocation() == true) {
-									break;
-								}
-							}
-
-							else if(t.getHasLocation() == false) {
-								break;
-							}
-
-							else {
-								if(t.getLocation().toLowerCase().equals(taskToCheck.getLocation().toLowerCase())) {
-
-									if(taskToCheck.getHasNote() == false) {
-										if(t.getHasNote() == true) {
-											break;
-										}
-									}
-
-									else if(t.getHasNote() == false) {
-										break;
-									}
-
-									else {
-										if(t.getNote().toLowerCase().equals(taskToCheck.getNote().toLowerCase())) {
-
-											if(t.getStartDate().toString().toLowerCase().equals(taskToCheck.getStartDate().toString().toLowerCase())) {
-
-												if(taskToCheck.getEndDate().getDay() == 0) {
-													if(t.getEndDate().getDay() != 0) {
-														break;
-													}
-												}
-
-												else if(t.getEndDate().getDay() == 0) {
-													break;
-												}
-
-												else {
-													if(t.getEndDate().isEqual(taskToCheck.getEndDate())) {
-
-														if(t.getStartTime().compareTo(taskToCheck.getStartTime()) == 0) {
-
-															if(t.getEndTime().compareTo(taskToCheck.getEndTime()) == 0) {
-																return true;
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
+				if(t.isEqualTask(taskToCheck)) {
+					return true;
 				}
 			}
 		}
