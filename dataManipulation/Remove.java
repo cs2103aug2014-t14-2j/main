@@ -65,7 +65,7 @@ public class Remove extends Command {
 											cc);
 			throw moreThanOne;
 		}
-		taskToRemove = tasksFound.get(0) ;
+		taskToRemove = tasksFound.get(0);
 		taskRemoved = taskToRemove;
 		doDeleteTask(taskToRemove, j);
 		return taskRemoved;
@@ -98,10 +98,9 @@ public class Remove extends Command {
 	@Override
 	public String undo() throws Exception {
 		
-		Command negatedRemoveCommand = new Add(sc);
-		negatedRemoveCommand.execute();
-		String returnMessage = "";
-		return returnMessage;
+		List<Subcommand> removedTaskSubC = new Add(sc).dismantleTask(taskRemoved);
+		Command negatedRemoveCommand = new Add(removedTaskSubC);
+		return negatedRemoveCommand.execute();
 		
 	}
 

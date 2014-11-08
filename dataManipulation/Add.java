@@ -240,9 +240,7 @@ public class Add extends Command {
 	public String undo() throws Exception {
 		
 		Command negatedAddCommand = new Remove(subcommands);
-		negatedAddCommand.execute();
-		String returnMessage = "";
-		return returnMessage;
+		return negatedAddCommand.execute();
 		
 	}
 
