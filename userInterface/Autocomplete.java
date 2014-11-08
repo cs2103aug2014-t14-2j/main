@@ -99,7 +99,14 @@ public class Autocomplete {
 		
 		for (int i = 0; i < lastWordReplacements.size(); ++i) {
 			String suffix = lastWordReplacements.get(i);
-			String formattedString = lastWordRemoved + quote + suffix + quote;
+			String formattedString;
+			
+			if (suffix.isEmpty()) {
+				formattedString = lastWordRemoved;
+			} else {
+				formattedString = lastWordRemoved + quote + suffix + quote;
+			}
+
 			formattedTotal.add(formattedString);
 		}
 		
