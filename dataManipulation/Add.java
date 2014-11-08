@@ -49,8 +49,7 @@ public class Add extends Command {
 		Task newTask = buildTask(subcommands);
 		
 		if(ExactMatchSearcher.isTaskDuplicate(newTask)) {	// If the task list already contains this task, throw an error
-			ActionException moreThanOne = new ActionException(tasks, ActionException.ErrorLocation.ADD, subcommands);
-			throw moreThanOne;
+			throw new BadSubcommandArgException("task already exists");
 		}
 
 		else {
