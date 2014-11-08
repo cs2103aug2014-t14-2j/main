@@ -116,7 +116,7 @@ public class Add extends Command {
 		
 		taskDetails.add(new Subcommand(Subcommand.TYPE.START, taskToDismantle.getStartDate().toString()));
 		
-		if(taskToDismantle.getEndDate().getDay() != 0) {
+		if(taskToDismantle.getHasDeadline() == true) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.END, taskToDismantle.getEndDate().toString()));
 		}
 		
