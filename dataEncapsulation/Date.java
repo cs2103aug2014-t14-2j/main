@@ -33,6 +33,7 @@ public class Date {
 		cal.set(year, month, day);
 	}
 
+	//@author A0126720N
 	public boolean dateValid(int userday, int usermonth, int useryear) {
 		boolean dateIsValid = true;
 		try {
@@ -49,24 +50,18 @@ public class Date {
 		return dateIsValid;
 	}
 
-	public boolean isBefore(Date anotherdate) {
+	//@author A0126720N
+	public boolean isBefore(Date other) {
 		boolean answer = false;
-		if (anotherdate instanceof Date && anotherdate.getDay() != 0) { // avoids
-																		// the
-																		// case
-																		// whereby
-																		// the
-																		// enddate
-																		// has
-																		// not
-																		// been
-																		// stated
-																		// by
-																		// the
-																		// user
-			Calendar calcompare = anotherdate.getCal();
-			if (cal.before(calcompare)) {
-				return true;
+		if (other.year > year) {
+			answer = true;
+		} else if (other.year == year) {
+			if (other.month > month) {
+				answer = true;
+			} else if (other.month == month) {
+				if (other.day > day) {
+					answer = true;
+				}
 			}
 		}
 		return answer;
