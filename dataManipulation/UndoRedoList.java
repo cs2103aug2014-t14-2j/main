@@ -1,5 +1,5 @@
 /**
- * @author nellystix
+ * @author Nelson / A0111014J
  * 
  * This class processes the methods within the Undo and Redo classes and holds the stack of
  * commands to undo and redo.
@@ -10,19 +10,15 @@ package dataManipulation;
 
 import java.util.Stack;
 
-import dataEncapsulation.Task;
-
 public class UndoRedoList {
 	
 	private Stack<Command> undoCommandStack;
-	private Stack<Task> preEditTaskStack;
 	private Stack<Command> redoCommandStack;
 	private static UndoRedoList url;
 
 	private UndoRedoList() {
 		
 		undoCommandStack = new Stack<Command>();
-		preEditTaskStack = new Stack<Task>();
 		redoCommandStack = new Stack<Command>();
 		
 	}
@@ -91,24 +87,6 @@ public class UndoRedoList {
 	public Command peekRedoCommand() {
 		
 		return redoCommandStack.peek();
-		
-	}
-	
-	public void pushPreEditedTask(Task taskToAdd) {
-		
-		preEditTaskStack.add(taskToAdd);
-		
-	}
-	
-	public Task popPreEditedTask() {
-		
-		return preEditTaskStack.pop();
-		
-	}
-	
-	public Task peekPreEditedTask() {
-		
-		return preEditTaskStack.peek();
 		
 	}
 	
