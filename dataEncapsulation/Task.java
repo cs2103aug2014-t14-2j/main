@@ -18,6 +18,7 @@ public class Task {
 	private final String MESSAGE_NO_END = "No Specified End Date";
 	private final String MESSAGE_NO_LOCATION = "No Specified Location";
 	private final String MESSAGE_NO_NOTE = "No Specified Note";
+	private final String NEW_LINE = System.getProperty("line.separator");
 	
 	private Date startdate, enddate;
 	private String name, location, note, category;
@@ -348,54 +349,64 @@ public class Task {
 	
 	public String toString(){
 		String answer = new String();
-		answer = answer + "Task: " + this.name + '\n';
-		answer = answer + "Category: " + this.category + '\n';
+		answer = answer + "Task: " + this.name + NEW_LINE;
+		answer = answer + "Category: " + this.category + NEW_LINE;
 		if(!hasDeadline){
-		answer = answer + "Start: " + this.getStartDate().toString() + " @ " + this.getStartTime().toString() + '\n' + "End: " + MESSAGE_NO_END + '\n';
+		answer = answer + "Start: " + this.getStartDate().toString() + " @ " +
+				this.getStartTime().toString() + NEW_LINE + "End: " + 
+				MESSAGE_NO_END + NEW_LINE;
 		}
 		if(hasDeadline){
-			answer = answer + "Start: " + this.getStartDate().toString() + " @ " + this.getStartTime().toString() + '\n' + "End: " + this.getEndDate().toString() + " @ " + this.getEndTime().toString() +'\n';
+			answer = answer + "Start: " + this.getStartDate().toString() + 
+					" @ " + this.getStartTime().toString() + NEW_LINE + 
+					"End: " + this.getEndDate().toString() + " @ " + 
+					this.getEndTime().toString() + NEW_LINE;
 		}
 		if(hasLocation){
-			answer = answer + "Location: " + this.getLocation() + '\n';
+			answer = answer + "Location: " + this.getLocation() + NEW_LINE;
 		}
 		if(!hasLocation){
-			answer = answer + "Location: " + MESSAGE_NO_LOCATION + '\n';
+			answer = answer + "Location: " + MESSAGE_NO_LOCATION + NEW_LINE;
 		}
 		if(hasNote){
-			answer = answer + "Note: " + this.getNote() + '\n';
+			answer = answer + "Note: " + this.getNote() + NEW_LINE;
 		}
 		if(!hasNote){
-			answer = answer + "Note: " + MESSAGE_NO_NOTE + '\n';
+			answer = answer + "Note: " + MESSAGE_NO_NOTE + NEW_LINE;
 		}
 		if(isComplete) {
-			answer = answer + "Completed: Yes\n";
+			answer = answer + "Completed: Yes" + NEW_LINE;
 		} else {
-			answer = answer + "Completed: No\n";
+			answer = answer + "Completed: No" + NEW_LINE;
 		}
 		return answer;
 	}
 	
 	public String toPrint(){
 		String answer = new String();
-		answer = answer + "Task: " + this.name + '\n';
-		answer = answer + "Category: " + this.category + '\n';
+		answer = answer + "Task: " + this.name + NEW_LINE;
+		answer = answer + "Category: " + this.category + NEW_LINE;
 		if(!hasDeadline){
-			answer = answer + "Start: " + this.getStartDate().toString() + " @ " + this.getStartTime().toString() + '\n' + "End: " + MESSAGE_NO_END + '\n';
+			answer = answer + "Start: " + this.getStartDate().toString() + 
+					" @ " + this.getStartTime().toString() + NEW_LINE + 
+					"End: " + MESSAGE_NO_END + NEW_LINE;
 		}
 		if(hasDeadline){
-			answer = answer + "Start: " + this.getStartDate().toString() + " @ " + this.getStartTime().toString() + '\n' + "End: " + this.getEndDate().toString() + " @ " + this.getEndTime().toString() +'\n';
+			answer = answer + "Start: " + this.getStartDate().toString() + 
+					" @ " + this.getStartTime().toString() + NEW_LINE + "End: "
+					+ this.getEndDate().toString() + " @ " + 
+					this.getEndTime().toString() + NEW_LINE;
 		}
 		if(hasLocation){
-			answer = answer + "Location: " + this.location + '\n';
+			answer = answer + "Location: " + this.location + NEW_LINE;
 		}
 		if(hasNote){
-			answer = answer + "Note: " + this.note + '\n';
+			answer = answer + "Note: " + this.note + NEW_LINE;
 		}
 		if(isComplete) {
-			answer = answer + "Completed: Yes\n";
+			answer = answer + "Completed: Yes" + NEW_LINE;
 		} else {
-			answer = answer + "Completed: No\n";
+			answer = answer + "Completed: No" + NEW_LINE;
 		}
 		return answer;
 	}
