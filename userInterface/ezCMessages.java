@@ -98,7 +98,8 @@ public class ezCMessages {
 		return message;
 	}
 	public String getEditMessage(Task original, Task edited) {
-		String message = new String();
+		String message = original.toPrint() + NEW_LINE + "was changed to:" + 
+				NEW_LINE + NEW_LINE + edited.toPrint();
 		return message;
 	}
 	
