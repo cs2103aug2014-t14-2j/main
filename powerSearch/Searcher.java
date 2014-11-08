@@ -99,7 +99,7 @@ public class Searcher {
 				t1 = list.get(++k);
 			for(int i = 0; i < list.size(); i++){
 				if(list.get(i)!=null){
-					if(t1.equals(list.get(i)) && i!=k){
+					if(t1.isEqualTask(list.get(i)) && i!=k){
 						list.remove(i);
 					}
 				}
