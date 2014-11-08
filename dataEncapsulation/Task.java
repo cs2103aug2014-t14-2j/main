@@ -30,6 +30,7 @@ public class Task {
 	private boolean hasLocation = false; 
 	private boolean hasStartTime = false;
 	private boolean hasEndTime = false;
+	private boolean isOverdue = false;
 	
 	private static ArrayList<String> categorylist = new ArrayList<String>();
 	
@@ -45,6 +46,7 @@ public class Task {
 		this.startdate = start;
 		this.setStartTime(s);
 		this.setEndTime(e);
+		setIfOverdue();
 	}
 	
 	public Task(String name, String first_category, String location, Date start, Date end, Time s, Time e) throws Exception {
@@ -57,6 +59,7 @@ public class Task {
 		this.startdate = start;
 		this.setStartTime(s);
 		this.setEndTime(e);
+		setIfOverdue();
 	}
 	
 	//has every field except END TIME
@@ -72,6 +75,7 @@ public class Task {
 		this.setStartTime(s);
 		Time autoEndTime = new Time(s.getHours() + 1, s.getMins());
 		this.setEndTime(autoEndTime);
+		setIfOverdue();
 	}
 	
 	public Task(String name, String first_category, String location, Date start, Date end, Time s) throws Exception {
@@ -85,6 +89,7 @@ public class Task {
 		this.setStartTime(s);
 		Time autoEndTime = new Time(s.getHours() + 1, s.getMins());
 		this.setEndTime(autoEndTime);
+		setIfOverdue();
 	}
 	
 	
@@ -101,7 +106,7 @@ public class Task {
 		this.startdate = start;
 		this.setStartTime(new Time());
 		this.setEndTime(new Time(23, 59));
-		
+		setIfOverdue();
 	}
 	
 	//no loc or note or no Time
@@ -114,6 +119,7 @@ public class Task {
 		this.setStartDate(start);
 		this.setStartTime(new Time());
 		this.setEndTime(new Time(23, 59));
+		setIfOverdue();
 	}
 	//no location or note but has time
 	public Task(String name, String category, Date start, Date end, Time s, Time e) throws Exception{
@@ -125,6 +131,7 @@ public class Task {
 		this.setStartDate(start);
 		this.setStartTime(s);
 		this.setEndTime(e);
+		setIfOverdue();
 	}
 	//no loc or note but has start time
 	public Task(String name, String category, Date start, Date end, Time s) throws Exception{
@@ -137,6 +144,7 @@ public class Task {
 		this.setStartTime(s);
 		Time autoEndTime = new Time(s.getHours() + 1, s.getMins());
 		this.setEndTime(autoEndTime);
+		setIfOverdue();
 	}
 	
 	public Task(String name, Date start, Date end, Time s, Time e) throws Exception {
@@ -145,6 +153,7 @@ public class Task {
 		this.startdate = start;
 		this.setStartTime(s);
 		this.setEndTime(e);
+		setIfOverdue();
 		
 	}
 	//no start time, loc or note | | GIVEN ONLY ONE DATE = end date.
@@ -157,6 +166,7 @@ public class Task {
 		enddate = end;
 		this.setStartTime(new Time());
 		this.setEndTime(new Time(23, 59));
+		setIfOverdue();
 	}
 	
 	public Task(String name, Date date, Time time) throws Exception {
@@ -166,6 +176,7 @@ public class Task {
 		this.setStartTime(time);
 		Time autoEndTime = new Time(time.getHours() + 1, time.getMins());
 		this.setEndTime(autoEndTime);
+		setIfOverdue();
 	}
 	//no extra details at all
 	public Task(String name, String category) throws Exception{
@@ -176,6 +187,7 @@ public class Task {
 		this.startdate = new Date();
 		this.setStartTime(new Time());
 		this.setEndTime(new Time(23, 59));
+		setIfOverdue();
 	}
 	
 	public Task(String name, String first_category, String location) throws Exception{
@@ -187,6 +199,7 @@ public class Task {
 		this.setStartDate(new Date());
 		this.setStartTime(new Time());
 		this.setEndTime(new Time(23, 59));
+		setIfOverdue();
 	}
 	
 	//no start or end time but has loc and note
@@ -200,6 +213,7 @@ public class Task {
 		this.setStartDate(new Date());
 		this.setStartTime(new Time());
 		this.setEndTime(new Time(23, 59));
+		setIfOverdue();
 	}
 	//No end date
 	public Task(String name, String first_category, String location, String note, Date startdate) throws Exception{
@@ -212,6 +226,7 @@ public class Task {
 		this.setStartDate(startdate);
 		this.setStartTime(new Time());
 		this.setEndTime(new Time(23, 59));
+		setIfOverdue();
 	}
 	
 	public Task(String name, String category, String location, Date start, Date end) throws Exception{
@@ -224,6 +239,7 @@ public class Task {
 		this.setLocation(location);
 		this.setStartTime(new Time());
 		this.setEndTime(new Time(23, 59));
+		setIfOverdue();
 	}
 	
 	public Task(String name, String category, String location, Date startTime) throws Exception{
@@ -235,8 +251,34 @@ public class Task {
 		this.startdate = startTime;
 		this.setStartTime(new Time());
 		this.setEndTime(new Time(23, 59));
+		setIfOverdue();
 	}
 	
+	private void setIfOverdue() throws Exception {
+		if (!hasDeadline) {
+			return;
+		}
+		
+		Date today = new Date();
+		if (today.isBefore(enddate)) {
+			isOverdue = true;
+		}
+		
+		Time now = getNow();
+		int equal = 0;
+		if (endtime.compareTo(now) > equal) {
+			isOverdue = true;
+		}
+	}
+
+	private Time getNow() throws Exception {
+		Calendar now = Calendar.getInstance();
+		int hour = now.get(Calendar.HOUR_OF_DAY);
+		int min = now.get(Calendar.MINUTE);
+		Time nowAsTime = new Time(hour, min);
+		return nowAsTime;
+	}
+
 	///////////////////////////////////////////////////////////GETTER SETTER
 	
 	public String getNote() {
@@ -273,6 +315,7 @@ public class Task {
 			hasDeadline = true;
 		}
 	}
+	
 	public String getCategory() {
 		return category;
 	}
@@ -339,10 +382,12 @@ public class Task {
 	
 	public void setComplete(){
 		this.isComplete = true;
+		isOverdue = false;
 	}
 	
-	public void setIncomplete() {	// Using this for the undo command
+	public void setIncomplete() throws Exception {	// Using this for the undo command
 		this.isComplete = false;
+		setIfOverdue();
 	}
 	
 	///////////////////////////////////////////////////////////TOSTRING, TOPRINT, EQUALS
@@ -412,14 +457,6 @@ public class Task {
 	}
 	
 	public boolean isCompleted(){
-		if (isComplete == true) {
-			return isComplete;
-		} else if (hasDeadline != true) {
-			return isComplete;
-		}
-		Date today = new Date();
-		if(enddate.isBefore(today) && !enddate.isEqual(today))
-			isComplete = true;
 		return isComplete;
 	}
 	
@@ -437,6 +474,15 @@ public class Task {
 
 	public boolean isHasEndTime() {
 		return hasEndTime;
+	}
+	
+	public boolean isOverdue() throws Exception {
+		if (isComplete) {
+			return false;
+		}
+		
+		setIfOverdue();
+		return isOverdue;
 	}
 
 	public void setHasEndTime(boolean hasEndTime) {
