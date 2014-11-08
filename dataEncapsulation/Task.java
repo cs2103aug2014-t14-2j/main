@@ -492,7 +492,7 @@ public class Task {
 	/*
 	 * @author Nelson / A0111014J
 	 */
-	public boolean isEqual(Task other) {
+	public boolean isEqualTask(Task other) {
 		
 		if(this.name.equalsIgnoreCase(other.name)
 				&&
