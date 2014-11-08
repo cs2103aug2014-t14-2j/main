@@ -345,4 +345,10 @@ public class Repeat extends Command {
 			throw new Exception("Invalid dates - start is after end.");
 		}
 	}
+
+	@Override
+	public String undo() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

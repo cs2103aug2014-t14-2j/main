@@ -61,5 +61,11 @@ public class Redo extends Command {
 	protected void checkValidity() throws BadSubcommandException {
 		checkForNoComponents();
 	}
+
+	@Override
+	public String undo() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
