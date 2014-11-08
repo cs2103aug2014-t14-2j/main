@@ -86,4 +86,13 @@ public class TotalTaskList {
 		return totalList;
 	}
 
+	public void update() throws Exception {
+		for (int i = 0; i < notCompleted.size(); ++i) {
+			if (notCompleted.get(i).isOverdue()) {
+				overdue.add(notCompleted.get(i));
+				notCompleted.remove(i);
+			}
+		}
+	}
+
 }

@@ -17,17 +17,11 @@ public class Overdue extends Command{
 	}
 
 	@Override
-	public String execute() {
-		List<Task> overdueTasks = getOverdueTasks();
-		String stringTasks = getStringOfAllTasks(overdueTasks);
-		return stringTasks;
-	}
-
-	private List<Task> getOverdueTasks() {
+	public String execute() throws Exception {
 		TotalTaskList totalList = TotalTaskList.getInstance();
+		totalList.update();
 		List<Task> overdueTasks = totalList.getOverdue();
-		
-		return overdueTasks;
+		return getStringOfAllTasks(overdueTasks);
 	}
 
 	private String getStringOfAllTasks(List<Task> list) {
