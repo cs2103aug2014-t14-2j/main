@@ -2,13 +2,13 @@ package dataManipulation;
 
 import java.util.List;
 
+import powerSearch.Searcher;
+import userInterface.ezCMessages;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 import dataManipulation.CommandType.COMMAND_TYPE;
-import powerSearch.Searcher;
-import userInterface.ezCMessages;
 
 public class Search extends Command {
 

@@ -1,7 +1,5 @@
 package dataManipulation;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 import dataEncapsulation.Date;

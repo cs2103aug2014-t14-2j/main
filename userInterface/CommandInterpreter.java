@@ -13,6 +13,7 @@ import dataManipulation.All;
 import dataManipulation.ChangeDateType;
 import dataManipulation.Command;
 import dataManipulation.CommandType;
+import dataManipulation.CommandType.COMMAND_TYPE;
 import dataManipulation.Completed;
 import dataManipulation.Edit;
 import dataManipulation.Finish;
@@ -25,7 +26,6 @@ import dataManipulation.Sort;
 import dataManipulation.Subcommand;
 import dataManipulation.Today;
 import dataManipulation.Undo;
-import dataManipulation.CommandType.COMMAND_TYPE;
 
 public class CommandInterpreter {
 	private static CommandInterpreter commandInterpreter;

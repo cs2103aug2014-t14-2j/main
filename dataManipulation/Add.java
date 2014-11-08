@@ -9,7 +9,6 @@ import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
 import userInterface.ezCMessages;
-import dataEncapsulation.ActionException;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandArgException;
 import dataEncapsulation.BadSubcommandException;

@@ -5,9 +5,8 @@ package dataManipulation;
 import java.util.ArrayList;
 import java.util.List;
 
-import dataManipulation.Subcommand.TYPE;
-
 import dataEncapsulation.BadCommandException;
+import dataManipulation.Subcommand.TYPE;
 
 public class CommandType {
 	private static CommandType records;

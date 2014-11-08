@@ -3,8 +3,6 @@ package dataManipulation;
 import java.util.ArrayList;
 import java.util.List;
 
-import powerSearch.ExactMatchSearcher;
-import powerSearch.Searcher;
 import userInterface.ezCMessages;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;

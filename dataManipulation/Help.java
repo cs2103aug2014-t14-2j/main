@@ -2,10 +2,10 @@ package dataManipulation;
 
 import java.util.List;
 
+import userInterface.ezCMessages;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
 import dataManipulation.CommandType.COMMAND_TYPE;
-import userInterface.ezCMessages;
 
 public class Help extends Command {
 

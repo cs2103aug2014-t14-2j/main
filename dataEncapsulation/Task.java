@@ -10,9 +10,8 @@
 	 */
 package dataEncapsulation;
 
-import java.util.*;
-
-import dataEncapsulation.Date;
+import java.util.ArrayList;
+import java.util.Calendar;
 public class Task {
 	
 	private final String MESSAGE_NO_END = "No Specified End Date";

@@ -5,12 +5,12 @@
 	 */
 package powerSearch;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dataEncapsulation.Task;
 import dataManipulation.Subcommand;
 import dataManipulation.TotalTaskList;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class NearMatchSearcher{
 	public static List<Task> taskList;

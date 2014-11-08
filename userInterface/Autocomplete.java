@@ -14,8 +14,8 @@ import java.util.List;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.SuffixTree;
 import dataManipulation.CommandType;
-import dataManipulation.Subcommand;
 import dataManipulation.CommandType.COMMAND_TYPE;
+import dataManipulation.Subcommand;
 import dataManipulation.Subcommand.TYPE;
 
 public class Autocomplete {
