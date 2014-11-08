@@ -20,9 +20,14 @@ public class Task {
 	private final String MESSAGE_NO_NOTE = "No Specified Note";
 	private final String NEW_LINE = System.getProperty("line.separator");
 	
-	private Date startdate, enddate;
-	private String name, location, note, category;
-	private Time starttime, endtime;
+	private Date startdate = new Date();
+	private Date enddate = new Date();
+	private String name = new String();
+	private String location = new String();
+	private String note = new String();
+	private String category = new String();
+	private Time starttime = new Time();
+	private Time endtime = new Time();
 	
 	private boolean hasDeadline = false;
 	private boolean isComplete = false;
@@ -262,6 +267,17 @@ public class Task {
 		Date today = new Date();
 		if (today.isBefore(enddate)) {
 			isOverdue = true;
+			return;
+		} 
+		
+		boolean isOnSameDay = today.isEqual(enddate);
+		
+		if (!isOnSameDay) {
+			return;	// not before, so must be after
+		}
+		
+		if (!hasEndTime) {
+			return;
 		}
 		
 		Time now = getNow();
