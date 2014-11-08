@@ -20,6 +20,8 @@ public abstract class Command {
 	
 	public abstract String execute() throws Exception;
 	
+	public abstract String undo() throws Exception;
+	
 	public Command(COMMAND_TYPE commandType, 
 			List<Subcommand> commandComponents) 
 					throws BadCommandException, BadSubcommandException {
