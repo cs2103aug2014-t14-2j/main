@@ -19,6 +19,7 @@ import dataManipulation.Edit;
 import dataManipulation.Finish;
 import dataManipulation.Help;
 import dataManipulation.Overdue;
+import dataManipulation.Redo;
 import dataManipulation.Remove;
 import dataManipulation.Repeat;
 import dataManipulation.Search;
@@ -95,6 +96,8 @@ public class CommandInterpreter {
 			return new Help(subcommands);
 		case OVERDUE:
 			return new Overdue(subcommands);
+		case REDO:
+			return new Redo(subcommands);
 		case REMOVE:
 			return new Remove(subcommands);
 		case REPEAT:
@@ -302,6 +305,8 @@ public class CommandInterpreter {
 		case HELP:
 			return true;
 		case OVERDUE:
+			return true;
+		case REDO :
 			return true;
 		case TODAY:
 			return true;

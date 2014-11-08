@@ -30,7 +30,7 @@ public class Redo extends Command {
 		
 		Command popped = UndoRedoList.getInstance().popRedoCommand();
 		returnMessage = popped.execute();
-		UndoRedoList.getInstance().pushRedoCommand(popped);
+		UndoRedoList.getInstance().pushUndoCommand(popped);
 			
 		return returnMessage;
 	}

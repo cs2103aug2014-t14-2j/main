@@ -10,6 +10,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import dataEncapsulation.ActionException;
+import dataEncapsulation.NoResultException;
 import dataManipulation.Command;
 import dataManipulation.ExceptionHandler;
 import dataManipulation.UndoRedoList;
@@ -47,6 +48,10 @@ public class CommandHandlingAction extends AbstractAction {
 		} catch (ActionException e) {
 			userInput.setText("");
 			exceptionHandler.furtherAction(e);
+		} catch (NoResultException e) {
+			String message = ezCMessages.getInstance().getErrorMessage(e);
+			status.setText(message);
+			userInput.setText("");
 		} catch (Exception e) {
 			String message = ezCMessages.getInstance().getErrorMessage(e);
 			status.setText(message);

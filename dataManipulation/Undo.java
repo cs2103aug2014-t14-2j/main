@@ -13,6 +13,7 @@ import java.util.List;
 
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.NoResultException;
 import dataManipulation.CommandType.COMMAND_TYPE;
 
 public class Undo extends Command {
@@ -26,10 +27,10 @@ public class Undo extends Command {
 	public String execute() throws Exception {
 		
 		if(UndoRedoList.getInstance().isUndoStackEmpty()) {
-			throw new Exception("there is nothing to undo");
+			throw new NoResultException("there is nothing to undo");
 		}
 		
-		String response = new String();
+		String response = null;
 		
 		do {
 			
@@ -39,13 +40,13 @@ public class Undo extends Command {
 				UndoRedoList.getInstance().pushRedoCommand(popped);
 			}
 			
-		} while(response != null && !UndoRedoList.getInstance().isUndoStackEmpty());
+		} while(response == null && !UndoRedoList.getInstance().isUndoStackEmpty());
 		
 		
 		if (response == null) {
-			throw new Exception("there is nothing to undo");
+			throw new NoResultException("there is nothing to undo");
 		} else if (response.isEmpty()){
-			throw new Exception("there is nothing to undo");
+			throw new NoResultException("there is nothing to undo");
 		}
 		
 		return response;

@@ -7,6 +7,7 @@ import powerSearch.ExactMatchSearcher;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.NoResultException;
 import dataEncapsulation.Task;
 import dataManipulation.CommandType.COMMAND_TYPE;
 import fileIo.FileIo;
@@ -64,6 +65,8 @@ public class Remove extends Command {
 			ActionException moreThanOne = new ActionException(tasksFound, ActionException.ErrorLocation.DELETE,
 											cc);
 			throw moreThanOne;
+		} else if (tasksFound.isEmpty()) {
+			throw new NoResultException("task to delete not found");
 		}
 		taskToRemove = tasksFound.get(0);
 		taskRemoved = taskToRemove;
