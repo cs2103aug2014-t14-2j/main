@@ -67,4 +67,9 @@ public class Sort extends Command {
 		super.checkValidity();
 	}
 
+	@Override
+	public String undo() throws Exception {
+		return null;
+	}
+
 }

@@ -72,4 +72,9 @@ public class Search extends Command {
 		return realDate;
 	}
 
+	@Override
+	public String undo() throws Exception {
+		return null;
+	}
+
 }
