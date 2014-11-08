@@ -49,4 +49,9 @@ public class Completed extends Command {
 		checkForNoDuplicateSubcommands();
 	}
 
+	@Override
+	public String undo() throws Exception {
+		return null;
+	}
+
 }

@@ -41,4 +41,9 @@ public class Today extends Command {
 		return messages.getStringOfTasks(results);
 	}
 
+	@Override
+	public String undo() throws Exception {
+		return null;
+	}
+
 }

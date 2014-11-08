@@ -29,4 +29,9 @@ public class Overdue extends Command{
 		return messages.getStringOfTasks(list);
 	}
 
+	@Override
+	public String undo() throws Exception {
+		return null;
+	}
+
 }

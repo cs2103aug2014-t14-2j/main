@@ -88,6 +88,14 @@ public class Date {
 			return false;
 		}
 	}
+	
+	public static String getFormat() {
+		if (dmFormat) {
+			return "d/m";
+		} else {
+			return "m/d";
+		}
+	}
 
 	public int getDay() {
 		return day;

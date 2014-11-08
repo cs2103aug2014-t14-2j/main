@@ -25,4 +25,9 @@ public class Help extends Command {
 		checkForNoDuplicateSubcommands();
 	}
 
+	@Override
+	public String undo() throws Exception {
+		return null;
+	}
+
 }
