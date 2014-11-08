@@ -13,7 +13,6 @@ import java.util.List;
 
 import powerSearch.Searcher;
 import userInterface.ezCMessages;
-import dataEncapsulation.ActionException;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
@@ -37,42 +36,13 @@ public class Undo extends Command {
 			throw new Exception("there is nothing to undo");
 		}
 		
+		String response = new String();
 		Command commandToUndo = UndoRedoList.getInstance().peekUndoCommand();
 		UndoRedoList.getInstance().pushRedoCommand(UndoRedoList.getInstance().popUndoCommand());
 		
-		switch(commandToUndo.getType()) {
-		
-			case ADD :
-				Command negatedAddCommand = new Remove(commandToUndo.getComponents());
-				returnMessage = negatedAddCommand.execute();
-				break;
-				
-			case REMOVE :
-				Command negatedRemoveCommand = new Add(commandToUndo.getComponents());
-				returnMessage = negatedRemoveCommand.execute();
-				break;
-				
-			case EDIT :
-				Command negatedEditCommandRemove = negatedEditRemovePreProcess(commandToUndo);
-				Command negatedEditCommandAdd = negatedEditAddPreProcess(commandToUndo);
-				negatedEditCommandRemove.execute();
-				returnMessage = negatedEditCommandAdd.execute();
-				break;
-				
-			case FINISH :
-				List<Task> tasks = Searcher.search(commandToUndo.getComponents(), taskList.getCompleted());
-				Task toMarkAsInComplete = tasks.get(0);
-				toMarkAsInComplete.setIncomplete();
-				reassignTask(toMarkAsInComplete);
-				returnMessage = ezCMessages.getInstance().getUnfinishMessage(toMarkAsInComplete);
-				break;
-				
-			default:
-				break;
-				
+		while(commandToUndo.undo() != null) {
+			UndoRedoList.getInstance().popUndoCommand();
 		}
-		
-		return returnMessage;
 	}
 	
 	private void reassignTask(Task toReassign) {
@@ -87,34 +57,9 @@ public class Undo extends Command {
 		}
 	}
 
-	private Command negatedEditRemovePreProcess(Command commandToUndo) throws Exception {
-		Task taskToRemove = getTaskToRemove(commandToUndo.getComponents());
-		List<Subcommand> listOfSubC = new Add(subcommands).dismantleTask(taskToRemove);
-		Subcommand componentOne = listOfSubC.get(0);
-		listOfSubC.clear();
-		listOfSubC.add(componentOne);
-		Command negatedEditCommandRemove = new Remove(listOfSubC);
-		return negatedEditCommandRemove;
-	}
-	
-	private Command negatedEditAddPreProcess(Command commandToUndo) throws Exception {
-		Task preEditedTask = UndoRedoList.getInstance().popPreEditedTask();
-		List<Subcommand> listOfSubC = new Add(subcommands).dismantleTask(preEditedTask);
-		Command negatedEditCommandAdd = new Add(listOfSubC);
-		return negatedEditCommandAdd;
-	}
-	
-	private Task getTaskToRemove(List<Subcommand> subC) throws Exception {
-		
-		List<Task> combinedTaskList = taskList.getAllTasks();
-		List<Task> tasks = Searcher.search(subC, combinedTaskList);
-		if(tasks.size() > 1) {
-			ActionException moreThanOne = new ActionException(combinedTaskList, ActionException.ErrorLocation.UNDO, subcommands);
-			throw moreThanOne;
-		}
-		else {
-			return tasks.get(0);
-		}
+	@Override
+	public String undo() throws Exception {
+		return null;
 	}
 
 }
