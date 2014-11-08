@@ -14,7 +14,7 @@ public class ActionException extends Exception {
 	private List<Subcommand> subcommands;
 	
 	public enum ErrorLocation {
-		DELETE, EDIT, FINISH, ADD, UNDO;
+		DELETE, EDIT, FINISH, ADD, UNDO, UNFINISH;
 		
 		public String toString() {
 			return this.name().toLowerCase();
