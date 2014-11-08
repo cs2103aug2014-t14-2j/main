@@ -62,7 +62,7 @@ public class Edit extends Command {
 		
 		List<Task> tasks = ExactMatchSearcher.literalSearch(nameOfTaskToEdit, taskList.getAllTasks());
 		if(tasks.size() > 1) {
-			ActionException moreThanOne = new ActionException(taskList.getList(), ActionException.ErrorLocation.EDIT, subcommands);
+			ActionException moreThanOne = new ActionException(tasks, ActionException.ErrorLocation.EDIT, subcommands);
 			throw moreThanOne;
 		}
 		else {
