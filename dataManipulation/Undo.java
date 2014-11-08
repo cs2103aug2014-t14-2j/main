@@ -33,6 +33,10 @@ public class Undo extends Command {
 	@Override
 	public String execute() throws Exception {
 		
+		if(UndoRedoList.getInstance().isUndoStackEmpty()) {
+			throw new Exception("there is nothing to undo");
+		}
+		
 		Command commandToUndo = UndoRedoList.getInstance().peekUndoCommand();
 		UndoRedoList.getInstance().pushRedoCommand(UndoRedoList.getInstance().popUndoCommand());
 		

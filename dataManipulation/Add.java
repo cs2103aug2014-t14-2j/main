@@ -29,7 +29,6 @@ public class Add extends Command {
 	private Time startTime = null;
 	private Time endTime = null;
 	private TotalTaskList taskList = TotalTaskList.getInstance();
-	private List<Task> tasks = TotalTaskList.getInstance().getList();
 	private TaskFactory makeMyTask = TaskFactory.getInstance();
 	private ezCMessages message = ezCMessages.getInstance();
 
@@ -104,25 +103,21 @@ public class Add extends Command {
 		
 		taskDetails.add(new Subcommand(Subcommand.TYPE.NAME, taskToDismantle.getName()));
 		
-		if(taskToDismantle.getCategory() != null) {
-			taskDetails.add(new Subcommand(Subcommand.TYPE.CATEGORY, taskToDismantle.getCategory()));
-		}
+		taskDetails.add(new Subcommand(Subcommand.TYPE.CATEGORY, taskToDismantle.getCategory()));
 		
-		if(taskToDismantle.getLocation() != null) { 
+		if(taskToDismantle.getHasLocation()) { 
 			taskDetails.add(new Subcommand(Subcommand.TYPE.LOCATION, taskToDismantle.getLocation()));
 		}
 		
 		taskDetails.add(new Subcommand(Subcommand.TYPE.START, taskToDismantle.getStartDate().toString()));
 		
-		if(taskToDismantle.getHasDeadline() == true) {
+		if(taskToDismantle.getHasDeadline()) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.END, taskToDismantle.getEndDate().toString()));
 		}
 		
-		if(taskToDismantle.getStartTime() != null) {
-			taskDetails.add(new Subcommand(Subcommand.TYPE.STARTTIME, taskToDismantle.getStartTime().toString()));
-		}
+		taskDetails.add(new Subcommand(Subcommand.TYPE.STARTTIME, taskToDismantle.getStartTime().toString()));
 		
-		if(taskToDismantle.getEndTime() != null) {
+		if(taskToDismantle.hasEndTime()) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.ENDTIME, taskToDismantle.getEndTime().toString()));
 		}
 		

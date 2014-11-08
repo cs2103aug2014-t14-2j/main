@@ -23,7 +23,6 @@ public class ExactMatchSearcher {
 	public static List<Task> taskList;
 	public static List<Task> exactSearch(Subcommand key, List<Task> list) throws Exception {
 		taskList = list;
-		ArrayList<Task> answer = new ArrayList<Task>();
 		switch (key.getType()) {
 		case NAME:
 			return simpleSearchName(key.getContents());

@@ -17,7 +17,6 @@ public class Remove extends Command {
 	private static List<Task> tasksFound;
 	private static Task taskToRemove;
 	private static Task taskRemoved;
-	private static Task taskRemovedForEdit;
 	private static List<Subcommand> sc;
 
 	public Remove(List<Subcommand> commandComponents)

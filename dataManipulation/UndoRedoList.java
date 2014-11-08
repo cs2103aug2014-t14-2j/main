@@ -111,5 +111,15 @@ public class UndoRedoList {
 		return preEditTaskStack.peek();
 		
 	}
+	
+	public boolean isUndoStackEmpty() {
+		
+		if(undoCommandStack.size() == 0) {
+			return true;
+		}
+		
+		return false;
+		
+	}
 
 }

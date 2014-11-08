@@ -475,7 +475,7 @@ public class Task {
 		return isComplete;
 	}
 
-	public boolean isHasStartTime() {
+	public boolean hasStartTime() {
 		return hasStartTime;
 	}
 
@@ -483,7 +483,7 @@ public class Task {
 		this.hasStartTime = hasStartTime;
 	}
 
-	public boolean isHasEndTime() {
+	public boolean hasEndTime() {
 		return hasEndTime;
 	}
 	
