@@ -297,77 +297,8 @@ public class ExactMatchSearcher {
 
 			for(Task t : lt) {
 
-				if(t.getName().toLowerCase().equals(taskToCheck.getName().toLowerCase())) {
-
-					if(taskToCheck.getCategory() == null) {	// If task's category is null
-						if(t.getCategory() != null) {		// Check if one of the task's category in the list is NOT null
-							break;							// Break if they are different
-						}
-					}
-
-					else if(t.getCategory() == null) {		// ELSE, this means that the task's category is not null and we check for one of the task's category in the list being null, i.e. different
-						break;
-					}
-
-					else {									// ELSE, this means both are not null
-						if(t.getCategory().toLowerCase().equals(taskToCheck.getCategory().toLowerCase())) { 	// Check for whether both categories are the same
-
-							if(taskToCheck.getHasLocation() == false) {
-								if(t.getHasLocation() == true) {
-									break;
-								}
-							}
-
-							else if(t.getHasLocation() == false) {
-								break;
-							}
-
-							else {
-								if(t.getLocation().toLowerCase().equals(taskToCheck.getLocation().toLowerCase())) {
-
-									if(taskToCheck.getHasNote() == false) {
-										if(t.getHasNote() == true) {
-											break;
-										}
-									}
-
-									else if(t.getHasNote() == false) {
-										break;
-									}
-
-									else {
-										if(t.getNote().toLowerCase().equals(taskToCheck.getNote().toLowerCase())) {
-
-											if(t.getStartDate().toString().toLowerCase().equals(taskToCheck.getStartDate().toString().toLowerCase())) {
-
-												if(taskToCheck.getEndDate().getDay() == 0) {
-													if(t.getEndDate().getDay() != 0) {
-														break;
-													}
-												}
-
-												else if(t.getEndDate().getDay() == 0) {
-													break;
-												}
-
-												else {
-													if(t.getEndDate().isEqual(taskToCheck.getEndDate())) {
-
-														if(t.getStartTime().compareTo(taskToCheck.getStartTime()) == 0) {
-
-															if(t.getEndTime().compareTo(taskToCheck.getEndTime()) == 0) {
-																return true;
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
+				if(t.isEqual(taskToCheck)) {
+					return true;
 				}
 			}
 		}
