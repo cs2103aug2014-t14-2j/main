@@ -6,7 +6,6 @@
 package dataEncapsulation;
 
 import java.time.DateTimeException;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -35,11 +34,10 @@ public class Date {
 		cal.set(year, month, day);
 	}
 
+	//@author A0126720N
 	public boolean dateValid(int userday, int usermonth, int useryear) {
 		boolean dateIsValid = true;
 		try {
-			LocalDate attemptedDate = LocalDate.of(useryear, usermonth, userday);
-			LocalDate today = LocalDate.now();
 			if (useryear < 2014) {
 				dateIsValid = false;
 			} else if (useryear > 9999) {
@@ -51,12 +49,18 @@ public class Date {
 		return dateIsValid;
 	}
 
-	public boolean isBefore(Date anotherdate) {
+	//@author A0126720N
+	public boolean isBefore(Date other) {
 		boolean answer = false;
-		if (anotherdate instanceof Date && anotherdate.getDay() != 0) { // avoids the case where enddate not specified
-			Calendar calcompare = anotherdate.getCal();
-			if (cal.before(calcompare)) {
-				return true;
+		if (other.year > year) {
+			answer = true;
+		} else if (other.year == year) {
+			if (other.month > month) {
+				answer = true;
+			} else if (other.month == month) {
+				if (other.day > day) {
+					answer = true;
+				}
 			}
 		}
 		return answer;

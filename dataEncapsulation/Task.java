@@ -264,7 +264,7 @@ public class Task {
 		}
 		
 		Date today = new Date();
-		if (today.isBefore(enddate)) {
+		if (enddate.isBefore(today)) {
 			isOverdue = true;
 			return;
 		} 
@@ -281,7 +281,7 @@ public class Task {
 		
 		Time now = getNow();
 		int equal = 0;
-		if (endtime.compareTo(now) > equal) {
+		if (endtime.compareTo(now) < equal) {
 			isOverdue = true;
 		}
 	}
