@@ -1,5 +1,5 @@
 /**
- * @author nellystix
+ * @author Nelson / A0111014J
  * 
  * This class processes the undo functions of the program that allows the user to undo 
  * as many commands as has been executed AS LONG AS the program has not been quit. All changes
@@ -11,18 +11,11 @@ package dataManipulation;
 
 import java.util.List;
 
-import powerSearch.Searcher;
-import userInterface.ezCMessages;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
-import dataEncapsulation.Date;
-import dataEncapsulation.Task;
 import dataManipulation.CommandType.COMMAND_TYPE;
 
 public class Undo extends Command {
-	
-	private static TotalTaskList taskList = TotalTaskList.getInstance();
-	private static String returnMessage;
 	
 	public Undo(List<Subcommand> commandComponents)
 			throws IllegalArgumentException, BadCommandException, BadSubcommandException {
@@ -37,24 +30,26 @@ public class Undo extends Command {
 		}
 		
 		String response = new String();
-		Command commandToUndo = UndoRedoList.getInstance().peekUndoCommand();
-		UndoRedoList.getInstance().pushRedoCommand(UndoRedoList.getInstance().popUndoCommand());
 		
-		while(commandToUndo.undo() != null) {
-			UndoRedoList.getInstance().popUndoCommand();
+		do {
+			
+			Command popped = UndoRedoList.getInstance().popUndoCommand();
+			response = popped.undo();
+			if(response != null) {
+				UndoRedoList.getInstance().pushRedoCommand(popped);
+			}
+			
+		} while(response != null && !UndoRedoList.getInstance().isUndoStackEmpty());
+		
+		
+		if (response == null) {
+			throw new Exception("there is nothing to undo");
+		} else if (response.isEmpty()){
+			throw new Exception("there is nothing to undo");
 		}
-	}
-	
-	private void reassignTask(Task toReassign) {
-		Date today = new Date();
-		if(toReassign.getEndDate().isBefore(today)) {
-			taskList.getCompleted().remove(toReassign);
-			taskList.getOverdue().add(toReassign);
-		}
-		else {
-			taskList.getCompleted().remove(toReassign);
-			taskList.getList().add(toReassign);
-		}
+		
+		return response;
+		
 	}
 
 	@Override
