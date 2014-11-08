@@ -119,35 +119,11 @@ public class ExactMatchSearcher {
 
 			if(t.getName().equalsIgnoreCase(subcommandName)) {
 
-				if(!(t.getCategory().toString().equalsIgnoreCase("no category")) && subcommandCategory.equalsIgnoreCase("no category")) {	// If task's category is null and if one of the task's category in the list is NOT null
-					break;														// Break if they are different
-				}
+				if(t.getCategory().toLowerCase().equals(subcommandCategory.toLowerCase())) { // ELSE, this means both are not null, check if both the same thing
 
-				if(!(subcommandCategory.equalsIgnoreCase("no category")) && t.getCategory().toString().equalsIgnoreCase("no category")) {		// ELSE, this means that the task's category is not null and we check for one of the task's category in the list being null, i.e. different
-					break;
-				}
+					if((t.getLocation() == null && subcommandLocation.equals("")) || (t.getLocation().toLowerCase().equals(subcommandLocation.toLowerCase()))) {
 
-				else if(t.getCategory().toLowerCase().equals(subcommandCategory.toLowerCase())) { // ELSE, this means both are not null, check if both the same thing
-
-					if(t.getLocation() != null && subcommandLocation.equals("")) {
-						break;
-					}
-
-					if(!subcommandLocation.equals("") && t.getLocation() == null) {
-						break;
-					}
-
-					else if((t.getLocation() == null && subcommandLocation.equals("")) || (t.getLocation().toLowerCase().equals(subcommandLocation.toLowerCase()))) {
-
-						if(t.getNote() != null && subcommandNote.equals("")) {
-							break;
-						}
-
-						if(!subcommandNote.equals("") && t.getNote() == null) {
-							break;
-						}
-
-						else if((t.getNote() == null && subcommandNote.equals("")) || (t.getNote().toLowerCase().equals(subcommandNote.toLowerCase()))) {
+						if((t.getNote() == null && subcommandNote.equals("")) || (t.getNote().toLowerCase().equals(subcommandNote.toLowerCase()))) {
 
 							if(t.getStartDate().toString().equals(subcommandStartDate)) {
 
