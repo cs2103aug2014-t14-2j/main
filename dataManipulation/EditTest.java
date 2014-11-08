@@ -42,7 +42,7 @@ public class EditTest {
 		
 	}
 	
-	private Task setTaskAttributes(Task toEdit, List<Subcommand> taskAttributes) {
+	private Task setTaskAttributes(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
 		
 		for(Subcommand cc : taskAttributes) {
 
