@@ -24,7 +24,7 @@ public class Today extends Command {
 		List<Task> results = new ArrayList<Task>();
 		Date today = new Date();
 		Subcommand date = new Subcommand(Subcommand.TYPE.DATE, today.toString());
-		List<Task> allTasks = TotalTaskList.getInstance().getList();
+		List<Task> allTasks = TotalTaskList.getInstance().getNotCompleted();
 		for (Task t : allTasks) {
 			Date end = t.getEndDate();
 			Date start = t.getStartDate();

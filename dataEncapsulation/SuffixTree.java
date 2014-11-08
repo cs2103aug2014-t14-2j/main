@@ -27,6 +27,10 @@ public class SuffixTree {
 	}
 
 	public void add(String string) {
+		if (string.isEmpty() && tree.isEmpty()) {
+			return;
+		}
+		
 		if (tree.isEmpty()) {
 			initializeTree(string);
 			return;

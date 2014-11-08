@@ -59,6 +59,13 @@ public class TotalTaskList {
 		notCompleted.addAll(tasks);
 	}
 	
+	public List<Task> getNotCompleted() {
+		List<Task> totalNotComplete = new ArrayList<Task>();
+		totalNotComplete.addAll(notCompleted);
+		totalNotComplete.addAll(overdue);
+		return totalNotComplete;
+	}
+	
 	public List<Task> getList() {
 		return notCompleted;
 	}

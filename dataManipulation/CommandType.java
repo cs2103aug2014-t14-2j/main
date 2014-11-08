@@ -201,6 +201,7 @@ public class CommandType {
 		list.add(Subcommand.TYPE.AND.toString());
 		list.add(Subcommand.TYPE.OR.toString());
 		list.add(Subcommand.TYPE.COMPLETED.toString());
+		list.add(Subcommand.TYPE.FREE.toString());
 		
 		return list;
 	}
