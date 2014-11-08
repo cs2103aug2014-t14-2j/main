@@ -9,9 +9,13 @@ package powerSearch;
 import java.util.ArrayList;
 import java.util.List;
 
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 import dataEncapsulation.Time;
+import dataManipulation.Add;
 import dataManipulation.Subcommand;
 import dataManipulation.TotalTaskList;
 
@@ -55,6 +59,46 @@ public class ExactMatchSearcher {
 	 * returns a NULL if no such exact task exists
 	 * 
 	 */
+	
+	public static List<Task> literalSearch(List<Subcommand> subcommandsToSearch, List<Task> totalList) throws BadSubcommandException, BadSubcommandArgException, BadCommandException {
+		
+		List<Task> listOfMatches = new ArrayList<Task>();
+		
+		
+		for(Task t : totalList) {
+			boolean matches = true;
+			
+			List<Subcommand> subsOfT = new Add(subcommandsToSearch).dismantleTask(t); 
+			
+			for(Subcommand s : subcommandsToSearch) {
+				
+				for(Subcommand st : subsOfT) {
+					
+					if(s.getType() == st.getType()) {
+						if(!s.getContents().equalsIgnoreCase(st.getContents())) {
+							matches = false;
+							break;
+						}
+			
+					}
+				
+				}
+				
+				if (matches == false) {
+					break;
+				}
+				
+			}
+			
+			if(matches == true) {
+				listOfMatches.add(t);
+			}
+			
+		}
+		
+		return listOfMatches;
+		
+	}
 	
 	public static Task exactTaskSearch(List<Subcommand> subcommandsToLookFor, List<Task> listOfTasks) {
 
@@ -286,11 +330,14 @@ public class ExactMatchSearcher {
 		categorizedList.add(TotalTaskList.getInstance().getOverdue());
 
 		for(List<Task> lt : categorizedList) {
-
-			for(Task t : lt) {
-
-				if(t.isEqualTask(taskToCheck)) {
-					return true;
+			
+			if(lt.size() != 0) {
+				for(Task t : lt) {
+					
+					if(t.isEqualTask(taskToCheck)) {
+						return true;
+					}
+					
 				}
 			}
 		}
