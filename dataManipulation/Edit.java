@@ -80,7 +80,7 @@ public class Edit extends Command {
 		}
 	}
 	
-	private static Task setTaskAttributes(Task toEdit, List<Subcommand> taskAttributes) {
+	private static Task setTaskAttributes(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
 		
 		for(Subcommand cc : taskAttributes) {
 

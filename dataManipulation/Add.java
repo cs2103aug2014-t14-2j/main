@@ -174,11 +174,11 @@ public class Add extends Command {
 		
 	}
 	
-	private void setTaskEnd(String contents) {
+	private void setTaskEnd(String contents) throws Exception {
 		taskEnd = new Date().determineDate(contents);
 	}
 
-	private void setTaskStart(String contents) {
+	private void setTaskStart(String contents) throws Exception {
 		taskStart = new Date().determineDate(contents);
 	}
 

@@ -53,7 +53,7 @@ public class Search extends Command {
 	}
 
 	//@author A0126720N
-	private Date getDateForFree() throws BadSubcommandException {
+	private Date getDateForFree() throws Exception {
 		assert(subcommands.size() == 2);
 		int firstIndex = 0;
 		int secondIndex = firstIndex + 1;

@@ -127,7 +127,7 @@ public class Repeat extends Command {
 		repeatSubcommands.add(sc);
 	}
 
-	private void assembleCCs(List<Subcommand> ccs) throws BadSubcommandException {
+	private void assembleCCs(List<Subcommand> ccs) throws Exception {
 		for (Subcommand cc : ccs) {
 			switch (cc.getType()) {
 			case FREQUENCY:
@@ -158,7 +158,7 @@ public class Repeat extends Command {
 		taskList.add(repeatTask);
 	}
 
-	private String ldParse(String inDateFormat) {
+	private String ldParse(String inDateFormat) throws Exception {
 		Date d = new Date().determineDate(inDateFormat);
 		int ddd = d.getDay();
 		int mm = d.getMonth();
@@ -248,7 +248,7 @@ public class Repeat extends Command {
 		return ccs;
 	}
 	
-	private void getTaskDuration() {
+	private void getTaskDuration() throws Exception {
 		LocalDate st = LocalDate.parse(ldParse(t.getStartDate().toString()));
 		LocalDate en = LocalDate.parse(ldParse(t.getEndDate().toString()));
 		LocalDate ex = en.plusDays(1);
@@ -256,7 +256,7 @@ public class Repeat extends Command {
 		durationOfTaskInDays = p.getDays();
 	}
 	
-	private DayOfWeek findDayOfWeek(Date d) {
+	private DayOfWeek findDayOfWeek(Date d) throws Exception {
 		LocalDate date = LocalDate.parse(ldParse(d.toString()));
 		return date.getDayOfWeek();
 	}
