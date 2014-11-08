@@ -459,27 +459,6 @@ public class Task {
 	public boolean isCompleted(){
 		return isComplete;
 	}
-	
-	public boolean equals(Task a){
-		if(this.name.toLowerCase().equals(a.getName().toLowerCase())){
-			if((this.getCategory()==null && a.getCategory()==null) || this.getCategory().toLowerCase().equals(a.getCategory().toLowerCase())){
-				if((this.getLocation()==null && a.getLocation()==null) || this.getLocation().toLowerCase().equals(a.getLocation().toLowerCase())){
-					if((this.getNote()==null && a.getNote()==null) || this.getNote().toLowerCase().equals(a.getNote().toLowerCase())){
-						if((this.getStartDate()==null && a.getStartDate()==null) || this.getStartDate().isEquals(a.getStartDate())){
-							if((this.getEndDate()==null && a.getEndDate()==null) || this.getEndDate().isEquals(a.getEndDate())){
-								if((this.getStartTime()==null && a.getStartTime()==null) || (this.getStartTime().compareTo(a.getStartTime())==0)){
-									if((this.getEndTime()==null && a.getEndTime()==null) || (this.getEndTime().compareTo(a.getEndTime())==0)){
-										return true;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
 
 	public boolean isHasStartTime() {
 		return hasStartTime;
