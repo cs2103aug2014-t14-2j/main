@@ -62,7 +62,6 @@ public class ExactMatchSearcher {
 			return null;
 		}
 
-
 		String subcommandName = "";
 		String subcommandCategory = "";
 		String subcommandLocation = "";
@@ -117,31 +116,25 @@ public class ExactMatchSearcher {
 
 		for(Task t : listOfTasks) {
 
-			if(t.getName().equalsIgnoreCase(subcommandName)) {
-
-				if(t.getCategory().toLowerCase().equals(subcommandCategory.toLowerCase())) { // ELSE, this means both are not null, check if both the same thing
-
-					if((t.getLocation() == null && subcommandLocation.equals("")) || (t.getLocation().toLowerCase().equals(subcommandLocation.toLowerCase()))) {
-
-						if((t.getNote() == null && subcommandNote.equals("")) || (t.getNote().toLowerCase().equals(subcommandNote.toLowerCase()))) {
-
-							if(t.getStartDate().toString().equals(subcommandStartDate)) {
-
-								if(t.getEndDate().toString().equals(subcommandEndDate)) {
-
-									if(t.getStartTime().toString().equals(subcommandStartTime)) {
-
-										if(t.getEndTime().toString().equals(subcommandEndTime)) {
-											return t;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+			if(t.getName().equalsIgnoreCase(subcommandName)
+					&&
+				t.getCategory().equalsIgnoreCase(subcommandCategory)
+					&&
+				(!t.getHasLocation() && subcommandLocation.equals("")) || (t.getLocation().equalsIgnoreCase(subcommandLocation))
+					&&
+				(!t.getHasNote() && subcommandNote.equals("")) || (t.getNote().equalsIgnoreCase(subcommandNote))	
+					&&
+				t.getStartDate().toString().equals(subcommandStartDate)
+					&&
+				t.getEndDate().toString().equals(subcommandEndDate)
+					&&
+				t.getStartTime().toString().equals(subcommandStartTime)
+					&&
+				t.getEndTime().toString().equals(subcommandEndTime)) {
+					return t;
 			}
 		}
+						
 		return null;
 	}
 
@@ -297,7 +290,7 @@ public class ExactMatchSearcher {
 
 			for(Task t : lt) {
 
-				if(t.isEqual(taskToCheck)) {
+				if(t.isEqualTask(taskToCheck)) {
 					return true;
 				}
 			}
