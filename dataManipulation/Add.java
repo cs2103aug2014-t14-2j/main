@@ -46,7 +46,7 @@ public class Add extends Command {
 
 		Task newTask = buildTask(subcommands);
 
-		if(ExactMatchSearcher.isTaskDuplicate(newTask)) {	// If the task list already contains this task, throw an error
+		if(ExactMatchSearcher.isTaskDuplicate(newTask)) {
 			throw new BadSubcommandArgException("task already exists");
 		}
 
@@ -58,6 +58,7 @@ public class Add extends Command {
 			String returnMessage = message.getAddMessage(newTask);
 			return returnMessage;
 		}
+		
 	}
 
 	private void addTaskToList(Task toAdd) {
@@ -233,6 +234,16 @@ public class Add extends Command {
 		subcommands.remove(index);
 		subcommands.add(start);
 		subcommands.add(end);
+	}
+
+	@Override
+	public String undo() throws Exception {
+		
+		Command negatedAddCommand = new Remove(subcommands);
+		negatedAddCommand.execute();
+		String returnMessage = "";
+		return returnMessage;
+		
 	}
 
 }
