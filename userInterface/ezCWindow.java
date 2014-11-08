@@ -2,8 +2,12 @@ package userInterface;
 
 //@author A0126720N
 
+import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.Collections;
 
 import javax.swing.AbstractAction;
@@ -118,12 +122,59 @@ public class ezCWindow extends JFrame {
 
 		initializeVerticalGroup(layout);
 		
+		setAesthetics();
+	}
+
+	private void setAesthetics() {
+		setWindowText();
+		
+		Dimension screenDimensions = Toolkit.getDefaultToolkit().getScreenSize();
+		double screenWidth = screenDimensions.getWidth();
+		double screenHeight = screenDimensions.getHeight();
+		double scaler = 1.0/3.0;
+		
+		setWindowSize(scaler, screenWidth, screenHeight);
+		
+		setWindowPosition(scaler, screenWidth, screenHeight); 
+	}
+
+	private void setWindowText() {
 		status.setText(" ");
+		display.setText(messages.getUserHelpMessage());
+		
+		int top = 0;
+		display.setCaretPosition(top);
+	}
+
+	private void setWindowPosition(double scaler, double screenWidth,
+			double screenHeight) {
+		int windowXPos= (int) (screenWidth*scaler/2);
+		int windowYPos = (int) (screenHeight*scaler/2);
+		this.setLocation(windowXPos, windowYPos);
+	}
+
+	private void setWindowSize(double scaler, double screenWidth,
+			double screenHeight) {
+		int windowWidth = (int) (screenWidth*2*scaler);
+		int windowHeight = (int) (screenHeight*2*scaler);
+		this.setMinimumSize(new Dimension(windowWidth, windowHeight));
+		
+		this.addComponentListener(new ComponentAdapter(){
+	        public void componentResized(ComponentEvent e){
+	            Dimension d= ezCWindow.this.getSize();
+	            Dimension minD= ezCWindow.this.getMinimumSize();
+	            if(d.width<minD.width)
+	                d.width=minD.width;
+	            if(d.height<minD.height)
+	                d.height=minD.height;
+	            ezCWindow.this.setSize(d);
+	        }
+	    });
 	}
 
 	private void initializeStaticMembers() {
 		userInput = new JTextField();
-		display = new JTextArea(messages.getUserHelpMessage());
+		display = new JTextArea();
 		status = new JLabel();
 		headerLabel = new JLabel();
 

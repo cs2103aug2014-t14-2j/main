@@ -8,8 +8,6 @@ package dataEncapsulation;
 import java.time.*;
 import java.util.*;
 
-import powerSearch.Searcher;
-
 public class Date {
 	private int day, month, year;
 	private Calendar cal = GregorianCalendar.getInstance();

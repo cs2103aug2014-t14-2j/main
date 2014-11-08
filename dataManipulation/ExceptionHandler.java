@@ -39,7 +39,7 @@ public class ExceptionHandler {
 				+ "these you would like to " 
 							+ e.getLocation().toString() + ": " + "\n" + 
 				ofTasks;
-		display.setText(message);
+		setDisplayText(message);
 		
 		switch(e.getLocation()) {
 		case DELETE:
@@ -149,5 +149,12 @@ public class ExceptionHandler {
 	public void endExceptionHandling() {
 		enterToggle.setMaster();
 		userInput.setText("");
+	}
+	
+	private void setDisplayText(String message) {
+		display.setText(message);
+		
+		int top = 0;
+		display.setCaretPosition(top);
 	}
 }

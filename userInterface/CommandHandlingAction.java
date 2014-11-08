@@ -19,37 +19,44 @@ public class CommandHandlingAction extends AbstractAction {
 	private CommandInterpreter interpreter = CommandInterpreter.getInstance();
 	
 	private JLabel status;
-	private JTextArea textArea;
-	private JTextField entry;
+	private JTextArea display;
+	private JTextField userInput;
 	
 	private ActionToggler enterToggle;
 	private ExceptionHandler exceptionHandler;
 	
-	public CommandHandlingAction(JLabel stat, JTextArea txtArea, JTextField ent, ActionToggler toggle) {
+	public CommandHandlingAction(JLabel stat, JTextArea disp, JTextField usrIn, ActionToggler toggle) {
 		status = stat;
-		textArea = txtArea;
-		entry = ent;
+		display = disp;
+		userInput = usrIn;
 		enterToggle = toggle;
-		exceptionHandler = new ExceptionHandler(ent, stat, txtArea, enterToggle);
+		exceptionHandler = new ExceptionHandler(usrIn, stat, disp, enterToggle);
 	}
 	
 	public void actionPerformed(ActionEvent ev)  {
 		try {
 			status.setText(" ");
-			String input = entry.getText();
+			String input = userInput.getText();
 			Command command = interpreter.formCommand(input);
 			String feedback = command.execute();
-			entry.setText("");
+			userInput.setText("");
 			
 			UndoRedoList.getInstance().pushUndoCommand(command);	//Push command into UndoRedoList
 			
-			textArea.setText(feedback);
+			setDisplayText(feedback);
 		} catch (ActionException e) {
-			entry.setText("");
+			userInput.setText("");
 			exceptionHandler.furtherAction(e);
 		} catch (Exception e) {
 			String message = ezCMessages.getInstance().getErrorMessage(e);
 			status.setText(message);
 		}
+	}
+	
+	private void setDisplayText(String message) {
+		display.setText(message);
+		
+		int top = 0;
+		display.setCaretPosition(top);
 	}
 }
