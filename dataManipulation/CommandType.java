@@ -283,6 +283,8 @@ public class CommandType {
 				return true;
 			case COMPLETED :
 				return true;
+			case FREE :
+				return true;
 			case OR :
 				return true;
 			case TEXT:
