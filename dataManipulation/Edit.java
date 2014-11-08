@@ -6,6 +6,7 @@
 
 package dataManipulation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
@@ -56,7 +57,10 @@ public class Edit extends Command {
 	
 	private Task getTaskToEdit() throws Exception {
 		
-		List<Task> tasks = ExactMatchSearcher.exactSearch(subcommands.get(0), taskList.getAllTasks());
+		List<Subcommand> nameOfTaskToEdit = new ArrayList<Subcommand>();
+		nameOfTaskToEdit.add(subcommands.get(0));
+		
+		List<Task> tasks = ExactMatchSearcher.literalSearch(nameOfTaskToEdit, taskList.getAllTasks());
 		if(tasks.size() > 1) {
 			ActionException moreThanOne = new ActionException(taskList.getList(), ActionException.ErrorLocation.EDIT, subcommands);
 			throw moreThanOne;
