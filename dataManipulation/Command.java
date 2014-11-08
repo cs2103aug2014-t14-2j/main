@@ -51,23 +51,22 @@ public abstract class Command {
 			}
 		}
 	}
-
-	protected void checkForNoComponents() throws BadSubcommandException {
-		if (!subcommands.isEmpty()) {
-			throw new BadSubcommandException("too many subcommands");
-		}
-	}
 	
-	protected boolean checkForSpecificComponent(Subcommand.TYPE givenType) {
-		for (int i = 0; i < subcommands.size(); ++i) {
-			Subcommand currentComponent = subcommands.get(i);
-			
-			if (currentComponent.getType() == givenType) {
+	protected boolean hasSpecificSubcommandType(Subcommand.TYPE type) {
+		for (int j = 0; j < subcommands.size(); ++j) {
+			Subcommand other = subcommands.get(j);
+			if (type == other.getType()) {
 				return true;
 			}
 		}
 		
 		return false;
+	}
+
+	protected void checkForNoComponents() throws BadSubcommandException {
+		if (!subcommands.isEmpty()) {
+			throw new BadSubcommandException("too many subcommands");
+		}
 	}
 	
 	protected void checkForNoDuplicateSubcommands() throws BadSubcommandException {
@@ -82,7 +81,7 @@ public abstract class Command {
 			current = subcommands.get(i);
 			for (int j = i + 1; j < subcommands.size(); ++j) {
 				temp = subcommands.get(j);
-				if (current.getType().toString().equals(temp.getType().toString())) {
+				if (current.getType() == temp.getType()) {
 					throw new BadSubcommandException("duplicate subcommands");
 				}
 			}

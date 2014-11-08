@@ -230,7 +230,7 @@ public class CommandInterpreter {
 		Subcommand component;
 		while (string.length() > 0) {
 			component = getNextComponent(string);
-			if (isQuotationComponent(component)) {
+			if (isQuotationSubcommand(component)) {
 				string = eraseQuoteComponent(string);
 			} else {
 				string = eraseNoQuoteComponent(component, string);
@@ -257,7 +257,7 @@ public class CommandInterpreter {
 			BadSubcommandException, IndexOutOfBoundsException {
 		Subcommand component;
 		component = getFirstComponent(commandType, string);
-		if (isQuotationComponent(component)) {
+		if (isQuotationSubcommand(component)) {
 			string = eraseQuoteComponent(string);
 		} else {
 			string = eraseNoQuoteComponent(component, string);
@@ -360,9 +360,7 @@ public class CommandInterpreter {
 		Subcommand.TYPE componentType = Subcommand
 				.determineComponentType(componentTypeString);
 
-		if (componentType != Subcommand.TYPE.FREQUENCY
-				&& componentType != Subcommand.TYPE.AND
-				&& componentType != Subcommand.TYPE.OR) {
+		if (!isNoArgSubcommand(componentType)) {
 			componentSentence = removeFirstWord(componentSentence);
 		}
 
@@ -444,7 +442,7 @@ public class CommandInterpreter {
 		return withoutUntilSecondQuote;
 	}
 
-	private boolean isQuotationComponent(Subcommand component) {
+	private boolean isQuotationSubcommand(Subcommand component) {
 		Subcommand.TYPE type = component.getType();
 
 		switch (type) {
@@ -470,7 +468,8 @@ public class CommandInterpreter {
 
 	private String getComponentData(String userCommand,
 			Subcommand.TYPE componentType) throws BadSubcommandArgException {
-		if (isNoQuoteSubcommand(componentType)) {
+		if (isNoQuoteSubcommand(componentType) || 
+				isNoArgSubcommand(componentType)) {
 			return getNoQuoteComponentData(userCommand);
 		}
 
@@ -563,6 +562,21 @@ public class CommandInterpreter {
 		return growingMatch;
 	}
 	
+	private boolean isNoArgSubcommand(Subcommand.TYPE componentType) {
+		switch (componentType) {
+			case FREE :
+				return true;
+			case FREQUENCY :
+				return true;
+			case AND :
+				return true;
+			case OR :
+				return true;
+			default :
+				return false;
+		}
+	}
+	
 	private boolean isNoQuoteSubcommand(Subcommand.TYPE type) {
 		switch (type) {
 			case START :
@@ -570,12 +584,6 @@ public class CommandInterpreter {
 			case END :
 				return true;
 			case DATE :
-				return true;
-			case FREQUENCY :
-				return true;
-			case AND :
-				return true;
-			case OR :
 				return true;
 			case STARTTIME :
 				return true;

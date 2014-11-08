@@ -15,11 +15,12 @@ public class Date {
 	private static boolean dmFormat = true;
 
 	public Date(int userday, int usermonth, int useryear) {
-		if (dateValid(userday, usermonth, useryear)) {
+		int correctedYear = correctYear(useryear);
+		if (dateValid(userday, usermonth, correctedYear)) {
 			this.setDay(userday);
 			this.setMonth(usermonth);
-			this.setYear(useryear);
-			cal.set(useryear, usermonth, userday);
+			this.setYear(correctedYear);
+			cal.set(correctedYear, usermonth, userday);
 		}
 	}
 
@@ -32,34 +33,35 @@ public class Date {
 		cal.set(year, month, day);
 	}
 
+	//@author A0126720N
 	public boolean dateValid(int userday, int usermonth, int useryear) {
 		boolean dateIsValid = true;
 		try {
-			LocalDate.of(useryear, usermonth, userday);
+			LocalDate attemptedDate = LocalDate.of(useryear, usermonth, userday);
+			LocalDate today = LocalDate.now();
+			if (useryear < 2014) {
+				dateIsValid = false;
+			} else if (useryear > 9999) {
+				dateIsValid = false;
+			}
 		} catch (DateTimeException e) {
 			dateIsValid = false;
 		}
 		return dateIsValid;
 	}
 
-	public boolean isBefore(Date anotherdate) {
+	//@author A0126720N
+	public boolean isBefore(Date other) {
 		boolean answer = false;
-		if (anotherdate instanceof Date && anotherdate.getDay() != 0) { // avoids
-																		// the
-																		// case
-																		// whereby
-																		// the
-																		// enddate
-																		// has
-																		// not
-																		// been
-																		// stated
-																		// by
-																		// the
-																		// user
-			Calendar calcompare = anotherdate.getCal();
-			if (cal.before(calcompare)) {
-				return true;
+		if (other.year > year) {
+			answer = true;
+		} else if (other.year == year) {
+			if (other.month > month) {
+				answer = true;
+			} else if (other.month == month) {
+				if (other.day > day) {
+					answer = true;
+				}
 			}
 		}
 		return answer;
@@ -350,5 +352,20 @@ public class Date {
 			break;
 		}
 		return day + " " + answer + " " + this.getDay() + ", " + this.getYear();
+	}
+	
+	//@author A0126720N
+	/**
+	 * corrects a 2-digit year to be a 4-digit year. Assumes that the 
+	 * lifetime of this product will not extend past the 21st century
+	 * @param useryear
+	 * @return
+	 */
+	private int correctYear(int year) {
+		if (year > 0 && year < 100) {
+			return 2000 + year;
+		}
+		
+		return year;
 	}
 }

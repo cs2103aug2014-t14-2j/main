@@ -442,4 +442,26 @@ public class Task {
 	public void setHasEndTime(boolean hasEndTime) {
 		this.hasEndTime = hasEndTime;
 	}
+	
+	/*
+	 * @author Yui Wei / A0115696W
+	 */
+	public boolean endsBefore(Task another) {
+		boolean result;
+		
+		Date myED = this.getEndDate();
+		Time myET = this.getEndTime();
+		Date anED = another.getEndDate();
+		Time anET = another.getEndTime();
+		
+		if (myED.isBefore(anED)) { //this.date before another.date
+			return true;
+		} else if (myED.isEquals(anED)) { //this.date same as another.date
+			if (myET.compareTo(anET) < 0) { 
+				result = true;	//this.time is before another.time
+			} else { result = false; }
+		} else { result = false; } //this.date after another.date
+		
+		return result;
+	}
 }

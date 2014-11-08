@@ -20,26 +20,56 @@ public class Search extends Command {
 	@Override
 	public String execute() throws Exception {
 		TotalTaskList list = TotalTaskList.getInstance();
-		List<Subcommand> components = this.getComponents();
 
-		if(this.getComponents().contains(Subcommand.TYPE.COMPLETED)) {
-			
-		}
-		if(components.contains(Subcommand.TYPE.FREE)) {
-			Date d = new Date();
-			for (Subcommand cc : components) {
-				if (cc.getType() == Subcommand.TYPE.DATE) {
-					d = new Date().determineDate(cc.getContents());
-				} else { throw new Exception("Please enter date."); }
-			}
-			String results = Searcher.searchTimeSlot(list.getList(), d);
-			return results;
+		if(hasSpecificSubcommandType(Subcommand.TYPE.COMPLETED)) {
+			return handleCompletedSearch(list);
+		} else if(hasSpecificSubcommandType(Subcommand.TYPE.FREE)) {
+			return handleFreeSearch(list, subcommands);
 		} else {
-			List<Task> results = Searcher.search(subcommands, list.getList());
-			ezCMessages messages = ezCMessages.getInstance();
-			return messages.getStringOfTasks(results);
+			return handleNormalSearch(list);
 		}
 		
+	}
+
+	private String handleFreeSearch(TotalTaskList list,
+			List<Subcommand> components) throws BadSubcommandException,
+			Exception {
+		checkForComponentAmount(2);
+		Date date = getDateForFree();
+		String results = Searcher.searchTimeSlot(list.getList(), date);
+		return results;
+	}
+
+	private String handleNormalSearch(TotalTaskList list) throws Exception {
+		List<Task> results = Searcher.search(subcommands, list.getList());
+		ezCMessages messages = ezCMessages.getInstance();
+		return messages.getStringOfTasks(results);
+	}
+
+	private String handleCompletedSearch(TotalTaskList list) throws Exception {
+		List<Task> results = Searcher.search(subcommands, list.getCompleted());
+		ezCMessages messages = ezCMessages.getInstance();
+		return messages.getStringOfTasks(results);
+	}
+
+	//@author A0126720N
+	private Date getDateForFree() throws BadSubcommandException {
+		assert(subcommands.size() == 2);
+		int firstIndex = 0;
+		int secondIndex = firstIndex + 1;
+		
+		String dateString;
+		
+		if (subcommands.get(firstIndex).getType() == Subcommand.TYPE.DATE) {
+			dateString = subcommands.get(0).getContents();
+		} else if (subcommands.get(secondIndex).getType() == Subcommand.TYPE.DATE) {
+			dateString = subcommands.get(secondIndex).getContents();
+		} else {
+			throw new BadSubcommandException("missing date component");
+		}
+		
+		Date realDate = (new Date()).determineDate(dateString);
+		return realDate;
 	}
 
 }
