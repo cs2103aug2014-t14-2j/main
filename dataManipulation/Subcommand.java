@@ -187,11 +187,11 @@ public class Subcommand {
 			return TYPE.PAREN;
 		case (")") :
 			return TYPE.PAREN;
-		case ("byname") :
+		case ("by name") :
 			return TYPE.BYNAME;
-		case ("byend") :
+		case ("by end") :
 			return TYPE.BYEND;
-		case ("bystart") :
+		case ("by start") :
 			return TYPE.BYSTART;
 		case ("and") :
 			return TYPE.AND;
