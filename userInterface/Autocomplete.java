@@ -205,8 +205,8 @@ public class Autocomplete {
 		String lastWord = getLastWord(sentence);
 		if (Subcommand.determineComponentType(lastWord) != Subcommand.TYPE.INVALID) {
 			return true;
-		} else if (checkForNameType(lastWord, sentence) == Subcommand.TYPE.INVALID) {
-			return false;
+		} else if (checkForNameType(lastWord, sentence) == Subcommand.TYPE.NAME) {
+			return true;
 		} else {
 			return false;
 		}
