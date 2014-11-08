@@ -33,8 +33,9 @@ public class ExceptionHandler {
 	public void furtherAction(ActionException e) {
 		List<Task> opts = e.getOptions();
 		List<Subcommand> cc = e.getSubcommands();
+		ezCMessages messages = ezCMessages.getInstance();
 		
-		String ofTasks = ezCMessages.getInstance().getStringOfTasks(opts);
+		String ofTasks = messages.getNumberedStringOfTasks(opts);
 		String message = "That was a bit too vague - please choose which of "
 				+ "these you would like to " 
 							+ e.getLocation().toString() + ": " + "\n" + 
@@ -65,7 +66,7 @@ public class ExceptionHandler {
 		String choices[] = str.split(" ");
 		ArrayList<Task> ch = new ArrayList<Task>();
 		for(String s : choices) {
-			int i = (Integer.parseInt(s));
+			int i = (Integer.parseInt(s)) - 1;	// user choices start at 1
 			Task cur = opts.get(i);
 			ch.add(cur);
 		}

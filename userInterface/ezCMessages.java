@@ -116,12 +116,10 @@ public class ezCMessages {
 			return "nothing to print" + NEW_LINE;
 		}
 		
-		//String allTasks = tasks.get(0).toPrint();
 		String allTasks = makePrintableTask(tasks.get(0));
 		
 		for (int i = 1; i < tasks.size(); ++i) {
 			Task nextTask = tasks.get(i);
-			//String taskToPrint = nextTask.toPrint();
 			String taskToPrint = makePrintableTask(nextTask);
 			allTasks = allTasks + NEW_LINE + NEW_LINE + taskToPrint;
 		}
@@ -172,10 +170,6 @@ public class ezCMessages {
 			secondLine = secondLine + "\tNote: " + task.getNote();
 		}
 		
-		if (!secondLine.isEmpty()) {
-			//secondLine = secondLine + "\n";
-		}
-		
 		return firstLine + "\t" + secondLine;
 	}
 	
@@ -194,5 +188,22 @@ public class ezCMessages {
 	public String getChangeDateTypeMessage(String type) {
 		String message = "changed date type to " + type;
 		return message;
+	}
+
+	public String getNumberedStringOfTasks(List<Task> tasks) {
+		if (tasks == null || tasks.isEmpty()) {
+			return "nothing to print" + NEW_LINE;
+		}
+		
+		String allTasks = "1. " + makePrintableTask(tasks.get(0));
+		
+		for (int i = 1; i < tasks.size(); ++i) {
+			Task nextTask = tasks.get(i);
+			int number = i + 1;
+			String taskToPrint = number + ". " + makePrintableTask(nextTask);
+			allTasks = allTasks + NEW_LINE + NEW_LINE + taskToPrint;
+		}
+		
+		return allTasks;
 	}
 }
