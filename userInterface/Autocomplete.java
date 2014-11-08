@@ -114,9 +114,8 @@ public class Autocomplete {
 	}
 
 	private TYPE getSubcommandType(String sentence) {
-		sentence = sentence.trim();
+		Subcommand.TYPE type = getLastWordSubcommandType(sentence);
 		String lastWord = getLastWord(sentence);
-		Subcommand.TYPE type = Subcommand.determineComponentType(lastWord);
 		
 		if (type == Subcommand.TYPE.INVALID) {
 			type = checkForNameType(lastWord, sentence);
@@ -127,11 +126,16 @@ public class Autocomplete {
 
 	private Subcommand.TYPE checkForNameType(String lastWord, 
 			String sentence) {
-		String emptyString = "";
-		String withoutLast = sentence.replaceFirst(lastWord, emptyString);
+		String nothing = "";
+		String withoutLast = sentence.replaceFirst(lastWord, nothing);
+		String firstWord = getFirstWord(sentence);
 		withoutLast = withoutLast.trim();
 		
-		if (!withoutLast.equals(getFirstWord(sentence)) && !withoutLast.isEmpty()) {
+		if (withoutLast.equals(firstWord) && !withoutLast.isEmpty()) {
+			return Subcommand.TYPE.INVALID;
+		}
+		
+		if (!withoutLast.isEmpty()) {
 			return Subcommand.TYPE.INVALID;
 		}
 		
@@ -201,16 +205,45 @@ public class Autocomplete {
 	private boolean isAwaitingArg(String toComplete) {
 		int numberQuotes = getNumberOfOccurrences("\"", toComplete);
 		if (isEven(numberQuotes)) {
-			return isLastWordSubcommand(toComplete);	// all started quotes end
+			boolean isLastWordASubcommand = isLastWordSubcommand(toComplete);	// all started quotes end
+			if (!isLastWordASubcommand) {
+				return false;
+			} else {
+				return doesLastSubcommandNeedArg(toComplete);
+			}
 		} else {
 			return true;	// one unmatched quote
 		}
 	}
 
+	private boolean doesLastSubcommandNeedArg(String sentence) {
+		Subcommand.TYPE type = getLastWordSubcommandType(sentence);
+		switch (type) {
+			case FREE :
+				return false;
+			case FREQUENCY :
+				return false;
+			case AND :
+				return false;
+			case OR :
+				return false;
+			default :
+				return true;
+		}
+	}
+
+	private Subcommand.TYPE getLastWordSubcommandType(String sentence) {
+		sentence = sentence.trim();
+		String lastWord = getLastWord(sentence);
+		Subcommand.TYPE type = Subcommand.determineComponentType(lastWord);
+		return type;
+	}
+
 	private boolean isLastWordSubcommand(String sentence) {
 		sentence = sentence.trim();
 		String lastWord = getLastWord(sentence);
-		if (Subcommand.determineComponentType(lastWord) != Subcommand.TYPE.INVALID) {
+		Subcommand.TYPE type = Subcommand.determineComponentType(lastWord);
+		if (type != Subcommand.TYPE.INVALID ) {
 			return true;
 		} else if (checkForNameType(lastWord, sentence) == Subcommand.TYPE.NAME) {
 			return true;
