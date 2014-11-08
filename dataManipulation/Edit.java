@@ -120,9 +120,10 @@ public class Edit extends Command {
 		Command removeOldTask = new Remove(oldTaskSubC);
 		Command addNewTask = new Add(newTaskSubC);
 		
-		new Remove(oldTaskSubC).executeForEdit();
-		UndoRedoList.getInstance().pushUndoCommand(removeOldTask);	// Think about the undo-ing here
+		removeOldTask.execute();
+		UndoRedoList.getInstance().pushUndoCommand(removeOldTask);	//Push the remove into the undo stack
 		addNewTask.execute();
+		UndoRedoList.getInstance().pushUndoCommand(addNewTask);	//Push the add into the undo stack
 		
 	}
 

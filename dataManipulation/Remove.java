@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
-import powerSearch.Searcher;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
@@ -42,12 +41,6 @@ public class Remove extends Command {
 	 * @author Nelson / A0111014J
 	 */
 	
-	public void executeForEdit() throws Exception {
-		
-		removeForEdit(sc);
-		
-	}
-	
 	public static Task remove(List<Subcommand> cc) throws Exception {
 		
 		tasksFound = new ArrayList<Task>();
@@ -59,7 +52,7 @@ public class Remove extends Command {
 		int j = 0;
 		
 		for(int i = 0; i < categorizedTasks.size(); i++) {
-			List<Task> tasksThusFar = Searcher.search(cc, categorizedTasks.get(i));
+			List<Task> tasksThusFar = ExactMatchSearcher.literalSearch(cc, categorizedTasks.get(i));
 			if(tasksThusFar.size() != 0) {
 				tasksFound.addAll(tasksThusFar);
 				j = i;
@@ -79,28 +72,6 @@ public class Remove extends Command {
 		
 	}
 	
-	public static void removeForEdit(List<Subcommand> listOfSubs) {
-		
-		Task exactTask = null;
-		List<Task> currentTasks = TotalTaskList.getInstance().getList();
-		List<Task> overdueTasks = TotalTaskList.getInstance().getOverdue();
-		List<List<Task>> categorizedTasks = new ArrayList<List<Task>>();
-		categorizedTasks.add(currentTasks);
-		categorizedTasks.add(overdueTasks);
-		int i = 0;
-		
-		for(i = 0; i < categorizedTasks.size(); i++) {
-			Task exactTaskFound = ExactMatchSearcher.exactTaskSearch(listOfSubs, categorizedTasks.get(i));
-			if(exactTaskFound != null) {
-				exactTask = exactTaskFound;
-				break;
-			}
-		}
-		
-		doDeleteTask(exactTask, i);
-		
-	}
-	
 	public static Task doDeleteTask(Task toRemove, int i) {
 		Task a = toRemove;
 		
@@ -115,7 +86,6 @@ public class Remove extends Command {
 				break;
 				
 			default:
-				System.out.println("Delete failed");
 				break;
 				
 		}

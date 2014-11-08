@@ -1,5 +1,5 @@
 /**
-  * @author nellystix
+ * @author nellystix
  */
 
 package dataManipulation;
@@ -19,7 +19,7 @@ import dataManipulation.CommandType.COMMAND_TYPE;
 import fileIo.FileIo;
 
 public class Add extends Command {
-	
+
 	private String taskName = null;
 	private String taskCategory = null;
 	private String taskLocation = null;
@@ -33,7 +33,7 @@ public class Add extends Command {
 	private ezCMessages message = ezCMessages.getInstance();
 
 	public Add(List<Subcommand> subcommands)
-					throws BadCommandException, BadSubcommandException, BadSubcommandArgException {
+			throws BadCommandException, BadSubcommandException, BadSubcommandArgException {
 		super(COMMAND_TYPE.ADD, subcommands);
 		boolean hasDateSubcommand = hasSubcommandType(Subcommand.TYPE.DATE);
 		if (hasDateSubcommand) {
@@ -43,9 +43,9 @@ public class Add extends Command {
 
 	@Override
 	public String execute() throws Exception {
-		
+
 		Task newTask = buildTask(subcommands);
-		
+
 		if(ExactMatchSearcher.isTaskDuplicate(newTask)) {	// If the task list already contains this task, throw an error
 			throw new BadSubcommandArgException("task already exists");
 		}
@@ -59,23 +59,23 @@ public class Add extends Command {
 			return returnMessage;
 		}
 	}
-	
+
 	private void addTaskToList(Task toAdd) {
-		
+
 		Date today = new Date();
-		
+
 		if(!toAdd.getHasDeadline() || !(toAdd.getEndDate().isBefore(today))) {
 			taskList.addNotCompleted(toAdd);
 		}
-		else if(toAdd.getEndDate().isBefore(today) && !(toAdd.getIsComplete())) {	// Need to check for a time isBefore too for the task instead of just purely date
+		else if(toAdd.getEndDate().isBefore(today) && !(toAdd.getIsComplete())) {
 			taskList.addOverdue(toAdd);
 		}
 		else if((toAdd.getEndDate().isBefore(today) && toAdd.getIsComplete()) || toAdd.getIsComplete()) {
 			taskList.addCompleted(toAdd);
 		}
-		
+
 	}
-	
+
 	public Task buildTask(List<Subcommand> taskAttributes) throws Exception {
 
 		assembleAttributes(taskAttributes);
@@ -85,7 +85,7 @@ public class Add extends Command {
 		return toBeAdded;
 
 	}
-	
+
 	private void flushSubcommand() {
 		taskName = null;
 		taskCategory = null;
@@ -96,77 +96,77 @@ public class Add extends Command {
 		startTime = null;
 		taskEnd = null;
 	}
-	
+
 	public List<Subcommand> dismantleTask(Task taskToDismantle) throws BadSubcommandException, BadSubcommandArgException {
-		
+
 		List<Subcommand> taskDetails = new ArrayList<Subcommand>();
-		
+
 		taskDetails.add(new Subcommand(Subcommand.TYPE.NAME, taskToDismantle.getName()));
-		
+
 		taskDetails.add(new Subcommand(Subcommand.TYPE.CATEGORY, taskToDismantle.getCategory()));
-		
+
 		if(taskToDismantle.getHasLocation()) { 
 			taskDetails.add(new Subcommand(Subcommand.TYPE.LOCATION, taskToDismantle.getLocation()));
 		}
-		
+
 		taskDetails.add(new Subcommand(Subcommand.TYPE.START, taskToDismantle.getStartDate().toString()));
-		
+
 		if(taskToDismantle.getHasDeadline()) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.END, taskToDismantle.getEndDate().toString()));
 		}
-		
+
 		taskDetails.add(new Subcommand(Subcommand.TYPE.STARTTIME, taskToDismantle.getStartTime().toString()));
-		
+
 		if(taskToDismantle.hasEndTime()) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.ENDTIME, taskToDismantle.getEndTime().toString()));
 		}
-		
+
 		if(taskToDismantle.getNote() != null) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.NOTE, taskToDismantle.getNote()));
 		}
-		
+
 		return taskDetails;
 	}
-	
+
 	private void assembleAttributes(List<Subcommand> taskAttributes) throws Exception {
-		
+
 		for(Subcommand cc : taskAttributes) {
 
 			switch (cc.getType()) {
 
 			case NAME:	setTaskName(cc.getContents());
-						break;
-			
+			break;
+
 			case CATEGORY:	setTaskCategory(cc.getContents());
-							break;
-			
+			break;
+
 			case LOCATION:	setTaskLocation(cc.getContents());
-							break;
-			
+			break;
+
 			case NOTE:	setTaskNote(cc.getContents());
-						break;
-			
+			break;
+
 			case START:	setTaskStart(cc.getContents());
-						break;
-			
+			break;
+
 			case END:	setTaskEnd(cc.getContents());
-						break;
-						
+			break;
+
 			case STARTTIME: setTaskStartTime(cc.getContents());
-							break;
-			
+			break;
+
 			case ENDTIME:	setTaskEndTime(cc.getContents());
-							break;
-			
+			break;
+
 			default:
 				break;
-			
+
 			}
 
 		}
-		
+
 	}
-	
+
 	private void setTaskEnd(String contents) throws Exception {
 		taskEnd = new Date().determineDate(contents);
 	}
@@ -190,11 +190,11 @@ public class Add extends Command {
 	private void setTaskName(String contents) {
 		taskName = contents;
 	}
-	
+
 	private void setTaskStartTime(String contents) throws Exception {
 		startTime = new Time().determineTime(contents);
 	}
-	
+
 	private void setTaskEndTime(String contents) throws Exception {
 		endTime = new Time().determineTime(contents);
 	}
@@ -211,12 +211,12 @@ public class Add extends Command {
 		boolean hasGeneralDate = subcommands.contains(Subcommand.TYPE.DATE);
 		boolean hasStartDate = subcommands.contains(Subcommand.TYPE.START);
 		boolean hasEndDate = subcommands.contains(Subcommand.TYPE.END);
-		
+
 		if ((hasGeneralDate && hasStartDate) || (hasGeneralDate && hasEndDate)) {
 			throw new BadSubcommandException("cannot specify start and/or end when specifying \"date\"");
 		}
 	}
-	
+
 	private void parseDateToStartAndEnd() throws BadSubcommandException, BadSubcommandArgException {
 		int index = 0;
 		for (; index < subcommands.size(); ++index) {
@@ -224,12 +224,12 @@ public class Add extends Command {
 				break;
 			}
 		}
-		
+
 		Subcommand date = subcommands.get(index);
 		String dateString = date.getContents();
 		Subcommand start = new Subcommand(Subcommand.TYPE.START, dateString);
 		Subcommand end = new Subcommand(Subcommand.TYPE.END, dateString);
-		
+
 		subcommands.remove(index);
 		subcommands.add(start);
 		subcommands.add(end);
