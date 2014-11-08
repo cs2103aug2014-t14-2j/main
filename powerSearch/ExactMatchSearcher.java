@@ -118,11 +118,11 @@ public class ExactMatchSearcher {
 
 			if(t.getName().equalsIgnoreCase(subcommandName)
 					&&
-				t.getCategory().equalsIgnoreCase(subcommandCategory)
+				((t.getCategory().equals("no category") && subcommandCategory.equals("")) || (t.getCategory().equalsIgnoreCase(subcommandCategory)))
 					&&
-				(!t.getHasLocation() && subcommandLocation.equals("")) || (t.getLocation().equalsIgnoreCase(subcommandLocation))
+				((!t.getHasLocation() && subcommandLocation.equals("")) || (t.getLocation().equalsIgnoreCase(subcommandLocation)))
 					&&
-				(!t.getHasNote() && subcommandNote.equals("")) || (t.getNote().equalsIgnoreCase(subcommandNote))	
+				((!t.getHasNote() && subcommandNote.equals("")) || (t.getNote().equalsIgnoreCase(subcommandNote)))	
 					&&
 				t.getStartDate().toString().equals(subcommandStartDate)
 					&&
