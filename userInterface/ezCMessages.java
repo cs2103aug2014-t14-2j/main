@@ -150,7 +150,7 @@ public class ezCMessages {
 			firstLine = firstLine + "\tDue " + task.getEndDate().toString();
 		}
 		
-		if (task.isHasStartTime()) {
+		if (task.hasStartTime()) {
 			firstLine = firstLine + "\t" + task.getStartTime().toString() + " to " + task.getEndTime().toString();
 		} else {
 			if (!task.getHasDeadline()) {
