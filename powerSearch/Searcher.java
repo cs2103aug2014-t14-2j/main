@@ -75,7 +75,7 @@ public class Searcher {
 		List<Task> list = new ArrayList<Task>();
 		list = answer.get(0);
 		for(int i = 1; i < answer.size(); i++){
-			list = ListUtils.union(list, answer.get(i));
+			list.addAll(answer.get(i));
 		}
 		if(list.size()>=2){
 			list = removeDuplicates(list);
@@ -112,6 +112,7 @@ public class Searcher {
 	}
 	//Parameters: List of Lists which have Tasks
 	//It merges the lists returned according to the AND Command
+	@SuppressWarnings("unchecked")
 	private static List<Task> mergeListsAND(List<List<Task>> answer){
 		if(answer.isEmpty()) {
 			return new ArrayList<Task>();
@@ -147,10 +148,9 @@ public class Searcher {
 		}
 		for(int i=0; i<search.size(); i++){
 			if(search.get(i).getEndDate().isEquals(dt) && search.get(i).getStartDate().isEquals(dt)){ //the task starts and ends on same day
-				Task edtemp = search.get(i);
 				Task sdtemp = search.get(i);
 				int sdhours, sdmins, sdseconds, edhours, edmins, edseconds;
-				if(sdtemp.isHasStartTime()){
+				if(sdtemp.hasStartTime()){
 					sdhours = sdtemp.getStartTime().getHours();
 					sdmins = sdtemp.getStartTime().getMins();
 					sdseconds = 0;
@@ -161,7 +161,7 @@ public class Searcher {
 					sdseconds = 0;
 				}
 				int totalsdseconds = sdseconds + sdhours*60*60 + sdmins*60;
-				if(sdtemp.isHasEndTime()){
+				if(sdtemp.hasEndTime()){
 					edhours = sdtemp.getEndTime().getHours();
 					edmins = sdtemp.getEndTime().getMins();
 					edseconds = 0;
@@ -179,7 +179,7 @@ public class Searcher {
 			else if(search.get(i).getStartDate().isEquals(dt)){ //the task starts on the mentioned date
 				Task sdtemp = search.get(i);
 				int sdhours, sdmins, sdseconds;
-				if(sdtemp.isHasStartTime()){
+				if(sdtemp.hasStartTime()){
 					sdhours = sdtemp.getStartTime().getHours();
 					sdmins = sdtemp.getStartTime().getMins();
 					sdseconds = 0;
@@ -198,7 +198,7 @@ public class Searcher {
 			else if(search.get(i).getEndDate().isEquals(dt)){ //the task ends on the mentioned date
 				Task edtemp = search.get(i);
 				int edhours, edmins, edseconds;
-				if(edtemp.isHasEndTime()){
+				if(edtemp.hasEndTime()){
 					edhours = edtemp.getEndTime().getHours();
 					edmins = edtemp.getEndTime().getMins();
 					edseconds = 0;
@@ -246,14 +246,12 @@ public class Searcher {
 		if(end == 86402){
 			end = 0;
 		}
-		int starthour, startmin, startsec, endhour, endmin, endsec;
+		int starthour, startmin, endhour, endmin;
 		starthour = start/3600;
 		startmin = start/60 - starthour*60;
-		startsec = start - startmin*60 - starthour*3600;
 		
 		endhour = end/3600;
 		endmin = end/60 - endhour*60;
-		endsec = end - endmin*60 - endhour*3600;
 		
 		String startTime = getTimeString(starthour, startmin);
 		String endTime = getTimeString(endhour, endmin);
