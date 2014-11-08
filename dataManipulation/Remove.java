@@ -95,4 +95,14 @@ public class Remove extends Command {
 		return a;
 	}
 
+	@Override
+	public String undo() throws Exception {
+		
+		Command negatedRemoveCommand = new Add(sc);
+		negatedRemoveCommand.execute();
+		String returnMessage = "";
+		return returnMessage;
+		
+	}
+
 }
