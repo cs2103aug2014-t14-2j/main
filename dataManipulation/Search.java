@@ -21,9 +21,9 @@ public class Search extends Command {
 	public String execute() throws Exception {
 		TotalTaskList list = TotalTaskList.getInstance();
 
-		if(hasSpecificSubcommandType(Subcommand.TYPE.COMPLETED)) {
+		if(hasSubcommandType(Subcommand.TYPE.COMPLETED)) {
 			return handleCompletedSearch(list);
-		} else if(hasSpecificSubcommandType(Subcommand.TYPE.FREE)) {
+		} else if(hasSubcommandType(Subcommand.TYPE.FREE)) {
 			return handleFreeSearch(list, subcommands);
 		} else {
 			return handleNormalSearch(list);

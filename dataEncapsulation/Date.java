@@ -124,55 +124,59 @@ public class Date {
 	}
 
 	public Date determineDate(String dateString) throws Exception {
-		if (dateString == null) {
-			return null;
-		}
-
-		String month, day, year;
-		int mm, dd, yyyy;
-		if (dateString.contains(",")) {
-			int space = dateString.indexOf(' ');
-			int comma = dateString.indexOf(',');
-			month = dateString.substring(0, space);
-			day = dateString.substring(space + 1, comma);
-			year = dateString.substring(comma);
-			year = cleanUpYear(year);
-			mm = monthInteger(month);
-		} else if (dateString.contains("/")) {
-			int dayIndex = 0;
-			int monthIndex = 1;
-			if (!dmFormat) {
-				dayIndex = 1;
-				monthIndex = 0;
+		try {
+			if (dateString == null) {
+				return null;
 			}
-
-			String dateStr[] = dateString.split("/", 3);
-			day = dateStr[dayIndex];
-			month = dateStr[monthIndex];
-			year = dateStr[2];
-			mm = Integer.parseInt(month);
-		} else if (dateString.contains("-")) {
-			int yearIndex = 0;
-			int dayIndex = 2;
-			int monthIndex = 1;
-
-			String dateStr[] = dateString.split("-", 3);
-			day = dateStr[dayIndex];
-			month = dateStr[monthIndex];
-			year = dateStr[yearIndex];
-			mm = Integer.parseInt(month);
-		} else {
-			String dateStr[] = dateString.split(" ", 3);
-			day = dateStr[0];
-			month = dateStr[1];
-			year = dateStr[2];
-			mm = Integer.parseInt(month);
+	
+			String month, day, year;
+			int mm, dd, yyyy;
+			if (dateString.contains(",")) {
+				int space = dateString.indexOf(' ');
+				int comma = dateString.indexOf(',');
+				month = dateString.substring(0, space);
+				day = dateString.substring(space + 1, comma);
+				year = dateString.substring(comma);
+				year = cleanUpYear(year);
+				mm = monthInteger(month);
+			} else if (dateString.contains("/")) {
+				int dayIndex = 0;
+				int monthIndex = 1;
+				if (!dmFormat) {
+					dayIndex = 1;
+					monthIndex = 0;
+				}
+	
+				String dateStr[] = dateString.split("/", 3);
+				day = dateStr[dayIndex];
+				month = dateStr[monthIndex];
+				year = dateStr[2];
+				mm = Integer.parseInt(month);
+			} else if (dateString.contains("-")) {
+				int yearIndex = 0;
+				int dayIndex = 2;
+				int monthIndex = 1;
+	
+				String dateStr[] = dateString.split("-", 3);
+				day = dateStr[dayIndex];
+				month = dateStr[monthIndex];
+				year = dateStr[yearIndex];
+				mm = Integer.parseInt(month);
+			} else {
+				String dateStr[] = dateString.split(" ", 3);
+				day = dateStr[0];
+				month = dateStr[1];
+				year = dateStr[2];
+				mm = Integer.parseInt(month);
+			}
+			dd = Integer.parseInt(day);
+			yyyy = Integer.parseInt(year);
+	
+			Date userDate = new Date(dd, mm, yyyy);
+			return userDate;
+		} catch (Exception e) {
+			throw new BadSubcommandArgException("invalid date");
 		}
-		dd = Integer.parseInt(day);
-		yyyy = Integer.parseInt(year);
-
-		Date userDate = new Date(dd, mm, yyyy);
-		return userDate;
 	}
 
 	private static String cleanUpYear(String year) {

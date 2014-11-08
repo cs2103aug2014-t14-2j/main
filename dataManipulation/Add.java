@@ -37,7 +37,7 @@ public class Add extends Command {
 	public Add(List<Subcommand> subcommands)
 					throws BadCommandException, BadSubcommandException, BadSubcommandArgException {
 		super(COMMAND_TYPE.ADD, subcommands);
-		boolean hasDateSubcommand = subcommands.contains(Subcommand.TYPE.DATE);
+		boolean hasDateSubcommand = hasSubcommandType(Subcommand.TYPE.DATE);
 		if (hasDateSubcommand) {
 			parseDateToStartAndEnd();
 		}

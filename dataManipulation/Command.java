@@ -52,7 +52,7 @@ public abstract class Command {
 		}
 	}
 	
-	protected boolean hasSpecificSubcommandType(Subcommand.TYPE type) {
+	protected boolean hasSubcommandType(Subcommand.TYPE type) {
 		for (int j = 0; j < subcommands.size(); ++j) {
 			Subcommand other = subcommands.get(j);
 			if (type == other.getType()) {
