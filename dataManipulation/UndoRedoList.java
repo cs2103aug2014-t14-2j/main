@@ -35,28 +35,7 @@ public class UndoRedoList {
 	
 	public void pushUndoCommand(Command commandToUndo) {
 		
-		switch(commandToUndo.getType()) {
-		
-		case ADD :
-			undoCommandStack.add(commandToUndo);
-			break;
-		
-		case REMOVE :
-			undoCommandStack.add(commandToUndo);
-			break;
-			
-		case EDIT :
-			undoCommandStack.add(commandToUndo);
-			break;
-			
-		case FINISH :
-			undoCommandStack.add(commandToUndo);
-			break;
-			
-		default :
-			break;
-			
-		}
+		undoCommandStack.add(commandToUndo);
 		
 	}
 	
