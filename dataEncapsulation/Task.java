@@ -444,6 +444,34 @@ public class Task {
 	}
 	
 	/*
+	 * @author Nelson / A0111014J
+	 */
+	public boolean isEqual(Task other) {
+		
+		if(this.name.equalsIgnoreCase(other.name)
+				&&
+			this.category.equalsIgnoreCase(other.category)	
+				&&
+			((!this.hasLocation && !other.hasLocation) || (this.location.equalsIgnoreCase(other.location)))
+				&&
+			((!this.hasNote && !other.hasNote) || (this.note.equalsIgnoreCase(other.note)))
+				&&
+			this.startdate.toString().equalsIgnoreCase(other.startdate.toString())
+				&&
+			((!this.hasDeadline && !other.hasDeadline) || (this.enddate.isEqual(other.enddate)))
+				&&
+			this.starttime.compareTo(other.starttime) == 0
+				&&
+			this.endtime.compareTo(other.endtime) == 0) {
+				return true;
+		}
+		else {
+			return false;
+		}
+		
+	}
+	
+	/*
 	 * @author Yui Wei / A0115696W
 	 */
 	public boolean endsBefore(Task another) {
