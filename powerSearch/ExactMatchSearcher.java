@@ -126,11 +126,11 @@ public class ExactMatchSearcher {
 					&&
 				t.getStartDate().toString().equals(subcommandStartDate)
 					&&
-				t.getEndDate().toString().equals(subcommandEndDate)
+				(!(t.getHasDeadline() && subcommandEndDate.equals("")) || (t.getEndDate().toString().equals(subcommandEndDate))
 					&&
 				t.getStartTime().toString().equals(subcommandStartTime)
 					&&
-				t.getEndTime().toString().equals(subcommandEndTime)) {
+				t.getEndTime().toString().equals(subcommandEndTime))) {
 					return t;
 			}
 		}
@@ -283,7 +283,6 @@ public class ExactMatchSearcher {
 
 		List<List<Task>> categorizedList = new ArrayList<List<Task>>();
 		categorizedList.add(TotalTaskList.getInstance().getList());
-		categorizedList.add(TotalTaskList.getInstance().getCompleted());
 		categorizedList.add(TotalTaskList.getInstance().getOverdue());
 
 		for(List<Task> lt : categorizedList) {
