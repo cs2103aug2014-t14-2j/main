@@ -438,21 +438,14 @@ public class Date {
 		return year;
 	}
 	
-	/**
-	 * @author yuiwei / A0115696W
-	 */
-	private DayOfWeek findDayOfWeek(Date d) throws Exception {
-		LocalDate date = LocalDate.parse(ldParse(d.toString()));
-		return date.getDayOfWeek();
-	}
+	
 	/**
 	 * @author yuiwei / A0115696W
 	 * @param inDateFormat
 	 * @return
 	 * @throws Exception
 	 */
-	private String ldParse(String inDateFormat) throws Exception {
-		Date d = new Date().determineDate(inDateFormat);
+	private String ldParse(Date d) throws Exception {
 		int ddd = d.getDay();
 		int mmm = d.getMonth();
 		int yyyy = d.getYear();
@@ -462,15 +455,18 @@ public class Date {
 		return inLocalDateFormat;
 	}
 	
-	private Date getNext(DayOfWeek dw) {
+	private Date getNext(DayOfWeek dw) throws Exception {
 		Date tdy = new Date();
-		int td = dw.getValue();
-		int nowToMon = td - 1;
-		if (nowToMon < 0) {
-			nowToMon = nowToMon + 7;
+		LocalDate ld = LocalDate.parse(ldParse(tdy));
+		int toda = ld.getDayOfWeek().getValue();
+		int nowTo = dw.getValue() - toda;
+		System.out.println("today day: " + toda);
+		System.out.println("dw: " + dw.getValue());
+		if (nowTo < 0) {
+			nowTo = nowTo + 7;
 		}
 		day = tdy.getDay();
-		tdy.setDay(day + nowToMon);
+		tdy.setDay(day + nowTo);
 		return tdy;
 	}
 }
