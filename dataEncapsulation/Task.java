@@ -526,6 +526,9 @@ public class Task {
 	 * @author Nelson / A0111014J
 	 */
 	public boolean isEqualTask(Task other) {
+		
+		System.out.println(this.endtime.toString());
+		System.out.println(other.endtime.toString());
 
 		if(this.name.equalsIgnoreCase(other.name)
 				&&
