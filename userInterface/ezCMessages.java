@@ -45,16 +45,7 @@ public class ezCMessages {
 			+ "Today\n"
 			+ "Undo\n"
 			+ "Unfinish\n"
-			+ "View\n\n";
-	
-	// Task Error Messages
-	private final String ERROR_DUPLICATE_EDIT = "ERROR: There already "
-			+ "exists a duplicate task with the edits you are trying to make. "
-			+ "No edits were made.";
-	private final String ERROR_TASK_NOT_FOUND = "ERROR: The task you are trying "
-			+ "to edit does not exist. No edits were made.";
-	private final String ERROR_DUPLICATE_ADD = "ERROR: There already exists"
-			+ " a task you are trying to create. No new task was added.";
+			+ "View\n\n"; 
 	
 	public String getTab() {
 		return TAB;
@@ -74,19 +65,7 @@ public class ezCMessages {
 	
 	public String getUserHelpMessage() {
 		return MESSAGE_USER_HELP;
-	}
-	
-	public String getDuplicateEditErrorMessage() {
-		return ERROR_DUPLICATE_EDIT;
-	}
-	
-	public String getTaskNotFoundErrorMessage() {
-		return ERROR_TASK_NOT_FOUND;
-	}
-	
-	public String getDuplicateAddErrorMessage() {
-		return ERROR_DUPLICATE_ADD;
-	}
+	} 
 	
 	public String getAddMessage(Task newTask) {
 		String message = "Your task:" + NEW_LINE + NEW_LINE + newTask.toPrint() + 
