@@ -5,6 +5,7 @@
  */
 package dataEncapsulation;
 
+import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -38,6 +39,15 @@ public class Date {
 
 	//@author A0126720N
 	public boolean dateValid(int userday, int usermonth, int useryear) {
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");  
+	    sdf.setLenient(false);
+	    Calendar cal = Calendar.getInstance();  
+	    try{
+	    	cal.setTime(sdf.parse(usermonth + "/" + userday + "/" + useryear));
+	    } catch(Exception e) {
+	    	return false;
+	    }
+		
 		boolean dateIsValid = true;
 		try {
 			if(userday < 1 || userday > 31) {

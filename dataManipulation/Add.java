@@ -230,9 +230,9 @@ public class Add extends Command {
 
 	//@author A0126720N
 	private void checkDateMatches() throws BadSubcommandException {
-		boolean hasGeneralDate = subcommands.contains(Subcommand.TYPE.DATE);
-		boolean hasStartDate = subcommands.contains(Subcommand.TYPE.START);
-		boolean hasEndDate = subcommands.contains(Subcommand.TYPE.END);
+		boolean hasGeneralDate = hasSubcommandType(Subcommand.TYPE.DATE);
+		boolean hasStartDate = hasSubcommandType(Subcommand.TYPE.START);
+		boolean hasEndDate = hasSubcommandType(Subcommand.TYPE.END);
 
 		if ((hasGeneralDate && hasStartDate) || (hasGeneralDate && hasEndDate)) {
 			throw new BadSubcommandException("cannot specify start and/or end when specifying \"date\"");
