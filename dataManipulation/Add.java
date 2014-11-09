@@ -51,7 +51,7 @@ public class Add extends Command {
 		Task newTask = buildTask(subcommands);
 
 		if(ExactMatchSearcher.isTaskDuplicate(newTask)) {
-			throw new BadSubcommandArgException("task already exists");
+			throw new BadSubcommandArgException("The task you are trying to add already exists.");
 		}
 
 		else {
