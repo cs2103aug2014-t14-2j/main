@@ -63,7 +63,7 @@ public class Remove extends Command {
 		
 	}
 	
-	public String executeForUndo() throws Exception {
+	public String executeRemoveLiteral() throws Exception {
 		int indexOfDeletionList = initializeTasksFound(subcommands);
 		List<Task> listToDeleteFrom = getDeletionList(indexOfDeletionList);
 		Task perfectMatch = findLiteralMatch(subcommands, listToDeleteFrom);

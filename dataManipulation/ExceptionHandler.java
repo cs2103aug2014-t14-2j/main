@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import userInterface.ActionToggler;
 import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
+import dataEncapsulation.BadSubcommandArgException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 
@@ -21,6 +22,8 @@ public class ExceptionHandler {
 	private JTextArea display;
 	private JLabel status;
 	private ActionToggler enterToggle;
+	
+	private static final String quitRequest = "0";
 	
 	public ExceptionHandler(JTextField input, JLabel stat, 
 			JTextArea disp, ActionToggler toggle) {
@@ -58,21 +61,101 @@ public class ExceptionHandler {
 		enterToggle.setLesser();
 	}
 	
-	public ArrayList<Task> getChoices(String input, List<Task> opts) {
-		String str = input;
+	public ArrayList<Task> getChoices(String input, List<Task> opts) throws BadSubcommandArgException {
 		if(input.contains(",")) {
-			str.replaceAll(",", " ");
+			input = input.replaceAll(",", " ");
 		}
-		String choices[] = str.split(" ");
+		
+		if (input.contains("-")) {
+			input = correctRange(input);
+		}
+		
+		if (hasRepeats(input)) {
+			throw new BadSubcommandArgException("you selected the same item "
+					+ "more than once, please select again or enter 0 to quit");
+		}
+		
+		String choices[] = input.split("\\s+");
 		ArrayList<Task> ch = new ArrayList<Task>();
-		for(String s : choices) {
-			int i = (Integer.parseInt(s)) - 1;	// user choices start at 1
-			Task cur = opts.get(i);
-			ch.add(cur);
+		try {
+			for(String s : choices) {
+				int i = (Integer.parseInt(s)) - 1;	// user choices start at 1
+				Task cur = opts.get(i);
+				ch.add(cur);
+			}
+		} catch (Exception e) {
+			throw new BadSubcommandArgException("non-numeric input "
+					+ "found, please try again");
 		}
 		return ch;
 	}
 	
+	private boolean hasRepeats(String input) {
+		String[] separatedNumbers = input.split("\\n+");
+		
+		for (int i = 0; i < separatedNumbers.length - 1; ++i) {
+			for (int j = i + 1; j < separatedNumbers.length; ++j) {
+				if (separatedNumbers[i].matches(separatedNumbers[j])) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	private String correctRange(String input) throws BadSubcommandArgException {
+		String dash = "-";
+		String comma = ",";
+		assert (input.contains(dash));
+		
+		String[] brokenRange = input.split(dash);
+		for (int i = 0; i < brokenRange.length - 1; ++i) {
+			String[] valuesLeft = brokenRange[i].split(comma);
+			String[] valuesRight = brokenRange[i + 1].split(comma);
+			String leftInt = valuesLeft[valuesLeft.length - 1].trim();
+			String rightInt = valuesRight[valuesRight.length - 1].trim();
+			String range = makeRange(leftInt, rightInt);
+			input = mergeRange(input, range, leftInt, rightInt);
+		}
+		
+		return input;
+	}
+
+	private String makeRange(String leftInt, String rightInt) throws BadSubcommandArgException {
+		try {	
+			int lower = Integer.parseInt(leftInt);
+			int higher = Integer.parseInt(rightInt);
+			String replacement = String.valueOf(lower);
+			
+			if (lower >= higher) {
+				throw new BadSubcommandArgException("range lower bound is higher "
+						+ "than range upper bound, please try again");
+			}
+			
+			for (int i = lower + 1; i <= higher; ++i) {
+				replacement = replacement + " " + i;
+			}
+			
+			return replacement;
+		} catch (Exception e) {
+			throw new BadSubcommandArgException("non-numeric input found, "
+					+ "please try again");
+		}
+	}
+
+	private String mergeRange(String input, String range, String leftInt, String rightInt) {
+		String dash = "-";
+		
+		String left = String.valueOf(leftInt);
+		String right = String.valueOf(rightInt);
+		assert (input.contains(dash));
+		
+		String toReplace = "\\s{1,}" + left + "\\s+" + dash + "\\s+" + right + 
+				"\\s{1,}";
+		return input.replaceAll(toReplace, range);
+	}
+
 	@SuppressWarnings("serial")
 	class FurtherEditer extends AbstractAction {
 		List<Task> options;
@@ -85,8 +168,20 @@ public class ExceptionHandler {
 		
 		public void actionPerformed(ActionEvent ev)  {
 			String userChoice = userInput.getText();
+			ArrayList<Task> choices = new ArrayList<Task>();
 			
-			ArrayList<Task> choices = getChoices(userChoice, options);
+			if (userChoice.trim().matches(quitRequest)) {
+				status.setText("exit selected");
+				endExceptionHandling();
+				return;
+			}
+			
+			try {
+				choices = getChoices(userChoice, options);
+			} catch (Exception e) {
+				status.setText(e.getMessage());
+				return;
+			}
 			
 			String ret = "";
 			for (Task t : choices) {
@@ -116,24 +211,27 @@ public class ExceptionHandler {
 			subcommands = subs;
 		}
 		
-		public void actionPerformed(ActionEvent ev)  {
-				String userChoice = userInput.getText();
-			ArrayList<Task> choices = getChoices(userChoice, options);
-			Date today = new Date();
-			int i = 0;
+		public void actionPerformed(ActionEvent ev) {
+			String userChoice = userInput.getText();
+			ArrayList<Task> choices = new ArrayList<Task>();
+			
+			try {
+				choices = getChoices(userChoice, options);
+			} catch (Exception e) {
+				status.setText(e.getMessage());
+				return;
+			}
+			
+			Remove remover = null;
 			
 			String ret = "";
 			for (Task t : choices) {
-				if(!t.getHasDeadline() || !(t.getEndDate().isBefore(today))) {
-					i = 1;
-				}
-				else if(t.getEndDate().isBefore(today) && !(t.getIsComplete())) {
-					i = 2;
-				}
-	
 				try {
-					Task deleted = Remove.doDeleteTask(t, i) ;
-					ret = ret + "\n " + deleted.toString();
+					List<Subcommand> choiceSubcommands = 
+						(new Add(subcommands)).dismantleTask(t);
+					remover = new Remove(choiceSubcommands);
+					String toReport = remover.executeRemoveLiteral();;
+					ret = appendReport(ret, toReport);
 				} catch (Exception e) {
 					status.setText("Sorry, you've entered something wrong "
 							+ "again. Please try deleting again!");
@@ -142,8 +240,19 @@ public class ExceptionHandler {
 				}
 				
 			}
-			display.setText("Successfully deleted: \n" + ret);
+			
+			display.setText(ret);
+			userInput.setText("");
+			UndoRedoList.getInstance().pushUndoCommand(remover);	//Push command into UndoRedoList
 			endExceptionHandling();
+		}
+
+		private String appendReport(String ret, String toReport) {
+			if (!ret.isEmpty()) {
+				ret = ret + "\n";
+			}
+			ret = ret + toReport;
+			return ret;
 		}
 	}
 	

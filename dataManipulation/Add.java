@@ -249,7 +249,7 @@ public class Add extends Command {
 	public String undo() throws Exception {
 		
 		Remove negatedAddCommand = new Remove(subcommands);
-		return negatedAddCommand.executeForUndo();
+		return negatedAddCommand.executeRemoveLiteral();
 		
 	}
 
