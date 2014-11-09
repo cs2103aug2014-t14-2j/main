@@ -20,7 +20,7 @@ public class Remove extends Command {
 	private static Task taskToRemove;
 	private static Task taskRemoved;
 	
-	private static final String NO_MATCH_MESSAGE = "task to delete not found";
+	private static final String NO_MATCH_MESSAGE = "The task that you are trying to delete cannot be found.";
 
 	public Remove(List<Subcommand> commandComponents)
 			throws BadCommandException, BadSubcommandException {
@@ -32,7 +32,7 @@ public class Remove extends Command {
 		taskRemoved = remove(subcommands);
 		updateFile();
 		updateAutocomplete(taskRemoved);
-		return "Just deleted: \n" + taskRemoved.toString();
+		return "You have successfully deleted: \n" + taskRemoved.toString();
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class Remove extends Command {
 		taskRemoved = doDeleteTask(perfectMatch, indexOfDeletionList);
 		updateFile();
 		updateAutocomplete(taskRemoved);
-		return "Just deleted: \n" + taskRemoved.toString();
+		return "You have successfully deleted: \n" + taskRemoved.toString();
 	}
 
 	private Task findLiteralMatch(List<Subcommand> subcommands, 
@@ -112,20 +112,6 @@ public class Remove extends Command {
 		List<Task> toDeleteFrom = getDeletionList(i);
 		toDeleteFrom.remove(toRemove);
 		
-		/*switch(i) {
-				
-			case 0 :
-				TotalTaskList.getInstance().removeNotCompleted(a);
-				break;
-				
-			case 1 :
-				TotalTaskList.getInstance().removeOverdue(a);
-				break;
-				
-			default:
-				break;
-				
-		}*/
 		return toRemove;
 	}
 	
