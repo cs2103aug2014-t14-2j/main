@@ -25,6 +25,9 @@ public class Edit extends Command {
 	private ezCMessages messages = ezCMessages.getInstance();
 	private Command addNewTask;
 	private Command removeOldTask;
+	
+	private Task beforeEdit;
+	private Task afterEdit;
 
 	public Edit(List<Subcommand> commandComponents)
 			throws BadCommandException, BadSubcommandException {
@@ -134,10 +137,7 @@ public class Edit extends Command {
 		addNewTask = new Add(newTaskSubC);
 		
 		removeOldTask.execute();
-		UndoRedoList.getInstance().pushUndoCommand(removeOldTask);	//Push the remove into the undo stack
 		addNewTask.execute();
-		UndoRedoList.getInstance().pushUndoCommand(addNewTask);	//Push the add into the undo stack
-		
 	}
 
 	@Override

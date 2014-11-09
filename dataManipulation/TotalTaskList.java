@@ -1,7 +1,6 @@
 package dataManipulation;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -55,10 +54,6 @@ public class TotalTaskList {
 		overdue.remove(badSmellyTask);
 	}
 	
-	public void addAll(Collection<Task> tasks) {
-		notCompleted.addAll(tasks);
-	}
-	
 	public List<Task> getNotCompleted() {
 		List<Task> totalNotComplete = new ArrayList<Task>();
 		totalNotComplete.addAll(notCompleted);
@@ -91,6 +86,8 @@ public class TotalTaskList {
 			if (notCompleted.get(i).isOverdue()) {
 				overdue.add(notCompleted.get(i));
 				notCompleted.remove(i);
+			} else {
+				return;	// tasks are sorted, so no need to keep searching
 			}
 		}
 	}

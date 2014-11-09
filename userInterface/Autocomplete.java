@@ -24,6 +24,7 @@ public class Autocomplete {
 	private SuffixTree titles = new SuffixTree();
 	private SuffixTree categories = new SuffixTree();
 	private SuffixTree locations = new SuffixTree();
+	private SuffixTree days = new SuffixTree();
 	
 	private static Autocomplete autoComp;
 	
@@ -76,8 +77,14 @@ public class Autocomplete {
 		SuffixTree tree = getSubcommandArgTree(subcommandType);
 		
 		List<String> lastWordReplacements = getMatch(tree, quote);
+		
+		boolean needsQuotes = true;
+		
+		if (tree.equals(days)) {
+			needsQuotes = false;
+		}
 		List<String> formattedOutput = formatArgOutput(lastWordReplacements, 
-				lastWordRemoved);
+				lastWordRemoved, needsQuotes);
 		
 		return formattedOutput;
 	}
@@ -93,9 +100,12 @@ public class Autocomplete {
 	}
 
 	private List<String> formatArgOutput(List<String> lastWordReplacements,
-			String lastWordRemoved) {
+			String lastWordRemoved, boolean needsQuotes) {
 		List<String> formattedTotal = new ArrayList<String>();
 		String quote = "\"";
+		if (!needsQuotes) {
+			quote = "";
+		}
 		
 		for (int i = 0; i < lastWordReplacements.size(); ++i) {
 			String suffix = lastWordReplacements.get(i);
@@ -174,6 +184,12 @@ public class Autocomplete {
 				return locations;
 			case CATEGORY :
 				return categories;
+			case DATE :
+				return days;
+			case START :
+				return days;
+			case END :
+				return days;
 			default :
 				return new SuffixTree();	// no match
 		}
@@ -375,6 +391,13 @@ public class Autocomplete {
 	private Autocomplete() {
 		initializeCommands();
 		initializeSubcommands();
+		initializeDays();
+	}
+	
+	private void initializeDays() {
+		for (Subcommand.WEEKDAYS day : Subcommand.WEEKDAYS.values()) {
+			days.add(day.toString());
+		}
 	}
 
 	private void initializeSubcommands() {
@@ -399,9 +422,5 @@ public class Autocomplete {
 			commands.add(type.toString());
 			subcommands.add(new SuffixTree());
 		}
-	}
-	
-	public static void main(String[] args) {
-		Autocomplete.getInstance();
 	}
 }
