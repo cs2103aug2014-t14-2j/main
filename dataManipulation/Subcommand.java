@@ -21,7 +21,7 @@ import dataEncapsulation.BadSubcommandException;
 public class Subcommand {
 	public enum TYPE {
 		AND, BYEND, BYNAME, BYSTART, CATEGORY, COMPLETED, DATE, DATE_TYPE, END,
-		ENDTIME, FREE, LOCATION, NAME, NONE, NOTE, FREQUENCY, ON, OR, PAREN, START, 
+		ENDTIME, FREE, HELP, LOCATION, NAME, NONE, NOTE, FREQUENCY, ON, OR, PAREN, START, 
 		STARTTIME, TEXT, TITLE,
 		INVALID;
 		
@@ -47,6 +47,14 @@ public class Subcommand {
 		@Override
 		public String toString() {
 			return this.name().toLowerCase();
+		}
+	}
+	
+	public enum HELP_KEY {
+		SOMETHING;// all of the words you want
+		@Override
+		public String toString() {
+			return this.name().toString().toLowerCase();
 		}
 	}
 	

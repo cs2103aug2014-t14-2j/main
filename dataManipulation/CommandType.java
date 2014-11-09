@@ -97,6 +97,8 @@ public class CommandType {
 			return isEditType(subcommandType);
 		case FINISH :
 			return isFinishType(subcommandType);
+		case HELP :
+			return isHelpType(subcommandType);
 		case REMOVE :
 			return isRemoveType(subcommandType);
 		case REPEAT :
@@ -313,5 +315,12 @@ public class CommandType {
 
 	private boolean isUnfinishType(TYPE subcommandType) {
 		return isAddType(subcommandType);
+	}
+	
+	private boolean isHelpType(TYPE subcommandType) {
+		if (subcommandType == Subcommand.TYPE.HELP) {
+			return true;
+		}
+		return false;
 	}
 }

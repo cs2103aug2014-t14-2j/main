@@ -302,8 +302,6 @@ public class CommandInterpreter {
 			return true;
 		case COMPLETED:
 			return true;
-		case HELP:
-			return true;
 		case OVERDUE:
 			return true;
 		case REDO :
@@ -572,6 +570,8 @@ public class CommandInterpreter {
 			case FREE :
 				return true;
 			case FREQUENCY :
+				return true;
+			case HELP :
 				return true;
 			case AND :
 				return true;
