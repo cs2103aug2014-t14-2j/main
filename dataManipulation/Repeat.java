@@ -1,14 +1,9 @@
 package dataManipulation;
 
 /**
- * Notes - 
- * 		TIME is probably going to be wrong, since it is under the DATE attribute of the Task, 
- * 		which I replace. 
- * 
- * 		Repeat ONCE has not been implemented. > How do START and END work with a repeat ONCE?
- * 
- * @author tyuiwei
+ * @author A0115696W
  */
+
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -165,9 +160,10 @@ public class Repeat extends Command {
 	private String ldParse(String inDateFormat) throws Exception {
 		Date d = new Date().determineDate(inDateFormat);
 		int ddd = d.getDay();
-		int mm = d.getMonth();
+		int mmm = d.getMonth();
 		int yyyy = d.getYear();
 		String dd = String.format("%02d", ddd);
+		String mm = String.format("%02d", mmm);
 		String inLocalDateFormat = "" + yyyy + "-" + mm + "-" + dd;
 		return inLocalDateFormat;
 	}
@@ -354,7 +350,7 @@ public class Repeat extends Command {
 	}
 	
 	private void checkStartEnd() throws Exception {
-		if (s.isAfter(e)) {
+		if (s.isAfter(e)) { 
 			throw new Exception("Invalid dates - start is after end.");
 		}
 	}

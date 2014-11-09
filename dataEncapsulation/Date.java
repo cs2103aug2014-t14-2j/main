@@ -7,6 +7,8 @@ package dataEncapsulation;
 
 import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -86,7 +88,7 @@ public class Date {
 	}
 
 	/**
-	 * @author yuiwei
+	 * @author A0115696W
 	 * @param another
 	 * @return
 	 */
@@ -147,7 +149,7 @@ public class Date {
 		return dmFormat;
 	}
 
-	/*
+	/**
 	 * Reads a String and outputs the correct Date object.
 	 * Accepted formats:
 	 * 		November 5, 2014
@@ -156,9 +158,41 @@ public class Date {
 	 * @author Yui Wei / A0115696W
 	 */
 	public Date determineDate(String dateString) throws Exception {
+		Date tdy = new Date();
 		try {
 			if (dateString == null) {
 				return null;
+			} 
+			switch (dateString.toLowerCase()) {
+			case "today" :
+				return tdy;
+			case "tomorrow" : case "tmr" :
+				int day1 = tdy.getDay();
+				tdy.setDay(day1 + 1);
+				return tdy;
+			case "monday": case "mon" : 
+				Date mon = getNext(DayOfWeek.MONDAY);
+				return mon;
+			case "tuesday" : case "tues" : 
+				Date tue = getNext(DayOfWeek.TUESDAY);
+				return tue;
+			case "wednesday" : case "wed":
+				Date wed = getNext(DayOfWeek.WEDNESDAY);
+				return wed;
+			case "thursday" : case "thur" : case "thu" :
+				Date thu = getNext(DayOfWeek.THURSDAY);
+				return thu;
+			case "friday": case "fri" :
+				Date fri = getNext(DayOfWeek.FRIDAY);
+				return fri;
+			case "saturday" : case "sat" :
+				Date sat = getNext(DayOfWeek.SATURDAY);
+				return sat;
+			case "sunday" : case "sun" :
+				Date sun = getNext(DayOfWeek.SUNDAY);
+				return sun;
+			default: 
+				break;
 			}
 	
 			String month, day, year;
@@ -396,5 +430,40 @@ public class Date {
 		}
 		
 		return year;
+	}
+	
+	
+	/**
+	 * @author yuiwei / A0115696W
+	 * @param inDateFormat
+	 * @return
+	 * @throws Exception
+	 */
+	private String ldParse(Date d) throws Exception {
+		int ddd = d.getDay();
+		int mmm = d.getMonth();
+		int yyyy = d.getYear();
+		String dd = String.format("%02d", ddd);
+		String mm = String.format("%02d", mmm);
+		String inLocalDateFormat = "" + yyyy + "-" + mm + "-" + dd;
+		return inLocalDateFormat;
+	}
+	/**
+	 * @author yuiwei/ A0115696W
+	 * @param dw
+	 * @return
+	 * @throws Exception
+	 */
+	private Date getNext(DayOfWeek dw) throws Exception {
+		Date tdy = new Date();
+		LocalDate ld = LocalDate.parse(ldParse(tdy));
+		int toda = ld.getDayOfWeek().getValue();
+		int nowTo = dw.getValue() - toda;
+		if (nowTo < 0) {
+			nowTo = nowTo + 7;
+		}
+		day = tdy.getDay();
+		tdy.setDay(day + nowTo);
+		return tdy;
 	}
 }
