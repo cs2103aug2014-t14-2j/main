@@ -36,27 +36,38 @@ public class Task {
 	private boolean hasEndTime = false;
 	private boolean isOverdue = false;
 	
-	private static ArrayList<String> categorylist = new ArrayList<String>();
-	
 	//has every field
-	public Task(String name, String first_category, String location, String note, Date start, Date end, Time s, Time e) throws Exception {
-		this.setName(name);
-		categorylist = new ArrayList<String>();
-		categorylist.add(first_category);
-		this.setCategory(first_category);
-		this.setLocation(location);
-		this.setNote(note);
-		this.setEndDate(end);
-		this.startdate = start;
-		this.setStartTime(s);
-		this.setEndTime(e);
+	public Task(String nm, String cat, String loc, String note, Date start, Date end, Time s, Time e) throws Exception {
+		if (nm != null) {
+			this.setName(nm);
+		}
+		if (cat != null) {
+			this.setCategory(cat);
+		}
+		if (loc != null) {
+			this.setLocation(location);
+		}
+		if (note != null) {
+			this.setNote(note);
+		}
+		if (start != null) {
+			this.startdate = start;
+		}
+		if (end != null) {
+			this.setEndDate(end);
+		}
+		if (s != null) {
+			this.setStartTime(s);
+		}
+		if (e != null) {
+			this.setEndTime(e);
+		}
+
 		setIfOverdue();
 	}
 	
 	public Task(String name, String first_category, String location, Date start, Date end, Time s, Time e) throws Exception {
 		this.setName(name);
-		categorylist = new ArrayList<String>();
-		categorylist.add(first_category);
 		this.setCategory(first_category);
 		this.setLocation(location);
 		this.setEndDate(end);
@@ -69,8 +80,6 @@ public class Task {
 	//has every field except END TIME
 	public Task(String name, String first_category, String location, String note, Date start, Date end, Time s) throws Exception {
 		this.setName(name);
-		categorylist = new ArrayList<String>();
-		categorylist.add(first_category);
 		this.setCategory(first_category);
 		this.setLocation(location);
 		this.setNote(note);
@@ -84,8 +93,6 @@ public class Task {
 	
 	public Task(String name, String first_category, String location, Date start, Date end, Time s) throws Exception {
 		this.setName(name);
-		categorylist = new ArrayList<String>();
-		categorylist.add(first_category);
 		this.setCategory(first_category);
 		this.setLocation(location);
 		this.setEndDate(end);
@@ -101,8 +108,6 @@ public class Task {
 	//has every field except TIME
 	public Task(String name, String first_category, String location, String note, Date start, Date end) throws Exception {
 		this.setName(name);
-		categorylist = new ArrayList<String>();
-		categorylist.add(first_category);
 		this.setCategory(first_category);
 		this.setLocation(location);
 		this.setNote(note);
@@ -116,8 +121,6 @@ public class Task {
 	//no loc or note or no Time
 	public Task(String name, String category, Date start, Date end) throws Exception{
 		this.setName(name);
-		categorylist = new ArrayList<String>();
-		categorylist.add(category);
 		this.setCategory(category);
 		this.setEndDate(end);
 		this.setStartDate(start);
@@ -128,8 +131,6 @@ public class Task {
 	//no location or note but has time
 	public Task(String name, String category, Date start, Date end, Time s, Time e) throws Exception{
 		this.setName(name);
-		categorylist = new ArrayList<String>();
-		categorylist.add(category);
 		this.setCategory(category);
 		this.setEndDate(end);
 		this.setStartDate(start);
@@ -140,8 +141,6 @@ public class Task {
 	//no loc or note but has start time
 	public Task(String name, String category, Date start, Date end, Time s) throws Exception{
 		this.setName(name);
-		categorylist = new ArrayList<String>();
-		categorylist.add(category);
 		this.setCategory(category);
 		this.setEndDate(end);
 		this.setStartDate(start);
@@ -163,8 +162,6 @@ public class Task {
 	//no start time, loc or note | | GIVEN ONLY ONE DATE = end date.
 	public Task(String name, String category, Date end) throws Exception{
 		this.setName(name);
-		categorylist = new ArrayList<String>();
-		categorylist.add(category);
 		this.setCategory(category);
 		this.startdate = new Date();
 		enddate = end;
@@ -185,8 +182,6 @@ public class Task {
 	//no extra details at all
 	public Task(String name, String category) throws Exception{
 		this.setName(name);
-		categorylist = new ArrayList<String>();
-		categorylist.add(category);
 		this.setCategory(category);
 		this.startdate = new Date();
 		this.setStartTime(new Time());
@@ -196,8 +191,6 @@ public class Task {
 	
 	public Task(String name, String first_category, String location) throws Exception{
 		this.setName(name);
-		categorylist = new ArrayList<String>();
-		categorylist.add(first_category);
 		this.setCategory(first_category);
 		this.setLocation(location);
 		this.setStartDate(new Date());
@@ -209,8 +202,6 @@ public class Task {
 	//no start or end time but has loc and note
 	public Task(String name, String first_category, String location, String note) throws Exception{
 		this.setName(name);
-		categorylist = new ArrayList<String>();
-		categorylist.add(first_category);
 		this.setCategory(first_category);
 		this.setLocation(location);
 		this.setNote(note);
@@ -222,8 +213,6 @@ public class Task {
 	//No end date
 	public Task(String name, String first_category, String location, String note, Date startdate) throws Exception{
 		this.setName(name);
-		categorylist = new ArrayList<String>();
-		categorylist.add(first_category);
 		this.setCategory(first_category);
 		this.setLocation(location);
 		this.setNote(note);
@@ -235,8 +224,6 @@ public class Task {
 	
 	public Task(String name, String category, String location, Date start, Date end) throws Exception{
 		this.setName(name);
-		categorylist = new ArrayList<String>();
-		categorylist.add(category);
 		this.setCategory(category);
 		this.setStartDate(start);
 		this.setEndDate(end);
@@ -248,8 +235,6 @@ public class Task {
 	
 	public Task(String name, String category, String location, Date startTime) throws Exception{
 		this.setName(name);
-		categorylist = new ArrayList<String>();
-		categorylist.add(category);
 		this.setCategory(category);
 		this.setLocation(location);
 		this.startdate = startTime;
@@ -370,9 +355,10 @@ public class Task {
 	public void setStartTime(Time s) throws Exception {
 		if(s == null) {
 			setHasStartTime(false);
-		} else { 
-			setHasStartTime(true);
-		}
+			return;
+		}  
+		
+		setHasStartTime(true);
 		starttime = s;
 		
 		if (!hasEndTime) {
@@ -388,9 +374,9 @@ public class Task {
 	public void setEndTime(Time e) {
 		if(e == null) {
 			setHasEndTime(false);
-		} else {
-			setHasEndTime(true);
-		}
+			return;
+		} 
+		setHasEndTime(true);
 		endtime = e;
 	}
 	
