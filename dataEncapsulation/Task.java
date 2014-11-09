@@ -10,7 +10,6 @@
 	 */
 package dataEncapsulation;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 public class Task {
 	

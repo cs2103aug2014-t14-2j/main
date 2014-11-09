@@ -8,7 +8,6 @@ import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 import dataEncapsulation.Time;
-import dataManipulation.Subcommand;
 import dataManipulation.TotalTaskList;
 
 public class slotSearch {
@@ -44,7 +43,6 @@ public class slotSearch {
 	
 	public List<Task> tasksFor(Date d) throws BadSubcommandException, BadSubcommandArgException {
 		List<Task> results = new ArrayList<Task>();
-		Subcommand date = new Subcommand(Subcommand.TYPE.DATE, d.toString());
 		List<Task> allTasks = TotalTaskList.getInstance().getList();
 		for (Task t : allTasks) {
 			Date end = t.getEndDate();
