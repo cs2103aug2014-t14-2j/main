@@ -27,7 +27,7 @@ public class Undo extends Command {
 	public String execute() throws Exception {
 		
 		if(UndoRedoList.getInstance().isUndoStackEmpty()) {
-			throw new NoResultException("there is nothing to undo");
+			throw new NoResultException("There are no commands to undo.");
 		}
 		
 		String response = null;
