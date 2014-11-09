@@ -36,7 +36,9 @@ public class TaskFactory {
 			String location, String note, Date startTime, Date endTime,
 			Time beginning, Time ending) 
 					throws Exception {
-		category = checkVitalComponents(name, category);
+		Task newTask = new Task(name, category, location, note, startTime, endTime, beginning, ending);
+		
+		/*category = checkVitalComponents(name, category);
 		
 		Task newTask;
 		
@@ -54,7 +56,7 @@ public class TaskFactory {
 		
 		if (ending != null) {
 			newTask.setEndTime(ending);
-		}
+		}*/
 		
 		return newTask;
 	}
