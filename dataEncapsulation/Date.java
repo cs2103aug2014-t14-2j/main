@@ -78,15 +78,6 @@ public class Date {
 		return answer;
 	}
 
-	public boolean isEqual(Date anotherdate) {
-		if (anotherdate.getDay() == day && anotherdate.getMonth() == month
-				&& anotherdate.getYear() == year) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	/**
 	 * @author A0115696W
 	 * @param another

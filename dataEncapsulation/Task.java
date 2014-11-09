@@ -256,7 +256,7 @@ public class Task {
 			return;
 		} 
 		
-		boolean isOnSameDay = today.isEqual(enddate);
+		boolean isOnSameDay = today.isEquals(enddate);
 		
 		if (!isOnSameDay) {
 			return;	// not before, so must be after
@@ -515,7 +515,7 @@ public class Task {
 				&&
 			this.startdate.toString().equalsIgnoreCase(other.startdate.toString())
 				&&
-			((!this.hasDeadline && !other.hasDeadline) || (this.enddate.isEqual(other.enddate)))
+			((!this.hasDeadline && !other.hasDeadline) || (this.enddate.isEquals(other.enddate)))
 				&&
 			this.starttime.compareTo(other.starttime) == 0
 				&&

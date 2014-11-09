@@ -71,7 +71,6 @@ public class Remove extends Command {
 		Task perfectMatch = findLiteralMatch(subcommands, listToDeleteFrom);
 		taskRemoved = doDeleteTask(perfectMatch, indexOfDeletionList);
 		updateFile();
-		updateAutocomplete(taskRemoved);
 		ezCMessages messages = ezCMessages.getInstance();
 		return messages.getDeleteMessage(taskRemoved);
 	}
@@ -138,6 +137,7 @@ public class Remove extends Command {
 		stream.rewriteFile();
 	}
 	
+	//@author A0126720N unused
 	private void updateAutocomplete(Task task) {
 		Autocomplete autocomplete = Autocomplete.getInstance();
 		

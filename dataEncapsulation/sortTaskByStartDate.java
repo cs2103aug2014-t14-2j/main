@@ -1,3 +1,5 @@
+//@author A0108297X
+
 package dataEncapsulation;
 
 import java.util.Comparator;
@@ -9,7 +11,7 @@ public class sortTaskByStartDate implements Comparator<Task> {
 	        if(s1.getStartDate().isBefore(s2.getStartDate())){
 	        	return -1;
 	        }
-	        else if(s1.getStartDate().isEqual(s2.getStartDate())){
+	        else if(s1.getStartDate().isEquals(s2.getStartDate())){
 	        	return 0;
 	        }
 	        else
