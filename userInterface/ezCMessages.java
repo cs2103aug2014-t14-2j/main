@@ -35,25 +35,38 @@ public class ezCMessages {
 	
 	private final String MESSAGE_DISPLAY_COMMANDS = 
 			"Here are a list of available commands (Non case-sensitive) in the format: \n\n"
-			+ "Command - What the command does\n"
-			+ "Possible subcommands to use (If any)\n\n"
-			+ "Add - Adds a task to the task list.\n"
-			+ "category, location, note, start, end, from, to\n\n"
-			+ "All - Displays all your tasks pending completion, or have no deadline.\n\n"
-			+ "Edit - Edits a task in your current task list.\n"
-			+ "title, category, location, note, start, end, from, to\n\n"
-			+ "Finish - Marks a task as completed in your task list.\n\n"
-			+ "Redo - Redoes your previous undo call.\n\n"
-			+ "Remove - Removes a task from the current list of tasks.\n"
-			+ "category, location, note, start, end, from, to\n\n"
-			+ "Repeat - Repeats a task by a certain frequency.\n"
-			+ "daily, weekly, monthly, annually, once\n\n"
-			+ "Search - Searches for a task in the task list.\n"
+			+ "(Command) - What the command does\n"
+			+ "[subcommand, subcommand, subcommand, ...] (If any)\n\n"
+			
+			+ "(Add) - Adds a task to the task list.\n"
+			+ "[category, location, note, start, end, from, to]\n\n"
+			
+			+ "(All) - Displays all your tasks pending completion, or have no deadline.\n\n"
+			
+			+ "(Edit) - Edits a task in your current task list.\n"
+			+ "[title, category, location, note, start, end, from, to]\n\n"
+			
+			+ "(Finish) - Marks a task as completed in your task list.\n\n"
+			
+			+ "(Redo) - Redoes your previous undo call.\n\n"
+			
+			+ "(Remove) - Removes a task from the current list of tasks.\n"
+			+ "[category, location, note, start, end, from, to]\n\n"
+			
+			+ "(Repeat) - Repeats a task by a certain frequency.\n"
+			+ "[daily, weekly, monthly, annually, once]\n\n"
+			
+			+ "(Search) - Searches for a task in the task list.\n"
 			+ "\n\n"
-			+ "Today - Displays all the tasks for today.\n\n"
-			+ "Undo - Undoes a command that was previously entered.\n\n"
-			+ "Unfinish - Marks a task as uncompleted.\n\n"
-			+ "Please type \'help <name of command>\' for more information about the command."; 
+			
+			+ "(Today) - Displays all the tasks for today.\n\n"
+			
+			+ "(Undo) - Undoes a command that was previously entered.\n\n"
+			
+			+ "(Unfinish) - Marks a task as uncompleted.\n\n"
+			
+			+ "Please type \'help <name of command>\' for more information about the command.\n"
+			+ "Alternatively, please type \'help list\' to display this list again."; 
 	
 	private final String ADD_HELP = "Further help for the command: ADD\n\n"
 			+ "Command: Add\n"
