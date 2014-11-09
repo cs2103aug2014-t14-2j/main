@@ -33,9 +33,10 @@ class AutocompleteAction extends AbstractAction {
 
 	public void actionPerformed(ActionEvent ev) {
 		status.setText(" ");
-		if (entry.getText().equalsIgnoreCase(lastText)) {
-			incrementCounter();
+		String current = removeLeadingSpace(entry.getText());
+		if (current.equalsIgnoreCase(lastText)) {
 			entry.setText(completionList.get(counter));
+			incrementCounter();
 			lastText = entry.getText();
 		} else {
 			counter = 0;
@@ -43,6 +44,16 @@ class AutocompleteAction extends AbstractAction {
 			completionList = autocomplete.complete(lastText);
 			entry.setText(completionList.get(counter));
 			lastText = entry.getText();
+			incrementCounter();
+		}
+	}
+
+	private String removeLeadingSpace(String text) {
+		String whitespace = "\\s+";
+		if (text.startsWith(" ")) {
+			return text.replaceFirst(whitespace, "");
+		} else {
+			return text;
 		}
 	}
 

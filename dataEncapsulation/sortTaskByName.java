@@ -1,4 +1,4 @@
-//@ Kaushik A0108297X
+//@author A0108297X unused
 package dataEncapsulation;
 
 import java.util.Comparator;

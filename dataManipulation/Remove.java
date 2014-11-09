@@ -32,7 +32,6 @@ public class Remove extends Command {
 	public String execute() throws Exception {
 		taskRemoved = remove(subcommands);
 		updateFile();
-		updateAutocomplete(taskRemoved);
 		ezCMessages messages = ezCMessages.getInstance();
 		return messages.getDeleteMessage(taskRemoved);
 	}
@@ -43,10 +42,7 @@ public class Remove extends Command {
 		checkForNoDuplicateSubcommands();
 	}
 	
-	/*
-	 * @author Nelson / A0111014J
-	 */
-	
+	 //@author A0111014J
 	public Task remove(List<Subcommand> cc) throws Exception {
 		
 		int indexOfDeletionList = initializeTasksFound(cc);
@@ -71,7 +67,6 @@ public class Remove extends Command {
 		Task perfectMatch = findLiteralMatch(subcommands, listToDeleteFrom);
 		taskRemoved = doDeleteTask(perfectMatch, indexOfDeletionList);
 		updateFile();
-		updateAutocomplete(taskRemoved);
 		ezCMessages messages = ezCMessages.getInstance();
 		return messages.getDeleteMessage(taskRemoved);
 	}
@@ -138,6 +133,8 @@ public class Remove extends Command {
 		stream.rewriteFile();
 	}
 	
+	//@author A0126720N unused
+	@SuppressWarnings("unused")
 	private void updateAutocomplete(Task task) {
 		Autocomplete autocomplete = Autocomplete.getInstance();
 		
@@ -152,7 +149,7 @@ public class Remove extends Command {
 	@Override
 	public String undo() throws Exception {
 		
-		List<Subcommand> removedTaskSubC = new Add(subcommands).dismantleTask(taskRemoved);
+		List<Subcommand> removedTaskSubC = Add.dismantleTask(taskRemoved);
 		Command negatedRemoveCommand = new Add(removedTaskSubC);
 		return negatedRemoveCommand.execute();
 		

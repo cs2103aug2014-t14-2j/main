@@ -1,5 +1,5 @@
 	/**
-	 * @author Kadayam Suresh Kaushik A0108297X
+	 * 
 	 * 
 	 * Task Class (Instant) containing Constructor and all methods. - Uses the Date Class
 	 * @return format: Depends on which method is being used.
@@ -8,6 +8,8 @@
 	 * name, category, location, note, startdate, enddate, starttime, endtime
 	 * name, emptylist, null, null, today, null, null, null
 	 */
+
+//@author A0108297X
 package dataEncapsulation;
 
 import java.util.Calendar;
@@ -256,7 +258,7 @@ public class Task {
 			return;
 		} 
 		
-		boolean isOnSameDay = today.isEqual(enddate);
+		boolean isOnSameDay = today.isEquals(enddate);
 		
 		if (!isOnSameDay) {
 			return;	// not before, so must be after
@@ -449,13 +451,13 @@ public class Task {
 			answer = answer + "Category: " + this.category + NEW_LINE;
 		} 
 		if(!hasDeadline){
-			answer = answer + "Start: " + this.getStartDate().toString() + 
+			answer = answer + "Start: " + this.getStartDate().toPrint() + 
 					" @ " + this.getStartTime().toString() + NEW_LINE + 
 					"End: " + MESSAGE_NO_END + NEW_LINE;
 		} else {
-			answer = answer + "Start: " + this.getStartDate().toString() + 
+			answer = answer + "Start: " + this.getStartDate().toPrint() + 
 					" @ " + this.getStartTime().toString() + NEW_LINE + "End: "
-					+ this.getEndDate().toString() + " @ " + 
+					+ this.getEndDate().toPrint() + " @ " + 
 					this.getEndTime().toString() + NEW_LINE;
 		} if(hasLocation){
 			answer = answer + "Location: " + this.location + NEW_LINE;
@@ -515,7 +517,7 @@ public class Task {
 				&&
 			this.startdate.toString().equalsIgnoreCase(other.startdate.toString())
 				&&
-			((!this.hasDeadline && !other.hasDeadline) || (this.enddate.isEqual(other.enddate)))
+			((!this.hasDeadline && !other.hasDeadline) || (this.enddate.isEquals(other.enddate)))
 				&&
 			this.starttime.compareTo(other.starttime) == 0
 				&&
@@ -571,4 +573,7 @@ public class Task {
 		
 		return result;
 	}
+	
 }
+
+

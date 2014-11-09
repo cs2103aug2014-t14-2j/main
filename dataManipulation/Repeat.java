@@ -90,7 +90,8 @@ public class Repeat extends Command {
 				makeRepeat(ld);
 			}
 		} else if (freq.equals(FREQUENCY.ONCE.toString())) {
-			;
+			LocalDate s = LocalDate.parse(ldParse(start));
+			makeRepeat(s);
 		} else {
 			//THROW ERROR OR STRING
 		}
@@ -224,7 +225,7 @@ public class Repeat extends Command {
 	}
 
 	private void getSubcommands() throws BadSubcommandException, BadSubcommandArgException, BadCommandException {
-		sc = new Add(repeatSubcommands).dismantleTask(t);
+		sc = Add.dismantleTask(t);
 		
 	}
 	
@@ -305,23 +306,29 @@ public class Repeat extends Command {
 			}
 		}
 	}
-/*
 	protected void checkRepeatTwoComponents() throws BadSubcommandException {
-		checkForComponentAmount(2);
+		checkForComponentAmount(3);
 
 		for (int i = 0; i < subcommands.size(); ++i) {
 			Subcommand component = subcommands.get(i);
 
 			switch (component.getType()) {
 			case FREQUENCY: // valid
+				if (component.getContents().
+						equalsIgnoreCase(FREQUENCY.ONCE.toString())) {
+					throw new BadSubcommandException("can only leave off end "
+							+ "date for \"once\"");
+				}
 				break;
 			case NAME:
+				break;
+			case START:
 				break;
 			default:
 				throw new BadSubcommandException("invalid subcommand");
 			}
 		}
-	} */
+	}
 
 	protected void checkFrequencyIsNotOnly() throws BadSubcommandException {
 		for (int i = 0; i < subcommands.size(); ++i) {

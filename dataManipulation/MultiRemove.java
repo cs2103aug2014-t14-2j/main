@@ -23,7 +23,7 @@ public class MultiRemove extends Command {
 	BadSubcommandException, BadSubcommandArgException, BadCommandException {
 		for (Task t : choices) {
 			List<Subcommand> choiceSubcommands = 
-				(new Add()).dismantleTask(t);
+				Add.dismantleTask(t);
 			Remove newRemove = new Remove(choiceSubcommands);
 			removers.add(newRemove);
 		}

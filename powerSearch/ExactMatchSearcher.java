@@ -209,7 +209,7 @@ public class ExactMatchSearcher {
 		lookfordate = lookfordate.determineDate(comm);
 		int i;
 		for(i=0; i<taskList.size(); i++){
-			if(lookfordate.isEqual(taskList.get(i).getEndDate())){
+			if(lookfordate.isEquals(taskList.get(i).getEndDate())){
 				tasksedited.add(taskList.get(i)); //supposed to show all the tasks that have an endDate after the date searched for
 			}
 		}
@@ -233,7 +233,7 @@ public class ExactMatchSearcher {
 		lookfordate = lookfordate.determineDate(comm);
 		int i;
 		for(i=0; i<taskList.size(); i++){
-			if(lookfordate.isEqual(taskList.get(i).getStartDate())){
+			if(lookfordate.isEquals(taskList.get(i).getStartDate())){
 				tasksedited.add(taskList.get(i)); //supposed to show all the tasks that have an endDate after the date searched for
 			}
 		}

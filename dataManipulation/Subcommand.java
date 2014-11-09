@@ -63,6 +63,15 @@ public class Subcommand {
 		}
 	}
 	
+	public enum WEEKDAYS {
+		TODAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
+		
+		@Override
+		public String toString() {
+			return this.name().toString().toLowerCase();
+		}
+	}
+	
 	// The two possibilities (plus invalid) for the date display/read type
 	public enum DATE_TYPE {
 		DAY_MONTH, MONTH_DAY;

@@ -42,7 +42,7 @@ public class CommandHandlingAction extends AbstractAction {
 			String feedback = command.execute();
 			userInput.setText("");
 			
-			UndoRedoList.getInstance().pushUndoCommand(command);	//Push command into UndoRedoList
+			UndoRedoList.getInstance().pushUndoCommand(command);
 			
 			setDisplayText(feedback);
 		} catch (ActionException e) {

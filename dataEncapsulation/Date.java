@@ -78,15 +78,6 @@ public class Date {
 		return answer;
 	}
 
-	public boolean isEqual(Date anotherdate) {
-		if (anotherdate.getDay() == day && anotherdate.getMonth() == month
-				&& anotherdate.getYear() == year) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	/**
 	 * @author A0115696W
 	 * @param another
@@ -353,6 +344,7 @@ public class Date {
 	public String toPrint() {
 		String answer = new String();
 		String day = new String();
+		/*
 		switch (cal.get(Calendar.DAY_OF_WEEK_IN_MONTH)) {
 		case Calendar.MONDAY:
 			day = "Monday";
@@ -375,7 +367,7 @@ public class Date {
 		case Calendar.SUNDAY:
 			day = "Sunday";
 			break;
-		}
+		}*/
 		switch (this.getMonth()) {
 		case 1:
 			answer = "January";
@@ -414,8 +406,9 @@ public class Date {
 			answer = "December";
 			break;
 		}
-		return day + " " + answer + " " + this.getDay() + ", " + this.getYear();
+		return this.getDayOfWeek() + ", " + answer + " " + this.getDay() + ", " + this.getYear();
 	}
+	
 	
 	//@author A0126720N
 	/**
@@ -450,8 +443,9 @@ public class Date {
 	}
 	/**
 	 * @author yuiwei/ A0115696W
-	 * @param dw
-	 * @return
+	 * @param dw - the Java DayOfWeek object
+	 * @return the Date object referring to the nearest specified DayOfWeek.
+	 * i.e. getNext(DayOfWeek.MONDAY) will get the nearest Monday.
 	 * @throws Exception
 	 */
 	private Date getNext(DayOfWeek dw) throws Exception {
@@ -465,5 +459,22 @@ public class Date {
 		day = tdy.getDay();
 		tdy.setDay(day + nowTo);
 		return tdy;
+	}
+	/**
+	 * @author Yui Wei A011596W
+	 * @return
+	 * @throws Exception
+	 */
+	private String getDayOfWeek()  {
+		LocalDate date;
+		try {
+			date = LocalDate.parse(ldParse(this));
+			String result = date.getDayOfWeek().toString().toLowerCase();
+			return result.substring(0, 1).toUpperCase() + result.substring(1);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			return "There was a problem with your date.";
+		}
+		
 	}
 }
