@@ -10,7 +10,7 @@ public class sortTaskByEndDate implements Comparator<Task> {
 	        if(s1.getEndDate().isBefore(s2.getEndDate())){
 	        	return -1;
 	        }
-	        else if(s1.getEndDate().isEqual(s2.getEndDate())){
+	        else if(s1.getEndDate().isEquals(s2.getEndDate())){
 	        	return 0;
 	        }
 	        else
