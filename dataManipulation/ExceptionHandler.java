@@ -75,11 +75,11 @@ public class ExceptionHandler {
 				choiceList.add(cur);
 			}
 		} catch (IndexOutOfBoundsException ex) {
-			throw new BadSubcommandArgException("input out of range, please try"
-					+ " again");
+			throw new BadSubcommandArgException("The number you have entered is out of range, "
+					+ "please try again.");
 		} catch (Exception e) {
-			throw new BadSubcommandArgException("non-numeric input "
-					+ "found, please try again");
+			throw new BadSubcommandArgException("You have entered a non-numeric key, "
+					+ "please enter a number.");
 		}
 		
 		return choiceList;
@@ -95,7 +95,7 @@ public class ExceptionHandler {
 		}
 		
 		if (hasRepeats(input)) {
-			throw new BadSubcommandArgException("you selected the same item "
+			throw new BadSubcommandArgException("You selected the same item "
 					+ "more than once, please select again or enter 0 to quit");
 		}
 		return input;
