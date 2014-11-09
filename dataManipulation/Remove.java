@@ -17,9 +17,9 @@ import fileIo.FileIo;
 
 public class Remove extends Command {
 	
-	private static List<Task> tasksFound;
-	private static Task taskToRemove;
-	private static Task taskRemoved;
+	private List<Task> tasksFound;
+	private Task taskToRemove;
+	private Task taskRemoved;
 	
 	private static final String NO_MATCH_MESSAGE = "The task that you are trying to delete cannot be found.";
 
@@ -47,7 +47,7 @@ public class Remove extends Command {
 	 * @author Nelson / A0111014J
 	 */
 	
-	public static Task remove(List<Subcommand> cc) throws Exception {
+	public Task remove(List<Subcommand> cc) throws Exception {
 		
 		int indexOfDeletionList = initializeTasksFound(cc);
 		
@@ -89,7 +89,7 @@ public class Remove extends Command {
 		throw new NoResultException(NO_MATCH_MESSAGE);
 	}
 
-	private static int initializeTasksFound(List<Subcommand> cc)
+	private int initializeTasksFound(List<Subcommand> cc)
 			throws BadSubcommandException, BadSubcommandArgException,
 			BadCommandException {
 		tasksFound = new ArrayList<Task>();
