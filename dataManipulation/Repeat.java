@@ -90,7 +90,8 @@ public class Repeat extends Command {
 				makeRepeat(ld);
 			}
 		} else if (freq.equals(FREQUENCY.ONCE.toString())) {
-			;
+			LocalDate s = LocalDate.parse(ldParse(start));
+			makeRepeat(s);
 		} else {
 			//THROW ERROR OR STRING
 		}

@@ -132,11 +132,11 @@ public class ezCMessages {
 				firstLine = firstLine + "\tStarting " + task.getStartDate();
 			}
 		} else if (task.getStartDate().isEquals(task.getEndDate())) {
-			firstLine = firstLine + "\tOn " + task.getStartDate().toString();
+			firstLine = firstLine + "\tOn " + task.getStartDate().toPrint();
 		} else if (today.isBefore(task.getStartDate())) {
-			firstLine = firstLine + "\tFrom " + task.getStartDate().toString() + " to " + task.getEndDate().toString();
+			firstLine = firstLine + "\tFrom " + task.getStartDate().toPrint() + " to " + task.getEndDate().toPrint();
 		} else {
-			firstLine = firstLine + "\tDue " + task.getEndDate().toString();
+			firstLine = firstLine + "\tDue " + task.getEndDate().toPrint();
 		}
 		
 		if (task.hasStartTime()) {

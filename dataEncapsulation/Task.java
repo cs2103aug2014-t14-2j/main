@@ -451,13 +451,13 @@ public class Task {
 			answer = answer + "Category: " + this.category + NEW_LINE;
 		} 
 		if(!hasDeadline){
-			answer = answer + "Start: " + this.getStartDate().toString() + 
+			answer = answer + "Start: " + this.getStartDate().toPrint() + 
 					" @ " + this.getStartTime().toString() + NEW_LINE + 
 					"End: " + MESSAGE_NO_END + NEW_LINE;
 		} else {
-			answer = answer + "Start: " + this.getStartDate().toString() + 
+			answer = answer + "Start: " + this.getStartDate().toPrint() + 
 					" @ " + this.getStartTime().toString() + NEW_LINE + "End: "
-					+ this.getEndDate().toString() + " @ " + 
+					+ this.getEndDate().toPrint() + " @ " + 
 					this.getEndTime().toString() + NEW_LINE;
 		} if(hasLocation){
 			answer = answer + "Location: " + this.location + NEW_LINE;
