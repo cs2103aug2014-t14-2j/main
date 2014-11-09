@@ -1,14 +1,9 @@
 package dataManipulation;
 
 /**
- * Notes - 
- * 		TIME is probably going to be wrong, since it is under the DATE attribute of the Task, 
- * 		which I replace. 
- * 
- * 		Repeat ONCE has not been implemented. > How do START and END work with a repeat ONCE?
- * 
- * @author tyuiwei
+ * @author A0115696W
  */
+
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

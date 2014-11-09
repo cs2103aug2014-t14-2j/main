@@ -92,7 +92,7 @@ public class Date {
 	}
 
 	/**
-	 * @author yuiwei
+	 * @author A0115696W
 	 * @param another
 	 * @return
 	 */
