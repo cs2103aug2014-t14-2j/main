@@ -23,10 +23,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
-import dataEncapsulation.BadCommandException;
-import dataEncapsulation.BadSubcommandArgException;
-import dataEncapsulation.BadSubcommandException;
-import dataEncapsulation.NoResultException;
 import dataEncapsulation.TaskFileErrorException;
 import dataManipulation.TotalTaskList;
 import fileIo.FileIo;
@@ -149,8 +145,7 @@ public class ezCWindow extends JFrame {
 		try {
 			display.setText(messages.getWelcomeMessage() +
 					messages.welcomeTaskDisplayForUser());
-		} catch (BadSubcommandException | BadSubcommandArgException
-				| BadCommandException | NoResultException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
