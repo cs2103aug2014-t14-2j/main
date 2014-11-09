@@ -3,6 +3,7 @@ package dataManipulation;
 import java.util.List;
 
 import powerSearch.Searcher;
+import powerSearch.SlotSearch;
 import userInterface.ezCMessages;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
@@ -36,8 +37,13 @@ public class Search extends Command {
 			Exception {
 		checkForComponentAmount(2);
 		Date date = getDateForFree();
-		String results = Searcher.searchTimeSlot(list.getList(), date);
-		return results;
+	//	String results = Searcher.searchTimeSlot(list.getList(), date);
+		String results = SlotSearch.execute(date);
+		if (results.length() == 0) {
+			return "You have no free slots on " + date.toPrint();
+		} else {
+			return "Your free slots for " + date.toPrint() + " are: \n" + results;
+		}
 	}
 
 	private String handleNormalSearch(TotalTaskList list) throws Exception {

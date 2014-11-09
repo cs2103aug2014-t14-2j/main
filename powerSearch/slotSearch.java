@@ -1,47 +1,67 @@
 package powerSearch;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 import dataEncapsulation.BadSubcommandArgException;
 import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 import dataEncapsulation.Time;
+import dataEncapsulation.StartComparator;
 import dataManipulation.TotalTaskList;
 
-public class slotSearch {
+public class SlotSearch {
 	TotalTaskList tl = TotalTaskList.getInstance();
 	List<Time> freeSlots;
 	
-	public List<Slot> findFreeSlotsOn(Date d) throws Exception {
+	public static String execute(Date d) throws Exception {
+		String ans ="";
+		List<Slot> slots = findFreeSlotsOn(d);
+		for (int i=slots.size()-1; i>=0; i--) {
+			ans = ans + "\n" + slots.get(i).toString();
+		}
+		return ans;
+	}
+	
+	public static List<Slot> findFreeSlotsOn(Date d) throws Exception { 
 		List<Task> tasksOnD = tasksFor(d);
-		List<Time> se = new ArrayList<Time>();
+		Stack<Time> se = new Stack<Time>();
 		List<Slot> freeslots = new ArrayList<Slot>();
-		se.add(new Time(0,0));
+		se.push(new Time(0,0));
 		for (int i=0; i<tasksOnD.size(); i++) {
 			Task t = tasksOnD.get(i);
-			Time previous = se.get(i-1);
+			Time previous = se.peek();
 			Time start = t.getStartTime();
 			Time end = t.getEndTime();
 			if(start.compareTo(previous) <= 0) {
-				se.remove(i-1);
-				se.add(end);
+				se.pop();
+				se.push(end);
 			} else {
-				se.add(start);
-				se.add(end);
+				se.push(start);
+				se.push(end);
 			}
 		}
+		se.push(new Time(23,59));
+		/*
 		for (int i=0; i<se.size(); i=i+2) {
 			Time freeStart = se.get(i);
 			Time freeEnd = se.get(i+1);
+			Slot freeSlot = new Slot(freeStart, freeEnd);
+			freeslots.add(freeSlot);
+		}*/
+		while (!se.empty()) {
+			Time freeEnd = se.pop();
+			Time freeStart = se.pop();
 			Slot freeSlot = new Slot(freeStart, freeEnd);
 			freeslots.add(freeSlot);
 		}
 		return freeslots;
 	}
 	
-	public List<Task> tasksFor(Date d) throws BadSubcommandException, BadSubcommandArgException {
+	public static List<Task> tasksFor(Date d) throws BadSubcommandException, BadSubcommandArgException {
 		List<Task> results = new ArrayList<Task>();
 		List<Task> allTasks = TotalTaskList.getInstance().getList();
 		for (Task t : allTasks) {
@@ -53,9 +73,9 @@ public class slotSearch {
 				results.add(t);
 			}
 		}
+		Collections.sort(results, new StartComparator());
 		return results;
 	}
-	
 	
 }
 
@@ -76,6 +96,6 @@ class Slot {
 	}
 	
 	public String toString() {
-		return "From [ " + getStart().toString() + " ] to [ " + getEnd().toString();
+		return "From " + getStart().toString() + " to " + getEnd().toString() ;
 	}
 } 
