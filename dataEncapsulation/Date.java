@@ -137,6 +137,14 @@ public class Date {
 		return dmFormat;
 	}
 
+	/*
+	 * Reads a String and outputs the correct Date object.
+	 * Accepted formats:
+	 * 		November 5, 2014
+	 * 		5/11/2014
+	 * 		2014-11-5
+	 * @author Yui Wei / A0115696W
+	 */
 	public Date determineDate(String dateString) throws Exception {
 		try {
 			if (dateString == null) {
