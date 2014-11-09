@@ -329,6 +329,13 @@ public class ExceptionHandler {
 		public void actionPerformed(ActionEvent ev) {
 			status.setText(emptyString);
 			String userChoice = userInput.getText();
+			
+			if (userChoice.trim().matches(quitRequest)) {
+				status.setText("exit selected");
+				endExceptionHandling();
+				return;
+			}
+			
 			ArrayList<Task> choices = new ArrayList<Task>();
 			
 			try {
