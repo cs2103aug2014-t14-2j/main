@@ -346,6 +346,8 @@ public class CommandInterpreter {
 			return Subcommand.TYPE.NAME;
 		case FINISH:
 			return Subcommand.TYPE.NAME;
+		case HELP:
+			return Subcommand.TYPE.HELP;
 		case REMOVE:
 			return Subcommand.TYPE.NAME;
 		case REPEAT:
@@ -595,6 +597,8 @@ public class CommandInterpreter {
 			case STARTTIME :
 				return true;
 			case ENDTIME :
+				return true;
+			case HELP :
 				return true;
 			default :
 				return false;
