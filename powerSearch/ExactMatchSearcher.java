@@ -243,7 +243,8 @@ public class ExactMatchSearcher {
 	public static boolean isTaskDuplicate(Task taskToCheck) {
 
 		List<List<Task>> categorizedList = new ArrayList<List<Task>>();
-		categorizedList.add(TotalTaskList.getInstance().getNotCompleted());
+        categorizedList.add(TotalTaskList.getInstance().getList());
+        categorizedList.add(TotalTaskList.getInstance().getOverdue());
 
 		for(List<Task> lt : categorizedList) {
 			

@@ -16,6 +16,7 @@ import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
+import dataEncapsulation.Time;
 import dataManipulation.CommandType.COMMAND_TYPE;
 
 public class Edit extends Command {
@@ -60,7 +61,7 @@ public class Edit extends Command {
 		List<Subcommand> nameOfTaskToEdit = new ArrayList<Subcommand>();
 		nameOfTaskToEdit.add(subcommands.get(0));
 		
-		List<Task> tasks = ExactMatchSearcher.literalSearch(nameOfTaskToEdit, taskList.getAllTasks());
+		List<Task> tasks = ExactMatchSearcher.literalSearch(nameOfTaskToEdit, taskList.getNotCompleted());
 		if(tasks.size() == 0) {
 			throw new Exception("the task you wish to edit does not exist");
 		}
@@ -100,6 +101,15 @@ public class Edit extends Command {
 							break;
 
 			case LOCATION:	toEdit.setLocation(cc.getContents());
+							break;
+							
+			case STARTTIME:	toEdit.setStartTime(new Time().determineTime(cc.getContents()));
+							break;
+							
+			case ENDTIME:	toEdit.setEndTime(new Time().determineTime(cc.getContents()));
+							break;
+							
+			case START :	toEdit.setStartDate(new Date().determineDate(cc.getContents()));
 							break;
 
 			case END:	toEdit.setEndDate(new Date().determineDate(cc.getContents()));
