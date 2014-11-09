@@ -16,7 +16,38 @@ public class Help extends Command {
 
 	@Override
 	public String execute() {
-		return ezCMessages.getInstance().getUserCommandDisplay();
+		
+		switch(subcommands.get(0).getContents()) {
+			
+			case "add" :
+				return ezCMessages.getInstance().getAddHelp();
+			case "all" :
+				return ezCMessages.getInstance().getAllHelp();
+			case "edit" :
+				return ezCMessages.getInstance().getEditHelp();
+			case "finish" :
+				return ezCMessages.getInstance().getFinishHelp();
+			case "list" :
+				return ezCMessages.getInstance().getUserCommandDisplay();
+			case "redo" :
+				return ezCMessages.getInstance().getRedoHelp();
+			case "remove" :
+				return ezCMessages.getInstance().getRemoveHelp();
+			case "repeat" :
+				return ezCMessages.getInstance().getRepeatHelp();
+			case "search" :
+				return ezCMessages.getInstance().getSearchHelp();
+			case "today" :
+				return ezCMessages.getInstance().getTodayHelp();
+			case "undo" :
+				return ezCMessages.getInstance().getUndoHelp();
+			case "unfinish" :
+				return ezCMessages.getInstance().getUnfinishHelp();
+			default :
+				break;
+		
+		}
+		return null;
 	}
 
 	@Override
