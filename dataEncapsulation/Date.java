@@ -341,7 +341,7 @@ public class Date {
 		return answer + " " + this.getDay() + ", " + this.getYear();
 	}
 
-	public String toPrint() throws Exception {
+	public String toPrint() {
 		String answer = new String();
 		String day = new String();
 		/*
@@ -465,9 +465,16 @@ public class Date {
 	 * @return
 	 * @throws Exception
 	 */
-	private String getDayOfWeek() throws Exception {
-		LocalDate date = LocalDate.parse(ldParse(this));
-		String result = date.getDayOfWeek().toString().toLowerCase();
-		return result.substring(0, 1).toUpperCase() + result.substring(1);
+	private String getDayOfWeek()  {
+		LocalDate date;
+		try {
+			date = LocalDate.parse(ldParse(this));
+			String result = date.getDayOfWeek().toString().toLowerCase();
+			return result.substring(0, 1).toUpperCase() + result.substring(1);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			return "There was a problem with your date.";
+		}
+		
 	}
 }
