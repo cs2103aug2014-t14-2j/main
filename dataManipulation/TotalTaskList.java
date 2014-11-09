@@ -4,11 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import powerSearch.ExactMatchSearcher;
-import dataEncapsulation.BadCommandException;
-import dataEncapsulation.BadSubcommandArgException;
-import dataEncapsulation.BadSubcommandException;
-import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 import dataEncapsulation.sortTaskByEndDate;
 
@@ -76,18 +71,6 @@ public class TotalTaskList {
 	
 	public List<Task> getOverdue() {
 		return overdue;
-	}
-	
-	public List<Task> getToday() throws BadSubcommandException, BadSubcommandArgException, BadCommandException {
-		List<Task> todayTasks = new ArrayList<Task>();
-		Date today = new Date();
-		
-		Subcommand todaySubcommand = new Subcommand(Subcommand.TYPE.DATE, today.toString());
-		List<Subcommand> toSearch = new ArrayList<Subcommand>();
-		toSearch.add(todaySubcommand);
-		todayTasks = ExactMatchSearcher.literalSearch(toSearch, notCompleted);
-		
-		return todayTasks;
 	}
 	
 	public List<Task> getAllTasks() {
