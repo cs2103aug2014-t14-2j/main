@@ -507,7 +507,7 @@ public class Task {
 		
 		if(this.name.equalsIgnoreCase(other.name)
 				&&
-				((!this.hasCategory && !other.hasCategory) || (this.category.equalsIgnoreCase(other.category)))
+			((!this.hasCategory && !other.hasCategory) || (this.category.equalsIgnoreCase(other.category)))
 				&&
 			((!this.hasLocation && !other.hasLocation) || (this.location.equalsIgnoreCase(other.location)))
 				&&

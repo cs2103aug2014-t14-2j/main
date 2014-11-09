@@ -61,6 +61,9 @@ public class Edit extends Command {
 		nameOfTaskToEdit.add(subcommands.get(0));
 		
 		List<Task> tasks = ExactMatchSearcher.literalSearch(nameOfTaskToEdit, taskList.getAllTasks());
+		if(tasks.size() == 0) {
+			throw new Exception("the task you wish to edit does not exist");
+		}
 		if(tasks.size() > 1) {
 			ActionException moreThanOne = new ActionException(tasks, ActionException.ErrorLocation.EDIT, subcommands);
 			throw moreThanOne;

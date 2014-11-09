@@ -17,16 +17,18 @@ public class Date {
 
 	public Date(int userday, int usermonth, int useryear) throws Exception {
 		int correctedYear = correctYear(useryear);
+		cal.setLenient(false);
 		if (dateValid(userday, usermonth, correctedYear)) {
 			this.setDay(userday);
 			this.setMonth(usermonth);
 			this.setYear(correctedYear);
 			cal.set(correctedYear, usermonth, userday);
-		} else { throw new Exception("Invalid Date."); }
+		} else { throw new Exception("Invalid Date"); }
 	}
 
 	public Date() {
 		cal = Calendar.getInstance();
+		cal.setLenient(false);
 		this.day = cal.get(Calendar.DATE);
 		this.month = cal.get(Calendar.MONTH) + 1;
 		this.year = cal.get(Calendar.YEAR);
@@ -38,9 +40,13 @@ public class Date {
 	public boolean dateValid(int userday, int usermonth, int useryear) {
 		boolean dateIsValid = true;
 		try {
-			if (useryear < 2014) {
+			if(userday < 1 || userday > 31) {
 				dateIsValid = false;
-			} else if (useryear > 9999) {
+			}
+			if(usermonth < 1 || usermonth > 12) {
+				dateIsValid = false;
+			}
+			if (useryear < 2014 || useryear > 9999) {
 				dateIsValid = false;
 			}
 		} catch (DateTimeException e) {
@@ -197,7 +203,7 @@ public class Date {
 			Date userDate = new Date(dd, mm, yyyy);
 			return userDate;
 		} catch (Exception e) {
-			throw new BadSubcommandArgException("invalid date");
+			throw new BadSubcommandArgException("You are entering an invalid date. Please enter dates from the year 2014 onwards.");
 		}
 	}
 

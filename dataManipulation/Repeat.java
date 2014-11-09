@@ -363,4 +363,49 @@ public class Repeat extends Command {
 	public String undo() throws Exception {
 		return null;
 	}
+	
+	public String furtherRepeat(Task ta, List<Subcommand> sco) throws Exception {
+		repeatedTasks = new ArrayList<Task>();
+		assembleCCs(sco);
+		initializerepeatSubcommands();
+		getTaskDuration();
+		getSubcommands();		
+		checkStartEnd();
+		
+		if (freq.equals(FREQUENCY.DAILY.toString())) {
+			List<LocalDate> daysHappening_daily = repeatStartDates_daily(start, end);
+			for (LocalDate ld : daysHappening_daily) { //each ld is a new start date
+				makeRepeat(ld);
+			}
+		} else if (freq.equals(FREQUENCY.WEEKLY.toString())) {
+			int givenStartToActualStart = findDayOfWeek(t.getStartDate()).getValue() - s.getDayOfWeek().getValue();
+			if (givenStartToActualStart < 0) {
+				givenStartToActualStart = givenStartToActualStart + 7;
+			}
+			LocalDate nStart = s.plusDays(givenStartToActualStart);
+			LocalDate nEnd = LocalDate.parse(ldParse(end));
+			List<LocalDate> daysHappening_weekly = repeatStartDates_weekly(nStart, nEnd);
+			for (LocalDate ld : daysHappening_weekly) {
+				makeRepeat(ld);
+			}
+
+		} else if (freq.equals(FREQUENCY.MONTHLY.toString())) {
+			List<LocalDate> daysHappening_monthly = repeatStartDates_monthly(start, end);
+			for (LocalDate ld : daysHappening_monthly) {
+				makeRepeat(ld);
+			}
+		} else if (freq.equals(FREQUENCY.ANNUALLY.toString())) {
+			List<LocalDate> daysHappening_yearly = repeatStartDates_yearly(start, end);
+			for (LocalDate ld : daysHappening_yearly) {
+				makeRepeat(ld);
+			}
+		} else if (freq.equals(FREQUENCY.ONCE.toString())) {
+			;
+		} else {
+			//THROW ERROR OR STRING
+		}
+		String x = ezCMessages.getInstance().getStringOfTasks(repeatedTasks);
+		String unimplemented = "This command has not been finished. :)";
+		return x;
+	}
 }

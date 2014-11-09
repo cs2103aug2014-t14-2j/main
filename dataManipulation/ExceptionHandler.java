@@ -54,6 +54,8 @@ public class ExceptionHandler {
 			FurtherEditer furtherEditer = new FurtherEditer(opts, cc);
 			enterToggle.initializeLesser(furtherEditer);
 			break;
+		case REPEAT: 
+			break;
 		default:
 			break;
 		}
@@ -266,6 +268,51 @@ public class ExceptionHandler {
 				status.setText("error in reading your request,"
 						+ " please try again or press 0 to exit");
 			}
+		}
+	}
+	@SuppressWarnings("serial")
+	class FurtherRepeater extends AbstractAction {
+		List<Task> options;
+		List<Subcommand> subcommands;
+		List<Task> taskList = TotalTaskList.getInstance().getAllTasks();
+		
+		public FurtherRepeater(List<Task> opts, List<Subcommand> subs) {
+			options = opts;
+			subcommands = subs;
+		}
+		
+		public void actionPerformed(ActionEvent ev)  {
+			String userChoice = userInput.getText();
+			ArrayList<Task> choices = new ArrayList<Task>();
+			
+			if (userChoice.trim().matches(quitRequest)) {
+				status.setText("exit selected");
+				endExceptionHandling();
+				return;
+			}
+			
+			try {
+				choices = getChoices(userChoice, options);
+			} catch (Exception e) {
+				status.setText(e.getMessage());
+				return;
+			}
+			
+
+			String repeated = "Something went wrong. ):";
+			for (Task t : choices) {
+				try {
+					repeated = new Repeat(subcommands).furtherRepeat(t, 
+							subcommands);
+				} catch ( Exception e ) {
+					status.setText("Sorry, you've entered something wrong "
+							+ "again. Please try repeating again!");
+					endExceptionHandling();
+					return;
+				}
+			}
+			display.setText("Successfully added repeat tasks: \n" + repeated);
+			endExceptionHandling();
 		}
 	}
 	
