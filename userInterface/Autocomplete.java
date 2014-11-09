@@ -115,9 +115,9 @@ public class Autocomplete {
 
 	private TYPE getSubcommandType(String sentence) {
 		Subcommand.TYPE type = getLastWordSubcommandType(sentence);
-		String lastWord = getLastWord(sentence);
 		
 		if (type == Subcommand.TYPE.INVALID) {
+			String lastWord = getLastWord(sentence.trim());
 			type = checkForNameType(lastWord, sentence);
 		}
 		
