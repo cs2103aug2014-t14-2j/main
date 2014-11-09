@@ -14,7 +14,7 @@ import dataEncapsulation.Time;
  * 
  */
 
-//@author A0126720N
+//@author A0126720N unused
 
 public class TaskFactory {
 	private static TaskFactory factory;
@@ -38,7 +38,7 @@ public class TaskFactory {
 					throws Exception {
 		Task newTask = new Task(name, category, location, note, startTime, endTime, beginning, ending);
 		
-		/*category = checkVitalComponents(name, category);
+		category = checkVitalComponents(name, category);
 		
 		Task newTask;
 		
@@ -56,7 +56,7 @@ public class TaskFactory {
 		
 		if (ending != null) {
 			newTask.setEndTime(ending);
-		}*/
+		}
 		
 		return newTask;
 	}

@@ -30,7 +30,6 @@ public class Add extends Command {
 	private Time startTime = null;
 	private Time endTime = null;
 	private TotalTaskList taskList = TotalTaskList.getInstance();
-	private TaskFactory makeMyTask = TaskFactory.getInstance();
 	private ezCMessages message = ezCMessages.getInstance();
 
 	public Add(List<Subcommand> subcommands)
@@ -94,7 +93,7 @@ public class Add extends Command {
 
 		assembleAttributes(taskAttributes);
 
-		Task toBeAdded = makeMyTask.makeTask(taskName, taskCategory, taskLocation, taskNote, taskStart, taskEnd, startTime, endTime);
+		Task toBeAdded = new Task(taskName, taskCategory, taskLocation, taskNote, taskStart, taskEnd, startTime, endTime);
 
 		return toBeAdded;
 

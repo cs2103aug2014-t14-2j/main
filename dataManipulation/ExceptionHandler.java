@@ -13,7 +13,6 @@ import userInterface.ActionToggler;
 import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.BadSubcommandArgException;
-import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 
 public class ExceptionHandler {

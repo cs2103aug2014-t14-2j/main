@@ -5,8 +5,6 @@
 	 */
 package powerSearch;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +43,6 @@ public class SearcherTest {
 		Date start2 = new Date(2, 11, 2014);
 		Date end2 = new Date(7, 11, 2014);
 		Time time1 = new Time(7, 0);
-		Time time2 = new Time(11, 45);
 		Time time3 = new Time(22, 50);
 		Time time4 = new Time(23, 59);
 		String location = new String("CSC");

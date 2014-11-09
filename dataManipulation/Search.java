@@ -41,7 +41,7 @@ public class Search extends Command {
 	}
 
 	private String handleNormalSearch(TotalTaskList list) throws Exception {
-		List<Task> results = Searcher.search(subcommands, list.getList());
+		List<Task> results = Searcher.search(subcommands, list.getNotCompleted());
 		ezCMessages messages = ezCMessages.getInstance();
 		return messages.getStringOfTasks(results);
 	}

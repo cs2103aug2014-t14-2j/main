@@ -8,7 +8,6 @@ import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 import dataEncapsulation.TaskFileErrorException;
 import dataEncapsulation.Time;
-import dataManipulation.TaskFactory;
 
 /**
  * This class reads the file contents from the ezC task storage file.
@@ -69,7 +68,6 @@ public class TaskFileReader {
 	private boolean hasNewInfo = false;
 
 	private List<String> taskComponents = new ArrayList<String>();
-	private TaskFactory factory = TaskFactory.getInstance();
 
 	public List<Task> getAllTasks(List<String> componentsFromFile) throws TaskFileErrorException {
 		List<Task> taskList = new ArrayList<Task>();
@@ -132,7 +130,7 @@ public class TaskFileReader {
 		Time startTime = (new Time()).determineTime(startTimeString);
 		Time endTime = (new Time()).determineTime(endTimeString);
 		
-		Task newTask = factory.makeTask(name, category, location, note, start, end, startTime, endTime);
+		Task newTask = new Task(name, category, location, note, start, end, startTime, endTime);
 		addToAutocomplete(name, category, location);
 		
 		if (completed.equalsIgnoreCase(MESSAGE_COMPLETED)) {
