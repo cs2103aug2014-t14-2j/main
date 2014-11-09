@@ -173,7 +173,7 @@ public class Date {
 			case "monday": case "mon" : 
 				Date mon = getNext(DayOfWeek.MONDAY);
 				return mon;
-			case "tuesday" : case "tues" : 
+			case "tuesday" : case "tues" : case "tue" :
 				Date tue = getNext(DayOfWeek.TUESDAY);
 				return tue;
 			case "wednesday" : case "wed":

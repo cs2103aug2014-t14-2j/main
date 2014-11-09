@@ -5,6 +5,7 @@ import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
 import userInterface.Autocomplete;
+import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandArgException;
@@ -32,7 +33,8 @@ public class Remove extends Command {
 		taskRemoved = remove(subcommands);
 		updateFile();
 		updateAutocomplete(taskRemoved);
-		return "You have successfully deleted: \n" + taskRemoved.toString();
+		ezCMessages messages = ezCMessages.getInstance();
+		return messages.getDeleteMessage(taskRemoved);
 	}
 
 	@Override
@@ -70,7 +72,8 @@ public class Remove extends Command {
 		taskRemoved = doDeleteTask(perfectMatch, indexOfDeletionList);
 		updateFile();
 		updateAutocomplete(taskRemoved);
-		return "You have successfully deleted: \n" + taskRemoved.toString();
+		ezCMessages messages = ezCMessages.getInstance();
+		return messages.getDeleteMessage(taskRemoved);
 	}
 
 	private Task findLiteralMatch(List<Subcommand> subcommands, 
