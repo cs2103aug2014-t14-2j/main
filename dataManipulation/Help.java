@@ -16,7 +16,7 @@ public class Help extends Command {
 
 	@Override
 	public String execute() {
-		return ezCMessages.getInstance().getUserHelpMessage();
+		return ezCMessages.getInstance().getUserCommandDisplay();
 	}
 
 	@Override

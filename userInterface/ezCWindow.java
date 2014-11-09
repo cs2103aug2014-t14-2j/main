@@ -23,6 +23,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.NoResultException;
 import dataEncapsulation.TaskFileErrorException;
 import dataManipulation.TotalTaskList;
 import fileIo.FileIo;
@@ -74,11 +78,11 @@ public class ezCWindow extends JFrame {
 				fileIo.recover(e);
 			} catch (Exception failure) {
 				errorMessage = e.getMessage() + "\nAttempt failed.\n\n" 
-						+ messages.getUserHelpMessage();
+						+ messages.getUserCommandDisplay();
 				display.setText(errorMessage);
 			}
 			errorMessage = e.getMessage() + "\nAttempt succeeded.\n\n" 
-					+ messages.getUserHelpMessage();
+					+ messages.getUserCommandDisplay();
 			display.setText(errorMessage);
 		} catch (Exception e) {
 			String errorMessage = "There was an error in reading your file. "
@@ -142,7 +146,13 @@ public class ezCWindow extends JFrame {
 
 	private void setWindowText() {
 		status.setText(" ");
-		display.setText(messages.getUserHelpMessage());
+		try {
+			display.setText(messages.getWelcomeMessage() +
+					messages.welcomeTaskDisplayForUser());
+		} catch (BadSubcommandException | BadSubcommandArgException
+				| BadCommandException | NoResultException e) {
+			e.printStackTrace();
+		}
 		
 		int top = 0;
 		display.setCaretPosition(top);
