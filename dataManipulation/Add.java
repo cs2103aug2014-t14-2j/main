@@ -40,6 +40,10 @@ public class Add extends Command {
 			parseDateToStartAndEnd();
 		}
 	}
+	
+	public Add() throws BadCommandException, BadSubcommandException {
+		super(COMMAND_TYPE.ADD, new ArrayList<Subcommand>());
+	}
 
 	@Override
 	public String execute() throws Exception {
@@ -115,9 +119,11 @@ public class Add extends Command {
 		List<Subcommand> taskDetails = new ArrayList<Subcommand>();
 
 		taskDetails.add(new Subcommand(Subcommand.TYPE.NAME, taskToDismantle.getName()));
-
-		taskDetails.add(new Subcommand(Subcommand.TYPE.CATEGORY, taskToDismantle.getCategory()));
-
+		
+		if(taskToDismantle.hasCategory()) {
+			taskDetails.add(new Subcommand(Subcommand.TYPE.CATEGORY, taskToDismantle.getCategory()));
+		}
+		
 		if(taskToDismantle.getHasLocation()) { 
 			taskDetails.add(new Subcommand(Subcommand.TYPE.LOCATION, taskToDismantle.getLocation()));
 		}
@@ -134,7 +140,7 @@ public class Add extends Command {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.ENDTIME, taskToDismantle.getEndTime().toString()));
 		}
 
-		if(taskToDismantle.getNote() != null) {
+		if(!taskToDismantle.getNote().equalsIgnoreCase("")) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.NOTE, taskToDismantle.getNote()));
 		}
 
@@ -148,6 +154,9 @@ public class Add extends Command {
 			switch (cc.getType()) {
 
 			case NAME:	setTaskName(cc.getContents());
+			break;
+			
+			case TITLE:	setTaskName(cc.getContents());
 			break;
 
 			case CATEGORY:	setTaskCategory(cc.getContents());

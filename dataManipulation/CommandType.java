@@ -227,6 +227,8 @@ public class CommandType {
 				return true;
 			case STARTTIME :
 				return true;
+			case TITLE :
+				return true;
 			case ENDTIME :
 				return true;
 			default :
