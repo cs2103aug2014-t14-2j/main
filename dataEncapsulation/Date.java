@@ -165,6 +165,13 @@ public class Date {
 		try {
 			if (dateString == null) {
 				return null;
+			} else if (dateString.equals("today")) {
+				return new Date();
+			} else if (dateString.equals("tomorrow")) {
+				Date tomorrow = new Date();
+				int day = tomorrow.getDay();
+				tomorrow.setDay(day + 1);
+				return tomorrow;
 			}
 	
 			String month, day, year;
