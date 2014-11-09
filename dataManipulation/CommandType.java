@@ -275,6 +275,8 @@ public class CommandType {
 				return true;
 			case END :
 				return true;
+			case DATE:
+				return true;
 			default :
 				return false;
 		}
