@@ -57,10 +57,11 @@ public class TaskFileReader {
 	private final String LINE_TITLE_DELIMITER = ":";
 	private final String EMPTY_STRING = "";
 	
-	private final String MESSAGE_NO_END = "No Specified End Date";
-	private final String MESSAGE_NO_LOCATION = "No Specified Location";
-	private final String MESSAGE_NO_NOTE = "No Specified Note";
-	private final String MESSAGE_COMPLETED = "Yes";
+	private final String MESSAGE_NO_END = Task.MESSAGE_NO_END;
+	private final String MESSAGE_NO_LOCATION = Task.MESSAGE_NO_LOCATION;
+	private final String MESSAGE_NO_NOTE = Task.MESSAGE_NO_NOTE;
+	private final String MESSAGE_COMPLETED = Task.MESSAGE_COMPLETED;
+	private final String MESSAGE_NO_CATEGORY = Task.MESSAGE_NO_CATEGORY;
 	
 	private final int FIRST_POSITION = 0;
 	private final String TIME_DELIMITER = "@";
@@ -164,6 +165,7 @@ public class TaskFileReader {
 		String location = getLocation();
 		String note = getNote();
 		String end = getEndDateString();
+		String category = getCategory();
 		
 		if (end.equals(MESSAGE_NO_END)) {
 			taskComponents.set(TASK_COMPONENT.END.getIndex(), null);
@@ -175,6 +177,10 @@ public class TaskFileReader {
 		
 		if (note.equals(MESSAGE_NO_NOTE)) {
 			taskComponents.set(TASK_COMPONENT.NOTE.getIndex(), null);
+		}
+		
+		if (category.equals(MESSAGE_NO_CATEGORY)) {
+			taskComponents.set(TASK_COMPONENT.CATEGORY.getIndex(), null);
 		}
 		
 		return;

@@ -13,10 +13,12 @@ package dataEncapsulation;
 import java.util.Calendar;
 public class Task {
 	
-	private final String MESSAGE_NO_END = "No Specified End Date";
-	private final String MESSAGE_NO_LOCATION = "No Specified Location";
-	private final String MESSAGE_NO_NOTE = "No Specified Note";
-	private final String NEW_LINE = System.getProperty("line.separator");
+	public static final String MESSAGE_NO_END = "No Specified End Date";
+	public static final String MESSAGE_NO_LOCATION = "No Specified Location";
+	public static final String MESSAGE_NO_NOTE = "No Specified Note";
+	public static final String MESSAGE_COMPLETED = "Yes";
+	public static final String MESSAGE_NO_CATEGORY = "No Specified Category";
+	private static final String NEW_LINE = System.getProperty("line.separator");
 	
 	private Date startdate = new Date();
 	private Date enddate = new Date();
@@ -34,6 +36,7 @@ public class Task {
 	private boolean hasStartTime = false;
 	private boolean hasEndTime = false;
 	private boolean isOverdue = false;
+	private boolean hasCategory = false;
 	
 	//has every field
 	public Task(String nm, String cat, String loc, String note, Date start, Date end, Time s, Time e) throws Exception {
@@ -44,7 +47,7 @@ public class Task {
 			this.setCategory(cat);
 		}
 		if (loc != null) {
-			this.setLocation(location);
+			this.setLocation(loc);
 		}
 		if (note != null) {
 			this.setNote(note);
@@ -290,8 +293,8 @@ public class Task {
 	public String getLocation() {
 		return location;
 	}
-	public void setLocation(String location) {
-		this.location = location;
+	public void setLocation(String loc) {
+		this.location = loc;
 		hasLocation = true;
 	}
 	public Date getEndDate() {
@@ -319,7 +322,13 @@ public class Task {
 		return category;
 	}
 	public void setCategory(String category) {
+		if (category == null) {
+			hasCategory = false;
+			return;
+		}
+		hasCategory = true;
 		this.category = category;
+		return;
 	}
 
 	public String getName() {
@@ -349,6 +358,11 @@ public class Task {
 	public Time getStartTime() {
 		setHasStartTime(true);
 		return starttime;
+	}
+	
+	//@author A0126720N
+	public boolean hasCategory() {
+		return hasCategory;
 	}
 	
 	public void setStartTime(Time s) throws Exception {
@@ -395,13 +409,16 @@ public class Task {
 	public String toString(){
 		String answer = new String();
 		answer = answer + "Task: " + this.name + NEW_LINE;
-		answer = answer + "Category: " + this.category + NEW_LINE;
+		if(hasCategory){
+			answer = answer + "Category: " + this.category + NEW_LINE;
+		} else {
+			answer = answer + "Category: " + MESSAGE_NO_CATEGORY + NEW_LINE;
+		}
 		if(!hasDeadline){
 		answer = answer + "Start: " + this.getStartDate().toString() + " @ " +
 				this.getStartTime().toString() + NEW_LINE + "End: " + 
 				MESSAGE_NO_END + NEW_LINE;
-		}
-		if(hasDeadline){
+		} else {
 			answer = answer + "Start: " + this.getStartDate().toString() + 
 					" @ " + this.getStartTime().toString() + NEW_LINE + 
 					"End: " + this.getEndDate().toString() + " @ " + 
@@ -409,14 +426,12 @@ public class Task {
 		}
 		if(hasLocation){
 			answer = answer + "Location: " + this.getLocation() + NEW_LINE;
-		}
-		if(!hasLocation){
+		} else {
 			answer = answer + "Location: " + MESSAGE_NO_LOCATION + NEW_LINE;
 		}
 		if(hasNote){
 			answer = answer + "Note: " + this.getNote() + NEW_LINE;
-		}
-		if(!hasNote){
+		} else {
 			answer = answer + "Note: " + MESSAGE_NO_NOTE + NEW_LINE;
 		}
 		if(isComplete) {
@@ -430,19 +445,19 @@ public class Task {
 	public String toPrint(){
 		String answer = new String();
 		answer = answer + "Task: " + this.name + NEW_LINE;
-		answer = answer + "Category: " + this.category + NEW_LINE;
+		if(hasCategory){
+			answer = answer + "Category: " + this.category + NEW_LINE;
+		} 
 		if(!hasDeadline){
 			answer = answer + "Start: " + this.getStartDate().toString() + 
 					" @ " + this.getStartTime().toString() + NEW_LINE + 
 					"End: " + MESSAGE_NO_END + NEW_LINE;
-		}
-		if(hasDeadline){
+		} else {
 			answer = answer + "Start: " + this.getStartDate().toString() + 
 					" @ " + this.getStartTime().toString() + NEW_LINE + "End: "
 					+ this.getEndDate().toString() + " @ " + 
 					this.getEndTime().toString() + NEW_LINE;
-		}
-		if(hasLocation){
+		} if(hasLocation){
 			answer = answer + "Location: " + this.location + NEW_LINE;
 		}
 		if(hasNote){
@@ -492,7 +507,7 @@ public class Task {
 		
 		if(this.name.equalsIgnoreCase(other.name)
 				&&
-			this.category.equalsIgnoreCase(other.category)	
+				((!this.hasCategory && !other.hasCategory) || (this.category.equalsIgnoreCase(other.category)))
 				&&
 			((!this.hasLocation && !other.hasLocation) || (this.location.equalsIgnoreCase(other.location)))
 				&&

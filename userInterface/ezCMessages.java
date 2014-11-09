@@ -134,7 +134,7 @@ public class ezCMessages {
 		
 		firstLine = task.getName();
 		
-		if (!task.getCategory().equalsIgnoreCase("no category")) {
+		if (task.hasCategory()) {
 			firstLine = firstLine + "\t" + "Category: " + task.getCategory();
 		}
 		
