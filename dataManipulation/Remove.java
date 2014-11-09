@@ -6,6 +6,7 @@ import java.util.List;
 import powerSearch.ExactMatchSearcher;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
 import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.NoResultException;
 import dataEncapsulation.Task;
@@ -17,21 +18,21 @@ public class Remove extends Command {
 	private static List<Task> tasksFound;
 	private static Task taskToRemove;
 	private static Task taskRemoved;
-	private static List<Subcommand> sc;
+	
+	private static final String NO_MATCH_MESSAGE = "task to delete not found";
 
 	public Remove(List<Subcommand> commandComponents)
 			throws BadCommandException, BadSubcommandException {
 		super(COMMAND_TYPE.REMOVE, commandComponents);
-		sc = commandComponents;
 	}
 
 	@Override
 	public String execute() throws Exception {
-		// TODO Auto-generated method stub
-		taskRemoved = remove(sc);
+		taskRemoved = remove(subcommands);
+		updateFile();
 		return "Just deleted: \n" + taskRemoved.toString();
 	}
-	
+
 	@Override
 	protected void checkValidity() throws BadSubcommandException {
 		super.checkValidity();
@@ -44,6 +45,47 @@ public class Remove extends Command {
 	
 	public static Task remove(List<Subcommand> cc) throws Exception {
 		
+		int indexOfDeletionList = initializeTasksFound(cc);
+		
+		if (tasksFound.size() > 1) {
+			ActionException moreThanOne = new ActionException(tasksFound, ActionException.ErrorLocation.DELETE,
+											cc);
+			throw moreThanOne;
+		} else if (tasksFound.isEmpty()) {
+			throw new NoResultException(NO_MATCH_MESSAGE);
+		}
+		taskToRemove = tasksFound.get(0);
+		taskRemoved = taskToRemove;
+		doDeleteTask(taskToRemove, indexOfDeletionList);
+		return taskRemoved;
+		
+	}
+	
+	public String executeForUndo() throws Exception {
+		int indexOfDeletionList = initializeTasksFound(subcommands);
+		List<Task> listToDeleteFrom = getDeletionList(indexOfDeletionList);
+		Task perfectMatch = findLiteralMatch(subcommands, listToDeleteFrom);
+		taskRemoved = doDeleteTask(perfectMatch, indexOfDeletionList);
+		updateFile();
+		return "Just deleted: \n" + taskRemoved.toString();
+	}
+
+	private Task findLiteralMatch(List<Subcommand> subcommands, 
+			List<Task> listToDeleteFrom) throws BadCommandException, 
+			BadSubcommandException, BadSubcommandArgException, Exception {
+		Task match = (new Add(subcommands)).buildTask(subcommands);
+		for (int i = 0; i < listToDeleteFrom.size(); ++i) {
+			if (match.isEqualTask(listToDeleteFrom.get(i))) {
+				return listToDeleteFrom.get(i);
+			}
+		}
+		
+		throw new NoResultException(NO_MATCH_MESSAGE);
+	}
+
+	private static int initializeTasksFound(List<Subcommand> cc)
+			throws BadSubcommandException, BadSubcommandArgException,
+			BadCommandException {
 		tasksFound = new ArrayList<Task>();
 		List<Task> currentTasks = TotalTaskList.getInstance().getList();
 		List<Task> overdueTasks = TotalTaskList.getInstance().getOverdue();
@@ -60,25 +102,14 @@ public class Remove extends Command {
 			}
 			
 		}
-		
-		if (tasksFound.size() > 1) {
-			ActionException moreThanOne = new ActionException(tasksFound, ActionException.ErrorLocation.DELETE,
-											cc);
-			throw moreThanOne;
-		} else if (tasksFound.isEmpty()) {
-			throw new NoResultException("task to delete not found");
-		}
-		taskToRemove = tasksFound.get(0);
-		taskRemoved = taskToRemove;
-		doDeleteTask(taskToRemove, j);
-		return taskRemoved;
-		
+		return j;
 	}
 	
-	public static Task doDeleteTask(Task toRemove, int i) {
-		Task a = toRemove;
+	public static Task doDeleteTask(Task toRemove, int i) throws NoResultException {
+		List<Task> toDeleteFrom = getDeletionList(i);
+		toDeleteFrom.remove(toRemove);
 		
-		switch(i) {
+		/*switch(i) {
 				
 			case 0 :
 				TotalTaskList.getInstance().removeNotCompleted(a);
@@ -91,17 +122,34 @@ public class Remove extends Command {
 			default:
 				break;
 				
-		}
+		}*/
+		return toRemove;
+	}
+	
+	private static List<Task> getDeletionList(int index) throws NoResultException {
+		switch(index) {
 		
+		case 0 :
+			return TotalTaskList.getInstance().getList();
+			
+		case 1 :
+			return TotalTaskList.getInstance().getOverdue();
+			
+		default:
+			throw new NoResultException(NO_MATCH_MESSAGE);
+			
+		}
+	}
+	
+	private void updateFile() {
 		FileIo stream = FileIo.getInstance();
 		stream.rewriteFile();
-		return a;
 	}
 
 	@Override
 	public String undo() throws Exception {
 		
-		List<Subcommand> removedTaskSubC = new Add(sc).dismantleTask(taskRemoved);
+		List<Subcommand> removedTaskSubC = new Add(subcommands).dismantleTask(taskRemoved);
 		Command negatedRemoveCommand = new Add(removedTaskSubC);
 		return negatedRemoveCommand.execute();
 		

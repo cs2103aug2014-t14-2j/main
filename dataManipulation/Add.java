@@ -239,8 +239,8 @@ public class Add extends Command {
 	@Override
 	public String undo() throws Exception {
 		
-		Command negatedAddCommand = new Remove(subcommands);
-		return negatedAddCommand.execute();
+		Remove negatedAddCommand = new Remove(subcommands);
+		return negatedAddCommand.executeForUndo();
 		
 	}
 
