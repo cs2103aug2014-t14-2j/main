@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
+import userInterface.Autocomplete;
 import userInterface.ezCMessages;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandArgException;
@@ -54,11 +55,19 @@ public class Add extends Command {
 			addTaskToList(newTask);
 			FileIo IoStream = FileIo.getInstance();
 			IoStream.rewriteFile();
+			updateAutocomplete();
 			flushSubcommand();
 			String returnMessage = message.getAddMessage(newTask);
 			return returnMessage;
 		}
 		
+	}
+
+	private void updateAutocomplete() {
+		Autocomplete autocomplete = Autocomplete.getInstance();
+		autocomplete.addTitle(taskName);
+		autocomplete.addCategory(taskCategory);
+		autocomplete.addLocation(taskLocation);
 	}
 
 	private void addTaskToList(Task toAdd) {

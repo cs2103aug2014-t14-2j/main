@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
+import userInterface.Autocomplete;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandArgException;
@@ -30,6 +31,7 @@ public class Remove extends Command {
 	public String execute() throws Exception {
 		taskRemoved = remove(subcommands);
 		updateFile();
+		updateAutocomplete(taskRemoved);
 		return "Just deleted: \n" + taskRemoved.toString();
 	}
 
@@ -67,6 +69,7 @@ public class Remove extends Command {
 		Task perfectMatch = findLiteralMatch(subcommands, listToDeleteFrom);
 		taskRemoved = doDeleteTask(perfectMatch, indexOfDeletionList);
 		updateFile();
+		updateAutocomplete(taskRemoved);
 		return "Just deleted: \n" + taskRemoved.toString();
 	}
 
@@ -144,6 +147,17 @@ public class Remove extends Command {
 	private void updateFile() {
 		FileIo stream = FileIo.getInstance();
 		stream.rewriteFile();
+	}
+	
+	private void updateAutocomplete(Task task) {
+		Autocomplete autocomplete = Autocomplete.getInstance();
+		
+		autocomplete.removeTitle(task.getName());
+		autocomplete.removeCategory(task.getCategory());
+		
+		if (task.getHasLocation()) {
+			autocomplete.removeLocation(task.getLocation());
+		}
 	}
 
 	@Override
