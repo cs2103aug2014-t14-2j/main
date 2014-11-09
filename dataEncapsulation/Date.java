@@ -465,8 +465,6 @@ public class Date {
 		LocalDate ld = LocalDate.parse(ldParse(tdy));
 		int toda = ld.getDayOfWeek().getValue();
 		int nowTo = dw.getValue() - toda;
-		System.out.println("today day: " + toda);
-		System.out.println("dw: " + dw.getValue());
 		if (nowTo < 0) {
 			nowTo = nowTo + 7;
 		}
