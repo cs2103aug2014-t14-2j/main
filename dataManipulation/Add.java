@@ -70,19 +70,23 @@ public class Add extends Command {
 		autocomplete.addLocation(taskLocation);
 	}
 
-	public void addTaskToList(Task toAdd) {
-
+	public boolean addTaskToList(Task toAdd) {
+		boolean result = false;
 		Date today = new Date();
 
 		if(!toAdd.getHasDeadline() || !(toAdd.getEndDate().isBefore(today))) {
 			taskList.addNotCompleted(toAdd);
+			result = true;
 		}
 		else if(toAdd.getEndDate().isBefore(today) && !(toAdd.getIsComplete())) {
 			taskList.addOverdue(toAdd);
+			result = true;
 		}
 		else if((toAdd.getEndDate().isBefore(today) && toAdd.getIsComplete()) || toAdd.getIsComplete()) {
 			taskList.addCompleted(toAdd);
+			result = true;
 		}
+		return result;
 
 	}
 

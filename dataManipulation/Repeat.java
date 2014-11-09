@@ -32,15 +32,13 @@ import dataManipulation.Subcommand.TYPE;
 public class Repeat extends Command {
 
 	private String freq;
-	private String name;
 	private String start;
+	private String name;
 	private String end;
 	
 	private LocalDate s;
 	private LocalDate e;
-	
-	private int hrs;
-	private int mins;
+
 	private int durationOfTaskInDays;
 
 	private Task t;
@@ -80,15 +78,12 @@ public class Repeat extends Command {
 			}
 		} else if (freq.equals(FREQUENCY.WEEKLY.toString())) {
 			int givenStartToActualStart = findDayOfWeek(t.getStartDate()).getValue() - s.getDayOfWeek().getValue();
-			System.out.println("test 1");
 			if (givenStartToActualStart < 0) {
 				givenStartToActualStart = givenStartToActualStart + 7;
 			}
 			LocalDate nStart = s.plusDays(givenStartToActualStart);
 			LocalDate nEnd = LocalDate.parse(ldParse(end));
-			System.out.println("test 2");
 			List<LocalDate> daysHappening_weekly = repeatStartDates_weekly(nStart, nEnd);
-			System.out.println("test 3");
 			for (LocalDate ld : daysHappening_weekly) {
 				makeRepeat(ld);
 			}
@@ -165,8 +160,9 @@ public class Repeat extends Command {
 		String ed = ld.plusDays(durationOfTaskInDays).toString();
 		List<Subcommand> lsc = modifyDate(sd, ed);
 		Task repeatTask = new Add(repeatSubcommands).buildTask(lsc);
-		new Add(repeatSubcommands).addTaskToList(repeatTask);
-		repeatedTasks.add(repeatTask);
+		boolean added = new Add(repeatSubcommands).addTaskToList(repeatTask);
+		if (added) {
+		repeatedTasks.add(repeatTask); }
 	}
 
 	private String ldParse(String inDateFormat) throws Exception {
@@ -240,6 +236,7 @@ public class Repeat extends Command {
 	
 	private List<Subcommand> modifyDate(String newstart, String newend) throws BadSubcommandException, BadSubcommandArgException {
 		ArrayList<Subcommand> ccs = new ArrayList<Subcommand>(sc);
+		boolean hasEnd = false;
 		for (int i=0; i<ccs.size(); i++) {
 			Subcommand s = ccs.get(i);
 			switch(s.getType()) {
@@ -249,6 +246,7 @@ public class Repeat extends Command {
 				ccs.add(nS);
 				break;
 			case END :
+				hasEnd = true;
 				Subcommand nE = new Subcommand(Subcommand.TYPE.START, newend);
 				ccs.remove(s);
 				ccs.add(nE);
@@ -257,10 +255,9 @@ public class Repeat extends Command {
 				break;
 			}
 		}
-		System.out.println("test");
-		for(int j=0; j<ccs.size(); j++) {
-			Subcommand c = ccs.get(j);
-			System.out.println(c.getType().toString() + ": " + c.getContents().toString());
+		if (!hasEnd) {
+			Subcommand nE = new Subcommand(Subcommand.TYPE.END, newend);
+			ccs.add(nE);
 		}
 		return ccs;
 	}
@@ -268,8 +265,7 @@ public class Repeat extends Command {
 	private void getTaskDuration() throws Exception {
 		LocalDate st = LocalDate.parse(ldParse(t.getStartDate().toString()));
 		LocalDate en = LocalDate.parse(ldParse(t.getEndDate().toString()));
-		LocalDate ex = en.plusDays(1);
-		Period p = Period.between(st, ex);
+		Period p = Period.between(st, en);
 		durationOfTaskInDays = p.getDays();
 	}
 	
