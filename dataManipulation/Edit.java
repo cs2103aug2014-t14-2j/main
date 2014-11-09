@@ -190,7 +190,13 @@ public class Edit extends Command {
 	@Override
 	public String undo() throws Exception {
 		List<Subcommand> oldAttributes = Add.dismantleTask(preeditCopy);
-		setTaskAttributes(trueTask, oldAttributes);
+		List<Subcommand> newAttributes = Add.dismantleTask(posteditCopy);
+		trueTask = new Add(oldAttributes).buildTask(oldAttributes);
+		
+		Command removeOldTask = new Remove(newAttributes);
+		removeOldTask.execute();
+        Command addNewTask = new Add(oldAttributes);
+        addNewTask.execute();
         
 		ezCMessages messages = ezCMessages.getInstance();
         String returnMessage = messages.getUndoEditMessage(posteditCopy, trueTask);
