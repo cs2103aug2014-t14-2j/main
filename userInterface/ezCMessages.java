@@ -3,6 +3,7 @@ package userInterface;
 import java.util.List;
 
 import dataEncapsulation.Date;
+import dataEncapsulation.NoResultException;
 import dataEncapsulation.Task;
 
 /**
@@ -88,32 +89,39 @@ public class ezCMessages {
 	}
 	
 	public String getAddMessage(Task newTask) {
-		String message = "Added task:" + NEW_LINE + newTask.toPrint() + 
-				NEW_LINE;
+		String message = "Your task:" + NEW_LINE + NEW_LINE + newTask.toPrint() + 
+				NEW_LINE + "has been successfully added.";
 		return message;
 	}
 	public String getDeleteMessage(Task deletedTask) {
-		String message = "Task deleted: " + NEW_LINE + deletedTask.toPrint() + 
-				NEW_LINE;
+		String message = "Your task: " + NEW_LINE + NEW_LINE + deletedTask.toPrint() + 
+				NEW_LINE + "has been successfully deleted.";
 		return message;
 	}
 	public String getEditMessage(Task original, Task edited) {
-		String message = original.toPrint() + NEW_LINE + "was changed to:" + 
+		String message = "Your original task: " + NEW_LINE + NEW_LINE + original.toPrint() 
+				+ NEW_LINE + "was successfully edited to:" + 
 				NEW_LINE + NEW_LINE + edited.toPrint();
+		return message;
+	}
+	public String getUndoEditMessage(Task undidFrom, Task undidTo) {
+		String message = "Your task was successfully undone from: " 
+				+ NEW_LINE + NEW_LINE + undidFrom.toPrint()
+				+ NEW_LINE + "to: " + NEW_LINE + NEW_LINE + undidTo.toPrint();
 		return message;
 	}
 	
 	public String getErrorMessage(Exception e) {
-		String opening = "error: ";
+		String opening = "ERROR: ";
 		String errorMessage = e.getMessage();
 		String totalMessage = opening + errorMessage + NEW_LINE;
 		
 		return totalMessage;
 	}
 	
-	public String getStringOfTasks(List<Task> tasks) {
+	public String getStringOfTasks(List<Task> tasks) throws NoResultException {
 		if (tasks == null || tasks.isEmpty()) {
-			return "nothing to print" + NEW_LINE;
+			throw new NoResultException("There are no tasks in this list.");
 		}
 		
 		String allTasks = makePrintableTask(tasks.get(0));
