@@ -46,12 +46,8 @@ public class Repeat extends Command {
 	private List<Task> repeatedTasks;
 	
 	// elements of copied task
-	String repeatName;
-	String repeatCategory;
-	String repeatLocation;
-	String repeatNote;
-	Time repeatStart;
-	Time repeatEnd;
+	String repeatName;String repeatCategory;String repeatLocation;String repeatNote;
+	Time repeatStart;Time repeatEnd;
 	List<Subcommand> repeatSubcommands;
 
 	private static List<Task> taskList = TotalTaskList.getInstance().getList();
@@ -160,9 +156,10 @@ public class Repeat extends Command {
 		String ed = ld.plusDays(durationOfTaskInDays).toString();
 		List<Subcommand> lsc = modifyDate(sd, ed);
 		Task repeatTask = new Add(repeatSubcommands).buildTask(lsc);
-		boolean added = new Add(repeatSubcommands).addTaskToList(repeatTask);
-		if (added) {
-		repeatedTasks.add(repeatTask); }
+	//	boolean added = new Add(repeatSubcommands).addTaskToList(repeatTask);
+		
+		repeatedTasks.add(repeatTask); 
+		new Add(lsc).execute();
 	}
 
 	private String ldParse(String inDateFormat) throws Exception {
@@ -223,7 +220,7 @@ public class Repeat extends Command {
 				taskList);
 		if (tasks.size() > 1) {
 			ActionException moreThanOne = new ActionException(taskList,
-					ActionException.ErrorLocation.EDIT, subcommands);
+					ActionException.ErrorLocation.REPEAT, subcommands);
 			throw moreThanOne;
 		} else {
 			t = tasks.get(0);
@@ -232,26 +229,27 @@ public class Repeat extends Command {
 
 	private void getSubcommands() throws BadSubcommandException, BadSubcommandArgException, BadCommandException {
 		sc = new Add(repeatSubcommands).dismantleTask(t);
+		
 	}
 	
 	private List<Subcommand> modifyDate(String newstart, String newend) throws BadSubcommandException, BadSubcommandArgException {
-		ArrayList<Subcommand> ccs = new ArrayList<Subcommand>(sc);
+		ArrayList<Subcommand> ccs = new ArrayList<Subcommand>();
 		boolean hasEnd = false;
-		for (int i=0; i<ccs.size(); i++) {
-			Subcommand s = ccs.get(i);
+		for (int i=0; i<sc.size(); i++) {
+			Subcommand s = sc.get(i);
+			
 			switch(s.getType()) {
 			case START : 
 				Subcommand nS = new Subcommand(Subcommand.TYPE.START, newstart);
-				ccs.remove(s);
 				ccs.add(nS);
 				break;
 			case END :
 				hasEnd = true;
-				Subcommand nE = new Subcommand(Subcommand.TYPE.START, newend);
-				ccs.remove(s);
+				Subcommand nE = new Subcommand(Subcommand.TYPE.END, newend);
 				ccs.add(nE);
 				break;
 			default : 
+				ccs.add(s);
 				break;
 			}
 		}
@@ -259,6 +257,8 @@ public class Repeat extends Command {
 			Subcommand nE = new Subcommand(Subcommand.TYPE.END, newend);
 			ccs.add(nE);
 		}
+		
+		
 		return ccs;
 	}
 	
