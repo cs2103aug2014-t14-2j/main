@@ -224,7 +224,7 @@ public class Repeat extends Command {
 	}
 
 	private void getSubcommands() throws BadSubcommandException, BadSubcommandArgException, BadCommandException {
-		sc = new Add(repeatSubcommands).dismantleTask(t);
+		sc = Add.dismantleTask(t);
 		
 	}
 	

@@ -114,7 +114,7 @@ public class Add extends Command {
 		taskEnd = null;
 	}
 
-	public List<Subcommand> dismantleTask(Task taskToDismantle) throws BadSubcommandException, BadSubcommandArgException {
+	public static List<Subcommand> dismantleTask(Task taskToDismantle) throws BadSubcommandException, BadSubcommandArgException {
 
 		List<Subcommand> taskDetails = new ArrayList<Subcommand>();
 

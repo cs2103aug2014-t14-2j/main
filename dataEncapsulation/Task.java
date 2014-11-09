@@ -1,5 +1,5 @@
 	/**
-	 * @author Kadayam Suresh Kaushik A0108297X
+	 * 
 	 * 
 	 * Task Class (Instant) containing Constructor and all methods. - Uses the Date Class
 	 * @return format: Depends on which method is being used.
@@ -8,10 +8,11 @@
 	 * name, category, location, note, startdate, enddate, starttime, endtime
 	 * name, emptylist, null, null, today, null, null, null
 	 */
+
+//@author A0108297X
 package dataEncapsulation;
 
 import java.util.Calendar;
-import java.util.Comparator;
 public class Task {
 	
 	public static final String MESSAGE_NO_END = "No Specified End Date";
