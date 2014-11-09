@@ -169,6 +169,9 @@ public class Add extends Command {
 
 			case NOTE:	setTaskNote(cc.getContents());
 			break;
+			
+			case ON: setTaskStart(cc.getContents()); setTaskEnd(cc.getContents());
+			break;
 
 			case START:	setTaskStart(cc.getContents());
 			break;

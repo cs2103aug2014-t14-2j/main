@@ -590,6 +590,8 @@ public class CommandInterpreter {
 				return true;
 			case DATE :
 				return true;
+			case ON :
+				return true;
 			case STARTTIME :
 				return true;
 			case ENDTIME :
