@@ -50,8 +50,10 @@ public class Subcommand {
 		}
 	}
 	
+	// All keywords for the help type
 	public enum HELP_KEY {
-		SOMETHING;// all of the words you want
+		ADD, ALL, EDIT, FINISH, LIST, REDO, REMOVE, REPEAT, SEARCH, TODAY, UNDO, UNFINISH;
+		
 		@Override
 		public String toString() {
 			return this.name().toString().toLowerCase();
@@ -130,6 +132,10 @@ public class Subcommand {
 				break;
 			case PAREN :
 				checkParenContents();
+				break;
+			case HELP :
+				checkHelpKeyContents();
+				break;
 			default :
 				break;	// no restrictions on contents
 		}
@@ -137,6 +143,40 @@ public class Subcommand {
 		return;
 	}
 	
+	private void checkHelpKeyContents() throws BadSubcommandArgException {
+		boolean isValid = false;
+		
+		if (contents.equals(HELP_KEY.ADD.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.ALL.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.EDIT.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.FINISH.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.LIST.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.REDO.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.REMOVE.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.REPEAT.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.SEARCH.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.TODAY.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.UNDO.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.UNFINISH.toString())) {
+			isValid = true;
+		}
+		
+		if (!isValid) {
+			throw new BadSubcommandArgException("There is no help feature for your command.");
+		}
+	}
+
 	private void checkParenContents() throws BadSubcommandArgException {
 		boolean isValid = false;
 		
@@ -214,6 +254,10 @@ public class Subcommand {
 			return TYPE.AND;
 		case ("&") :
 			return TYPE.AND;
+		case ("add") :
+			return TYPE.HELP;
+		case ("all") :
+			return TYPE.HELP;
 		case ("annually") :
 			return TYPE.FREQUENCY;
 		case ("begin") :
@@ -232,12 +276,18 @@ public class Subcommand {
 			return TYPE.DATE;
 		case ("deadline") :
 			return TYPE.END;
+		case ("edit") :
+			return TYPE.HELP;
 		case ("end") :
 			return TYPE.END;
+		case ("finish") :
+			return TYPE.HELP;
 		case ("free") :
 			return TYPE.FREE;
 		case ("from") : 
 			return TYPE.STARTTIME;
+		case ("list") :
+			return TYPE.HELP;
 		case ("location") :
 			return TYPE.LOCATION;
 		case ("monthly") :
@@ -250,12 +300,26 @@ public class Subcommand {
 			return TYPE.OR;
 		case ("once") :
 			return TYPE.FREQUENCY;
+		case ("redo") :
+			return TYPE.HELP;
+		case ("remove") :
+			return TYPE.HELP;
+		case ("repeat") :
+			return TYPE.HELP;
+		case ("search") :
+			return TYPE.HELP;
 		case ("start") :
 			return TYPE.START;
 		case ("title") :
 			return TYPE.TITLE;
 		case ("to") : 
 			return TYPE.ENDTIME;
+		case ("today") :
+			return TYPE.HELP;
+		case ("undo") :
+			return TYPE.HELP;
+		case ("unfinish") :
+			return TYPE.HELP;
 		case ("weekly") :
 			return TYPE.FREQUENCY;
 		default :
