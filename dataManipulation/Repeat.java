@@ -354,7 +354,7 @@ public class Repeat extends Command {
 	}
 	
 	private void checkStartEnd() throws Exception {
-		if (s.isAfter(e)) {
+		if (s.isAfter(e)) { 
 			throw new Exception("Invalid dates - start is after end.");
 		}
 	}
