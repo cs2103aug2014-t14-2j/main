@@ -223,6 +223,8 @@ public class CommandType {
 				return true;
 			case NOTE :
 				return true;
+			case ON:
+				return true;
 			case START :
 				return true;
 			case STARTTIME :

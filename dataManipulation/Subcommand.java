@@ -21,7 +21,7 @@ import dataEncapsulation.BadSubcommandException;
 public class Subcommand {
 	public enum TYPE {
 		AND, BYEND, BYNAME, BYSTART, CATEGORY, COMPLETED, DATE, DATE_TYPE, END,
-		ENDTIME, FREE, LOCATION, NAME, NONE, NOTE, FREQUENCY, OR, PAREN, START, 
+		ENDTIME, FREE, LOCATION, NAME, NONE, NOTE, FREQUENCY, ON, OR, PAREN, START, 
 		STARTTIME, TEXT, TITLE,
 		INVALID;
 		
@@ -227,6 +227,8 @@ public class Subcommand {
 			return TYPE.FREQUENCY;
 		case ("note") :
 			return TYPE.NOTE;
+		case ("on") : 
+			return TYPE.ON;
 		case ("or") :
 			return TYPE.OR;
 		case ("once") :
