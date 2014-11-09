@@ -16,7 +16,6 @@ class AutocompleteAction extends AbstractAction {
 	private JTextField entry;
 	private JLabel status;
 	
-	private String initialText;
 	private String lastText;
 	private Autocomplete autocomplete = Autocomplete.getInstance();
 
@@ -27,11 +26,9 @@ class AutocompleteAction extends AbstractAction {
 		entry = ent;
 		status = stat;
 		
-		initialText = entry.getText();
-		completionList = autocomplete.complete(initialText);
-		counter = 0;
-		entry.setText(completionList.get(counter));
 		lastText = entry.getText();
+		completionList = autocomplete.complete(lastText);
+		counter = 0;
 	}
 
 	public void actionPerformed(ActionEvent ev) {
@@ -42,8 +39,8 @@ class AutocompleteAction extends AbstractAction {
 			lastText = entry.getText();
 		} else {
 			counter = 0;
-			initialText = entry.getText();
-			completionList = autocomplete.complete(initialText);
+			lastText = entry.getText();
+			completionList = autocomplete.complete(lastText);
 			entry.setText(completionList.get(counter));
 			lastText = entry.getText();
 		}

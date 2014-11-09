@@ -18,16 +18,18 @@ public class SuffixTree {
 	private List<SuffixTree> tree;
 
 	private String match;
+	private boolean isRoot = false;
 
 	private static final String EMPTY_STRING = "";
 
 	public SuffixTree() {
 		match = EMPTY_STRING;
+		isRoot = true;
 		tree = new ArrayList<SuffixTree>();
 	}
 
 	public void add(String string) {
-		if (string == null) {
+		if (string == null || (string.isEmpty() && isRoot)) {
 			return;
 		}
 		
