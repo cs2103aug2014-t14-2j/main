@@ -29,7 +29,7 @@ public class Unfinish extends Command {
 	public String execute() throws Exception {
 		Task markedTask = markAsNotCompleted();
 		ezCMessages messages = ezCMessages.getInstance();
-		String stringTask = messages.getFinishMessage(markedTask);
+		String stringTask = messages.getUnfinishMessage(markedTask);
 		rewriteFile();
 		return stringTask;
 	}

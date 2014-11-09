@@ -44,6 +44,7 @@ class AutocompleteAction extends AbstractAction {
 			completionList = autocomplete.complete(lastText);
 			entry.setText(completionList.get(counter));
 			lastText = entry.getText();
+			incrementCounter();
 		}
 	}
 
