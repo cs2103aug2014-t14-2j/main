@@ -165,9 +165,10 @@ public class Repeat extends Command {
 	private String ldParse(String inDateFormat) throws Exception {
 		Date d = new Date().determineDate(inDateFormat);
 		int ddd = d.getDay();
-		int mm = d.getMonth();
+		int mmm = d.getMonth();
 		int yyyy = d.getYear();
 		String dd = String.format("%02d", ddd);
+		String mm = String.format("%02d", mmm);
 		String inLocalDateFormat = "" + yyyy + "-" + mm + "-" + dd;
 		return inLocalDateFormat;
 	}
