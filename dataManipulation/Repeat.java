@@ -305,9 +305,8 @@ public class Repeat extends Command {
 			}
 		}
 	}
-/*
 	protected void checkRepeatTwoComponents() throws BadSubcommandException {
-		checkForComponentAmount(2);
+		checkForComponentAmount(3);
 
 		for (int i = 0; i < subcommands.size(); ++i) {
 			Subcommand component = subcommands.get(i);
@@ -317,11 +316,13 @@ public class Repeat extends Command {
 				break;
 			case NAME:
 				break;
+			case DATE:
+				break;
 			default:
 				throw new BadSubcommandException("invalid subcommand");
 			}
 		}
-	} */
+	}
 
 	protected void checkFrequencyIsNotOnly() throws BadSubcommandException {
 		for (int i = 0; i < subcommands.size(); ++i) {
