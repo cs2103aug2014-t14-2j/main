@@ -313,10 +313,15 @@ public class Repeat extends Command {
 
 			switch (component.getType()) {
 			case FREQUENCY: // valid
+				if (component.getContents().
+						equalsIgnoreCase(FREQUENCY.ONCE.toString())) {
+					throw new BadSubcommandException("can only leave off end "
+							+ "date for \"once\"");
+				}
 				break;
 			case NAME:
 				break;
-			case DATE:
+			case START:
 				break;
 			default:
 				throw new BadSubcommandException("invalid subcommand");
