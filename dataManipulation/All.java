@@ -6,6 +6,7 @@ import java.util.List;
 import userInterface.ezCMessages;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.NoResultException;
 import dataEncapsulation.Task;
 import dataManipulation.CommandType.COMMAND_TYPE;
 
@@ -17,7 +18,7 @@ public class All extends Command {
 	}
 
 	@Override
-	public String execute() {
+	public String execute() throws NoResultException {
 		List<Task> allTasks = getAllUncompletedTasks();
 		String stringTasks = getStringOfAllTasks(allTasks);
 		return stringTasks;
@@ -38,7 +39,7 @@ public class All extends Command {
 		return uncompleted;
 	}
 
-	private String getStringOfAllTasks(List<Task> list) {
+	private String getStringOfAllTasks(List<Task> list) throws NoResultException {
 		ezCMessages messages = ezCMessages.getInstance();
 		return messages.getStringOfTasks(list);
 	}
