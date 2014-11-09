@@ -257,6 +257,11 @@ public class Repeat extends Command {
 				break;
 			}
 		}
+		System.out.println("test");
+		for(int j=0; j<ccs.size(); j++) {
+			Subcommand c = ccs.get(j);
+			System.out.println(c.getType().toString() + ": " + c.getContents().toString());
+		}
 		return ccs;
 	}
 	
