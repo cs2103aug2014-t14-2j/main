@@ -454,7 +454,12 @@ public class Date {
 		String inLocalDateFormat = "" + yyyy + "-" + mm + "-" + dd;
 		return inLocalDateFormat;
 	}
-	
+	/**
+	 * @author yuiwei/ A0115696W
+	 * @param dw
+	 * @return
+	 * @throws Exception
+	 */
 	private Date getNext(DayOfWeek dw) throws Exception {
 		Date tdy = new Date();
 		LocalDate ld = LocalDate.parse(ldParse(tdy));
