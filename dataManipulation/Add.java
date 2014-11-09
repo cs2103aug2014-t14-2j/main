@@ -133,14 +133,16 @@ public class Add extends Command {
 		if(taskToDismantle.getHasDeadline()) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.END, taskToDismantle.getEndDate().toString()));
 		}
-
-		taskDetails.add(new Subcommand(Subcommand.TYPE.STARTTIME, taskToDismantle.getStartTime().toString()));
+		
+		if(taskToDismantle.hasStartTime()) {
+			taskDetails.add(new Subcommand(Subcommand.TYPE.STARTTIME, taskToDismantle.getStartTime().toString()));
+		}
 
 		if(taskToDismantle.hasEndTime()) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.ENDTIME, taskToDismantle.getEndTime().toString()));
 		}
 
-		if(!taskToDismantle.getNote().equalsIgnoreCase("")) {
+		if(taskToDismantle.getHasNote()) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.NOTE, taskToDismantle.getNote()));
 		}
 

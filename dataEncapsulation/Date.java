@@ -50,12 +50,6 @@ public class Date {
 		
 		boolean dateIsValid = true;
 		try {
-			if(userday < 1 || userday > 31) {
-				dateIsValid = false;
-			}
-			if(usermonth < 1 || usermonth > 12) {
-				dateIsValid = false;
-			}
 			if (useryear < 2014 || useryear > 9999) {
 				dateIsValid = false;
 			}
