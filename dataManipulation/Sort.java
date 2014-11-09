@@ -8,6 +8,7 @@ import java.util.List;
 import userInterface.ezCMessages;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.NoResultException;
 import dataEncapsulation.Task;
 import dataEncapsulation.sortTaskByEndDate;
 import dataEncapsulation.sortTaskByName;
@@ -28,7 +29,7 @@ public class Sort extends Command {
 	}
 
 	@Override
-	public String execute() {
+	public String execute() throws NoResultException {
 		allTasks = TotalTaskList.getInstance().getList();
 		switch (subcommands.get(0).getType()) {
 		case BYNAME:

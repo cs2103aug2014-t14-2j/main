@@ -14,6 +14,7 @@ import java.util.List;
 
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.NoResultException;
 import dataManipulation.CommandType.COMMAND_TYPE;
 
 public class Redo extends Command {
@@ -27,6 +28,9 @@ public class Redo extends Command {
 
 	@Override
 	public String execute() throws Exception {
+		if(UndoRedoList.getInstance().isUndoStackEmpty()) {
+			throw new NoResultException("there is nothing to redo");
+		}
 		
 		Command popped = UndoRedoList.getInstance().popRedoCommand();
 		returnMessage = popped.execute();

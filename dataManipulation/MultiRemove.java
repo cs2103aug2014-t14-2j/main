@@ -11,7 +11,7 @@ import dataManipulation.CommandType.COMMAND_TYPE;
 
 public class MultiRemove extends Command {
 
-	private ArrayList<Remove> removers;
+	private List<Remove> removers = new ArrayList<Remove>();
 	
 	public MultiRemove(ArrayList<Task> choices) throws BadCommandException,
 			BadSubcommandException, BadSubcommandArgException {

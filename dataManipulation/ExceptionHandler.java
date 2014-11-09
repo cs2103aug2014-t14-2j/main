@@ -329,6 +329,13 @@ public class ExceptionHandler {
 		public void actionPerformed(ActionEvent ev) {
 			status.setText(emptyString);
 			String userChoice = userInput.getText();
+			
+			if (userChoice.trim().matches(quitRequest)) {
+				status.setText("exit selected");
+				endExceptionHandling();
+				return;
+			}
+			
 			ArrayList<Task> choices = new ArrayList<Task>();
 			
 			try {
@@ -349,6 +356,8 @@ public class ExceptionHandler {
 			} catch (Exception e) {
 				status.setText("error in processing your request,"
 						+ " please try again or press 0 to exit");
+				System.out.println(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}

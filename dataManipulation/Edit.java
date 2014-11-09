@@ -62,7 +62,7 @@ public class Edit extends Command {
 		
 		List<Task> tasks = ExactMatchSearcher.literalSearch(nameOfTaskToEdit, taskList.getAllTasks());
 		if(tasks.size() == 0) {
-			throw new Exception("the task you wish to edit does not exist");
+			throw new Exception("The task you wish to edit does not exist. Please check the name of your task again.");
 		}
 		if(tasks.size() > 1) {
 			ActionException moreThanOne = new ActionException(tasks, ActionException.ErrorLocation.EDIT, subcommands);
@@ -139,11 +139,12 @@ public class Edit extends Command {
 	@Override
 	public String undo() throws Exception {
 		
-		Command negatedEditCommandRemove = addNewTask;
-		Command negatedEditCommandAdd = removeOldTask;
-		negatedEditCommandRemove.execute();
-		negatedEditCommandAdd.execute();
-		String returnMessage = "";
+		addNewTask.undo();
+		removeOldTask.undo();
+		Task undidFrom = new Add(subcommands).buildTask(addNewTask.getComponents());
+		Task undidTo = new Add(subcommands).buildTask(removeOldTask.getComponents());
+		ezCMessages messages = ezCMessages.getInstance();
+		String returnMessage = messages.getUndoEditMessage(undidFrom, undidTo);
 		return returnMessage;
 		
 	}

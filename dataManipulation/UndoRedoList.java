@@ -78,5 +78,15 @@ public class UndoRedoList {
 		return false;
 		
 	}
+	
+public boolean isRedoStackEmpty() {
+		
+		if(redoCommandStack.size() == 0) {
+			return true;
+		}
+		
+		return false;
+		
+	}
 
 }
