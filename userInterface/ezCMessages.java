@@ -1,13 +1,13 @@
 package userInterface;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import dataEncapsulation.BadCommandException;
-import dataEncapsulation.BadSubcommandArgException;
-import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
 import dataEncapsulation.NoResultException;
 import dataEncapsulation.Task;
+import dataManipulation.Subcommand;
+import dataManipulation.Today;
 import dataManipulation.TotalTaskList;
 
 /**
@@ -322,18 +322,18 @@ public class ezCMessages {
 		return allTasks;
 	}
 	
-	public String welcomeTaskDisplayForUser() throws BadSubcommandException, BadSubcommandArgException, BadCommandException, NoResultException {
+	public String welcomeTaskDisplayForUser() throws Exception {
 		List<Task> overdueList = TotalTaskList.getInstance().getOverdue();
-		List<Task> todayList = TotalTaskList.getInstance().getToday();
+		List<Subcommand> dummySubC = new ArrayList<Subcommand>();
 		
 		if(overdueList.size() == 0) {
-			if(todayList.size() == 0) {
-				return MESSAGE_DISPLAY_COMMANDS;
-			}
-			else {
+			try {
+				String todayTasks = new Today(dummySubC).execute();
 				String currentTasks = "Your current ongoing task(s) are:" + NEW_LINE + NEW_LINE;
-				currentTasks += getStringOfTasks(todayList);
+				currentTasks += todayTasks;
 				return currentTasks;
+			} catch (Exception e){
+				return MESSAGE_DISPLAY_COMMANDS;
 			}
 		}
 		else {
