@@ -147,7 +147,11 @@ public class ezCMessages {
 		}
 		
 		if (!task.getHasDeadline()) {
-			firstLine = firstLine + "\tStarted " + task.getStartDate();
+			if (task.getStartDate().isBefore(today)) {
+				firstLine = firstLine + "\tStarted " + task.getStartDate();
+			} else {
+				firstLine = firstLine + "\tStarting " + task.getStartDate();
+			}
 		} else if (task.getStartDate().isEquals(task.getEndDate())) {
 			firstLine = firstLine + "\tOn " + task.getStartDate().toString();
 		} else if (today.isBefore(task.getStartDate())) {

@@ -1,14 +1,9 @@
 package dataManipulation;
 
 /**
- * Notes - 
- * 		TIME is probably going to be wrong, since it is under the DATE attribute of the Task, 
- * 		which I replace. 
- * 
- * 		Repeat ONCE has not been implemented. > How do START and END work with a repeat ONCE?
- * 
- * @author tyuiwei
+ * @author A0115696W
  */
+
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -165,9 +160,10 @@ public class Repeat extends Command {
 	private String ldParse(String inDateFormat) throws Exception {
 		Date d = new Date().determineDate(inDateFormat);
 		int ddd = d.getDay();
-		int mm = d.getMonth();
+		int mmm = d.getMonth();
 		int yyyy = d.getYear();
 		String dd = String.format("%02d", ddd);
+		String mm = String.format("%02d", mmm);
 		String inLocalDateFormat = "" + yyyy + "-" + mm + "-" + dd;
 		return inLocalDateFormat;
 	}
@@ -354,7 +350,7 @@ public class Repeat extends Command {
 	}
 	
 	private void checkStartEnd() throws Exception {
-		if (s.isAfter(e)) {
+		if (s.isAfter(e)) { 
 			throw new Exception("Invalid dates - start is after end.");
 		}
 	}
@@ -362,5 +358,50 @@ public class Repeat extends Command {
 	@Override
 	public String undo() throws Exception {
 		return null;
+	}
+	
+	public String furtherRepeat(Task ta, List<Subcommand> sco) throws Exception {
+		repeatedTasks = new ArrayList<Task>();
+		assembleCCs(sco);
+		initializerepeatSubcommands();
+		getTaskDuration();
+		getSubcommands();		
+		checkStartEnd();
+		
+		if (freq.equals(FREQUENCY.DAILY.toString())) {
+			List<LocalDate> daysHappening_daily = repeatStartDates_daily(start, end);
+			for (LocalDate ld : daysHappening_daily) { //each ld is a new start date
+				makeRepeat(ld);
+			}
+		} else if (freq.equals(FREQUENCY.WEEKLY.toString())) {
+			int givenStartToActualStart = findDayOfWeek(t.getStartDate()).getValue() - s.getDayOfWeek().getValue();
+			if (givenStartToActualStart < 0) {
+				givenStartToActualStart = givenStartToActualStart + 7;
+			}
+			LocalDate nStart = s.plusDays(givenStartToActualStart);
+			LocalDate nEnd = LocalDate.parse(ldParse(end));
+			List<LocalDate> daysHappening_weekly = repeatStartDates_weekly(nStart, nEnd);
+			for (LocalDate ld : daysHappening_weekly) {
+				makeRepeat(ld);
+			}
+
+		} else if (freq.equals(FREQUENCY.MONTHLY.toString())) {
+			List<LocalDate> daysHappening_monthly = repeatStartDates_monthly(start, end);
+			for (LocalDate ld : daysHappening_monthly) {
+				makeRepeat(ld);
+			}
+		} else if (freq.equals(FREQUENCY.ANNUALLY.toString())) {
+			List<LocalDate> daysHappening_yearly = repeatStartDates_yearly(start, end);
+			for (LocalDate ld : daysHappening_yearly) {
+				makeRepeat(ld);
+			}
+		} else if (freq.equals(FREQUENCY.ONCE.toString())) {
+			;
+		} else {
+			//THROW ERROR OR STRING
+		}
+		String x = ezCMessages.getInstance().getStringOfTasks(repeatedTasks);
+		String unimplemented = "This command has not been finished. :)";
+		return x;
 	}
 }

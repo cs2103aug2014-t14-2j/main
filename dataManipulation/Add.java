@@ -133,14 +133,16 @@ public class Add extends Command {
 		if(taskToDismantle.getHasDeadline()) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.END, taskToDismantle.getEndDate().toString()));
 		}
-
-		taskDetails.add(new Subcommand(Subcommand.TYPE.STARTTIME, taskToDismantle.getStartTime().toString()));
+		
+		if(taskToDismantle.hasStartTime()) {
+			taskDetails.add(new Subcommand(Subcommand.TYPE.STARTTIME, taskToDismantle.getStartTime().toString()));
+		}
 
 		if(taskToDismantle.hasEndTime()) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.ENDTIME, taskToDismantle.getEndTime().toString()));
 		}
 
-		if(!taskToDismantle.getNote().equalsIgnoreCase("")) {
+		if(taskToDismantle.getHasNote()) {
 			taskDetails.add(new Subcommand(Subcommand.TYPE.NOTE, taskToDismantle.getNote()));
 		}
 
@@ -230,9 +232,9 @@ public class Add extends Command {
 
 	//@author A0126720N
 	private void checkDateMatches() throws BadSubcommandException {
-		boolean hasGeneralDate = subcommands.contains(Subcommand.TYPE.DATE);
-		boolean hasStartDate = subcommands.contains(Subcommand.TYPE.START);
-		boolean hasEndDate = subcommands.contains(Subcommand.TYPE.END);
+		boolean hasGeneralDate = hasSubcommandType(Subcommand.TYPE.DATE);
+		boolean hasStartDate = hasSubcommandType(Subcommand.TYPE.START);
+		boolean hasEndDate = hasSubcommandType(Subcommand.TYPE.END);
 
 		if ((hasGeneralDate && hasStartDate) || (hasGeneralDate && hasEndDate)) {
 			throw new BadSubcommandException("cannot specify start and/or end when specifying \"date\"");
