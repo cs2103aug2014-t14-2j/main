@@ -40,6 +40,10 @@ public class Add extends Command {
 			parseDateToStartAndEnd();
 		}
 	}
+	
+	public Add() throws BadCommandException, BadSubcommandException {
+		super(COMMAND_TYPE.ADD, new ArrayList<Subcommand>());
+	}
 
 	@Override
 	public String execute() throws Exception {
