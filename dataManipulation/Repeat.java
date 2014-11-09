@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
+import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandArgException;
@@ -44,6 +45,7 @@ public class Repeat extends Command {
 
 	private Task t;
 	private List<Subcommand> sc;
+	private List<Task> repeatedTasks;
 	
 	// elements of copied task
 	String repeatName;
@@ -63,13 +65,14 @@ public class Repeat extends Command {
 
 	@Override
 	public String execute() throws Exception {
+		repeatedTasks = new ArrayList<Task>();
 		assembleCCs(subcommands);
 		getTask();
-		//initializerepeatSubcommands();
+		initializerepeatSubcommands();
 		getTaskDuration();
 		getSubcommands();		
-
 		checkStartEnd();
+		
 		if (freq.equals(FREQUENCY.DAILY.toString())) {
 			List<LocalDate> daysHappening_daily = repeatStartDates_daily(start, end);
 			for (LocalDate ld : daysHappening_daily) { //each ld is a new start date
@@ -77,15 +80,19 @@ public class Repeat extends Command {
 			}
 		} else if (freq.equals(FREQUENCY.WEEKLY.toString())) {
 			int givenStartToActualStart = findDayOfWeek(t.getStartDate()).getValue() - s.getDayOfWeek().getValue();
+			System.out.println("test 1");
 			if (givenStartToActualStart < 0) {
 				givenStartToActualStart = givenStartToActualStart + 7;
 			}
 			LocalDate nStart = s.plusDays(givenStartToActualStart);
 			LocalDate nEnd = LocalDate.parse(ldParse(end));
+			System.out.println("test 2");
 			List<LocalDate> daysHappening_weekly = repeatStartDates_weekly(nStart, nEnd);
+			System.out.println("test 3");
 			for (LocalDate ld : daysHappening_weekly) {
 				makeRepeat(ld);
 			}
+
 		} else if (freq.equals(FREQUENCY.MONTHLY.toString())) {
 			List<LocalDate> daysHappening_monthly = repeatStartDates_monthly(start, end);
 			for (LocalDate ld : daysHappening_monthly) {
@@ -101,11 +108,13 @@ public class Repeat extends Command {
 		} else {
 			//THROW ERROR OR STRING
 		}
+		String x = ezCMessages.getInstance().getStringOfTasks(repeatedTasks);
 		String unimplemented = "This command has not been finished. :)";
-		return unimplemented;
+		return x;
 	}
 
 	private void initializerepeatSubcommands() throws BadSubcommandException, BadSubcommandArgException {
+		repeatSubcommands = new ArrayList<Subcommand>();
 		repeatName = t.getName();
 		repeatCategory = t.getCategory();
 		repeatLocation = t.getLocation();
@@ -120,11 +129,12 @@ public class Repeat extends Command {
 		sc = new Subcommand(TYPE.LOCATION, repeatLocation);
 		repeatSubcommands.add(sc);
 		sc = new Subcommand(TYPE.NOTE, repeatNote);
-		repeatSubcommands.add(sc);
+		repeatSubcommands.add(sc);		
 		sc = new Subcommand(TYPE.STARTTIME, repeatStart.toString());
 		repeatSubcommands.add(sc);
 		sc = new Subcommand(TYPE.ENDTIME, repeatEnd.toString());
 		repeatSubcommands.add(sc);
+
 	}
 
 	private void assembleCCs(List<Subcommand> ccs) throws Exception {
@@ -154,8 +164,9 @@ public class Repeat extends Command {
 		String sd = ld.toString();
 		String ed = ld.plusDays(durationOfTaskInDays).toString();
 		List<Subcommand> lsc = modifyDate(sd, ed);
-		Task repeatTask = new Add(subcommands).buildTask(lsc);
-		taskList.add(repeatTask);
+		Task repeatTask = new Add(repeatSubcommands).buildTask(lsc);
+		new Add(repeatSubcommands).addTaskToList(repeatTask);
+		repeatedTasks.add(repeatTask);
 	}
 
 	private String ldParse(String inDateFormat) throws Exception {
@@ -229,7 +240,8 @@ public class Repeat extends Command {
 	
 	private List<Subcommand> modifyDate(String newstart, String newend) throws BadSubcommandException, BadSubcommandArgException {
 		ArrayList<Subcommand> ccs = new ArrayList<Subcommand>(sc);
-		for (Subcommand s : ccs) {
+		for (int i=0; i<ccs.size(); i++) {
+			Subcommand s = ccs.get(i);
 			switch(s.getType()) {
 			case START : 
 				Subcommand nS = new Subcommand(Subcommand.TYPE.START, newstart);

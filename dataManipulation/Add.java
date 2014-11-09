@@ -70,7 +70,7 @@ public class Add extends Command {
 		autocomplete.addLocation(taskLocation);
 	}
 
-	private void addTaskToList(Task toAdd) {
+	public void addTaskToList(Task toAdd) {
 
 		Date today = new Date();
 
