@@ -320,6 +320,10 @@ public class ezCMessages {
 		return ALL_HELP;
 	}
 	
+	public String getCompletedHelp() {
+		return COMPLETED_HELP;
+	}
+	
 	public String getDateHelp() {
 		return DATE_HELP;
 	}
@@ -390,6 +394,10 @@ public class ezCMessages {
 	
 	public String getTodayTasksListMessage() {
 		return TODAY_TASKS_LIST_MESSAGE;
+	}
+	
+	public String getCompletedTasksListMessage() {
+		return COMPLETED_TASKS_LIST_MESSAGE;
 	}
 	
 	public String getAddMessage(Task newTask) {
