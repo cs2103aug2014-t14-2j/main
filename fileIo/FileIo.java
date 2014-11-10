@@ -4,12 +4,18 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 import dataEncapsulation.TaskFileErrorException;
+import dataManipulation.ChangeDateType;
+import dataManipulation.Subcommand;
 import dataManipulation.TotalTaskList;
 
 /*
@@ -22,10 +28,12 @@ import dataManipulation.TotalTaskList;
  */
 
 public class FileIo {
-	private String fileName = "ezCTasks.txt";
+	private final String fileName = "ezCTasks.txt";
 	private TextIoStream fileStream;
 	private TotalTaskList list = TotalTaskList.getInstance();
 	private TaskFileReader reader = TaskFileReader.getInstance();
+	private final String dateType = "Middle Endian Format";
+	private static final String NEW_LINE = System.getProperty("line.separator");
 
 	private static FileIo fileIo;
 
@@ -55,7 +63,13 @@ public class FileIo {
 	// Takes the lines of text from the task file and creates tasks from them.
 	public void rewriteFile() {
 		try {
-			fileStream.rewriteFile(list.getAllTasks());
+			List<String> empty = new ArrayList<String>();
+			fileStream.rewriteFile(empty);
+			if (!Date.isFormatDm()) {
+				String total = dateType + NEW_LINE;
+				fileStream.appendFile(total);
+			}
+			fileStream.appendFile(list.getAllTasks());
 			return;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -82,6 +96,9 @@ public class FileIo {
 		TaskFileErrorException badFile = null;
 
 		fileContents = fileStream.readFromFile();
+		
+		changeDateTypeIfSpecified(fileContents);
+		
 		Date today = new Date();
 		List<Task> tasksFromFile;
 		try {
@@ -107,6 +124,15 @@ public class FileIo {
 		}
 
 		return;
+	}
+
+	private void changeDateTypeIfSpecified(List<String> fileContents)
+			throws BadSubcommandException, BadSubcommandArgException,
+			BadCommandException {
+		if (fileContents.get(0).equalsIgnoreCase(dateType)) {
+			Date.changeFormatMd();
+			fileContents.remove(0);
+		}
 	}
 
 	public void recover(TaskFileErrorException e) throws FileNotFoundException, IOException {

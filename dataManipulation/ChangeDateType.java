@@ -7,6 +7,7 @@ import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
 import dataManipulation.CommandType.COMMAND_TYPE;
+import fileIo.FileIo;
 
 public class ChangeDateType extends Command {
 
@@ -24,6 +25,9 @@ public class ChangeDateType extends Command {
 		changeDateFormat(type);
 		
 		ezCMessages messages = ezCMessages.getInstance();
+		FileIo fileIo = FileIo.getInstance();
+		fileIo.rewriteFile();
+		
 		return messages.getChangeDateTypeMessage(type);
 	}
 	
@@ -36,6 +40,9 @@ public class ChangeDateType extends Command {
 		}
 		
 		ezCMessages messages = ezCMessages.getInstance();
+		FileIo fileIo = FileIo.getInstance();
+		fileIo.rewriteFile();
+		
 		return messages.getChangeDateTypeMessage(previousType);
 	}
 

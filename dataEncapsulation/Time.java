@@ -1,12 +1,11 @@
 package dataEncapsulation;
 
 /**
- * 
- * @author A0115696W 
- * 
  * Expects input that is: > 24hour: 0000-2359 OR 00:00-23:59 >
  *         12hour: 12:00AM - 11:59PM OR 12am-11pm
  */
+
+// @author A0115696W 
 
 public class Time {
 	private int hours; // 24 hours

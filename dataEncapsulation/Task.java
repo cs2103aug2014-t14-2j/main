@@ -40,6 +40,7 @@ public class Task {
 	private boolean isOverdue = false;
 	private boolean hasCategory = false;
 
+	//@author A0126720N
 	public Task(Task other) {
 		startdate = other.startdate;
 		enddate = other.enddate;
@@ -60,7 +61,7 @@ public class Task {
 		hasCategory = other.hasCategory;
 	}
 
-	//has every field
+	//@author A0126720N
 	public Task(String nm, String cat, String loc, String note, Date start, Date end, Time s, Time e) throws Exception {
 		if (nm != null) {
 			this.setName(nm);
@@ -90,6 +91,7 @@ public class Task {
 		setIfOverdue();
 	}
 
+	//@author A0108297X
 	public Task(String name, String first_category, String location, Date start, Date end, Time s, Time e) throws Exception {
 		this.setName(name);
 		this.setCategory(first_category);
@@ -265,6 +267,7 @@ public class Task {
 		setIfOverdue();
 	}
 	
+	//@author A0126720N
 	public void setEqualTo(Task other) {
 		startdate = other.startdate;
 		enddate = other.enddate;
@@ -285,6 +288,7 @@ public class Task {
 		hasCategory = other.hasCategory;
 	}
 
+	//@author A0126720N
 	private void setIfOverdue() throws Exception {
 		if (!hasDeadline) {
 			return;
@@ -313,6 +317,7 @@ public class Task {
 		}
 	}
 
+	//@author A0108297X
 	private Time getNow() throws Exception {
 		Calendar now = Calendar.getInstance();
 		int hour = now.get(Calendar.HOUR_OF_DAY);
@@ -420,6 +425,7 @@ public class Task {
 		}
 	}
 
+	//@author A0115696W
 	public Time getEndTime() {
 		return endtime;
 	}
@@ -446,6 +452,7 @@ public class Task {
 
 	///////////////////////////////////////////////////////////TOSTRING, TOPRINT, EQUALS
 
+	//@author A0126720N
 	public String toString(){
 		String answer = new String();
 		answer = answer + "Task: " + this.name + NEW_LINE;
@@ -511,6 +518,7 @@ public class Task {
 		return answer;
 	}
 
+	//@author A0108297X
 	public boolean isCompleted(){
 		return isComplete;
 	}
@@ -540,9 +548,7 @@ public class Task {
 		this.hasEndTime = hasEndTime;
 	}
 
-	/*
-	 * @author Nelson / A0111014J
-	 */
+	//@author A0111014J
 	public boolean isEqualTask(Task other) {
 
 		if(this.name.equalsIgnoreCase(other.name)
@@ -575,9 +581,8 @@ public class Task {
 		return false;
 	}
 
-	/*
-	 * @author Yui Wei / A0115696W
-	 */
+
+	 //@author A0115696W
 	public boolean endsBefore(Task another) {
 		boolean result;
 
@@ -599,8 +604,9 @@ public class Task {
 
 	/*
 	 * Checks if the period of the task is valid (doesn't end before it starts)
-	 * @author Yui Wei / A0115696W
+	 * 
 	 */
+	//@author A0115696W
 	public boolean isValid() {
 		boolean result;
 		Date mySD = this.getStartDate();

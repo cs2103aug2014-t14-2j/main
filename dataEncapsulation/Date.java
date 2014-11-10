@@ -1,9 +1,11 @@
 /**
- * @author Kadayam Suresh Kaushik A0108297X
+ *
  * Date Class (Instant) containing Constructor and all methods.
  * @return format: Depends on which method is being used.
  */
 package dataEncapsulation;
+
+//@author A0108297X
 
 import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
@@ -79,10 +81,11 @@ public class Date {
 	}
 
 	/**
-	 * @author A0115696W
+	 * 
 	 * @param another
 	 * @return
 	 */
+	//@author A0115696W
 	public boolean isEquals(Date another) {
 		if (this.day == another.day && this.month == another.month
 				&& this.year == another.year) {
@@ -92,6 +95,7 @@ public class Date {
 		}
 	}
 	
+	//@author A0126720N
 	public static String getFormat() {
 		if (dmFormat) {
 			return "d/m";
@@ -100,6 +104,7 @@ public class Date {
 		}
 	}
 
+	//@author A0115696W
 	public int getDay() {
 		return day;
 	}
@@ -237,6 +242,7 @@ public class Date {
 		}
 	}
 
+	//@author A0126720N
 	private static String cleanUpYear(String year) {
 		String space = " ";
 		String comma = ",";
@@ -253,6 +259,7 @@ public class Date {
 		return year;
 	}
 
+	//@author A0115696W
 	public static int monthInteger(String month1) {
 		int monthNum;
 		switch (month1.toLowerCase()) {
@@ -342,8 +349,10 @@ public class Date {
 		return answer + " " + this.getDay() + ", " + this.getYear();
 	}
 	
+	//TODO
 	public String toPrint() {
 		String answer = new String();
+		//@author A0108297X
 		/*
 		switch (cal.get(Calendar.DAY_OF_WEEK_IN_MONTH)) {
 		case Calendar.MONDAY:
@@ -368,6 +377,7 @@ public class Date {
 			day = "Sunday";
 			break;
 		}*/
+		//@author A0115696W
 		switch (this.getMonth()) {
 		case 1:
 			answer = "January";
@@ -427,7 +437,7 @@ public class Date {
 	
 	//@author A0115696W
 	/**
-	 * @author yuiwei / A0115696W
+	 * 
 	 * @param inDateFormat
 	 * @return
 	 * @throws Exception
@@ -441,8 +451,9 @@ public class Date {
 		String inLocalDateFormat = "" + yyyy + "-" + mm + "-" + dd;
 		return inLocalDateFormat;
 	}
+	
 	/**
-	 * @author yuiwei/ A0115696W
+	 *
 	 * @param dw - the Java DayOfWeek object
 	 * @return the Date object referring to the nearest specified DayOfWeek.
 	 * i.e. getNext(DayOfWeek.MONDAY) will get the nearest Monday.
@@ -461,7 +472,7 @@ public class Date {
 		return tdy;
 	}
 	/**
-	 * @author Yui Wei A011596W
+	 *
 	 * @return
 	 * @throws Exception
 	 */
