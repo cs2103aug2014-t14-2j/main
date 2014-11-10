@@ -48,6 +48,7 @@ public class Repeat extends Command {
 	Time repeatStart;
 	Time repeatEnd;
 	List<Subcommand> repeatSubcommands;
+	List<Command> adds; 
 
 	private static List<Task> taskList = TotalTaskList.getInstance().getList();
 
@@ -60,6 +61,7 @@ public class Repeat extends Command {
 	public String execute() throws Exception {
 		hasFour = false;
 		repeatedTasks = new ArrayList<Task>();
+		adds = new ArrayList<Command>();
 		assembleCCs(subcommands);
 		getTask();
 		initializerepeatSubcommands();
@@ -68,6 +70,8 @@ public class Repeat extends Command {
 		if (hasFour) {
 			checkStartEnd();
 		}
+		
+		
 		if (freq.equals(FREQUENCY.DAILY.toString())) {
 			List<LocalDate> daysHappening_daily = repeatStartDates_daily(start,
 					end);
@@ -171,7 +175,9 @@ public class Repeat extends Command {
 		// boolean added = new Add(repeatSubcommands).addTaskToList(repeatTask);
 
 		repeatedTasks.add(repeatTask);
-		new Add(lsc).execute();
+		Command cmd = new Add(lsc);
+		adds.add(cmd);
+		cmd.execute();
 	}
 
 	private String ldParse(String inDateFormat) throws Exception {
@@ -380,7 +386,11 @@ public class Repeat extends Command {
 
 	@Override
 	public String undo() throws Exception {
-		return null;
+		for (Command cmd : adds) {
+			cmd.undo();
+		}
+		String x = ezCMessages.getUndoRepeatMessage(t);
+		return x;
 	}
 
 	public String furtherRepeat(Task ta, List<Subcommand> sco) throws Exception {
