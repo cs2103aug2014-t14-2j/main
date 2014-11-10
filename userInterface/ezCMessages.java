@@ -352,49 +352,51 @@ public class ezCMessages {
 		String secondLine = new String();
 		Date today = new Date();
 		
+		String tab = "    ";
+		
 		firstLine = task.getName();
 		
 		if (task.hasCategory()) {
-			firstLine = firstLine + "\t" + "Category: " + task.getCategory();
+			firstLine = firstLine + tab + "Category: " + task.getCategory();
 		}
 		
 		if (!task.getHasDeadline()) {
 			if (task.getStartDate().isBefore(today)) {
-				firstLine = firstLine + "\tStarted " + task.getStartDate();
+				firstLine = firstLine + tab + "Started " + task.getStartDate();
 			} else {
-				firstLine = firstLine + "\tStarting " + task.getStartDate();
+				firstLine = firstLine + tab + "Starting " + task.getStartDate();
 			}
 		} else if (task.getStartDate().isEquals(task.getEndDate())) {
-			firstLine = firstLine + "\tOn " + task.getStartDate().toPrint();
+			firstLine = firstLine + tab + "On " + task.getStartDate().toPrint();
 		} else if (today.isBefore(task.getStartDate())) {
-			firstLine = firstLine + "\tFrom " + task.getStartDate().toPrint() + " to " + task.getEndDate().toPrint();
+			firstLine = firstLine + tab + "From " + task.getStartDate().toPrint() + " to " + task.getEndDate().toPrint();
 		} else {
-			firstLine = firstLine + "\tDue " + task.getEndDate().toPrint();
+			firstLine = firstLine + tab + "Due " + task.getEndDate().toPrint();
 		}
 		
 		if (task.hasStartTime()) {
-			firstLine = firstLine + "\t" + task.getStartTime().toString() + " to " + task.getEndTime().toString();
+			firstLine = firstLine + tab + task.getStartTime().toString() + " to " + task.getEndTime().toString();
 		} else {
 			if (!task.getHasDeadline()) {
-				firstLine = firstLine + "\t" + "No Deadline";
+				firstLine = firstLine + tab + "No Deadline";
 			}
 		}
 		
 		if (task.isCompleted()) {
-			firstLine = firstLine + "\t" + "Complete";
+			firstLine = firstLine + tab + "Complete";
 		} else {
-			firstLine = firstLine + "\t" + "Incomplete";
+			firstLine = firstLine + tab + "Incomplete";
 		}
 		
 		if (task.getHasLocation()) {
-			secondLine = secondLine + "\tLocation: " + task.getLocation();
+			secondLine = secondLine + tab + "Location: " + task.getLocation();
 		}
 		
 		if (task.getHasNote()) {
-			secondLine = secondLine + "\tNote: " + task.getNote();
+			secondLine = secondLine + tab + "Note: " + task.getNote();
 		}
 		
-		return firstLine + "\t" + secondLine;
+		return firstLine + tab + secondLine;
 	}
 	
 	public String getFinishMessage(Task completed) {
