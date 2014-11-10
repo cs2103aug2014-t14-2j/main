@@ -256,12 +256,6 @@ public class CommandInterpreter {
 		handleRestOfCommand(string, components);
 	}
 
-	private void handleSort(String string, List<Subcommand> components)
-			throws BadSubcommandException, BadSubcommandArgException {
-		Subcommand.TYPE sortType = Subcommand.determineComponentType(string);
-		components.add(new Subcommand(sortType, ""));
-	}
-
 	private String handleInitialTitle(String string, COMMAND_TYPE commandType,
 			List<Subcommand> components) throws BadSubcommandArgException,
 			BadSubcommandException, IndexOutOfBoundsException {

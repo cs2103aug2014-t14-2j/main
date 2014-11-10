@@ -25,6 +25,7 @@ public class Repeat extends Command {
 
 	private String freq;
 	private String start;
+	@SuppressWarnings("unused")
 	private String name;
 	private String end;
 	private boolean hasFour;
@@ -109,7 +110,6 @@ public class Repeat extends Command {
 			// THROW ERROR OR STRING
 		}
 		String x = ezCMessages.getInstance().getStringOfTasks(repeatedTasks);
-		String unimplemented = "This command has not been finished. :)";
 		return x;
 	}
 
@@ -443,7 +443,6 @@ public class Repeat extends Command {
 			// THROW ERROR OR STRING
 		}
 		String x = ezCMessages.getInstance().getStringOfTasks(repeatedTasks);
-		String unimplemented = "This command has not been finished. :)";
 		return x;
 	}
 }
