@@ -55,7 +55,9 @@ public class ExceptionHandler {
 			enterToggle.initializeLesser(furtherEditer);
 			break;
 		case REPEAT: 
-			break;
+			FurtherRepeater furtherRepeater = new FurtherRepeater(opts, cc);
+			enterToggle.initializeLesser(furtherRepeater);
+			break;			
 		default:
 			break;
 		}
