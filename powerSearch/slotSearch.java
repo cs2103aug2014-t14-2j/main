@@ -14,15 +14,19 @@ import dataEncapsulation.StartComparator;
 import dataManipulation.TotalTaskList;
 
 public class SlotSearch {
+	
 	TotalTaskList tl = TotalTaskList.getInstance();
 	List<Time> freeSlots;
+	static List<Task> longTermTasks;
 	
 	public static String execute(Date d) throws Exception {
 		String ans ="";
+		longTermTasks = new ArrayList<Task>();
 		List<Slot> slots = findFreeSlotsOn(d);
 		for (int i=slots.size()-1; i>=0; i--) {
 			ans = ans + "\n" + slots.get(i).toString();
 		}
+		ans = ans + "\n\nRunning Tasks: \n\n" + runningTasks(longTermTasks, d);
 		return ans;
 	}
 	
@@ -69,14 +73,42 @@ public class SlotSearch {
 			Date start = t.getStartDate();
 			boolean taskEndsToday = d.isEquals(end);
 			boolean taskStartsToday = d.isEquals(start);
-			if (taskEndsToday && taskStartsToday ) {
+			boolean taskEndsAfterToday = d.isBefore(end) || taskEndsToday;
+			boolean taskStartsBeforeToday = start.isBefore(d) || taskStartsToday;
+			System.out.println("Task t = " + t.getName());
+			if (taskEndsToday && taskStartsToday ) { //single day task
+				System.out.println("single day task");
 				results.add(t);
+			} else if (taskEndsAfterToday && taskStartsBeforeToday) {
+				System.out.println("running task");
+				longTermTasks.add(t);
 			}
 		}
 		Collections.sort(results, new StartComparator());
 		return results;
-	}
+	}	
 	
+	private static String runningTasks(List<Task> ltt, Date today) {
+		System.out.println("ltt: " + ltt.size());
+		String res = "";
+		Collections.sort(ltt, new StartComparator());
+		for (int i=0; i<ltt.size(); i++) {
+			Task t= ltt.get(i);
+			Date startDate = t.getStartDate();
+			Date endDate = t.getEndDate();
+			Time endTime = t.getEndTime();
+			Time startTime = t.getStartTime();
+			if (today.isEquals(endDate)) {
+				res = res + t.getName() + " ends on this day at " + endTime.toString() + "\n";
+			} else if (today.isEquals(startDate)) {
+				res = res + t.getName() + " starts on this day at " + startTime.toString() + "\n";
+			} else {
+				res = res + t.getName() + " started " + startDate.toPrint() +
+						" and ends " + endDate.toPrint() ;
+			}
+		}
+		return res;
+	}
 }
 
 class Slot {
