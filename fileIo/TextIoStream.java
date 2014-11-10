@@ -1,5 +1,7 @@
 package fileIo;
 
+//@author A0126720N-reused
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -23,8 +25,6 @@ import java.util.List;
  * 		All rights reserved.
  * 
  */
-
-//@author A0126720N-reused
 
 public class TextIoStream {
 

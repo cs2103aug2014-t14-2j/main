@@ -18,13 +18,9 @@ public class StartComparator implements Comparator<Task> {
     public int compareTo(Task thisone, Task another) {
 		Date mySD = thisone.getStartDate();
 		Time myST = thisone.getStartTime();
-		Date myED = thisone.getEndDate();
-		Time myET = thisone.getEndTime();
 		
 		Date anSD = another.getStartDate();
 		Time anST = another.getStartTime();
-		Date anED = another.getEndDate();
-		Time anET = another.getEndTime();
 		
 		if (mySD.isBefore(anSD)) { //startdate is before
 			return -1;

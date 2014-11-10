@@ -1,4 +1,5 @@
 package fileIo;
+//@author A0126720N
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,8 +15,6 @@ import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
 import dataEncapsulation.Task;
 import dataEncapsulation.TaskFileErrorException;
-import dataManipulation.ChangeDateType;
-import dataManipulation.Subcommand;
 import dataManipulation.TotalTaskList;
 
 /*
@@ -41,7 +40,7 @@ public class FileIo {
 		try {
 			fileStream = new TextIoStream(fileName);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -72,10 +71,10 @@ public class FileIo {
 			fileStream.appendFile(list.getAllTasks());
 			return;
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 	}

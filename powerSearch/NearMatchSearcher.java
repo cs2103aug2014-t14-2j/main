@@ -1,8 +1,10 @@
 	/**
-	 * @author Kadayam Suresh Kaushik A0108297X
 	 * Performs an Near Search on a List<Task> based on different Keys given
 	 * @return format: List<Task>
 	 */
+
+//@author A0108297X
+
 package powerSearch;
 
 import java.util.ArrayList;

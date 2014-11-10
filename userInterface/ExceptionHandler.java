@@ -1,5 +1,7 @@
 package userInterface;
 
+//@author A0126720N
+
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,7 @@ public class ExceptionHandler {
 		status = stat;
 	}
 	
+	//@author A0115696W
 	public void furtherAction(ActionException e) {
 		List<Task> opts = e.getOptions();
 		List<Subcommand> cc = e.getSubcommands();
@@ -71,6 +74,7 @@ public class ExceptionHandler {
 		enterToggle.setLesser();
 	}
 	
+	//@author A0126720N
 	public ArrayList<Task> getChoices(String input, List<Task> opts) throws BadSubcommandArgException {
 		input = formatInput(input);
 		
@@ -280,6 +284,8 @@ public class ExceptionHandler {
 			}
 		}
 	}
+	
+	//@author A0115696W
 	@SuppressWarnings("serial")
 	class FurtherRepeater extends AbstractAction {
 		List<Task> options;
@@ -326,6 +332,7 @@ public class ExceptionHandler {
 		}
 	}
 	
+	//@author A0126720N
 	@SuppressWarnings("serial")
 	class FurtherDoer extends AbstractAction {
 		List<Task> options;

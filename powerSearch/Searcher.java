@@ -1,5 +1,6 @@
-	/**
-	 * @author Kadayam Suresh Kaushik A0108297X
+//@author A0108297X
+
+/**
 	 * Takes a list and searches for various details
 	 * @return format: String or List of Tasks
 	 */

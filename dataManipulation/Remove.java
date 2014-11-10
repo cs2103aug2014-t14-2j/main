@@ -1,5 +1,7 @@
 package dataManipulation;
 
+//@author A0115696W
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +68,7 @@ public class Remove extends Command {
 		
 	}
 	
+	//@author A0126720N
 	public String executeRemoveLiteral() throws Exception {
 		int indexOfDeletionList = initializeTasksFound(subcommands);
 		List<Task> listToDeleteFrom = getDeletionList(indexOfDeletionList);
@@ -76,6 +79,7 @@ public class Remove extends Command {
 		return messages.getDeleteMessage(taskRemoved);
 	}
 
+	//@author A0111014J
 	private Task findLiteralMatch(List<Subcommand> subcommands, 
 			List<Task> listToDeleteFrom) throws BadCommandException, 
 			BadSubcommandException, BadSubcommandArgException, Exception {
@@ -138,7 +142,7 @@ public class Remove extends Command {
 		stream.rewriteFile();
 	}
 	
-	//@author A0126720N unused
+	//@author A0126720N-unused
 	@SuppressWarnings("unused")
 	private void updateAutocomplete(Task task) {
 		Autocomplete autocomplete = Autocomplete.getInstance();

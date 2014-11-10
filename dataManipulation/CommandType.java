@@ -13,7 +13,7 @@ public class CommandType {
 
 	public enum COMMAND_TYPE {
 		ADD, ALL, CHANGE_DATE_TYPE, COMPLETED, EDIT, FINISH, 
-		HELP, OVERDUE, REDO, REMOVE, REPEAT, SEARCH, SORT, TODAY, UNFINISH,
+		HELP, OVERDUE, REDO, REMOVE, REPEAT, SEARCH, TODAY, UNFINISH,
 		UNDO,
 		INVALID;
 
@@ -72,8 +72,6 @@ public class CommandType {
 			return COMMAND_TYPE.REPEAT;
 		case "search" :
 			return COMMAND_TYPE.SEARCH;
-		case "sort" :
-			return COMMAND_TYPE.SORT;
 		case "today" :
 			return COMMAND_TYPE.TODAY;
 		case "unfinish" :
@@ -105,8 +103,6 @@ public class CommandType {
 			return isRepeatType(subcommandType);
 		case SEARCH :
 			return isSearchType(subcommandType);
-		case SORT :
-			return isSortType(subcommandType);
 		case UNFINISH :
 			return isUnfinishType(subcommandType);
 		default :
@@ -140,8 +136,6 @@ public class CommandType {
 			return getRepeatSubcommands();
 		case SEARCH :
 			return getSearchSubcommands();
-		case SORT :
-			return getSortSubcommands();
 		default :
 			return new ArrayList<String>();
 		}
@@ -217,10 +211,6 @@ public class CommandType {
 		list.add(Subcommand.TYPE.FREE.toString());
 		
 		return list;
-	}
-
-	private List<String> getSortSubcommands() {
-		return new ArrayList<String>();
 	}
 
 	private boolean isAddType(TYPE subcommandType) {
@@ -309,19 +299,6 @@ public class CommandType {
 				return true;
 			default :
 				return isSearchType;
-		}
-	}
-
-	private boolean isSortType(TYPE subcommandType) {
-		switch (subcommandType) {
-			case BYNAME :
-				return true;
-			case BYSTART :
-				return true;
-			case BYEND :
-				return true;
-			default :
-				return false;
 		}
 	}
 

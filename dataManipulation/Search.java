@@ -1,5 +1,7 @@
 package dataManipulation;
 
+//@author A0108297X
+
 import java.util.List;
 
 import powerSearch.Searcher;

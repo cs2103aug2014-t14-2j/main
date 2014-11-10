@@ -23,7 +23,6 @@ import dataManipulation.Redo;
 import dataManipulation.Remove;
 import dataManipulation.Repeat;
 import dataManipulation.Search;
-import dataManipulation.Sort;
 import dataManipulation.Subcommand;
 import dataManipulation.Today;
 import dataManipulation.Undo;
@@ -105,8 +104,6 @@ public class CommandInterpreter {
 			return new Repeat(subcommands);
 		case SEARCH:
 			return new Search(subcommands);
-		case SORT:
-			return new Sort(subcommands);
 		case TODAY:
 			return new Today(subcommands);
 		case UNDO:
@@ -227,9 +224,7 @@ public class CommandInterpreter {
 		List<Subcommand> components = new ArrayList<Subcommand>();
 
 		// Search and Sort must label their first subcommands
-		if (commandType == COMMAND_TYPE.SORT) {
-			handleSort(string, components);
-		} else if (commandType == COMMAND_TYPE.SEARCH) {
+		if (commandType == COMMAND_TYPE.SEARCH) {
 			handleSearch(string, commandType, components);
 		} else {
 			string = handleInitialTitle(string, commandType, components);
@@ -259,12 +254,6 @@ public class CommandInterpreter {
 			List<Subcommand> components) throws BadSubcommandArgException,
 			BadSubcommandException, IndexOutOfBoundsException {
 		handleRestOfCommand(string, components);
-	}
-
-	private void handleSort(String string, List<Subcommand> components)
-			throws BadSubcommandException, BadSubcommandArgException {
-		Subcommand.TYPE sortType = Subcommand.determineComponentType(string);
-		components.add(new Subcommand(sortType, ""));
 	}
 
 	private String handleInitialTitle(String string, COMMAND_TYPE commandType,

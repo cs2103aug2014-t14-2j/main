@@ -1,10 +1,11 @@
 /**
- * @author Nelson / A0111014J
  * 
  * This class processes the methods within the Undo and Redo classes and holds the stack of
  * commands to undo and redo.
  *
  */
+
+//@author A0111014J
 
 package dataManipulation;
 

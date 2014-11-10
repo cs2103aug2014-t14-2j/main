@@ -1,9 +1,5 @@
 package powerSearch;
-/**
- * 
- * @author A0115696W
- * 
- */
+//@author A0108297X
 
 import java.util.ArrayList;
 import java.util.Collections;

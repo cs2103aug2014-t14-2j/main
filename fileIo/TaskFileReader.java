@@ -1,5 +1,7 @@
 package fileIo;
 
+//@author A0126720N
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +24,6 @@ import dataEncapsulation.Time;
  * is unusable to the user)
  *
  */
-
-//@author A0126720N
 
 public class TaskFileReader {
 	private static TaskFileReader tfr;
