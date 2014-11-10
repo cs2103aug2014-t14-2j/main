@@ -23,7 +23,6 @@ import dataManipulation.Redo;
 import dataManipulation.Remove;
 import dataManipulation.Repeat;
 import dataManipulation.Search;
-import dataManipulation.Sort;
 import dataManipulation.Subcommand;
 import dataManipulation.Today;
 import dataManipulation.Undo;
@@ -105,8 +104,6 @@ public class CommandInterpreter {
 			return new Repeat(subcommands);
 		case SEARCH:
 			return new Search(subcommands);
-		case SORT:
-			return new Sort(subcommands);
 		case TODAY:
 			return new Today(subcommands);
 		case UNDO:

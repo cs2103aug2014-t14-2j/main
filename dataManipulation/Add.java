@@ -1,6 +1,4 @@
-/**
- * @author nellystix
- */
+//@author A0115696W
 
 package dataManipulation;
 
@@ -66,6 +64,7 @@ public class Add extends Command {
 		
 	}
 
+	//@author A0126720N
 	private void updateAutocomplete() {
 		Autocomplete autocomplete = Autocomplete.getInstance();
 		autocomplete.addTitle(taskName);
@@ -73,6 +72,7 @@ public class Add extends Command {
 		autocomplete.addLocation(taskLocation);
 	}
 
+	//@author A0111014J
 	public boolean addTaskToList(Task toAdd) {
 		boolean result = false;
 		Date today = new Date();
@@ -226,6 +226,7 @@ public class Add extends Command {
 		endTime = new Time().determineTime(contents);
 	}
 
+	//@author A0126720N
 	@Override
 	protected void checkValidity() throws BadSubcommandException {
 		super.checkValidity();
@@ -233,7 +234,6 @@ public class Add extends Command {
 		checkDateMatches();
 	}
 
-	//@author A0126720N
 	private void checkDateMatches() throws BadSubcommandException {
 		boolean hasGeneralDate = hasSubcommandType(Subcommand.TYPE.DATE);
 		boolean hasStartDate = hasSubcommandType(Subcommand.TYPE.START);

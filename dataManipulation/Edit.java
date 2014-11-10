@@ -44,6 +44,7 @@ public class Edit extends Command {
 		}
 	}
 
+	//@author A0126720N
 	@Override
 	public String execute() throws Exception {
 		try {
@@ -67,6 +68,7 @@ public class Edit extends Command {
 		return trueTask;
 	}
 
+	//@author A0126720N
 	public String furtherEdit(Task toEdit) throws Exception {
 
 		trueTask = toEdit;
@@ -85,6 +87,7 @@ public class Edit extends Command {
 		}
 	}
 	
+	//@author A0126720N
 	private String executeMainEdit() throws Exception {
 		if (preeditCopy == null) {
 			preeditCopy = new Task(trueTask);
@@ -112,6 +115,7 @@ public class Edit extends Command {
 		autocomplete.addLocation(trueTask.getLocation());
 	}
 
+	//@author A0111014J
 	private Task getTaskToEdit() throws Exception {
 
 		List<Subcommand> nameOfTaskToEdit = new ArrayList<Subcommand>();
@@ -131,6 +135,7 @@ public class Edit extends Command {
 
 	}
 
+	//@author A0111014J
 	private static Task setTaskAttributes(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
 
 		for(Subcommand cc : taskAttributes) {
@@ -169,6 +174,7 @@ public class Edit extends Command {
 		return toEdit;
 	}
 
+	//@author A0126720N
 	private void addEditedTask(Task copy, Task toEditAndAdd) throws Exception {
 		boolean isRepeat = ExactMatchSearcher.isTaskDuplicate(copy);
 		
@@ -180,12 +186,14 @@ public class Edit extends Command {
 		taskList.update();
 	}
 
+	//@author A0111014J
 	@Override
 	protected void checkValidity() throws BadSubcommandException {
 		super.checkValidity();
 		checkForNoDuplicateSubcommands();
 	}
 
+	//@author A0126720N
 	@Override
 	public String undo() throws Exception {
 		if (preeditCopy == null) {

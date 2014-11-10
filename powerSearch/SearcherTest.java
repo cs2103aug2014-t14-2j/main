@@ -1,5 +1,6 @@
-	/**
-	 * @author Kadayam Suresh Kaushik A0108297X
+//@author A0108297X
+
+/**
 	 * Tests the different searches within Searcher Class
 	 * @return format: String
 	 */

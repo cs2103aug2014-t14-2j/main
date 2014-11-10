@@ -1,8 +1,6 @@
 package dataManipulation;
 
-/**
- * @author A0115696W
- */
+//@author A0115696W
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

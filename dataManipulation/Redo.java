@@ -1,12 +1,13 @@
 /**
  * 
- * @author nellystix
  * 
  * This class processes the redo functions of the program that allows the user to redo 
  * as many commands as has been executed AS LONG AS the program has not been quit. All changes
  * made after quitting the program are final.
  *
  */
+
+//@author A0111014J
 
 package dataManipulation;
 
