@@ -323,6 +323,11 @@ public class ezCMessages {
 				+ NEW_LINE + "to: " + NEW_LINE + NEW_LINE + undidTo.toPrint();
 		return message;
 	}
+	public String getUndoRepeatMessage(Task taskUnrepeated) {
+		String message = "Your task: " + NEW_LINE + NEW_LINE + taskUnrepeated.toPrint() +
+				NEW_LINE +  "has been successfully unrepeated.";
+		return message;
+	}
 	
 	public String getErrorMessage(Exception e) {
 		String opening = "ERROR: ";
