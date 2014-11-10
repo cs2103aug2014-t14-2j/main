@@ -7,26 +7,14 @@ import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandArgException;
 import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Task;
-import dataManipulation.CommandType.COMMAND_TYPE;
 
-public class MultiRemove extends Command {
+public class MultiRemove extends MultiCommand<Remove> {
 
 	private List<Remove> removers = new ArrayList<Remove>();
 	
-	public MultiRemove(ArrayList<Task> choices) throws BadCommandException,
+	public MultiRemove(List<Task> choices) throws BadCommandException,
 			BadSubcommandException, BadSubcommandArgException {
-		super(COMMAND_TYPE.INVALID, new ArrayList<Subcommand>());
-		initializeRemovers(choices);
-	}
-
-	private void initializeRemovers(ArrayList<Task> choices) throws 
-	BadSubcommandException, BadSubcommandArgException, BadCommandException {
-		for (Task t : choices) {
-			List<Subcommand> choiceSubcommands = 
-				Add.dismantleTask(t);
-			Remove newRemove = new Remove(choiceSubcommands);
-			removers.add(newRemove);
-		}
+		super(choices);
 	}
 
 	@Override
@@ -55,5 +43,16 @@ public class MultiRemove extends Command {
 		}
 		ret = ret + toReport;
 		return ret;
+	}
+
+	@Override
+	Remove makeCommand(List<Subcommand> choices) 
+			throws BadCommandException, BadSubcommandException {
+		return new Remove(choices);
+	}
+
+	@Override
+	String specializedExecute(Remove command) throws Exception {
+		return command.executeRemoveLiteral();
 	}
 }

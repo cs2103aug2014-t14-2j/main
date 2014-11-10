@@ -28,7 +28,7 @@ public class Redo extends Command {
 
 	@Override
 	public String execute() throws Exception {
-		if(UndoRedoList.getInstance().isUndoStackEmpty()) {
+		if(UndoRedoList.getInstance().isRedoStackEmpty()) {
 			throw new NoResultException("there is nothing to redo");
 		}
 		

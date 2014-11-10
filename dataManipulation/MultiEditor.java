@@ -18,10 +18,10 @@ public class MultiEditor extends Command {
 	
 	public MultiEditor(List<Task> choices, List<Subcommand> changes) throws BadCommandException,
 			BadSubcommandException, BadSubcommandArgException {
-		super(COMMAND_TYPE.EDIT, changes);
+		super(COMMAND_TYPE.EDIT, changes);	// check only edit-type subcommands
 		tasksToEdit = choices;
 		initializeEditors(choices);
-		super.type = COMMAND_TYPE.INVALID;
+		super.type = COMMAND_TYPE.INVALID;	// should not be recognized as a user-command
 	}
 
 	private void initializeEditors(List<Task> choices) throws 

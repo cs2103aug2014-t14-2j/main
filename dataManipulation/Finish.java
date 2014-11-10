@@ -7,7 +7,9 @@ import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.ActionException.ErrorLocation;
 import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
 import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.NoResultException;
 import dataEncapsulation.Task;
 import dataManipulation.CommandType.COMMAND_TYPE;
 import fileIo.FileIo;
@@ -22,7 +24,7 @@ public class Finish extends Command {
 	@Override
 	public String undo() throws Exception {
 		Unfinish reverse = new Unfinish(subcommands);
-		return reverse.execute();
+		return reverse.literalUnfinish();
 	}
 
 	@Override
@@ -79,6 +81,48 @@ public class Finish extends Command {
 	protected void checkValidity() throws BadSubcommandException {
 		super.checkValidity();
 		checkForNoDuplicateSubcommands();
+	}
+
+	public String literalFinish() throws BadCommandException, 
+		BadSubcommandException, BadSubcommandArgException, Exception {
+		TotalTaskList list = TotalTaskList.getInstance();
+		List<Task> completed = list.getCompleted();
+		Task perfectMatch = findLiteralMatch(subcommands, completed);
+
+		ezCMessages messages = ezCMessages.getInstance();
+		return messages.getFinishMessage(perfectMatch);
+	}
+	
+	private Task findLiteralMatch(List<Subcommand> subcommands, List<Task> list) 
+			throws BadCommandException, 
+			BadSubcommandException, BadSubcommandArgException, Exception {
+
+		Task match = (new Add(subcommands)).buildTask(subcommands);
+		TotalTaskList totalList = TotalTaskList.getInstance();
+		List<Task> currentTasks = totalList.getList();
+
+		for (int i = 0; i < currentTasks.size(); ++i) {
+			Task current = currentTasks.get(i);
+			if (current.isEqualTask(match)) {
+				current.setComplete();
+				currentTasks.remove(current);
+				totalList.addCompleted(current);
+				return current;
+			}
+		}
+		
+		currentTasks = TotalTaskList.getInstance().getOverdue();
+		for (int i = 0; i < currentTasks.size(); ++i) {
+			Task current = currentTasks.get(i);
+			if (current.isEqualTask(match)) {
+				current.setComplete();
+				currentTasks.remove(current);
+				totalList.addCompleted(current);
+				return current;
+			}
+		}
+		
+		throw new NoResultException("The task that you are trying to finish cannot be found.");
 	}
 
 }

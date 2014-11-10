@@ -74,7 +74,8 @@ public class Subcommand {
 	}
 	
 	public enum WEEKDAYS {
-		TODAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
+		TOMORROW, TODAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, 
+		SATURDAY, SUNDAY;
 		
 		@Override
 		public String toString() {
