@@ -7,6 +7,30 @@
 	 */
 
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * This class creates an input-output stream for a file. If the file already
+ * exists, it can append or rewrite the file. If the file does not exist, it
+ * will create one.
+ * 
+ * Much of the basic file IO including choice of readers and writers, their 
+ * syntax, and exception handling, was based on Example 4 with permission from
+ * the following web page: 
+ * http://www.javapractices.com/topic/TopicAction.do?Id=42
+ * 		Copyright (c) 2002-2009, Hirondelle Systems
+ * 		All rights reserved.
+ * 
+ */
+
 public class TextIoStream {
 
 	private final File file;

@@ -1,0 +1,51 @@
+//@author: a0108297x-unused
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\sortTaskByEndDate.java
+	 */
+
+/*
+ *         public int compare(Task o1, Task o2) {
+            Task s1 =  o1;
+            Task s2 =  o2;
+            if(s1.getEndDate().isBefore(s2.getEndDate())){
+                return -1;
+            }
+            else if(s1.getEndDate().isEqual(s2.getEndDate())){
+                return 0;
+            }
+            else
+                return 1;
+        }
+}
+*/
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\sortTaskByEndDate.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\sortTaskByName.java
+	 */
+
+package dataEncapsulation;
+
+import java.util.Comparator;
+public class sortTaskByName implements Comparator<Task> {
+	    public int compare(Task o1, Task o2) {
+	        Task s1 = o1;
+	        Task s2 = o2;
+	        return s1.getName().compareTo(s2.getName());
+	    }
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\sortTaskByName.java
+
+
+
+
+

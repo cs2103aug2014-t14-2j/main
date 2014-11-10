@@ -1,0 +1,1496 @@
+//@author: a0115696w
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+	 */
+
+	public boolean isEquals(Date another) {
+		if (this.day == another.day && this.month == another.month
+				&& this.year == another.year) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+	 */
+
+	public int getDay() {
+		return day;
+	}
+
+	public void setDay(int day) {
+		this.day = day;
+	}
+
+	public int getMonth() {
+		return month;
+	}
+
+	public void setMonth(int month) {
+		this.month = month;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	public Calendar getCal() {
+		return this.cal;
+	}
+
+	public static void changeFormatDm() {
+		dmFormat = true;
+	}
+
+	public static void changeFormatMd() {
+		dmFormat = false;
+	}
+
+	public static boolean isFormatDm() {
+		return dmFormat;
+	}
+	
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+	 */
+
+	/**
+	 * Reads a String and outputs the correct Date object.
+	 * Accepted formats:
+	 * 		November 5, 2014
+	 * 		5/11/2014
+	 * 		2014-11-5
+	 * Yui Wei
+	 */
+	public Date determineDate(String dateString) throws Exception {
+		Date tdy = new Date();
+		try {
+			if (dateString == null) {
+				return null;
+			} 
+			switch (dateString.toLowerCase()) {
+			case "today" :
+				return tdy;
+			case "tomorrow" : case "tmr" :
+				int day1 = tdy.getDay();
+				tdy.setDay(day1 + 1);
+				return tdy;
+			case "monday": case "mon" : 
+				Date mon = getNext(DayOfWeek.MONDAY);
+				return mon;
+			case "tuesday" : case "tues" : case "tue" :
+				Date tue = getNext(DayOfWeek.TUESDAY);
+				return tue;
+			case "wednesday" : case "wed":
+				Date wed = getNext(DayOfWeek.WEDNESDAY);
+				return wed;
+			case "thursday" : case "thur" : case "thu" :
+				Date thu = getNext(DayOfWeek.THURSDAY);
+				return thu;
+			case "friday": case "fri" :
+				Date fri = getNext(DayOfWeek.FRIDAY);
+				return fri;
+			case "saturday" : case "sat" :
+				Date sat = getNext(DayOfWeek.SATURDAY);
+				return sat;
+			case "sunday" : case "sun" :
+				Date sun = getNext(DayOfWeek.SUNDAY);
+				return sun;
+			default: 
+				break;
+			}
+	
+			String month, day, year;
+			int mm, dd, yyyy;
+			if (dateString.contains(",")) {
+				int space = dateString.indexOf(' ');
+				int comma = dateString.indexOf(',');
+				month = dateString.substring(0, space);
+				day = dateString.substring(space + 1, comma);
+				year = dateString.substring(comma);
+				year = cleanUpYear(year);
+				mm = monthInteger(month);
+			} else if (dateString.contains("/")) {
+				int dayIndex = 0;
+				int monthIndex = 1;
+				if (!dmFormat) {
+					dayIndex = 1;
+					monthIndex = 0;
+				}
+	
+				String dateStr[] = dateString.split("/", 3);
+				day = dateStr[dayIndex];
+				month = dateStr[monthIndex];
+				year = dateStr[2];
+				mm = Integer.parseInt(month);
+			} else if (dateString.contains("-")) {
+				int yearIndex = 0;
+				int dayIndex = 2;
+				int monthIndex = 1;
+	
+				String dateStr[] = dateString.split("-", 3);
+				day = dateStr[dayIndex];
+				month = dateStr[monthIndex];
+				year = dateStr[yearIndex];
+				mm = Integer.parseInt(month);
+			} else {
+				String dateStr[] = dateString.split(" ", 3);
+				day = dateStr[0];
+				month = dateStr[1];
+				year = dateStr[2];
+				mm = Integer.parseInt(month);
+			}
+			dd = Integer.parseInt(day);
+			yyyy = Integer.parseInt(year);
+	
+			Date userDate = new Date(dd, mm, yyyy);
+			return userDate;
+		} catch (Exception e) {
+			throw new BadSubcommandArgException("You are entering an invalid date. Please enter dates from the year 2014 onwards.");
+		}
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+	 */
+
+	public static int monthInteger(String month1) {
+		int monthNum;
+		switch (month1.toLowerCase()) {
+		case "january":
+			monthNum = 1;
+			break;
+		case "february":
+			monthNum = 2;
+			break;
+		case "march":
+			monthNum = 3;
+			break;
+		case "april":
+			monthNum = 4;
+			break;
+		case "may":
+			monthNum = 5;
+			break;
+		case "june":
+			monthNum = 6;
+			break;
+		case "july":
+			monthNum = 7;
+			break;
+		case "august":
+			monthNum = 8;
+			break;
+		case "september":
+			monthNum = 9;
+			break;
+		case "october":
+			monthNum = 10;
+			break;
+		case "november":
+			monthNum = 11;
+			break;
+		case "december":
+			monthNum = 12;
+			break;
+		default:
+			monthNum = 0;
+			break;
+		}
+		return monthNum;
+	}
+
+	public String toString() {
+		String answer = new String();
+		switch (this.getMonth()) {
+		case 1:
+			answer = "January";
+			break;
+		case 2:
+			answer = "February";
+			break;
+		case 3:
+			answer = "March";
+			break;
+		case 4:
+			answer = "April";
+			break;
+		case 5:
+			answer = "May";
+			break;
+		case 6:
+			answer = "June";
+			break;
+		case 7:
+			answer = "July";
+			break;
+		case 8:
+			answer = "August";
+			break;
+		case 9:
+			answer = "September";
+			break;
+		case 10:
+			answer = "October";
+			break;
+		case 11:
+			answer = "November";
+			break;
+		case 12:
+			answer = "December";
+			break;
+		}
+		return answer + " " + this.getDay() + ", " + this.getYear();
+	}
+	
+	//TODO
+	public String toPrint() {
+		String answer = new String();
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+	 */
+
+		switch (this.getMonth()) {
+		case 1:
+			answer = "January";
+			break;
+		case 2:
+			answer = "February";
+			break;
+		case 3:
+			answer = "March";
+			break;
+		case 4:
+			answer = "April";
+			break;
+		case 5:
+			answer = "May";
+			break;
+		case 6:
+			answer = "June";
+			break;
+		case 7:
+			answer = "July";
+			break;
+		case 8:
+			answer = "August";
+			break;
+		case 9:
+			answer = "September";
+			break;
+		case 10:
+			answer = "October";
+			break;
+		case 11:
+			answer = "November";
+			break;
+		case 12:
+			answer = "December";
+			break;
+		}
+		return this.getDayOfWeek() + ", " + answer + " " + this.getDay() + ", " + this.getYear();
+	}
+	
+	
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+	 */
+
+	/**
+	 * 
+	 * @param inDateFormat
+	 * @return
+	 * @throws Exception
+	 */
+	private String ldParse(Date d) throws Exception {
+		int ddd = d.getDay();
+		int mmm = d.getMonth();
+		int yyyy = d.getYear();
+		String dd = String.format("%02d", ddd);
+		String mm = String.format("%02d", mmm);
+		String inLocalDateFormat = "" + yyyy + "-" + mm + "-" + dd;
+		return inLocalDateFormat;
+	}
+	
+	/**
+	 *
+	 * @param dw - the Java DayOfWeek object
+	 * @return the Date object referring to the nearest specified DayOfWeek.
+	 * i.e. getNext(DayOfWeek.MONDAY) will get the nearest Monday.
+	 * @throws Exception
+	 */
+	private Date getNext(DayOfWeek dw) throws Exception {
+		Date tdy = new Date();
+		LocalDate ld = LocalDate.parse(ldParse(tdy));
+		int toda = ld.getDayOfWeek().getValue();
+		int nowTo = dw.getValue() - toda;
+		if (nowTo < 0) {
+			nowTo = nowTo + 7;
+		}
+		day = tdy.getDay();
+		tdy.setDay(day + nowTo);
+		return tdy;
+	}
+	/**
+	 *
+	 * @return
+	 * @throws Exception
+	 */
+	private String getDayOfWeek()  {
+		LocalDate date;
+		try {
+			date = LocalDate.parse(ldParse(this));
+			String result = date.getDayOfWeek().toString().toLowerCase();
+			return result.substring(0, 1).toUpperCase() + result.substring(1);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			return "There was a problem with your date.";
+		}
+		
+	}
+}
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\StartComparator.java
+	 */
+
+
+import java.util.Comparator;
+
+public class StartComparator implements Comparator<Task> {
+
+	public int compare(Task o1, Task o2) {
+        Task s1 = o1;
+        Task s2 = o2;
+        return compareTo(s1, s2);
+    }
+    public boolean equals(Task t1, Task t2) {
+    	return compareTo(t1, t2) == 0;
+    }
+	
+    public int compareTo(Task thisone, Task another) {
+		Date mySD = thisone.getStartDate();
+		Time myST = thisone.getStartTime();
+		
+		Date anSD = another.getStartDate();
+		Time anST = another.getStartTime();
+		
+		if (mySD.isBefore(anSD)) { //startdate is before
+			return -1;
+		} else if (mySD.isEquals(anSD)) {
+			if (myST.compareTo(anST) < 0) {
+				return -1;
+			} else if (myST.compareTo(anST) == 0) {
+				return thisone.getName().compareTo(another.getName());
+			} else {
+				return 1;
+			}
+		} else {
+			return 1;
+		}
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\StartComparator.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+	 */
+
+	public Time getEndTime() {
+		return endtime;
+	}
+
+	public void setEndTime(Time e) {
+		if(e == null) {
+			setHasEndTime(false);
+			return;
+		} 
+		setHasEndTime(true);
+		endtime = e;
+	}
+
+
+	public void setComplete(){
+		this.isComplete = true;
+		isOverdue = false;
+	}
+
+	public void setIncomplete() throws Exception {	// Using this for the undo command
+		this.isComplete = false;
+		setIfOverdue();
+	}
+
+	///////////////////////////////////////////////////////////TOSTRING, TOPRINT, EQUALS
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+	 */
+
+	public boolean endsBefore(Task another) {
+		boolean result;
+
+		Date myED = this.getEndDate();
+		Time myET = this.getEndTime();
+		Date anED = another.getEndDate();
+		Time anET = another.getEndTime();
+
+		if (myED.isBefore(anED)) { //this.date before another.date
+			return true;
+		} else if (myED.isEquals(anED)) { //this.date same as another.date
+			if (myET.compareTo(anET) < 0) { 
+				result = true;	//this.time is before another.time
+			} else { result = false; }
+		} else { result = false; } //this.date after another.date
+
+		return result;
+	}
+
+	/*
+	 * Checks if the period of the task is valid (doesn't end before it starts)
+	 * 
+	 */
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+	 */
+
+	public boolean isValid() {
+		boolean result;
+		Date mySD = this.getStartDate();
+		Date myED = this.getEndDate();
+		Time myST = this.getStartTime();
+		Time myET = this.getEndTime();
+
+		if (myED.isBefore(mySD)) { //end is before start
+			result = false;
+		} else if (myED.isEquals(mySD)) { //start and end same day
+			if (myET.compareTo(myST) < 0) { //end time before start time
+				result = false;
+			} else { result = true;	}
+		} else { result = true;	}
+
+		return result;
+	}
+
+}
+
+
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Time.java
+	 */
+
+
+public class Time {
+	private int hours; // 24 hours
+	private int minutes;
+
+	// 24hr input 0000 - 2359
+	// 12hr input 12:00am - 11:59pm
+
+	public Time(int hrs, int mins) throws Exception {
+		if (!isValidTime(hrs, mins)) {
+			throw new Exception("");
+		}
+		hours = hrs;
+		minutes = mins;
+	}
+
+	public Time() {
+		hours = 0;
+		minutes = 0;
+	}
+
+	private boolean isValidTime(int hrs, int mins) {
+		boolean hoursValid;
+		if (hrs >= 0 && hrs < 24) {
+			hoursValid = true;
+		} else {
+			hoursValid = false;
+		}
+
+		boolean minsValid;
+		if (mins >= 0 && mins < 60) {
+			minsValid = true;
+		} else {
+			minsValid = false;
+		}
+
+		return hoursValid && minsValid;
+	}
+
+	public Time determineTime(String input) throws Exception {
+		if (input == null) {
+			return null;
+		}
+		
+		String h, m, ap;
+		int hrs, mins;
+		input = input.toLowerCase().replaceAll(" ", "");
+		if (input.contains("am")
+				|| input.contains("pm")) {
+			// 12 hour input
+			if (input.length() == 4) {
+				h = input.substring(0, 2);
+				ap = input.substring(2);
+				m = "00";
+			} else if (input.length() == 3) {
+				h = input.substring(0, 1);
+				m = "00";
+				ap = input.substring(1);
+			} else {
+				String timeStr[] = input.split(":");
+				h = timeStr[0];
+				m = timeStr[1].substring(0, 2);
+				ap = timeStr[1].substring(2);
+			}
+			hrs = Integer.parseInt(h);
+			mins = Integer.parseInt(m);
+			if (hrs > 12) { throw new Exception("INVALID TIME INPUT (12 hour pls)"); }
+			if (ap.equals("pm")) {
+				if (hrs != 12) {
+				hrs = hrs + 12;
+				}
+			} else if (ap.equals("am")) {
+				if (hrs == 12) {
+					hrs = 0;
+				}
+			}
+		} else {
+			// assume 24 hour!
+			if (input.contains(":")) {
+				input = cleanUp(input);
+			}
+			if (input.length() == 3) {
+				h = input.substring(0, 1);
+				m = input.substring(1);
+			} else {
+				h = input.substring(0, 2);
+				m = input.substring(2);
+			}
+			hrs = Integer.parseInt(h);
+			mins = Integer.parseInt(m);
+		}
+		return new Time(hrs, mins);
+	}
+
+	public String toString() {
+		int h = this.getHours();
+		int m = this.getMins();
+		String ap;
+		if (h >= 12) {
+			ap = "pm";
+			h = h - 12;
+		} else {
+			ap = "am";
+		}
+		if (h == 0) {
+			h = 12;
+		}
+		String hrs = String.format("%02d", h);
+		String mins = String.format("%02d", m);
+		return hrs + ":" + mins + ap;
+	}
+
+	public void setHours(int hrs) {
+		hours = hrs;
+	}
+
+	public int getHours() {
+		return hours;
+	}
+
+	public void setMins(int mins) {
+		minutes = mins;
+	}
+
+	public int getMins() {
+		return minutes;
+	}
+
+	private String cleanUp(String in) {
+		String colon = ":";
+		String emptyString = "";
+		if (in.contains(colon)) {
+			in = in.replace(colon, emptyString);
+		}
+		return in;
+	}
+
+	public int compareTo(Time another) {
+		if (this.getHours() > another.getHours()) {
+			return 1;
+		} else if (this.getHours() == another.getHours()) {
+			if (this.getMins() > another.getMins()) {
+				return 1;
+			} else if (this.getMins() == another.getMins()) {
+				return 0;
+			} else {
+				return -1;
+			}
+		} else {
+			return -1;
+		}
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Time.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\TimeTest.java
+	 */
+
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+public class TimeTest {
+
+	@Test
+	
+	public void testTime() throws Exception {
+	String input1 = "12pm";
+	String input1a = "12am";
+	String input2 = "11:59PM";
+	String input3 = "2359";
+	String input4 = "12:30";
+	
+	Time a = new Time().determineTime(input1);
+	System.out.println("A!");
+	Time b = new Time().determineTime(input2);
+	Time c = new Time().determineTime(input3);
+	Time d = new Time().determineTime(input4);
+	Time e = new Time(12, 34);
+	Time f = new Time().determineTime(input1a);
+	
+	System.out.println(a.toString());
+	System.out.println(b.toString());
+	System.out.println(c.toString());
+	System.out.println(d.toString());
+	System.out.println(e.toString());
+	System.out.println(f.toString());
+	
+	assertEquals(a.compareTo(b), -1);
+	assertEquals(b.compareTo(c) , 0);
+	assertEquals(c.compareTo(d), 1);
+	assertEquals(d.compareTo(e), -1);
+	}
+	
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\TimeTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Add.java
+	 */
+
+
+package dataManipulation;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import powerSearch.ExactMatchSearcher;
+import userInterface.Autocomplete;
+import userInterface.ezCMessages;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
+import dataEncapsulation.Time;
+import dataManipulation.CommandType.COMMAND_TYPE;
+import fileIo.FileIo;
+
+public class Add extends Command {
+
+	private String taskName = null;
+	private String taskCategory = null;
+	private String taskLocation = null;
+	private String taskNote = null;
+	private Date taskStart = null;
+	private Date taskEnd = null;
+	private Time startTime = null;
+	private Time endTime = null;
+	private TotalTaskList taskList = TotalTaskList.getInstance();
+	private ezCMessages message = ezCMessages.getInstance();
+
+	public Add(List<Subcommand> subcommands)
+			throws BadCommandException, BadSubcommandException, BadSubcommandArgException {
+		super(COMMAND_TYPE.ADD, subcommands);
+		boolean hasDateSubcommand = hasSubcommandType(Subcommand.TYPE.DATE);
+		if (hasDateSubcommand) {
+			parseDateToStartAndEnd();
+		}
+	}
+	
+	public Add() throws BadCommandException, BadSubcommandException {
+		super(COMMAND_TYPE.ADD, new ArrayList<Subcommand>());
+	}
+
+	@Override
+	public String execute() throws Exception {
+
+		Task newTask = buildTask(subcommands);
+
+		if(ExactMatchSearcher.isTaskDuplicate(newTask)) {
+			throw new BadSubcommandArgException("The task you are trying to add already exists.");
+		}
+
+		else {
+			addTaskToList(newTask);
+			FileIo IoStream = FileIo.getInstance();
+			IoStream.rewriteFile();
+			updateAutocomplete();
+			flushSubcommand();
+			String returnMessage = message.getAddMessage(newTask);
+			return returnMessage;
+		}
+		
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Add.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Remove.java
+	 */
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import powerSearch.ExactMatchSearcher;
+import userInterface.Autocomplete;
+import userInterface.ezCMessages;
+import dataEncapsulation.ActionException;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.NoResultException;
+import dataEncapsulation.Task;
+import dataManipulation.CommandType.COMMAND_TYPE;
+import fileIo.FileIo;
+
+public class Remove extends Command {
+	
+	private List<Task> tasksFound;
+	private Task taskToRemove;
+	private Task taskRemoved;
+	
+	private static final String NO_MATCH_MESSAGE = "The task that you are trying to delete cannot be found.";
+
+	public Remove(List<Subcommand> commandComponents)
+			throws BadCommandException, BadSubcommandException, 
+			BadSubcommandArgException {
+		super(COMMAND_TYPE.REMOVE, commandComponents);
+		boolean hasDateSubcommand = hasSubcommandType(Subcommand.TYPE.DATE);
+		if (hasDateSubcommand) {
+			parseDateToStartAndEnd();
+		}
+	}
+
+	@Override
+	public String execute() throws Exception {
+		taskRemoved = remove(subcommands);
+		updateFile();
+		ezCMessages messages = ezCMessages.getInstance();
+		return messages.getDeleteMessage(taskRemoved);
+	}
+
+	@Override
+	protected void checkValidity() throws BadSubcommandException {
+		super.checkValidity();
+		checkForNoDuplicateSubcommands();
+	}
+	
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Remove.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Repeat.java
+	 */
+
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
+
+import powerSearch.ExactMatchSearcher;
+import userInterface.ezCMessages;
+import dataEncapsulation.ActionException;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
+import dataEncapsulation.Time;
+import dataManipulation.CommandType.COMMAND_TYPE;
+import dataManipulation.Subcommand.FREQUENCY;
+import dataManipulation.Subcommand.TYPE;
+
+public class Repeat extends Command {
+
+	private String freq;
+	private String start;
+	@SuppressWarnings("unused")
+	private String name;
+	private String end;
+	private boolean hasFour;
+
+	private LocalDate s;
+	private LocalDate e;
+
+	private int durationOfTaskInDays;
+
+	private Task t;
+	private List<Subcommand> sc;
+	private List<Task> repeatedTasks;
+
+	// elements of copied task
+	String repeatName;
+	String repeatCategory;
+	String repeatLocation;
+	String repeatNote;
+	Time repeatStart;
+	Time repeatEnd;
+	List<Subcommand> repeatSubcommands;
+	List<Command> adds; 
+
+	private static List<Task> taskList = TotalTaskList.getInstance().getList();
+
+	public Repeat(List<Subcommand> commandComponents)
+			throws BadCommandException, BadSubcommandException {
+		super(COMMAND_TYPE.REPEAT, commandComponents);
+	}
+
+	@Override
+	public String execute() throws Exception {
+		hasFour = false;
+		repeatedTasks = new ArrayList<Task>();
+		adds = new ArrayList<Command>();
+		assembleCCs(subcommands);
+		getTask();
+		initializerepeatSubcommands();
+		getTaskDuration();
+		getSubcommands();
+		if (hasFour) {
+			checkStartEnd();
+		}
+		
+		
+		if (freq.equals(FREQUENCY.DAILY.toString())) {
+			List<LocalDate> daysHappening_daily = repeatStartDates_daily(start,
+					end);
+			for (LocalDate ld : daysHappening_daily) { // each ld is a new start
+														// date
+				makeRepeat(ld);
+			}
+		} else if (freq.equals(FREQUENCY.WEEKLY.toString())) {
+			int givenStartToActualStart = findDayOfWeek(t.getStartDate())
+					.getValue() - s.getDayOfWeek().getValue();
+			if (givenStartToActualStart < 0) {
+				givenStartToActualStart = givenStartToActualStart + 7;
+			}
+			LocalDate nStart = s.plusDays(givenStartToActualStart);
+			LocalDate nEnd = LocalDate.parse(ldParse(end));
+			List<LocalDate> daysHappening_weekly = repeatStartDates_weekly(
+					nStart, nEnd);
+			for (LocalDate ld : daysHappening_weekly) {
+				makeRepeat(ld);
+			}
+
+		} else if (freq.equals(FREQUENCY.MONTHLY.toString())) {
+			List<LocalDate> daysHappening_monthly = repeatStartDates_monthly(
+					start, end);
+			for (LocalDate ld : daysHappening_monthly) {
+				makeRepeat(ld);
+			}
+		} else if (freq.equals(FREQUENCY.ANNUALLY.toString())) {
+			List<LocalDate> daysHappening_yearly = repeatStartDates_yearly(
+					start, end);
+			for (LocalDate ld : daysHappening_yearly) {
+				makeRepeat(ld);
+			}
+		} else if (freq.equals(FREQUENCY.ONCE.toString())) {
+			makeRepeat(s);
+		} else {
+			// THROW ERROR OR STRING
+		}
+		String x = ezCMessages.getInstance().getStringOfTasks(repeatedTasks);
+		return x;
+	}
+
+	private void initializerepeatSubcommands() throws BadSubcommandException,
+			BadSubcommandArgException {
+
+		repeatSubcommands = new ArrayList<Subcommand>();
+		repeatName = t.getName();
+		repeatCategory = t.getCategory();
+		repeatLocation = t.getLocation();
+		repeatNote = t.getNote();
+		repeatStart = t.getStartTime();
+		repeatEnd = t.getEndTime();
+
+		Subcommand sc = new Subcommand(TYPE.NAME, repeatName);
+		repeatSubcommands.add(sc);
+		sc = new Subcommand(TYPE.CATEGORY, repeatCategory);
+		repeatSubcommands.add(sc);
+		sc = new Subcommand(TYPE.LOCATION, repeatLocation);
+		repeatSubcommands.add(sc);
+		sc = new Subcommand(TYPE.NOTE, repeatNote);
+		repeatSubcommands.add(sc);
+		sc = new Subcommand(TYPE.STARTTIME, repeatStart.toString());
+		repeatSubcommands.add(sc);
+		sc = new Subcommand(TYPE.ENDTIME, repeatEnd.toString());
+		repeatSubcommands.add(sc);
+	}
+
+	private void assembleCCs(List<Subcommand> ccs) throws Exception {
+		for (Subcommand cc : ccs) {
+			switch (cc.getType()) {
+			case FREQUENCY:
+				freq = cc.getContents();
+				break;
+			case NAME:
+				name = cc.getContents();
+				break;
+			case START:
+				start = ldParse(cc.getContents());
+				s = LocalDate.parse(start);
+				break;
+			case END:
+				end = ldParse(cc.getContents());
+				e = LocalDate.parse(end);
+				break;
+			case ON:
+				start = ldParse(cc.getContents());
+				s = LocalDate.parse(start);
+				break;
+			default:
+				throw new BadSubcommandException("invalid repeat subcommand");
+			}
+		}
+	}
+
+	private void makeRepeat(LocalDate ld) throws Exception {
+		String sd = ld.toString();
+		String ed = ld.plusDays(durationOfTaskInDays).toString();
+		List<Subcommand> lsc = modifyDate(sd, ed);
+		Task repeatTask = new Add(repeatSubcommands).buildTask(lsc);
+		// boolean added = new Add(repeatSubcommands).addTaskToList(repeatTask);
+
+		repeatedTasks.add(repeatTask);
+		Command cmd = new Add(lsc);
+		adds.add(cmd);
+		cmd.execute();
+	}
+
+	private String ldParse(String inDateFormat) throws Exception {
+		Date d = new Date().determineDate(inDateFormat);
+		int ddd = d.getDay();
+		int mmm = d.getMonth();
+		int yyyy = d.getYear();
+		String dd = String.format("%02d", ddd);
+		String mm = String.format("%02d", mmm);
+		String inLocalDateFormat = "" + yyyy + "-" + mm + "-" + dd;
+		return inLocalDateFormat;
+	}
+
+	private List<LocalDate> repeatStartDates_daily(String st, String en) {
+		LocalDate s = LocalDate.parse(st);
+		LocalDate e = LocalDate.parse(en);
+		List<LocalDate> totalDates = new ArrayList<>();
+		while (!s.isAfter(e)) {
+			totalDates.add(s);
+			s = s.plusDays(1);
+		}
+		return totalDates;
+	}
+
+	private List<LocalDate> repeatStartDates_weekly(LocalDate st, LocalDate en) {
+		List<LocalDate> totalDates = new ArrayList<>();
+		while (!s.isAfter(e)) {
+			totalDates.add(s);
+			s = s.plusWeeks(1);
+		}
+		return totalDates;
+	}
+
+	private List<LocalDate> repeatStartDates_monthly(String st, String en) {
+		LocalDate s = LocalDate.parse(st);
+		LocalDate e = LocalDate.parse(en);
+		List<LocalDate> totalDates = new ArrayList<>();
+		while (!s.isAfter(e)) {
+			totalDates.add(s);
+			s = s.plusMonths(1);
+		}
+		return totalDates;
+	}
+
+	private List<LocalDate> repeatStartDates_yearly(String st, String en) {
+		LocalDate s = LocalDate.parse(st);
+		LocalDate e = LocalDate.parse(en);
+		List<LocalDate> totalDates = new ArrayList<>();
+		while (!s.isAfter(e)) {
+			totalDates.add(s);
+			s = s.plusYears(1);
+		}
+		return totalDates;
+	}
+
+	private void getTask() throws Exception {
+
+		List<Task> tasks = ExactMatchSearcher.exactSearch(subcommands.get(0),
+				taskList);
+		if (tasks.size() > 1) {
+			ActionException moreThanOne = new ActionException(tasks,
+					ActionException.ErrorLocation.REPEAT, subcommands);
+			throw moreThanOne;
+		} else {
+			t = tasks.get(0);
+		}
+	}
+
+	private void getSubcommands() throws BadSubcommandException,
+			BadSubcommandArgException, BadCommandException {
+		sc = Add.dismantleTask(t);
+
+	}
+
+	private List<Subcommand> modifyDate(String newstart, String newend)
+			throws BadSubcommandException, BadSubcommandArgException {
+		ArrayList<Subcommand> ccs = new ArrayList<Subcommand>();
+		boolean hasEnd = false;
+		for (int i = 0; i < sc.size(); i++) {
+			Subcommand s = sc.get(i);
+
+			switch (s.getType()) {
+			case START:
+				Subcommand nS = new Subcommand(Subcommand.TYPE.START, newstart);
+				ccs.add(nS);
+				break;
+			case END:
+				hasEnd = true;
+				Subcommand nE = new Subcommand(Subcommand.TYPE.END, newend);
+				ccs.add(nE);
+				break;
+			default:
+				ccs.add(s);
+				break;
+			}
+		}
+		if (!hasEnd) {
+			Subcommand nE = new Subcommand(Subcommand.TYPE.END, newend);
+			ccs.add(nE);
+		}
+
+		return ccs;
+	}
+
+	private void getTaskDuration() throws Exception {
+		LocalDate st = LocalDate.parse(ldParse(t.getStartDate().toString()));
+		LocalDate en = LocalDate.parse(ldParse(t.getEndDate().toString()));
+		Period p = Period.between(st, en);
+		durationOfTaskInDays = p.getDays();
+	}
+
+	private DayOfWeek findDayOfWeek(Date d) throws Exception {
+		LocalDate date = LocalDate.parse(ldParse(d.toString()));
+		return date.getDayOfWeek();
+	}
+
+	@Override
+	protected void checkValidity() throws BadSubcommandException {
+		try {
+			checkForNoDuplicateSubcommands();
+			checkRepeatFourComponents();
+			checkFrequencyIsNotOnce();
+		} catch (Exception e) {
+			checkRepeatThreeComponents();
+			checkFrequencyIsOnce();
+		}
+
+	}
+
+	protected void checkRepeatFourComponents() throws BadSubcommandException {
+		checkForComponentAmount(4);
+		hasFour = true;
+		for (int i = 0; i < subcommands.size(); ++i) {
+			Subcommand component = subcommands.get(i);
+
+			switch (component.getType()) {
+			case FREQUENCY: // valid
+				break;
+			case NAME:
+				break;
+			case START:
+				break;
+			case END:
+				break;
+			default:
+				throw new BadSubcommandException("invalid subcommand");
+			}
+		}
+	}
+
+	protected void checkRepeatThreeComponents() throws BadSubcommandException {
+		checkForComponentAmount(3);
+
+		for (int i = 0; i < subcommands.size(); ++i) {
+			Subcommand component = subcommands.get(i);
+
+			switch (component.getType()) {
+			case FREQUENCY: // valid
+				if (!component.getContents().equalsIgnoreCase(
+						FREQUENCY.ONCE.toString())) {
+					throw new BadSubcommandException("can only leave off end "
+							+ "date for \"once\"");
+				}
+				break;
+			case NAME:
+				break;
+			case ON:
+				break;
+			default:
+				throw new BadSubcommandException("invalid subcommand");
+			}
+		}
+	}
+
+	protected void checkFrequencyIsNotOnce() throws BadSubcommandException {
+		for (int i = 0; i < subcommands.size(); ++i) {
+			Subcommand component = subcommands.get(i);
+
+			if (component.getType() == Subcommand.TYPE.FREQUENCY) {
+				if (component.getContents().equalsIgnoreCase(
+						FREQUENCY.ONCE.toString())) {
+					throw new BadSubcommandException("too few subcommands");
+				}
+			}
+		}
+	}
+
+	protected void checkFrequencyIsOnce() throws BadSubcommandException {
+		for (int i = 0; i < subcommands.size(); ++i) {
+			Subcommand component = subcommands.get(i);
+
+			if (component.getType() == Subcommand.TYPE.FREQUENCY) {
+				if (!component.getContents().equalsIgnoreCase(
+						FREQUENCY.ONCE.toString())) {
+					throw new BadSubcommandException("too many subcommands");
+				}
+			}
+		}
+	}
+
+	private void checkStartEnd() throws Exception {
+		if (s.isAfter(e)) {
+			throw new Exception("Invalid dates - start is after end.");
+		}
+	}
+
+	@Override
+	public String undo() throws Exception {
+		for (Command cmd : adds) {
+			cmd.undo();
+		}
+		ezCMessages messages = ezCMessages.getInstance();
+		String x = messages.getUndoRepeatMessage(t);
+		return x;
+	}
+
+	public String furtherRepeat(Task ta, List<Subcommand> sco) throws Exception {
+		repeatedTasks = new ArrayList<Task>();
+		t = ta;
+		hasFour = false;
+		assembleCCs(sco);
+		initializerepeatSubcommands();
+		getTaskDuration();
+		getSubcommands();
+		if (hasFour) {
+			checkStartEnd();
+		}
+
+		if (freq.equals(FREQUENCY.DAILY.toString())) {
+			List<LocalDate> daysHappening_daily = repeatStartDates_daily(start,
+					end);
+			for (LocalDate ld : daysHappening_daily) { // each ld is a new start
+														// date
+				makeRepeat(ld);
+			}
+		} else if (freq.equals(FREQUENCY.WEEKLY.toString())) {
+			int givenStartToActualStart = findDayOfWeek(t.getStartDate())
+					.getValue() - s.getDayOfWeek().getValue();
+			if (givenStartToActualStart < 0) {
+				givenStartToActualStart = givenStartToActualStart + 7;
+			}
+			LocalDate nStart = s.plusDays(givenStartToActualStart);
+			LocalDate nEnd = LocalDate.parse(ldParse(end));
+			List<LocalDate> daysHappening_weekly = repeatStartDates_weekly(
+					nStart, nEnd);
+			for (LocalDate ld : daysHappening_weekly) {
+				makeRepeat(ld);
+			}
+
+		} else if (freq.equals(FREQUENCY.MONTHLY.toString())) {
+			List<LocalDate> daysHappening_monthly = repeatStartDates_monthly(
+					start, end);
+			for (LocalDate ld : daysHappening_monthly) {
+				makeRepeat(ld);
+			}
+		} else if (freq.equals(FREQUENCY.ANNUALLY.toString())) {
+			List<LocalDate> daysHappening_yearly = repeatStartDates_yearly(
+					start, end);
+			for (LocalDate ld : daysHappening_yearly) {
+				makeRepeat(ld);
+			}
+		} else if (freq.equals(FREQUENCY.ONCE.toString())) {
+			makeRepeat(s);
+		} else {
+			// THROW ERROR OR STRING
+		}
+		String x = ezCMessages.getInstance().getStringOfTasks(repeatedTasks);
+		return x;
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Repeat.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Today.java
+	 */
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import userInterface.ezCMessages;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.Date;
+import dataManipulation.CommandType.COMMAND_TYPE;
+
+public class Today extends Command {
+
+	public Today(List<Subcommand> commandComponents)
+			throws BadCommandException, BadSubcommandException {
+		super(COMMAND_TYPE.TODAY, commandComponents);
+	}
+
+	@Override
+	public String execute() throws Exception {
+		Date today = new Date();
+		Subcommand todaySubcommand = new Subcommand(Subcommand.TYPE.DATE, today.toString());
+		List<Subcommand> toSearch = new ArrayList<Subcommand>();
+		toSearch.add(todaySubcommand);
+		
+		Search searchCommand = new Search(toSearch);
+		String response = searchCommand.execute();
+		
+		ezCMessages todayTasksMessage = ezCMessages.getInstance();
+		String displayTodayTasks = todayTasksMessage.getTodayTasksListMessage();
+		displayTodayTasks += response;
+		
+		return displayTodayTasks;
+	}
+
+	@Override
+	public String undo() throws Exception {
+		return null;
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Today.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ExceptionHandler.java
+	 */
+
+	public void furtherAction(ActionException e) {
+		List<Task> opts = e.getOptions();
+		List<Subcommand> cc = e.getSubcommands();
+		ezCMessages messages = ezCMessages.getInstance();
+		
+		String ofTasks = messages.getNumberedStringOfTasks(opts);
+		String message = "That was a bit too vague - please choose which of "
+				+ "these you would like to " 
+							+ e.getLocation().toString() + ", or press 0 to exit: " + "\n\n" + 
+				 "Format:\n\n# # #  or #, #, # or #-# or any combination\n\n" + ofTasks;
+		setDisplayText(message);
+		
+		switch(e.getLocation()) {
+		case EDIT:
+			FurtherEditer furtherEditer = new FurtherEditer(opts, cc);
+			enterToggle.initializeLesser(furtherEditer);
+			break;
+		case REPEAT: 
+			FurtherRepeater furtherRepeater = new FurtherRepeater(opts, cc);
+			enterToggle.initializeLesser(furtherRepeater);
+			break;
+		default:
+			FurtherDoer furtherDeleter = new FurtherDoer(opts, cc, e.getLocation());
+			enterToggle.initializeLesser(furtherDeleter);
+			break;
+		}
+		
+		enterToggle.setLesser();
+	}
+	
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ExceptionHandler.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ExceptionHandler.java
+	 */
+
+	@SuppressWarnings("serial")
+	class FurtherRepeater extends AbstractAction {
+		List<Task> options;
+		List<Subcommand> subcommands;
+		List<Task> taskList = TotalTaskList.getInstance().getAllTasks();
+		
+		public FurtherRepeater(List<Task> opts, List<Subcommand> subs) {
+			options = opts;
+			subcommands = subs;
+		}
+		
+		public void actionPerformed(ActionEvent ev)  {
+			String userChoice = userInput.getText();
+			ArrayList<Task> choices = new ArrayList<Task>();
+			
+			if (userChoice.trim().matches(quitRequest)) {
+				status.setText("exit selected");
+				endExceptionHandling();
+				return;
+			}
+			
+			try {
+				choices = getChoices(userChoice, options);
+			} catch (Exception e) {
+				status.setText(e.getMessage());
+				return;
+			}
+			
+
+			String repeated = "Something went wrong. ):";
+			for (Task t : choices) {
+				try {
+					repeated = new Repeat(subcommands).furtherRepeat(t, 
+							subcommands);
+				} catch ( Exception e ) {
+					status.setText("Sorry, you've entered something wrong "
+							+ "again. Please try repeating again!");
+					endExceptionHandling();
+					return;
+				}
+			}
+			display.setText("Successfully added repeat tasks: \n" + repeated);
+			endExceptionHandling();
+		}
+	}
+	
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ExceptionHandler.java
+
+
+
+
+

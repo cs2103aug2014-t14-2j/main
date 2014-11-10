@@ -15,7 +15,7 @@ public class ActionException extends Exception {
 	private List<Subcommand> subcommands;
 	
 	public enum ErrorLocation {
-		DELETE, EDIT, FINISH, ADD, UNDO;
+		DELETE, EDIT, FINISH, ADD, REPEAT, UNDO, UNFINISH;
 		
 		public String toString() {
 			return this.name().toLowerCase();
@@ -72,6 +72,7 @@ public class BadCommandException extends Exception {
 	 */
 
 
+@SuppressWarnings("serial")
 public class BadSubcommandArgException extends Exception {
 	public BadSubcommandArgException(String args) {
 		super(args);
@@ -103,6 +104,248 @@ public class BadSubcommandException extends Exception {
 
 
 	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+	 */
+
+	public boolean dateValid(int userday, int usermonth, int useryear) {
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");  
+	    sdf.setLenient(false);
+	    Calendar cal = Calendar.getInstance();  
+	    try{
+	    	cal.setTime(sdf.parse(usermonth + "/" + userday + "/" + useryear));
+	    } catch(Exception e) {
+	    	return false;
+	    }
+		
+		boolean dateIsValid = true;
+		try {
+			if (useryear < 2014 || useryear > 9999) {
+				dateIsValid = false;
+			}
+		} catch (DateTimeException e) {
+			dateIsValid = false;
+		}
+		return dateIsValid;
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+	 */
+
+	public boolean isBefore(Date other) {
+		boolean answer = false;
+		if (other.year > year) {
+			answer = true;
+		} else if (other.year == year) {
+			if (other.month > month) {
+				answer = true;
+			} else if (other.month == month) {
+				if (other.day > day) {
+					answer = true;
+				}
+			}
+		}
+		return answer;
+	}
+
+	/**
+	 * 
+	 * @param another
+	 * @return
+	 */
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+	 */
+
+	public static String getFormat() {
+		if (dmFormat) {
+			return "d/m";
+		} else {
+			return "m/d";
+		}
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+	 */
+
+	private static String cleanUpYear(String year) {
+		String space = " ";
+		String comma = ",";
+		String emptyString = new String();
+
+		if (year.contains(space)) {
+			year = year.replace(space, emptyString);
+		}
+
+		if (year.contains(comma)) {
+			year = year.replace(comma, emptyString);
+		}
+
+		return year;
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+	 */
+
+	/**
+	 * corrects a 2-digit year to be a 4-digit year. Assumes that the 
+	 * lifetime of this product will not extend past the 21st century
+	 * @param useryear
+	 * @return
+	 */
+	private int correctYear(int year) {
+		if (year > 0 && year < 100) {
+			return 2000 + year;
+		}
+		
+		return year;
+	}
+	
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Date.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\NoResultException.java
+	 */
+
+
+@SuppressWarnings("serial")
+public class NoResultException extends Exception {
+	public NoResultException(String args) {
+		super(args);
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\NoResultException.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\sortTaskByEndDate.java
+	 */
+
+public class sortTaskByEndDate implements Comparator<Task> {
+	    public int compare(Task first, Task second) {
+	        int endDateResults = compareEndDate(first, second);
+	    	if (endDateResults != 0) {
+	    		return endDateResults;
+	    	}
+	    	
+	    	int endTimeResults = compareEndTime(first, second);
+	    	if (endTimeResults != 0) {
+	    		return endTimeResults;
+	    	}
+	    	
+	    	int startDateResults = compareStartDate(first, second);
+	    	if (startDateResults != 0) {
+	    		return startDateResults;
+	    	}
+	    	
+	    	int startTimeResults = compareStartTime(first, second);
+	    	if (startTimeResults != 0) {
+	    		return startTimeResults;
+	    	}
+	    	
+	    	else return first.getName().compareTo(second.getName());
+	    }
+
+		private int compareStartTime(Task first, Task second) {
+			if (!first.hasStartTime() && !second.hasStartTime()) {
+				return 0;
+			} else if (first.hasStartTime() && !second.hasStartTime()) {
+				return -1;
+			} else if (!first.hasStartTime() && second.hasStartTime()) {
+				return 1;
+			} 
+			
+			return first.getStartTime().compareTo((second.getStartTime()));
+		}
+
+		private int compareStartDate(Task first, Task second) {
+			if (!first.hasStartTime() && !second.hasStartTime()) {
+				return 0;
+			} else if (first.hasStartTime() && !second.hasStartTime()) {
+				return -1;
+			} else if (!first.hasStartTime() && second.hasStartTime()) {
+				return 1;
+			} else if (first.getStartDate().isBefore(second.getStartDate())) {
+				return -1;
+			} else if (first.getStartDate().isEquals((second.getStartDate()))) {
+				return 0;
+			} else {
+				return 1;
+			}
+		}
+
+		private int compareEndTime(Task first, Task second) {
+			if (!first.hasEndTime() && !second.hasEndTime()) {
+				return 0;
+			} else if (first.hasEndTime() && !second.hasEndTime()) {
+				return -1;
+			} else if (!first.hasEndTime() && second.hasEndTime()) {
+				return 1;
+			} 
+			
+			return first.getEndTime().compareTo((second.getEndTime()));
+		}
+
+		private int compareEndDate(Task first, Task second) {
+			if (!first.getHasDeadline() && !second.getHasDeadline()) {
+				return 0;
+			} else if (first.getHasDeadline() && !second.getHasDeadline()) {
+				return -1;
+			} else if (!first.getHasDeadline() && second.getHasDeadline()) {
+				return 1;
+			} else if (first.getEndDate().isBefore(second.getEndDate())) {
+				return -1;
+			} else if (first.getEndDate().isEquals((second.getEndDate()))) {
+				return 0;
+			} else {
+				return 1;
+			}
+		}
+		
+		
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\sortTaskByEndDate.java
+
+
+
+
+
+	/**
 	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\SuffixTree.java
 	 */
 
@@ -116,15 +359,25 @@ public class SuffixTree {
 	private List<SuffixTree> tree;
 
 	private String match;
+	private boolean isRoot = false;
 
 	private static final String EMPTY_STRING = "";
 
 	public SuffixTree() {
 		match = EMPTY_STRING;
+		isRoot = true;
 		tree = new ArrayList<SuffixTree>();
 	}
 
 	public void add(String string) {
+		if (string == null || (string.isEmpty() && isRoot)) {
+			return;
+		}
+		
+		if (string.isEmpty() && tree.isEmpty()) {
+			return;
+		}
+		
 		if (tree.isEmpty()) {
 			initializeTree(string);
 			return;
@@ -513,6 +766,470 @@ public class SuffixTreeTest {
 
 
 	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+	 */
+
+	public Task(Task other) {
+		startdate = other.startdate;
+		enddate = other.enddate;
+		name = other.name;
+		location = other.location;
+		note = other.note;
+		category = other.category;
+		starttime = other.starttime;
+		endtime = other.endtime;
+
+		hasDeadline = other.hasDeadline;
+		isComplete = other.isComplete;
+		hasNote = other.hasNote;
+		hasLocation = other.hasLocation;
+		hasStartTime = other.hasStartTime;
+		hasEndTime = other.hasEndTime;
+		isOverdue = other.isOverdue;
+		hasCategory = other.hasCategory;
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+	 */
+
+	public Task(String nm, String cat, String loc, String note, Date start, Date end, Time s, Time e) throws Exception {
+		if (nm != null) {
+			this.setName(nm);
+		}
+		if (cat != null) {
+			this.setCategory(cat);
+		}
+		if (loc != null) {
+			this.setLocation(loc);
+		}
+		if (note != null) {
+			this.setNote(note);
+		}
+		if (start != null) {
+			this.startdate = start;
+		}
+		if (end != null) {
+			this.setEndDate(end);
+		}
+		if (s != null) {
+			this.setStartTime(s);
+		}
+		if (e != null) {
+			this.setEndTime(e);
+		}
+
+		setIfOverdue();
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+	 */
+
+	public void setEqualTo(Task other) {
+		startdate = other.startdate;
+		enddate = other.enddate;
+		name = other.name;
+		location = other.location;
+		note = other.note;
+		category = other.category;
+		starttime = other.starttime;
+		endtime = other.endtime;
+
+		hasDeadline = other.hasDeadline;
+		isComplete = other.isComplete;
+		hasNote = other.hasNote;
+		hasLocation = other.hasLocation;
+		hasStartTime = other.hasStartTime;
+		hasEndTime = other.hasEndTime;
+		isOverdue = other.isOverdue;
+		hasCategory = other.hasCategory;
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+	 */
+
+	private void setIfOverdue() throws Exception {
+		if (!hasDeadline) {
+			return;
+		}
+
+		Date today = new Date();
+		if (enddate.isBefore(today)) {
+			isOverdue = true;
+			return;
+		} 
+
+		boolean isOnSameDay = today.isEquals(enddate);
+
+		if (!isOnSameDay) {
+			return;	// not before, so must be after
+		}
+
+		if (!hasEndTime) {
+			return;
+		}
+
+		Time now = getNow();
+		int equal = 0;
+		if (endtime.compareTo(now) < equal) {
+			isOverdue = true;
+		}
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+	 */
+
+	public boolean hasCategory() {
+		return hasCategory;
+	}
+
+	public void setStartTime(Time s) throws Exception {
+		if(s == null) {
+			setHasStartTime(false);
+			return;
+		}  
+
+		setHasStartTime(true);
+		starttime = s;
+
+		if (!hasEndTime) {
+			Time autoEndTime = new Time(s.getHours() + 1, s.getMins());
+			this.setEndTime(autoEndTime);
+		}
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+	 */
+
+	public String toString(){
+		String answer = new String();
+		answer = answer + "Task: " + this.name + NEW_LINE;
+		if(hasCategory){
+			answer = answer + "Category: " + this.category + NEW_LINE;
+		} else {
+			answer = answer + "Category: " + MESSAGE_NO_CATEGORY + NEW_LINE;
+		}
+		if(!hasDeadline){
+			answer = answer + "Start: " + this.getStartDate().toString() + " @ " +
+					this.getStartTime().toString() + NEW_LINE + "End: " + 
+					MESSAGE_NO_END + NEW_LINE;
+		} else {
+			answer = answer + "Start: " + this.getStartDate().toString() + 
+					" @ " + this.getStartTime().toString() + NEW_LINE + 
+					"End: " + this.getEndDate().toString() + " @ " + 
+					this.getEndTime().toString() + NEW_LINE;
+		}
+		if(hasLocation){
+			answer = answer + "Location: " + this.getLocation() + NEW_LINE;
+		} else {
+			answer = answer + "Location: " + MESSAGE_NO_LOCATION + NEW_LINE;
+		}
+		if(hasNote){
+			answer = answer + "Note: " + this.getNote() + NEW_LINE;
+		} else {
+			answer = answer + "Note: " + MESSAGE_NO_NOTE + NEW_LINE;
+		}
+		if(isComplete) {
+			answer = answer + "Completed: Yes" + NEW_LINE;
+		} else {
+			answer = answer + "Completed: No" + NEW_LINE;
+		}
+		return answer;
+	}
+
+	public String toPrint(){
+		String answer = new String();
+		answer = answer + "Task: " + this.name + NEW_LINE;
+		if(hasCategory){
+			answer = answer + "Category: " + this.category + NEW_LINE;
+		} 
+		if(!hasDeadline){
+			answer = answer + "Start: " + this.getStartDate().toPrint() + 
+					" @ " + this.getStartTime().toString() + NEW_LINE + 
+					"End: " + MESSAGE_NO_END + NEW_LINE;
+		} else {
+			answer = answer + "Start: " + this.getStartDate().toPrint() + 
+					" @ " + this.getStartTime().toString() + NEW_LINE + "End: "
+					+ this.getEndDate().toPrint() + " @ " + 
+					this.getEndTime().toString() + NEW_LINE;
+		} if(hasLocation){
+			answer = answer + "Location: " + this.location + NEW_LINE;
+		}
+		if(hasNote){
+			answer = answer + "Note: " + this.note + NEW_LINE;
+		}
+		if(isComplete) {
+			answer = answer + "Completed: Yes" + NEW_LINE;
+		} else {
+			answer = answer + "Completed: No" + NEW_LINE;
+		}
+		return answer;
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\TaskFileErrorException.java
+	 */
+
+
+import java.util.List;
+
+@SuppressWarnings("serial")
+public class TaskFileErrorException extends Exception {
+	private List<String> errorList;
+	private List<Task> taskList;
+	
+	public TaskFileErrorException(List<String> errList, List<Task>tkList) {
+		super("Warning: Task file error. Skipping corrupt tasks and attempting"
+				+ "\n to save corrupt lines to RecoveredTaskFile...");
+		errorList = errList;
+		taskList = tkList;
+	}
+	
+	public List<String> getErrorList() {
+		return errorList;
+	}
+	
+	public List<Task> getTaskList() {
+		return taskList;
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\TaskFileErrorException.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Add.java
+	 */
+
+	private void updateAutocomplete() {
+		Autocomplete autocomplete = Autocomplete.getInstance();
+		autocomplete.addTitle(taskName);
+		autocomplete.addCategory(taskCategory);
+		autocomplete.addLocation(taskLocation);
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Add.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Add.java
+	 */
+
+	@Override
+	protected void checkValidity() throws BadSubcommandException {
+		super.checkValidity();
+		checkForNoDuplicateSubcommands();
+		checkDateMatches();
+	}
+
+	private void checkDateMatches() throws BadSubcommandException {
+		boolean hasGeneralDate = hasSubcommandType(Subcommand.TYPE.DATE);
+		boolean hasStartDate = hasSubcommandType(Subcommand.TYPE.START);
+		boolean hasEndDate = hasSubcommandType(Subcommand.TYPE.END);
+
+		if ((hasGeneralDate && hasStartDate) || (hasGeneralDate && hasEndDate)) {
+			throw new BadSubcommandException("cannot specify start and/or end when specifying \"date\"");
+		}
+	}
+
+	@Override
+	public String undo() throws Exception {
+		
+		Remove negatedAddCommand = new Remove(subcommands);
+		return negatedAddCommand.executeRemoveLiteral();
+		
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Add.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\All.java
+	 */
+
+
+import java.util.List;
+
+import userInterface.ezCMessages;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.NoResultException;
+import dataEncapsulation.Task;
+import dataManipulation.CommandType.COMMAND_TYPE;
+
+public class All extends Command {
+
+	public All(List<Subcommand> commandComponents)
+			throws BadCommandException, BadSubcommandException {
+		super(COMMAND_TYPE.ALL, commandComponents);
+	}
+
+	@Override
+	public String execute() throws NoResultException {
+		ezCMessages allTasksMessage = ezCMessages.getInstance();
+		String displayAllTasks = allTasksMessage.getAllTasksListMessage();
+		
+		List<Task> allTasks = getAllUncompletedTasks();
+		String stringTasks = getStringOfAllTasks(allTasks);
+		
+		displayAllTasks += stringTasks;
+		return displayAllTasks;
+	}
+
+	private List<Task> getAllUncompletedTasks() {
+		TotalTaskList totalList = TotalTaskList.getInstance();
+		List<Task> tasks = totalList.getNotCompleted();
+		
+		return tasks;
+	}
+
+	private String getStringOfAllTasks(List<Task> list) throws NoResultException {
+		ezCMessages messages = ezCMessages.getInstance();
+		return messages.getStringOfTasks(list);
+	}
+
+	@Override
+	public String undo() throws Exception {
+		return null;
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\All.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\ChangeDateType.java
+	 */
+
+
+import java.util.List;
+
+import userInterface.ezCMessages;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.Date;
+import dataManipulation.CommandType.COMMAND_TYPE;
+import fileIo.FileIo;
+
+public class ChangeDateType extends Command {
+
+	public String previousType;
+	
+	public ChangeDateType(List<Subcommand> commandComponents)
+			throws BadCommandException, BadSubcommandException {
+		super(COMMAND_TYPE.CHANGE_DATE_TYPE, commandComponents);
+	}
+
+	@Override
+	public String execute() {
+		previousType = Date.getFormat();
+		String type = getDateType();
+		changeDateFormat(type);
+		
+		ezCMessages messages = ezCMessages.getInstance();
+		FileIo fileIo = FileIo.getInstance();
+		fileIo.rewriteFile();
+		
+		return messages.getChangeDateTypeMessage(type);
+	}
+	
+	@Override
+	public String undo() throws Exception {
+		if (previousType.equals("d/m")) {
+			Date.changeFormatDm();
+		} else {
+			Date.changeFormatMd();
+		}
+		
+		ezCMessages messages = ezCMessages.getInstance();
+		FileIo fileIo = FileIo.getInstance();
+		fileIo.rewriteFile();
+		
+		return messages.getChangeDateTypeMessage(previousType);
+	}
+
+	private String getDateType() {
+		return subcommands.get(0).getContents();
+	}
+
+	private void changeDateFormat(String type) {
+		if (type.equals("d/m")) {
+			Date.changeFormatDm();
+		} else {
+			Date.changeFormatMd();
+		}
+	}
+
+	@Override
+	protected void checkValidity() throws BadSubcommandException {
+		super.checkValidity();
+		checkForNoDuplicateSubcommands();
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\ChangeDateType.java
+
+
+
+
+
+	/**
 	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Command.java
 	 */
 
@@ -522,6 +1239,8 @@ public abstract class Command {
 	protected List<Subcommand> subcommands;
 	
 	public abstract String execute() throws Exception;
+	
+	public abstract String undo() throws Exception;
 	
 	public Command(COMMAND_TYPE commandType, 
 			List<Subcommand> commandComponents) 
@@ -554,23 +1273,22 @@ public abstract class Command {
 			}
 		}
 	}
-
-	protected void checkForNoComponents() throws BadSubcommandException {
-		if (!subcommands.isEmpty()) {
-			throw new BadSubcommandException("too many subcommands");
-		}
-	}
 	
-	protected boolean checkForSpecificComponent(Subcommand.TYPE givenType) {
-		for (int i = 0; i < subcommands.size(); ++i) {
-			Subcommand currentComponent = subcommands.get(i);
-			
-			if (currentComponent.getType() == givenType) {
+	protected boolean hasSubcommandType(Subcommand.TYPE type) {
+		for (int j = 0; j < subcommands.size(); ++j) {
+			Subcommand other = subcommands.get(j);
+			if (type == other.getType()) {
 				return true;
 			}
 		}
 		
 		return false;
+	}
+
+	protected void checkForNoComponents() throws BadSubcommandException {
+		if (!subcommands.isEmpty()) {
+			throw new BadSubcommandException("too many subcommands");
+		}
 	}
 	
 	protected void checkForNoDuplicateSubcommands() throws BadSubcommandException {
@@ -585,7 +1303,7 @@ public abstract class Command {
 			current = subcommands.get(i);
 			for (int j = i + 1; j < subcommands.size(); ++j) {
 				temp = subcommands.get(j);
-				if (current.getType().toString().equals(temp.getType().toString())) {
+				if (current.getType() == temp.getType()) {
 					throw new BadSubcommandException("duplicate subcommands");
 				}
 			}
@@ -614,6 +1332,24 @@ public abstract class Command {
 		
 		return fullMessage;
 	}
+	
+	protected void parseDateToStartAndEnd() throws BadSubcommandException, BadSubcommandArgException {
+		int index = 0;
+		for (; index < subcommands.size(); ++index) {
+			if (subcommands.get(index).getType() == Subcommand.TYPE.DATE) {
+				break;
+			}
+		}
+
+		Subcommand date = subcommands.get(index);
+		String dateString = date.getContents();
+		Subcommand start = new Subcommand(Subcommand.TYPE.START, dateString);
+		Subcommand end = new Subcommand(Subcommand.TYPE.END, dateString);
+
+		subcommands.remove(index);
+		subcommands.add(start);
+		subcommands.add(end);
+	}
 }
 
 	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Command.java
@@ -630,16 +1366,16 @@ public abstract class Command {
 import java.util.ArrayList;
 import java.util.List;
 
-import dataManipulation.Subcommand.TYPE;
-
 import dataEncapsulation.BadCommandException;
+import dataManipulation.Subcommand.TYPE;
 
 public class CommandType {
 	private static CommandType records;
 
 	public enum COMMAND_TYPE {
 		ADD, ALL, CHANGE_DATE_TYPE, COMPLETED, EDIT, FINISH, 
-		HELP, REDO, REMOVE, REPEAT, SEARCH, SORT, TODAY, UNFINISH, UNDO,
+		HELP, OVERDUE, REDO, REMOVE, REPEAT, SEARCH, TODAY, UNFINISH,
+		UNDO,
 		INVALID;
 
 		@Override
@@ -687,6 +1423,8 @@ public class CommandType {
 			return COMMAND_TYPE.FINISH;
 		case "help" :
 			return COMMAND_TYPE.HELP;
+		case "overdue" :
+			return COMMAND_TYPE.OVERDUE;
 		case "redo" :
 			return COMMAND_TYPE.REDO;
 		case "remove" :
@@ -695,8 +1433,6 @@ public class CommandType {
 			return COMMAND_TYPE.REPEAT;
 		case "search" :
 			return COMMAND_TYPE.SEARCH;
-		case "sort" :
-			return COMMAND_TYPE.SORT;
 		case "today" :
 			return COMMAND_TYPE.TODAY;
 		case "unfinish" :
@@ -714,34 +1450,22 @@ public class CommandType {
 		switch (commandType) {
 		case ADD :
 			return isAddType(subcommandType);
-		case ALL :
-			return isAllType(subcommandType);
 		case CHANGE_DATE_TYPE :
 			return isChangeDateTypeType(subcommandType);
-		case COMPLETED :
-			return isCompletedType(subcommandType);
 		case EDIT :
 			return isEditType(subcommandType);
 		case FINISH :
 			return isFinishType(subcommandType);
 		case HELP :
 			return isHelpType(subcommandType);
-		case REDO :
-			return isRedoType(subcommandType);
 		case REMOVE :
 			return isRemoveType(subcommandType);
 		case REPEAT :
 			return isRepeatType(subcommandType);
 		case SEARCH :
 			return isSearchType(subcommandType);
-		case SORT :
-			return isSortType(subcommandType);
-		case TODAY :
-			return isTodayType(subcommandType);
 		case UNFINISH :
 			return isUnfinishType(subcommandType);
-		case UNDO :
-			return isUndoType(subcommandType);
 		default :
 			return false;
 		}
@@ -759,48 +1483,37 @@ public class CommandType {
 		switch (commandType) {
 		case ADD :
 			return getAddSubcommands();
-		case ALL :
-			return getAllSubcommands();
 		case CHANGE_DATE_TYPE :
 			return getChangeDateTypeSubcommands();
-		case COMPLETED :
-			return getCompletedSubcommands();
+		case HELP :
+			return getHelpSubcommands();
 		case EDIT :
 			return getEditSubcommands();
 		case FINISH :
 			return getFinishSubcommands();
-		case HELP :
-			return getHelpSubcommands();
 		case REMOVE :
 			return getRemoveSubcommands();
 		case REPEAT :
 			return getRepeatSubcommands();
 		case SEARCH :
 			return getSearchSubcommands();
-		case SORT :
-			return getSortSubcommands();
-		case TODAY :
-			return getTodaySubcommands();
-		case UNDO :
-			return getUndoSubcommands();
 		default :
 			return new ArrayList<String>();
 		}
 	}
-	
+
 	private List<String> getAddSubcommands() {
 		List<String> list = new ArrayList<String>();
+		list.add(Subcommand.TYPE.DATE.toString());
 		list.add(Subcommand.TYPE.CATEGORY.toString());
 		list.add(Subcommand.TYPE.END.toString());
 		list.add(Subcommand.TYPE.LOCATION.toString());
 		list.add(Subcommand.TYPE.NOTE.toString());
 		list.add(Subcommand.TYPE.START.toString());
+		list.add(Subcommand.TYPE.STARTTIME.toString());
+		list.add(Subcommand.TYPE.ENDTIME.toString());
 		
 		return list;
-	}
-
-	private List<String> getAllSubcommands() {
-		return new ArrayList<String>();
 	}
 
 	private List<String> getChangeDateTypeSubcommands() {
@@ -810,10 +1523,6 @@ public class CommandType {
 		}
 		
 		return list;
-	}
-
-	private List<String> getCompletedSubcommands() {
-		return new ArrayList<String>();
 	}
 
 	private List<String> getEditSubcommands() {
@@ -826,9 +1535,15 @@ public class CommandType {
 	private List<String> getFinishSubcommands() {
 		return getAddSubcommands();
 	}
-
+	
 	private List<String> getHelpSubcommands() {
-		return new ArrayList<String>();
+		List<String> list = new ArrayList<String>();
+		
+		for (Subcommand.HELP_KEY type : Subcommand.HELP_KEY.values()) {
+			list.add(type.toString());
+		}
+		
+		return list;
 	}
 
 	private List<String> getRemoveSubcommands() {
@@ -853,20 +1568,10 @@ public class CommandType {
 		List<String> list = getEditSubcommands();
 		list.add(Subcommand.TYPE.AND.toString());
 		list.add(Subcommand.TYPE.OR.toString());
+		list.add(Subcommand.TYPE.COMPLETED.toString());
+		list.add(Subcommand.TYPE.FREE.toString());
 		
 		return list;
-	}
-
-	private List<String> getSortSubcommands() {
-		return new ArrayList<String>();
-	}
-
-	private List<String> getTodaySubcommands() {
-		return new ArrayList<String>();
-	}
-
-	private List<String> getUndoSubcommands() {
-		return new ArrayList<String>();
 	}
 
 	private boolean isAddType(TYPE subcommandType) {
@@ -875,21 +1580,27 @@ public class CommandType {
 				return true;
 			case CATEGORY :
 				return true;
+			case DATE :
+				return true;
 			case END :
 				return true;
 			case LOCATION :
 				return true;
 			case NOTE :
 				return true;
+			case ON:
+				return true;
 			case START :
+				return true;
+			case STARTTIME :
+				return true;
+			case TITLE :
+				return true;
+			case ENDTIME :
 				return true;
 			default :
 				return false;
 		}
-	}
-
-	private boolean isAllType(TYPE subcommandType) {
-		return false;
 	}
 
 	private boolean isChangeDateTypeType(TYPE subcommandType) {
@@ -901,37 +1612,18 @@ public class CommandType {
 		}
 	}
 
-	private boolean isCompletedType(TYPE subcommandType) {
-		return false;
-	}
-
 	private boolean isEditType(TYPE subcommandType) {
+		boolean isEditType = isAddType(subcommandType);
 		switch (subcommandType) {
-		case NAME :
-			return true;
-		case CATEGORY :
-			return true;
-		case END :
-			return true;
-		case LOCATION :
-			return true;
-		case NOTE :
-			return true;
-		case START :
-			return true;
 		case TITLE :
 			return true;
 		default :
-			return false;
+			return isEditType;
 		}
 	}
 
 	private boolean isFinishType(TYPE subcommandType) {
 		return isAddType(subcommandType);
-	}
-
-	private boolean isHelpType(TYPE subcommandType) {
-		return false;
 	}
 
 	private boolean isRemoveType(TYPE subcommandType) {
@@ -954,67 +1646,818 @@ public class CommandType {
 	}
 
 	private boolean isSearchType(TYPE subcommandType) {
+		boolean isSearchType = isEditType(subcommandType);
 		switch (subcommandType) {
 			case AND :
 				return true;
-			case CATEGORY :
+			case COMPLETED :
 				return true;
-			case DATE :
-				return true;
-			case END :
-				return true;
-			case LOCATION :
-				return true;
-			case NAME :
-				return true;
-			case NOTE :
+			case FREE :
 				return true;
 			case OR :
 				return true;
-			case PAREN :
-				return true;
-			case START :
-				return true;
 			case TEXT:
 				return true;
-			case TITLE :
-				return true;
 			default :
-				return false;
+				return isSearchType;
 		}
-	}
-
-	private boolean isSortType(TYPE subcommandType) {
-		switch (subcommandType) {
-			case BYNAME :
-				return true;
-			case BYSTART :
-				return true;
-			case BYEND :
-				return true;
-			default :
-				return false;
-		}
-	}
-
-	private boolean isTodayType(TYPE subcommandType) {
-		return false;
-	}
-
-	private boolean isUndoType(TYPE subcommandType) {
-		return false;
-	}
-	
-	private boolean isRedoType(TYPE subcommandType) {
-		return false;
 	}
 
 	private boolean isUnfinishType(TYPE subcommandType) {
 		return isAddType(subcommandType);
 	}
+	
+	private boolean isHelpType(TYPE subcommandType) {
+		switch (subcommandType) {
+		case HELP :
+			return true;
+		case DATE :
+			return true;
+		case COMPLETED :
+			return true;
+		default :
+			return false;
+		}
+	}
 }
 
 	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\CommandType.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Completed.java
+	 */
+
+
+import java.util.List;
+
+import userInterface.ezCMessages;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.NoResultException;
+import dataEncapsulation.Task;
+import dataManipulation.CommandType.COMMAND_TYPE;
+
+public class Completed extends Command {
+
+	public Completed(List<Subcommand> commandComponents)
+			throws BadCommandException, BadSubcommandException {
+		super(COMMAND_TYPE.COMPLETED, commandComponents);
+	}
+
+	@Override
+	public String execute() throws NoResultException {
+		List<Task> allTasks = getAllCompletedTasks();
+		String stringTasks = getStringOfAllTasks(allTasks);
+		
+		ezCMessages completedTasksMessage = ezCMessages.getInstance();
+		String displayCompletedTasks = completedTasksMessage.getCompletedTasksListMessage();
+		displayCompletedTasks += stringTasks;
+		
+		return displayCompletedTasks;
+	}
+
+	private List<Task> getAllCompletedTasks() {
+		TotalTaskList totalList = TotalTaskList.getInstance();
+		return totalList.getCompleted();
+	}
+
+	private String getStringOfAllTasks(List<Task> list) throws NoResultException {
+		ezCMessages messages = ezCMessages.getInstance();
+		return messages.getStringOfTasks(list);
+	}
+
+	@Override
+	protected void checkValidity() throws BadSubcommandException {
+		super.checkValidity();
+		checkForNoDuplicateSubcommands();
+	}
+
+	@Override
+	public String undo() throws Exception {
+		return null;
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Completed.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Edit.java
+	 */
+
+	@Override
+	public String execute() throws Exception {
+		try {
+			if (trueTask == null) {
+				trueTask = getTaskToEdit();
+			}
+	
+			return executeMainEdit();
+		} catch (BadSubcommandArgException repeatException) {
+			if (posteditCopy != null) {
+				throw new BadSubcommandArgException("Another task matches the "
+						+ "changes you want to go back to");
+			} else {
+				throw new BadSubcommandArgException("Another task matches the "
+						+ "changes you want to make");
+			}
+		}
+	}
+	
+	public Task getTask() {
+		return trueTask;
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Edit.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Edit.java
+	 */
+
+	public String furtherEdit(Task toEdit) throws Exception {
+
+		trueTask = toEdit;
+		
+		try {
+			String result = executeMainEdit();
+			return result;
+		} catch (BadSubcommandArgException repeatException) {
+			if (posteditCopy != null) {
+				throw new BadSubcommandArgException("Another task matches the "
+						+ "changes you want to go back to");
+			} else {
+				throw new BadSubcommandArgException("Another task matches the "
+						+ "changes you want to make");
+			}
+		}
+	}
+	
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Edit.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Edit.java
+	 */
+
+	private String executeMainEdit() throws Exception {
+		if (preeditCopy == null) {
+			preeditCopy = new Task(trueTask);
+		}
+		Task temp = new Task(trueTask);
+		setTaskAttributes(temp, subcommands);
+
+		addEditedTask(temp, trueTask);
+		
+		if (posteditCopy == null) {
+			posteditCopy = new Task(trueTask);
+		}
+
+		updateAutocomplete();
+		FileIo.getInstance().rewriteFile();
+		String editComplete = messages.getEditMessage(preeditCopy, trueTask);
+		return editComplete;
+	}
+
+
+	private void updateAutocomplete() {
+		Autocomplete autocomplete = Autocomplete.getInstance();
+		autocomplete.addCategory(trueTask.getCategory());
+		autocomplete.addTitle(trueTask.getName());
+		autocomplete.addLocation(trueTask.getLocation());
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Edit.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Edit.java
+	 */
+
+	private void addEditedTask(Task copy, Task toEditAndAdd) throws Exception {
+		boolean isRepeat = ExactMatchSearcher.isTaskDuplicate(copy);
+		
+		if (isRepeat) {
+			throw new BadSubcommandArgException("Task you want to create already exists");
+		}
+		
+		toEditAndAdd.setEqualTo(copy);
+		taskList.update();
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Edit.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Edit.java
+	 */
+
+	@Override
+	public String undo() throws Exception {
+		if (preeditCopy == null) {
+			return "cannot undo because original edit was not successful";
+		}
+		
+		trueTask.setEqualTo(preeditCopy);
+		FileIo.getInstance().rewriteFile();
+		taskList.update();
+        
+		ezCMessages messages = ezCMessages.getInstance();
+        String returnMessage = messages.getUndoEditMessage(posteditCopy, trueTask);
+		return returnMessage;
+
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Edit.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Finish.java
+	 */
+
+
+import java.util.List;
+
+import powerSearch.ExactMatchSearcher;
+import userInterface.ezCMessages;
+import dataEncapsulation.ActionException;
+import dataEncapsulation.ActionException.ErrorLocation;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.NoResultException;
+import dataEncapsulation.Task;
+import dataManipulation.CommandType.COMMAND_TYPE;
+import fileIo.FileIo;
+
+public class Finish extends Command {
+
+	public Finish(List<Subcommand> commandComponents) 
+			throws BadCommandException, BadSubcommandException, 
+			BadSubcommandArgException {
+		super(COMMAND_TYPE.FINISH, commandComponents);
+		boolean hasDateSubcommand = hasSubcommandType(Subcommand.TYPE.DATE);
+		if (hasDateSubcommand) {
+			parseDateToStartAndEnd();
+		}
+	}
+	
+	@Override
+	public String undo() throws Exception {
+		Unfinish reverse = new Unfinish(subcommands);
+		return reverse.literalUnfinish();
+	}
+
+	@Override
+	public String execute() throws Exception {
+		Task markedTask = markAsCompleted();
+		ezCMessages messages = ezCMessages.getInstance();
+		String stringTask = messages.getFinishMessage(markedTask);
+		FileIo IoStream = FileIo.getInstance();
+		IoStream.rewriteFile();
+		return stringTask;
+	}
+	
+	public Task markAsCompleted() throws Exception {
+		TotalTaskList masterList = TotalTaskList.getInstance();
+		List<Task> taskToBeMarked = ExactMatchSearcher.literalSearch(subcommands, masterList.getNotCompleted());
+		if (taskToBeMarked.size() > 1) {
+			throw new ActionException(taskToBeMarked, ErrorLocation.FINISH, subcommands);
+		} else if (taskToBeMarked.size() == 0) {
+			throw new Exception("no match found");
+		}
+		Task toComplete = taskToBeMarked.get(0);
+		finishTask(toComplete);
+		
+		return toComplete;
+	}
+	
+	private void finishTask(Task toComplete) throws Exception {
+		TotalTaskList masterList = TotalTaskList.getInstance();
+		List<Task> toSearchThrough = masterList.getNotCompleted();
+		boolean wasSuccess = toSearchThrough.remove(toComplete);
+		if (!wasSuccess) {
+			toSearchThrough = masterList.getOverdue();
+			wasSuccess = toSearchThrough.remove(toComplete);
+			if (!wasSuccess) {
+				throw new Exception("no match found");
+			}
+		}
+		
+		toComplete.setComplete();
+		masterList.addCompleted(toComplete);
+	}
+
+	public void addEditedTask(Task oldTask, Task newTask) {
+		TotalTaskList list = TotalTaskList.getInstance();
+		FileIo IoStream = FileIo.getInstance();
+		
+		list.removeNotCompleted(oldTask);
+		list.addCompleted(newTask);
+		IoStream.rewriteFile();
+	}
+	
+
+	@Override
+	protected void checkValidity() throws BadSubcommandException {
+		super.checkValidity();
+		checkForNoDuplicateSubcommands();
+	}
+
+	public String literalFinish() throws BadCommandException, 
+		BadSubcommandException, BadSubcommandArgException, Exception {
+		TotalTaskList list = TotalTaskList.getInstance();
+		List<Task> completed = list.getCompleted();
+		Task perfectMatch = findLiteralMatch(subcommands, completed);
+
+		ezCMessages messages = ezCMessages.getInstance();
+		return messages.getFinishMessage(perfectMatch);
+	}
+	
+	private Task findLiteralMatch(List<Subcommand> subcommands, List<Task> list) 
+			throws BadCommandException, 
+			BadSubcommandException, BadSubcommandArgException, Exception {
+
+		Task match = (new Add(subcommands)).buildTask(subcommands);
+		TotalTaskList totalList = TotalTaskList.getInstance();
+		List<Task> currentTasks = totalList.getList();
+
+		for (int i = 0; i < currentTasks.size(); ++i) {
+			Task current = currentTasks.get(i);
+			if (current.isEqualTask(match)) {
+				current.setComplete();
+				currentTasks.remove(current);
+				totalList.addCompleted(current);
+				return current;
+			}
+		}
+		
+		currentTasks = TotalTaskList.getInstance().getOverdue();
+		for (int i = 0; i < currentTasks.size(); ++i) {
+			Task current = currentTasks.get(i);
+			if (current.isEqualTask(match)) {
+				current.setComplete();
+				currentTasks.remove(current);
+				totalList.addCompleted(current);
+				return current;
+			}
+		}
+		
+		throw new NoResultException("The task that you are trying to finish cannot be found.");
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Finish.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\MultiCommand.java
+	 */
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.Task;
+import dataManipulation.CommandType.COMMAND_TYPE;
+
+public abstract class MultiCommand<T extends Command> extends Command {
+
+	protected List<T> commands = new ArrayList<T>();
+	
+	public MultiCommand(List<Task> choices) throws BadCommandException,
+			BadSubcommandException, BadSubcommandArgException {
+		super(COMMAND_TYPE.INVALID, new ArrayList<Subcommand>());
+		initializeCommands(choices);
+	}
+
+	private void initializeCommands(List<Task> choices) throws 
+	BadSubcommandException, BadSubcommandArgException, BadCommandException {
+		for (Task t : choices) {
+			List<Subcommand> choiceSubcommands = 
+				Add.dismantleTask(t);
+			T newCommand = makeCommand(choiceSubcommands);
+			commands.add(newCommand);
+		}
+	}
+	
+	abstract T makeCommand(List<Subcommand> choices) 
+			throws BadCommandException, BadSubcommandException, 
+			BadSubcommandArgException;
+	
+	abstract String specializedExecute(T command) throws Exception;
+
+	@Override
+	public String execute() throws Exception {
+		String message = "";
+		for (T command : commands) {
+			String toReport = specializedExecute(command);
+			message = appendReport(message, toReport);
+		}
+		return message;
+	}
+
+	@Override
+	public String undo() throws Exception {
+		String message = "";
+		for (T command : commands) {
+			String toReport = command.undo();
+			message = appendReport(message, toReport);
+		}
+		return message;
+	}
+
+	private String appendReport(String ret, String toReport) {
+		if (!ret.isEmpty()) {
+			ret = ret + "\n";
+		}
+		ret = ret + toReport;
+		return ret;
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\MultiCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\MultiEditor.java
+	 */
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import userInterface.ezCMessages;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.Task;
+import dataManipulation.CommandType.COMMAND_TYPE;
+
+public class MultiEditor extends Command {
+
+	private List<Edit> editors = new ArrayList<Edit>();
+	private List<Edit> successfulEdits = new ArrayList<Edit>();
+	private List<Task> tasksToEdit = new ArrayList<Task>();
+	
+	public MultiEditor(List<Task> choices, List<Subcommand> changes) throws BadCommandException,
+			BadSubcommandException, BadSubcommandArgException {
+		super(COMMAND_TYPE.EDIT, changes);	// check only edit-type subcommands
+		tasksToEdit = choices;
+		initializeEditors(choices);
+		super.type = COMMAND_TYPE.INVALID;	// should not be recognized as a user-command
+	}
+
+	private void initializeEditors(List<Task> choices) throws 
+	BadSubcommandException, BadSubcommandArgException, BadCommandException {
+		for (int i = 0; i < choices.size(); ++i) {
+			Edit editor = new Edit(subcommands);
+			editors.add(editor);
+		}
+	}
+
+	@Override
+	public String execute() throws Exception {
+		successfulEdits.clear();
+		
+		String message = new String();
+		List<Task> failedToEdit = new ArrayList<Task>();
+		ezCMessages messages = ezCMessages.getInstance();
+		String failureMessage = new String();
+		
+		for (int i = 0; i < editors.size(); ++i) {
+			Edit editor = editors.get(i);
+			Task toEdit = tasksToEdit.get(i);
+			try {
+				editor.furtherEdit(toEdit);
+				Task justEdited = editor.getTask();
+				message = appendReport(message, 
+						messages.makePrintableTask(justEdited) + "\n");
+				successfulEdits.add(editor);
+			} catch (Exception e) {
+				failedToEdit.add(toEdit);
+				failureMessage = e.getMessage();
+			}
+		}
+		
+		if (!failedToEdit.isEmpty()) {
+			String failureHeader = "Could not edit each of the following because " + failureMessage.toLowerCase();
+			String failedTasks = messages.getStringOfTasks(failedToEdit);
+			String toAppend = failureHeader + "\n\n" + failedTasks;
+			message = appendReport(message, toAppend);
+		}
+		
+		return message;
+	}
+
+	@Override
+	public String undo() throws Exception {
+		String message = "Successfully unedited:";
+		ezCMessages messages = ezCMessages.getInstance();
+		
+		for (Edit editor : successfulEdits) {
+			editor.undo();
+			Task justEdited = editor.getTask();
+			String toReport = messages.makePrintableTask(justEdited);
+			message = appendReport(message, "\n" + toReport);
+		}
+		return message;
+	}
+
+	private String appendReport(String ret, String toReport) {
+		if (!ret.isEmpty()) {
+			ret = ret + "\n";
+		}
+		ret = ret + toReport;
+		return ret;
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\MultiEditor.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\MultiFinish.java
+	 */
+
+
+import java.util.List;
+
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.Task;
+
+public class MultiFinish extends MultiCommand<Finish> {
+
+	public MultiFinish(List<Task> choices) throws BadCommandException,
+			BadSubcommandException, BadSubcommandArgException {
+		super(choices);
+	}
+
+	@Override
+	Finish makeCommand(List<Subcommand> choices) throws BadCommandException,
+			BadSubcommandException, BadSubcommandArgException {
+		return new Finish(choices);
+	}
+
+	@Override
+	String specializedExecute(Finish command) throws Exception {
+		return command.literalFinish();
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\MultiFinish.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\MultiRemove.java
+	 */
+
+
+import java.util.List;
+
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.Task;
+
+public class MultiRemove extends MultiCommand<Remove> {
+	
+	public MultiRemove(List<Task> choices) throws BadCommandException,
+			BadSubcommandException, BadSubcommandArgException {
+		super(choices);
+	}
+
+	@Override
+	public String execute() throws Exception {
+		String message = "";
+		for (Remove remove : commands) {
+			String toReport = remove.executeRemoveLiteral();
+			message = appendReport(message, toReport);
+		}
+		return message;
+	}
+
+	@Override
+	public String undo() throws Exception {
+		String message = "";
+		for (Remove remove : commands) {
+			String toReport = remove.undo();
+			message = appendReport(message, toReport);
+		}
+		return message;
+	}
+
+	private String appendReport(String ret, String toReport) {
+		if (!ret.isEmpty()) {
+			ret = ret + "\n";
+		}
+		ret = ret + toReport;
+		return ret;
+	}
+
+	@Override
+	Remove makeCommand(List<Subcommand> choices) 
+			throws BadCommandException, BadSubcommandException, BadSubcommandArgException {
+		return new Remove(choices);
+	}
+
+	@Override
+	String specializedExecute(Remove command) throws Exception {
+		return command.executeRemoveLiteral();
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\MultiRemove.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\MultiUnfinish.java
+	 */
+
+
+import java.util.List;
+
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.Task;
+
+public class MultiUnfinish extends MultiCommand<Unfinish> {
+
+	public MultiUnfinish(List<Task> choices) throws BadCommandException,
+			BadSubcommandException, BadSubcommandArgException {
+		super(choices);
+	}
+
+	@Override
+	Unfinish makeCommand(List<Subcommand> choices) throws BadCommandException,
+			BadSubcommandException, BadSubcommandArgException {
+		return new Unfinish(choices);
+	}
+
+	@Override
+	String specializedExecute(Unfinish command) throws Exception {
+		return command.literalUnfinish();
+	}
+
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\MultiUnfinish.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Overdue.java
+	 */
+
+
+import java.util.List;
+
+import userInterface.ezCMessages;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.NoResultException;
+import dataEncapsulation.Task;
+import dataManipulation.CommandType.COMMAND_TYPE;
+
+public class Overdue extends Command{
+	public Overdue(List<Subcommand> commandComponents)
+			throws BadCommandException, BadSubcommandException {
+		super(COMMAND_TYPE.OVERDUE, commandComponents);
+	}
+
+	@Override
+	public String execute() throws Exception {
+		TotalTaskList totalList = TotalTaskList.getInstance();
+		totalList.update();
+		List<Task> overdueTasks = totalList.getOverdue();
+		
+		ezCMessages overdueTasksMessage = ezCMessages.getInstance();
+		String displayOverdueTasks = overdueTasksMessage.getOverdueTasksListMessage();
+		displayOverdueTasks += getStringOfAllTasks(overdueTasks);
+		
+		return displayOverdueTasks;
+	}
+
+	private String getStringOfAllTasks(List<Task> list) throws NoResultException {
+		ezCMessages messages = ezCMessages.getInstance();
+		return messages.getStringOfTasks(list);
+	}
+
+	@Override
+	public String undo() throws Exception {
+		return null;
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Overdue.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Remove.java
+	 */
+
+	public String executeRemoveLiteral() throws Exception {
+		int indexOfDeletionList = initializeTasksFound(subcommands);
+		List<Task> listToDeleteFrom = getDeletionList(indexOfDeletionList);
+		Task perfectMatch = findLiteralMatch(subcommands, listToDeleteFrom);
+		taskRemoved = doDeleteTask(perfectMatch, indexOfDeletionList);
+		updateFile();
+		ezCMessages messages = ezCMessages.getInstance();
+		return messages.getDeleteMessage(taskRemoved);
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Remove.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Search.java
+	 */
+
+	private Date getDateForFree() throws Exception {
+		assert(subcommands.size() == 2);
+		int firstIndex = 0;
+		int secondIndex = firstIndex + 1;
+		
+		String dateString;
+		
+		if (subcommands.get(firstIndex).getType() == Subcommand.TYPE.DATE) {
+			dateString = subcommands.get(0).getContents();
+		} else if (subcommands.get(secondIndex).getType() == Subcommand.TYPE.DATE) {
+			dateString = subcommands.get(secondIndex).getContents();
+		} else {
+			throw new BadSubcommandException("missing date component");
+		}
+		
+		Date realDate = (new Date()).determineDate(dateString);
+		return realDate;
+	}
+
+	@Override
+	public String undo() throws Exception {
+		return null;
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Search.java
 
 
 
@@ -1028,7 +2471,7 @@ public class CommandType {
 public class Subcommand {
 	public enum TYPE {
 		AND, BYEND, BYNAME, BYSTART, CATEGORY, COMPLETED, DATE, DATE_TYPE, END,
-		ENDTIME, FREE, LOCATION, NAME, NONE, NOTE, FREQUENCY, OR, PAREN, START, 
+		ENDTIME, FREE, HELP, LOCATION, NAME, NONE, NOTE, FREQUENCY, ON, OR, PAREN, START, 
 		STARTTIME, TEXT, TITLE,
 		INVALID;
 		
@@ -1037,6 +2480,10 @@ public class Subcommand {
 			if (name().equals(INVALID.name())) {
 				String nothing = "";
 				return nothing;
+			} else if (name().equals(ENDTIME.name())) {
+				return "to";
+			} else if (name().equals(STARTTIME.name())) {
+				return "from";
 			}
 			
 			return name().toLowerCase();
@@ -1053,6 +2500,17 @@ public class Subcommand {
 		}
 	}
 	
+	// All keywords for the help type
+	public enum HELP_KEY {
+		ADD, ALL, EDIT, FINISH, LIST, REDO, REMOVE, REPEAT, SEARCH, TODAY, UNDO, UNFINISH,
+		DATE, TIME, COMPLETE, COMPLETED;
+		
+		@Override
+		public String toString() {
+			return this.name().toString().toLowerCase();
+		}
+	}
+	
 	public enum PAREN {
 		OPEN_PAREN, CLOSE_PAREN;
 		
@@ -1063,6 +2521,16 @@ public class Subcommand {
 			} else {
 				return ")";
 			}
+		}
+	}
+	
+	public enum WEEKDAYS {
+		TOMORROW, TODAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, 
+		SATURDAY, SUNDAY;
+		
+		@Override
+		public String toString() {
+			return this.name().toString().toLowerCase();
 		}
 	}
 	
@@ -1116,6 +2584,10 @@ public class Subcommand {
 				break;
 			case PAREN :
 				checkParenContents();
+				break;
+			case HELP :
+				checkHelpKeyContents();
+				break;
 			default :
 				break;	// no restrictions on contents
 		}
@@ -1123,6 +2595,48 @@ public class Subcommand {
 		return;
 	}
 	
+	private void checkHelpKeyContents() throws BadSubcommandArgException {
+		boolean isValid = false;
+		
+		if (contents.equals(HELP_KEY.ADD.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.ALL.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.EDIT.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.FINISH.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.DATE.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.LIST.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.COMPLETE.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.COMPLETED.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.REDO.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.REMOVE.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.REPEAT.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.SEARCH.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.TIME.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.TODAY.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.UNDO.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.UNFINISH.toString())) {
+			isValid = true;
+		}
+		
+		if (!isValid) {
+			throw new BadSubcommandArgException("There is no help feature for the command you have input.");
+		}
+	}
+
 	private void checkParenContents() throws BadSubcommandArgException {
 		boolean isValid = false;
 		
@@ -1190,16 +2704,20 @@ public class Subcommand {
 			return TYPE.PAREN;
 		case (")") :
 			return TYPE.PAREN;
-		case ("byname") :
+		case ("by name") :
 			return TYPE.BYNAME;
-		case ("byend") :
+		case ("by end") :
 			return TYPE.BYEND;
-		case ("bystart") :
+		case ("by start") :
 			return TYPE.BYSTART;
 		case ("and") :
 			return TYPE.AND;
 		case ("&") :
 			return TYPE.AND;
+		case ("add") :
+			return TYPE.HELP;
+		case ("all") :
+			return TYPE.HELP;
 		case ("annually") :
 			return TYPE.FREQUENCY;
 		case ("begin") :
@@ -1218,28 +2736,52 @@ public class Subcommand {
 			return TYPE.DATE;
 		case ("deadline") :
 			return TYPE.END;
+		case ("edit") :
+			return TYPE.HELP;
 		case ("end") :
 			return TYPE.END;
+		case ("finish") :
+			return TYPE.HELP;
 		case ("free") :
 			return TYPE.FREE;
 		case ("from") : 
 			return TYPE.STARTTIME;
+		case ("list") :
+			return TYPE.HELP;
 		case ("location") :
 			return TYPE.LOCATION;
 		case ("monthly") :
 			return TYPE.FREQUENCY;
 		case ("note") :
 			return TYPE.NOTE;
+		case ("on") : 
+			return TYPE.ON;
 		case ("or") :
 			return TYPE.OR;
 		case ("once") :
 			return TYPE.FREQUENCY;
+		case ("redo") :
+			return TYPE.HELP;
+		case ("remove") :
+			return TYPE.HELP;
+		case ("repeat") :
+			return TYPE.HELP;
+		case ("search") :
+			return TYPE.HELP;
 		case ("start") :
 			return TYPE.START;
+		case ("time") :
+			return TYPE.HELP;
 		case ("title") :
 			return TYPE.TITLE;
 		case ("to") : 
 			return TYPE.ENDTIME;
+		case ("today") :
+			return TYPE.HELP;
+		case ("undo") :
+			return TYPE.HELP;
+		case ("unfinish") :
+			return TYPE.HELP;
 		case ("weekly") :
 			return TYPE.FREQUENCY;
 		default :
@@ -1255,309 +2797,288 @@ public class Subcommand {
 
 
 	/**
-	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\TaskFactory.java
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Unfinish.java
 	 */
 
 
-public class TaskFactory {
-	private static TaskFactory factory;
-	
-	private TaskFactory() {}
-	
-	public static TaskFactory getInstance() {
-		if (factory == null) {
-			factory = new TaskFactory();
+import java.util.List;
+
+import powerSearch.ExactMatchSearcher;
+import userInterface.ezCMessages;
+import dataEncapsulation.ActionException;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.NoResultException;
+import dataEncapsulation.Task;
+import dataEncapsulation.ActionException.ErrorLocation;
+import dataManipulation.CommandType.COMMAND_TYPE;
+import fileIo.FileIo;
+
+public class Unfinish extends Command {
+
+	public Unfinish(List<Subcommand> commandComponents) 
+			throws BadCommandException, BadSubcommandException, 
+			BadSubcommandArgException {
+		super(COMMAND_TYPE.UNFINISH, commandComponents);
+		boolean hasDateSubcommand = hasSubcommandType(Subcommand.TYPE.DATE);
+		if (hasDateSubcommand) {
+			parseDateToStartAndEnd();
 		}
-		
-		return factory;
-	}
-	
-	
-	// expects null arguments if location, note, startTime, or endTime are not 
-	// specified
-	public Task makeTask(String name, String category, 
-			String location, String note, Date startTime, Date endTime,
-			Time beginning, Time ending) 
-					throws Exception {
-		category = checkVitalComponents(name, category);
-		
-		Task newTask;
-		
-		if (location == null) {
-			newTask = makeNoLocationTask(name, category, note, startTime, 
-					endTime);
-		} else {
-			newTask = makeLocationTask(name, category, location, note, 
-					startTime, endTime);
-		}
-		
-		if (beginning != null) {
-			newTask.setStartTime(beginning);
-		}
-		
-		if (ending != null) {
-			newTask.setEndTime(ending);
-		}
-		
-		return newTask;
 	}
 
-	/**
-	 * Ensures that no task will ever be without a name or category, which are
-	 * not optional for the class. If no category is specified (as it IS
-	 * optional for the user), it gives it the category of "no category".
-	 * @param name
-	 * @param category
-	 * @return the value that category should be
-	 */
-	private String checkVitalComponents(String name, String category) 
-			throws IllegalArgumentException {
-		if (name == null) {
-			throw new IllegalArgumentException("task does not have name");
-		}
-			
-		if (category == null) {
-			return "no category";
-		}
-		
-		return category;
+	@Override
+	public String undo() throws Exception {
+		Finish reverse = new Finish(subcommands);
+		return reverse.literalFinish();
 	}
 
-	// Has: location
-	// Does not have:
-	// May have: note, startTime, endTime
-	private Task makeLocationTask(String name, String category,
-			String location, String note, Date startTime, Date endTime) {
-		Task newTask;
-		
-		if (note == null) {
-			newTask = makeNoNoteTask(name, category, location, startTime, 
-					endTime);
-		} else {
-			newTask = makeNoteTask(name, category, location, note, startTime, 
-					endTime);
-		}
-
-		return newTask;
-	}
-	
-	// Has:
-	// Does not have: location
-	// May have: note, startTime, endTime
-	private Task makeNoLocationTask(String name, String category,
-			String note, Date startTime, Date endTime) {
-		Task newTask;
-		
-		if (note == null) {
-			newTask = makeNoNoteTask(name, category, startTime, endTime);
-		} else {
-			newTask = makeNoteTask(name, category, note, startTime, endTime);
-		}
-
-		return newTask;
-	}
-	
-	// Has: location, note
-	// Does not have:
-	// May have: startTime, endTime
-	private Task makeNoteTask(String name, String category,
-			String location, String note, Date startTime, Date endTime) {
-		Task newTask;
-		
-		if (startTime == null) {
-			newTask = makeLocNoteNoStartTask(name, category, location, note, endTime);
-		} else {
-			newTask = makeLocNoteStartTask(name, category, location, note, startTime, endTime);
-		}
-		
-		return newTask;
+	@Override
+	public String execute() throws Exception {
+		Task markedTask = markAsNotCompleted();
+		ezCMessages messages = ezCMessages.getInstance();
+		String stringTask = messages.getUnfinishMessage(markedTask);
+		rewriteFile();
+		return stringTask;
 	}
 
-	// Has: note
-	// Does not have: location
-	// May have: startTime, endTime
-	private Task makeNoteTask(String name, String category, String note,
-			Date startTime, Date endTime) {
-		Task newTask;
-		
-		if (startTime == null) {
-			newTask = makeNoteNoStartTask(name, category, note, endTime);
-		} else {
-			newTask = makeNoteStartTask(name, category, note, startTime, endTime);
-		}
-		
-		return newTask;
+	private void rewriteFile() {
+		FileIo IoStream = FileIo.getInstance();
+		IoStream.rewriteFile();
 	}
 
-	// Has: location
-	// Does not have: note
-	// May have: startTime, endTime
-	private Task makeNoNoteTask(String name, String category,
-			String location, Date startTime, Date endTime) {
-		Task newTask;
-		
-		if (startTime == null) {
-			newTask = makeLocNoStartTask(name, category, location, endTime);
-		} else {
-			newTask = makeLocStartTask(name, category, location, startTime, endTime);
+	private Task markAsNotCompleted() throws Exception {
+		TotalTaskList masterList = TotalTaskList.getInstance();
+		List<Task> taskToBeMarked = ExactMatchSearcher.literalSearch(subcommands, masterList.getCompleted());
+		if (taskToBeMarked.size() > 1) {
+			throw new ActionException(taskToBeMarked, ErrorLocation.UNFINISH, subcommands);
+		} else if (taskToBeMarked.size() == 0) {
+			throw new Exception("no match found");
 		}
-		
-		return newTask;
+		Task toUncomplete = taskToBeMarked.get(0);
+		unfinishTask(toUncomplete);
+
+		return toUncomplete;
 	}
-	
-	// Has:
-	// Does not have: location, note
-	// May have: startTime, endTime
-	private Task makeNoNoteTask(String name, String category,
-			Date startTime, Date endTime) {
-		Task newTask;
-		
-		if (startTime == null) {
-			newTask = makeNoStartTask(name, category, endTime);
-		} else {
-			newTask = makeStartTask(name, category, startTime, endTime);
+
+	private void unfinishTask(Task toUncomplete) throws Exception {
+		TotalTaskList masterList = TotalTaskList.getInstance();
+		List<Task> toSearchThrough = masterList.getCompleted();
+		boolean wasSuccess = toSearchThrough.remove(toUncomplete);
+		if (!wasSuccess) {
+			throw new Exception("no match found");
 		}
-		
-		return newTask;
-	}
-	
-	// Has: location, note, startTime
-	// Does not have:
-	// May have: endTime
-	private Task makeLocNoteStartTask(String name, String category,
-			String location, String note, Date startTime, Date endTime) {
-		Task newTask;
-		
-		if (endTime == null) {
-			newTask = new Task(name, category, location, note, startTime);
+
+		toUncomplete.setIncomplete();
+		if (toUncomplete.isOverdue()) {
+			masterList.addOverdue(toUncomplete);
 		} else {
-			newTask = new Task(name, category, location, note, startTime, endTime);
+			masterList.addNotCompleted(toUncomplete);
 		}
-		
-		return newTask;
 	}
-	
-	
-	// Has: location, note
-	// Does not have: startTime
-	// May have: endTime
-	private Task makeLocNoteNoStartTask(String name, String category,
-			String location, String note, Date endTime) {
-		Task newTask;
-		Date startDate = new Date();	// default is today
-		
-		if (endTime == null) {
-			newTask = new Task(name, category, location, note, startDate);
-		} else {
-			newTask = new Task(name, category, location, note, startDate, endTime);
+
+
+	@Override
+	protected void checkValidity() throws BadSubcommandException {
+		super.checkValidity();
+		checkForNoDuplicateSubcommands();
+	}
+
+	public String literalUnfinish() throws BadCommandException, 
+	BadSubcommandException, BadSubcommandArgException, Exception {
+		TotalTaskList list = TotalTaskList.getInstance();
+		List<Task> completed = list.getCompleted();
+		Task perfectMatch = findLiteralMatch(subcommands, completed);
+
+		completed.remove(perfectMatch);
+		perfectMatch.setIncomplete();
+		list.addNotCompleted(perfectMatch);
+		list.update();
+
+		ezCMessages messages = ezCMessages.getInstance();
+		return messages.getUnfinishMessage(perfectMatch);
+	}
+
+	private Task findLiteralMatch(List<Subcommand> subcommands, List<Task> list) 
+			throws BadCommandException, 
+			BadSubcommandException, BadSubcommandArgException, Exception {
+
+		Task match = (new Add(subcommands)).buildTask(subcommands);
+		TotalTaskList totalList = TotalTaskList.getInstance();
+		List<Task> currentTasks = totalList.getCompleted();
+
+		for (int i = 0; i < currentTasks.size(); ++i) {
+			Task current = currentTasks.get(i);
+			if (current.isEqualTask(match)) {
+				return current;
+			}
 		}
-		
-		return newTask;
+
+		throw new NoResultException("The task that you are trying to finish cannot be found.");
 	}
-	
-	// Has: note, startTime
-	// Does not have: location
-	// May have: endTime
-	private Task makeNoteStartTask(String name, String category,
-			String location, Date startTime, Date endTime) {
-		Task newTask;
-		
-		if (endTime == null) {
-			newTask = new Task(name, category, location, startTime);
-		} else {
-			newTask = new Task(name, category, location, startTime, endTime);
-		}
-		
-		return newTask;
-	}
-	
-	// Has: note
-	// Does not have: location, startTime
-	// May have: endTime
-	private Task makeNoteNoStartTask(String name, String category,
-			String note, Date endTime) {
-		Task newTask;
-		Date startDate = new Date();	// default is today
-		
-		if (endTime == null) {
-			newTask = new Task(name, category, startDate);
-			newTask.setNote(note);
-		} else {
-			newTask = new Task(name, category, startDate, endTime);
-			newTask.setNote(note);
-		}
-		
-		return newTask;
-	}
-	
-	// Has: location, startTime
-	// Does not have: note
-	// May have: endTime
-	private Task makeLocStartTask(String name, String category,
-			String location, Date startTime, Date endTime) {
-		Task newTask;
-		
-		if (endTime == null) {
-			newTask = new Task(name, category, location, startTime);
-		} else {
-			newTask = new Task(name, category, location, startTime, endTime);
-		}
-		
-		return newTask;
-	}
-	
-	// Has: location
-	// Does not have: note, startTime
-	// May have: endTime
-	private Task makeLocNoStartTask(String name, String category,
-			String location, Date endTime) {
-		Task newTask;
-		Date startDate = new Date();	// default is today
-		
-		if (endTime == null) {
-			newTask = new Task(name, category, location, startDate);
-		} else {
-			newTask = new Task(name, category, location, startDate, endTime);
-		}
-		
-		return newTask;
-	}
-	
-	// Has: startTime
-	// Does not have: location, note
-	// May have: endTime
-	private Task makeStartTask(String name, String category,
-			Date startTime, Date endTime) {
-		Task newTask;
-		
-		if (endTime == null) {
-			newTask = new Task(name, category, startTime);
-		} else {
-			newTask = new Task(name, category, startTime, endTime);
-		}
-		
-		return newTask;
-	}
-	
-	// Has:
-	// Does not have: location, note, startTime
-	// May have: endTime
-	private Task makeNoStartTask(String name, String category,
-			Date endTime) {
-		Task newTask;
-		Date startDate = new Date();	// default is today
-		
-		if (endTime == null) {
-			newTask = new Task(name, category, startDate);
-		} else {
-			newTask = new Task(name, category, startDate, endTime);
-		}
-		
-		return newTask;
-	}
+
+
 }
 
-	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\TaskFactory.java
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Unfinish.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\fileIo\FileIo.java
+	 */
+
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
+import dataEncapsulation.TaskFileErrorException;
+import dataManipulation.TotalTaskList;
+
+/*
+ * This class acts as the interface between the File IO component
+ * and the Main and Data Manipulation components. The other
+ * classes within the file IO package can be accessed through here.
+ * 
+ * Its usefulness is that we don't have to deal with the components
+ * of the entire class and can neatly see the methods we care about.
+ */
+
+public class FileIo {
+	private final String fileName = "ezCTasks.txt";
+	private TextIoStream fileStream;
+	private TotalTaskList list = TotalTaskList.getInstance();
+	private TaskFileReader reader = TaskFileReader.getInstance();
+	private final String dateType = "Middle Endian Format";
+	private static final String NEW_LINE = System.getProperty("line.separator");
+
+	private static FileIo fileIo;
+
+	public FileIo() {
+		try {
+			fileStream = new TextIoStream(fileName);
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	public static FileIo getInstance() {
+		if (fileIo == null) {
+			fileIo = new FileIo();
+		}
+
+		return fileIo;
+	}
+
+	// Takes the lines of text from the task file and creates tasks from them.
+	public List<Task> getAllTasks(List<String> linesOfText) throws Exception {
+		List<Task> taskList = reader.getAllTasks(linesOfText);
+		return taskList;
+	}
+
+	// Takes the lines of text from the task file and creates tasks from them.
+	public void rewriteFile() {
+		try {
+			List<String> empty = new ArrayList<String>();
+			fileStream.rewriteFile(empty);
+			if (!Date.isFormatDm()) {
+				String total = dateType + NEW_LINE;
+				fileStream.appendFile(total);
+			}
+			fileStream.appendFile(list.getAllTasks());
+			return;
+		} catch (FileNotFoundException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	/*
+	 * Returns the contents from the task file as a list of strings with each
+	 * index in the list corresponding to the matching line in the file.
+	 * If there is an error, it returns null.
+	 */
+	public List<String> readFromFile() throws FileNotFoundException, IOException {
+		List<String> lines;
+		lines = fileStream.readFromFile();
+		return lines;
+	}
+
+	public void initializeTaskList(TotalTaskList taskList) throws Exception {
+		List<String> fileContents;
+		TaskFileErrorException badFile = null;
+
+		fileContents = fileStream.readFromFile();
+		
+		changeDateTypeIfSpecified(fileContents);
+		
+		Date today = new Date();
+		List<Task> tasksFromFile;
+		try {
+			tasksFromFile = reader.getAllTasks(fileContents);
+		} catch (TaskFileErrorException e) {
+			tasksFromFile = e.getTaskList();
+			badFile = e;
+		}
+		for(Task t : tasksFromFile) {
+			if(t.getIsComplete() == false && !(t.getEndDate().isBefore(today))) {
+				taskList.addNotCompleted(t);
+			}
+			else if(t.getIsComplete() == true) {
+				taskList.addCompleted(t);
+			}
+			else if(t.getIsComplete() == false && t.getEndDate().isBefore(today)) {
+				taskList.addOverdue(t);
+			}
+		}
+
+		if (badFile != null) {
+			throw badFile;
+		}
+
+		return;
+	}
+
+	private void changeDateTypeIfSpecified(List<String> fileContents)
+			throws BadSubcommandException, BadSubcommandArgException,
+			BadCommandException {
+		if (fileContents.get(0).equalsIgnoreCase(dateType)) {
+			Date.changeFormatMd();
+			fileContents.remove(0);
+		}
+	}
+
+	public void recover(TaskFileErrorException e) throws FileNotFoundException, IOException {
+		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+		Date day = new Date();
+		Calendar cal = Calendar.getInstance();
+		fileStream.rewriteFile(e.getTaskList());
+		TextIoStream errorFileStream = 
+				new TextIoStream("RecoveredTaskFile.txt");
+		errorFileStream.appendFile("\nDate of error detection: " + day + " @ "
+				+ dateFormat.format(cal.getTime()) + "\n");
+		errorFileStream.appendFile(e.getErrorList());
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\fileIo\FileIo.java
 
 
 
@@ -1567,6 +3088,29 @@ public class TaskFactory {
 	 * origin: C:\Users\Kiri\Documents\ezC\name\src\fileIo\TaskFileReader.java
 	 */
 
+
+import java.util.ArrayList;
+import java.util.List;
+
+import userInterface.Autocomplete;
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
+import dataEncapsulation.TaskFileErrorException;
+import dataEncapsulation.Time;
+
+/**
+ * This class reads the file contents from the ezC task storage file.
+ * It does not anticipate incorrect formatting and will throw an exception when
+ * it encounters a bad file line.
+ * 
+ * Note: It would be better to report to the user which task is incorrectly
+ * formatted, and then to just skip that task and let the user deal with it
+ * himself. Perhaps give the option of deleting the task or replacing the task
+ * with a valid one. (dump the invalid lines on the screen for the user to see.
+ * After dumping, once more give the option of just deleting the garbage if it
+ * is unusable to the user)
+ *
+ */
 
 public class TaskFileReader {
 	private static TaskFileReader tfr;
@@ -1581,12 +3125,11 @@ public class TaskFileReader {
 		return tfr;
 	}
 	
-	
 	// integers are indexes for their corresponding location in the task 
 	// component list
 	public enum TASK_COMPONENT {
 		NAME(0), CATEGORY(1), START(2), END(3), LOCATION(4), NOTE(5), 
-		COMPLETED(6);
+		COMPLETED(6), START_TIME(7), END_TIME(8);
 		private int value;
 		
 		private TASK_COMPONENT(int val) {
@@ -1601,32 +3144,56 @@ public class TaskFileReader {
 	private final String LINE_TITLE_DELIMITER = ":";
 	private final String EMPTY_STRING = "";
 	
-	private final String MESSAGE_NO_END = "No Specified End Date";
-	private final String MESSAGE_NO_LOCATION = "No Specified Location";
-	private final String MESSAGE_NO_NOTE = "No Specified Note";
-	private final String MESSAGE_COMPLETED = "Yes";
+	private final String MESSAGE_NO_END = Task.MESSAGE_NO_END;
+	private final String MESSAGE_NO_LOCATION = Task.MESSAGE_NO_LOCATION;
+	private final String MESSAGE_NO_NOTE = Task.MESSAGE_NO_NOTE;
+	private final String MESSAGE_COMPLETED = Task.MESSAGE_COMPLETED;
+	private final String MESSAGE_NO_CATEGORY = Task.MESSAGE_NO_CATEGORY;
 	
 	private final int FIRST_POSITION = 0;
+	private final String TIME_DELIMITER = "@";
+	
+	private boolean hasNewInfo = false;
 
 	private List<String> taskComponents = new ArrayList<String>();
-	private TaskFactory factory = TaskFactory.getInstance();
 
-	public List<Task> getAllTasks(List<String> componentsFromFile) throws Exception {
+	public List<Task> getAllTasks(List<String> componentsFromFile) throws TaskFileErrorException {
 		List<Task> taskList = new ArrayList<Task>();
+		List<String> errorList = new ArrayList<String>();
+		List<String> possibleError = new ArrayList<String>();
 		clearTaskComponents();
 		
 		for (int i = 0; i < componentsFromFile.size(); ++i) {
 			String currentLine = componentsFromFile.get(i);
 			
-			if (currentLine.equals(EMPTY_STRING)) {
-				Task newTask = createTask();
-				if (newTask != null) {
-					taskList.add(newTask);
+			if (currentLine.equals(EMPTY_STRING) && hasNewInfo) {
+				try {
+					Task newTask = createTask();
+					if (newTask != null) {
+						taskList.add(newTask);
+						possibleError.clear();
+					}
+				} catch (Exception e) {
+					possibleError.add("\n");
+					errorList.addAll(possibleError);
+					possibleError.clear();
 				}
 				clearTaskComponents();
-			} else {
-				addComponent(currentLine);
+			} else if (!currentLine.equals(EMPTY_STRING)){
+				try {	
+					possibleError.add(currentLine);
+					addComponent(currentLine);
+				} catch (Exception e) {
+					clearTaskComponents();
+					errorList.addAll(possibleError);
+					possibleError.clear();
+				}
+				
 			}
+		}
+		
+		if (!errorList.isEmpty()) {
+			throw new TaskFileErrorException(errorList, taskList);
 		}
 		
 		return taskList;
@@ -1642,11 +3209,16 @@ public class TaskFileReader {
 		String startDateString = getStartDateString();
 		String endDateString = getEndDateString();
 		String completed = getCompleted();
+		String startTimeString = getStartTimeString();
+		String endTimeString = getEndTimeString();
 		
 		Date start = (new Date()).determineDate(startDateString);
 		Date end = (new Date()).determineDate(endDateString);
 		
-		Task newTask = factory.makeTask(name, category, location, note, start, end, null, null);
+		Time startTime = (new Time()).determineTime(startTimeString);
+		Time endTime = (new Time()).determineTime(endTimeString);
+		
+		Task newTask = new Task(name, category, location, note, start, end, startTime, endTime);
 		addToAutocomplete(name, category, location);
 		
 		if (completed.equalsIgnoreCase(MESSAGE_COMPLETED)) {
@@ -1672,10 +3244,15 @@ public class TaskFileReader {
 	}
 
 	// sets missing components to null, as expected by TaskFactory
-	private void checkForMissingComponents() {
+	private void checkForMissingComponents() throws Exception {
+		if (isAnyElementNull()) {
+			throw new Exception("Data missing from task");
+		}
+		
 		String location = getLocation();
 		String note = getNote();
 		String end = getEndDateString();
+		String category = getCategory();
 		
 		if (end.equals(MESSAGE_NO_END)) {
 			taskComponents.set(TASK_COMPONENT.END.getIndex(), null);
@@ -1689,8 +3266,30 @@ public class TaskFileReader {
 			taskComponents.set(TASK_COMPONENT.NOTE.getIndex(), null);
 		}
 		
+		if (category.equals(MESSAGE_NO_CATEGORY)) {
+			taskComponents.set(TASK_COMPONENT.CATEGORY.getIndex(), null);
+		}
+		
 		return;
 		
+	}
+
+	private boolean isAnyElementNull() {
+		String name = getName();
+		String category = getCategory();
+		String location = getLocation();
+		String note = getNote();
+		String startDateString = getStartDateString();
+		String endDateString = getEndDateString();
+		String completed = getCompleted();
+		
+		if (name == null || category == null || location == null ||
+				note == null || startDateString == null || 
+				endDateString == null || completed == null) {
+			return true;
+		}
+		
+		return false;
 	}
 
 	// adds the component from the line to the list of task components, in its
@@ -1700,8 +3299,51 @@ public class TaskFileReader {
 		int index = component.getIndex();
 		String componentData = getComponentData(currentLine);
 		
+		if (component == TASK_COMPONENT.START || 
+				component == TASK_COMPONENT.END) {
+			componentData = getDateData(currentLine);
+			taskComponents.set(index, componentData);
+			
+			component = getTimeCounterpart(component);
+			index = component.getIndex();
+			componentData = getTimeData(currentLine);
+		}
+			
 		taskComponents.set(index, componentData);
+		
+		hasNewInfo = true;
+		
 		return;
+	}
+
+	private TASK_COMPONENT getTimeCounterpart(TASK_COMPONENT component) {
+		if (component == TASK_COMPONENT.START) {
+			return TASK_COMPONENT.START_TIME;
+		} else if (component == TASK_COMPONENT.END) {
+			return TASK_COMPONENT.END_TIME;
+		} else {
+			return component;
+		}
+	}
+
+	private String getDateData(String currentLine) {
+		currentLine = getComponentData(currentLine);
+		String[] split = currentLine.split(TIME_DELIMITER);
+		String date = split[0];
+		date = date.trim();
+		
+		return date;
+	}
+
+	private String getTimeData(String currentLine) {
+		if (!currentLine.contains(TIME_DELIMITER)) {
+			return null;
+		}
+		
+		String[] split = currentLine.split(TIME_DELIMITER);
+		String time = split[1];
+		time = time.trim();
+		return time;
 	}
 
 	// made public for testing purposes. May have use outside of this class
@@ -1749,7 +3391,6 @@ public class TaskFileReader {
 		} else if (lineTitle.equalsIgnoreCase("completed")) {
 			return TASK_COMPONENT.COMPLETED;
 		} else {
-			System.out.println(lineTitle);
 			throw new RuntimeException("Invalid task in file");
 		}
 	}
@@ -1762,6 +3403,8 @@ public class TaskFileReader {
 		for (TASK_COMPONENT i : TASK_COMPONENT.values()) {
 			taskComponents.add(null);
 		}
+		
+		hasNewInfo = false;
 		
 		return;
 	}
@@ -1792,6 +3435,14 @@ public class TaskFileReader {
 	
 	private String getCompleted() {
 		return taskComponents.get(TASK_COMPONENT.COMPLETED.getIndex());
+	}
+	
+	private String getStartTimeString() {
+		return taskComponents.get(TASK_COMPONENT.START_TIME.getIndex());
+	}
+	
+	private String getEndTimeString() {
+		return taskComponents.get(TASK_COMPONENT.END_TIME.getIndex());
 	}
 
 }
@@ -1914,8 +3565,8 @@ import java.util.List;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.SuffixTree;
 import dataManipulation.CommandType;
-import dataManipulation.Subcommand;
 import dataManipulation.CommandType.COMMAND_TYPE;
+import dataManipulation.Subcommand;
 import dataManipulation.Subcommand.TYPE;
 
 public class Autocomplete {
@@ -1924,6 +3575,7 @@ public class Autocomplete {
 	private SuffixTree titles = new SuffixTree();
 	private SuffixTree categories = new SuffixTree();
 	private SuffixTree locations = new SuffixTree();
+	private SuffixTree days = new SuffixTree();
 	
 	private static Autocomplete autoComp;
 	
@@ -1973,11 +3625,26 @@ public class Autocomplete {
 		String quote = getLastQuote(toComplete);
 		String lastWordRemoved = removeLastWord(toComplete, quote);
 		Subcommand.TYPE subcommandType = getSubcommandType(lastWordRemoved);
+		
+		if (subcommandType == Subcommand.TYPE.INVALID) {
+			if (isAwaitingDateKeyword(toComplete)) {
+				subcommandType = Subcommand.TYPE.DATE;
+				quote = getLastWord(toComplete);
+				lastWordRemoved = removeLastWord(toComplete, quote) + " ";
+			}
+		}
+		
 		SuffixTree tree = getSubcommandArgTree(subcommandType);
 		
 		List<String> lastWordReplacements = getMatch(tree, quote);
+		
+		boolean needsQuotes = true;
+		
+		if (tree.equals(days)) {
+			needsQuotes = false;
+		}
 		List<String> formattedOutput = formatArgOutput(lastWordReplacements, 
-				lastWordRemoved);
+				lastWordRemoved, needsQuotes);
 		
 		return formattedOutput;
 	}
@@ -1993,13 +3660,23 @@ public class Autocomplete {
 	}
 
 	private List<String> formatArgOutput(List<String> lastWordReplacements,
-			String lastWordRemoved) {
+			String lastWordRemoved, boolean needsQuotes) {
 		List<String> formattedTotal = new ArrayList<String>();
 		String quote = "\"";
+		if (!needsQuotes) {
+			quote = "";
+		}
 		
 		for (int i = 0; i < lastWordReplacements.size(); ++i) {
 			String suffix = lastWordReplacements.get(i);
-			String formattedString = lastWordRemoved + quote + suffix + quote;
+			String formattedString;
+			
+			if (suffix.isEmpty()) {
+				formattedString = lastWordRemoved;
+			} else {
+				formattedString = lastWordRemoved + quote + suffix + quote;
+			}
+
 			formattedTotal.add(formattedString);
 		}
 		
@@ -2007,11 +3684,12 @@ public class Autocomplete {
 	}
 
 	private TYPE getSubcommandType(String sentence) {
-		sentence = sentence.trim();
-		String lastWord = getLastWord(sentence);
-		Subcommand.TYPE type = Subcommand.determineComponentType(lastWord);
+		Subcommand.TYPE type = getLastWordSubcommandType(sentence);
 		
-		if (type == Subcommand.TYPE.INVALID) {
+		// HELP matches the names of command types, so word is either "Help" 
+		// or a command key work
+		if (type == Subcommand.TYPE.HELP) {
+			String lastWord = getLastWord(sentence.trim());
 			type = checkForNameType(lastWord, sentence);
 		}
 		
@@ -2020,19 +3698,24 @@ public class Autocomplete {
 
 	private Subcommand.TYPE checkForNameType(String lastWord, 
 			String sentence) {
-		String emptyString = "";
-		String withoutLast = sentence.replaceFirst(lastWord, emptyString);
+		String nothing = "";
+		String withoutLast = sentence.replaceFirst(lastWord, nothing);
+		String firstWord = getFirstWord(sentence);
 		withoutLast = withoutLast.trim();
 		
-		if (!withoutLast.equals(getFirstWord(sentence)) && !withoutLast.isEmpty()) {
-			return Subcommand.TYPE.INVALID;
+		if (withoutLast.equals(firstWord) && !withoutLast.isEmpty()) {
+			return Subcommand.TYPE.HELP;
+		}
+		
+		if (!withoutLast.isEmpty()) {
+			return Subcommand.TYPE.HELP;
 		}
 		
 		COMMAND_TYPE commandType = getCommandType(sentence);
 		if (isNameType(commandType)) {
 			return Subcommand.TYPE.NAME;
 		} else {
-			return Subcommand.TYPE.INVALID;
+			return Subcommand.TYPE.HELP;
 		}
 	}
 
@@ -2063,6 +3746,12 @@ public class Autocomplete {
 				return locations;
 			case CATEGORY :
 				return categories;
+			case DATE :
+				return days;
+			case START :
+				return days;
+			case END :
+				return days;
 			default :
 				return new SuffixTree();	// no match
 		}
@@ -2094,21 +3783,74 @@ public class Autocomplete {
 	private boolean isAwaitingArg(String toComplete) {
 		int numberQuotes = getNumberOfOccurrences("\"", toComplete);
 		if (isEven(numberQuotes)) {
-			return isLastWordSubcommand(toComplete);	// all started quotes end
+			boolean isLastWordASubcommand = isLastWordSubcommand(toComplete);	// all started quotes end
+			if (!isLastWordASubcommand) {
+				return false;
+			} else {
+				return doesLastSubcommandNeedArg(toComplete) || isAwaitingDateKeyword(toComplete);
+			}
 		} else {
 			return true;	// one unmatched quote
 		}
 	}
 
-	private boolean isLastWordSubcommand(String sentence) {
+	private boolean doesLastSubcommandNeedArg(String sentence) {
+		Subcommand.TYPE type = getLastWordSubcommandType(sentence);
+		switch (type) {
+			case COMPLETED :
+				return false;
+			case FREE :
+				return false;
+			case FREQUENCY :
+				return false;
+			case AND :
+				return false;
+			case OR :
+				return false;
+			default :
+				return true;
+		}
+	}
+
+	private Subcommand.TYPE getLastWordSubcommandType(String sentence) {
 		sentence = sentence.trim();
 		String lastWord = getLastWord(sentence);
-		if (Subcommand.determineComponentType(lastWord) != Subcommand.TYPE.INVALID) {
+		Subcommand.TYPE type = Subcommand.determineComponentType(lastWord);
+		return type;
+	}
+
+	private boolean isLastWordSubcommand(String sentence) {
+		String trimmedSentence = sentence.trim();
+		String lastWord = getLastWord(trimmedSentence);
+		Subcommand.TYPE type = Subcommand.determineComponentType(lastWord);
+		if (type != Subcommand.TYPE.INVALID && type != Subcommand.TYPE.HELP) {
 			return true;
-		} else if (checkForNameType(lastWord, sentence) == Subcommand.TYPE.INVALID) {
-			return false;
+		} else if (checkForNameType(lastWord, trimmedSentence) == Subcommand.TYPE.NAME) {
+			return true;
+		} else if (isAwaitingDateKeyword(sentence)) {
+			return true;
 		} else {
 			return false;
+		}
+	}
+
+	private boolean isAwaitingDateKeyword(String sentence) {
+		String lastWord = getLastWord(sentence);
+		String withoutLastWord = removeLastMatch(lastWord, sentence).trim();
+		String secondToLastWord = getLastWord(withoutLastWord);
+		return isDate(secondToLastWord);
+	}
+	
+	private boolean isDate(String maybeDate) {
+		switch (maybeDate.toLowerCase()) {
+			case "date" :
+				return true;
+			case "start" :
+				return true;
+			case "end" :
+				return true;
+			default :
+				return false;
 		}
 	}
 
@@ -2151,6 +3893,10 @@ public class Autocomplete {
 	}
 
 	private COMMAND_TYPE getCommandType(String toComplete) {
+		if (toComplete.trim().startsWith(COMMAND_TYPE.CHANGE_DATE_TYPE.toString())) {
+			return COMMAND_TYPE.CHANGE_DATE_TYPE;
+		}
+		
 		String commandString = getFirstWord(toComplete);
 		
 		try {
@@ -2235,6 +3981,13 @@ public class Autocomplete {
 	private Autocomplete() {
 		initializeCommands();
 		initializeSubcommands();
+		initializeDays();
+	}
+	
+	private void initializeDays() {
+		for (Subcommand.WEEKDAYS day : Subcommand.WEEKDAYS.values()) {
+			days.add(day.toString());
+		}
 	}
 
 	private void initializeSubcommands() {
@@ -2260,10 +4013,6 @@ public class Autocomplete {
 			subcommands.add(new SuffixTree());
 		}
 	}
-	
-	public static void main(String[] args) {
-		Autocomplete.getInstance();
-	}
 }
 
 	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\userInterface\Autocomplete.java
@@ -2288,43 +4037,47 @@ import javax.swing.JTextField;
 class AutocompleteAction extends AbstractAction {	
 	final static String EXIT_ACTION = "exit-entry";
 	
-	private ActionToggler tabToggle;
-	private ActionToggler enterToggle;
-	private ActionToggler escapeToggle;
-	
 	private JTextField entry;
 	private JLabel status;
 	
-	public AutocompleteAction(ActionToggler tab, ActionToggler enter, 
-			ActionToggler escape, JTextField ent, JLabel stat) {
-		tabToggle = tab;
-		enterToggle = enter;
-		escapeToggle = escape;
-		
-		initializeToggles();
-		
-		entry = ent;
-		status = stat;
-	}
-
-	private String initialText;
+	private String lastText;
 	private Autocomplete autocomplete = Autocomplete.getInstance();
 
 	private int counter = 0;
 	private List<String> completionList;
-
-	public void actionPerformed(ActionEvent ev) {
-		status.setText("autocomplete mode");
-		initialText = entry.getText();
-		toggleOn();
-		completionList = autocomplete.complete(initialText);
-		entry.setText(completionList.get(counter));
+	
+	public AutocompleteAction(JLabel stat, JTextField ent) {
+		entry = ent;
+		status = stat;
+		
+		lastText = entry.getText();
+		completionList = autocomplete.complete(lastText);
+		counter = 0;
 	}
 
-	class AcceptAction extends AbstractAction {
-		public void actionPerformed(ActionEvent ev)  {
-			status.setText("accepted");
-			toggleOff();
+	public void actionPerformed(ActionEvent ev) {
+		status.setText(" ");
+		String current = removeLeadingSpace(entry.getText());
+		if (current.equalsIgnoreCase(lastText)) {
+			entry.setText(completionList.get(counter));
+			incrementCounter();
+			lastText = entry.getText();
+		} else {
+			counter = 0;
+			lastText = entry.getText();
+			completionList = autocomplete.complete(lastText);
+			entry.setText(completionList.get(counter));
+			lastText = entry.getText();
+			incrementCounter();
+		}
+	}
+
+	private String removeLeadingSpace(String text) {
+		String whitespace = "\\s+";
+		if (text.startsWith(" ")) {
+			return text.replaceFirst(whitespace, "");
+		} else {
+			return text;
 		}
 	}
 
@@ -2334,39 +4087,6 @@ class AutocompleteAction extends AbstractAction {
 		} else {
 			++counter;
 		}
-	}
-
-	class ContinueAction extends AbstractAction {
-		public void actionPerformed(ActionEvent ev)  {
-			incrementCounter();
-			entry.setText(completionList.get(counter));
-		}
-	}
-
-	class ExitAction extends AbstractAction {
-		public void actionPerformed(ActionEvent ev)  {
-			status.setText("exiting");
-			entry.setText(initialText);
-			toggleOff();
-		}
-	}
-	
-	private void initializeToggles() {
-		tabToggle.initializeLesser(new ContinueAction());
-		enterToggle.initializeLesser(new AcceptAction());
-		escapeToggle.initializeLesser(new ExitAction());
-	}
-	
-	private void toggleOn() {
-		tabToggle.setLesser();
-		enterToggle.setLesser();
-		escapeToggle.setLesser();
-	}
-	
-	private void toggleOff() {
-		tabToggle.setMaster();
-		enterToggle.setMaster();
-		escapeToggle.setMaster();
 	}
 
 }
@@ -2381,7 +4101,7 @@ class AutocompleteAction extends AbstractAction {
 	 */
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -2494,8 +4214,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import dataEncapsulation.ActionException;
+import dataEncapsulation.NoResultException;
 import dataManipulation.Command;
-import dataManipulation.ExceptionHandler;
 import dataManipulation.UndoRedoList;
 
 @SuppressWarnings("serial")
@@ -2503,37 +4223,49 @@ public class CommandHandlingAction extends AbstractAction {
 	private CommandInterpreter interpreter = CommandInterpreter.getInstance();
 	
 	private JLabel status;
-	private JTextArea textArea;
-	private JTextField entry;
+	private JTextArea display;
+	private JTextField userInput;
 	
 	private ActionToggler enterToggle;
 	private ExceptionHandler exceptionHandler;
 	
-	public CommandHandlingAction(JLabel stat, JTextArea txtArea, JTextField ent, ActionToggler toggle) {
+	public CommandHandlingAction(JLabel stat, JTextArea disp, JTextField usrIn, ActionToggler toggle) {
 		status = stat;
-		textArea = txtArea;
-		entry = ent;
+		display = disp;
+		userInput = usrIn;
 		enterToggle = toggle;
-		exceptionHandler = new ExceptionHandler(ent, stat, txtArea, enterToggle);
+		exceptionHandler = new ExceptionHandler(usrIn, stat, disp, enterToggle);
 	}
 	
 	public void actionPerformed(ActionEvent ev)  {
 		try {
-			String input = entry.getText();
+			status.setText(" ");
+			String input = userInput.getText();
 			Command command = interpreter.formCommand(input);
 			String feedback = command.execute();
-			entry.setText("");
+			userInput.setText("");
 			
-			UndoRedoList.getInstance().pushUndoCommand(command);	//Push command into UndoRedoList
+			UndoRedoList.getInstance().pushUndoCommand(command);
 			
-			textArea.setText(feedback);
+			setDisplayText(feedback);
 		} catch (ActionException e) {
-			entry.setText("");
+			userInput.setText("");
 			exceptionHandler.furtherAction(e);
+		} catch (NoResultException e) {
+			String message = ezCMessages.getInstance().getErrorMessage(e);
+			status.setText(message);
+			userInput.setText("");
 		} catch (Exception e) {
 			String message = ezCMessages.getInstance().getErrorMessage(e);
 			status.setText(message);
 		}
+	}
+	
+	private void setDisplayText(String message) {
+		display.setText(message);
+		
+		int top = 0;
+		display.setCaretPosition(top);
 	}
 }
 
@@ -2559,25 +4291,25 @@ import dataManipulation.All;
 import dataManipulation.ChangeDateType;
 import dataManipulation.Command;
 import dataManipulation.CommandType;
+import dataManipulation.CommandType.COMMAND_TYPE;
 import dataManipulation.Completed;
 import dataManipulation.Edit;
 import dataManipulation.Finish;
 import dataManipulation.Help;
+import dataManipulation.Overdue;
+import dataManipulation.Redo;
 import dataManipulation.Remove;
 import dataManipulation.Repeat;
 import dataManipulation.Search;
-import dataManipulation.Sort;
 import dataManipulation.Subcommand;
 import dataManipulation.Today;
 import dataManipulation.Undo;
-import dataManipulation.CommandType.COMMAND_TYPE;
+import dataManipulation.Unfinish;
 
 public class CommandInterpreter {
 	private static CommandInterpreter commandInterpreter;
-	private CommandType commands;
 
 	private CommandInterpreter() {
-		commands = CommandType.getInstance();
 	}
 
 	public static CommandInterpreter getInstance() {
@@ -2624,7 +4356,7 @@ public class CommandInterpreter {
 	// -----------------------------------------------------------------------------
 
 	private Command makeCommand(COMMAND_TYPE type, List<Subcommand> subcommands) 
-			throws BadCommandException, BadSubcommandException {
+			throws BadCommandException, BadSubcommandException, BadSubcommandArgException {
 		switch (type) {
 		case ADD:
 			return new Add(subcommands);
@@ -2640,18 +4372,22 @@ public class CommandInterpreter {
 			return new Finish(subcommands);
 		case HELP:
 			return new Help(subcommands);
+		case OVERDUE:
+			return new Overdue(subcommands);
+		case REDO:
+			return new Redo(subcommands);
 		case REMOVE:
 			return new Remove(subcommands);
 		case REPEAT:
 			return new Repeat(subcommands);
 		case SEARCH:
 			return new Search(subcommands);
-		case SORT:
-			return new Sort(subcommands);
 		case TODAY:
 			return new Today(subcommands);
 		case UNDO:
 			return new Undo(subcommands);
+		case UNFINISH:
+			return new Unfinish(subcommands);
 		default:
 			throw new BadCommandException("invalid command type");
 		}
@@ -2663,6 +4399,8 @@ public class CommandInterpreter {
 		String[] splitInput = splitString(input);
 
 		if (isChangeDateType(splitInput)) {
+			return true;
+		} else if (input.equalsIgnoreCase("help")) {
 			return true;
 		} else {
 			return false;
@@ -2729,6 +4467,13 @@ public class CommandInterpreter {
 			throws BadCommandException, BadSubcommandException, 
 			BadSubcommandArgException {
 		input = input.toLowerCase();
+		
+		if (input.matches("help")) {
+			List<Subcommand> helpList = new ArrayList<Subcommand>();
+			Subcommand listSubC = new Subcommand(Subcommand.TYPE.HELP, "list");
+			helpList.add(listSubC);
+			return new Help(helpList);
+		}
 
 		String[] splitInput = splitString(input);
 		int lastPosition = splitInput.length - 1;
@@ -2756,53 +4501,51 @@ public class CommandInterpreter {
 
 		List<Subcommand> components = new ArrayList<Subcommand>();
 
-		Subcommand component;
 		// Search and Sort must label their first subcommands
-		if (commandType != COMMAND_TYPE.SEARCH
-				&& commandType != COMMAND_TYPE.SORT) {
-			component = getFirstComponent(commandType, string);
-			if (isQuotationComponent(component)) {
+		if (commandType == COMMAND_TYPE.SEARCH) {
+			handleSearch(string, commandType, components);
+		} else {
+			string = handleInitialTitle(string, commandType, components);
+			string = handleRestOfCommand(string, components);
+		}
+
+		return components;
+	}
+
+	private String handleRestOfCommand(String string,
+			List<Subcommand> components) throws BadSubcommandArgException,
+			BadSubcommandException, IndexOutOfBoundsException {
+		Subcommand component;
+		while (string.length() > 0) {
+			component = getNextComponent(string);
+			if (isQuotationSubcommand(component)) {
 				string = eraseQuoteComponent(string);
 			} else {
 				string = eraseNoQuoteComponent(component, string);
 			}
 			components.add(component);
 		}
-		if (commandType == COMMAND_TYPE.SORT) {
-			Subcommand.TYPE sortType = Subcommand.determineComponentType(string
-					.replaceAll("\\s+", "").toLowerCase());
-			components.add(new Subcommand(sortType, ""));
-		} 
-		if (commandType == COMMAND_TYPE.SEARCH) {
-			component = getFirstComponent(commandType, string);
-			if(isQuotationComponent(component)) {
-				string = eraseQuoteComponent(string);
-			} else {
-				string = eraseNoQuoteComponent(component, string);
-			}
-			if(string == "complete" || string == "completed") {
-				Subcommand.TYPE searchType = Subcommand.determineComponentType(string
-						.replaceAll("\\s+", "").toLowerCase());
-				components.add(new Subcommand(searchType, ""));
-			}
-			else {
-				components.add(component);
-			}
-		}
-		else {
+		return string;
+	}
 
-			while (string.length() > 0) {
-				component = getNextComponent(string);
-				if (isQuotationComponent(component)) {
-					string = eraseQuoteComponent(string);
-				} else {
-					string = eraseNoQuoteComponent(component, string);
-				}
-				components.add(component);
-			}
-		}
+	private void handleSearch(String string, COMMAND_TYPE commandType,
+			List<Subcommand> components) throws BadSubcommandArgException,
+			BadSubcommandException, IndexOutOfBoundsException {
+		handleRestOfCommand(string, components);
+	}
 
-		return components;
+	private String handleInitialTitle(String string, COMMAND_TYPE commandType,
+			List<Subcommand> components) throws BadSubcommandArgException,
+			BadSubcommandException, IndexOutOfBoundsException {
+		Subcommand component;
+		component = getFirstComponent(commandType, string);
+		if (isQuotationSubcommand(component)) {
+			string = eraseQuoteComponent(string);
+		} else {
+			string = eraseNoQuoteComponent(component, string);
+		}
+		components.add(component);
+		return string;
 	}
 
 	private List<Subcommand> getNoSubcommands(String input) throws 
@@ -2838,7 +4581,9 @@ public class CommandInterpreter {
 			return true;
 		case COMPLETED:
 			return true;
-		case HELP:
+		case OVERDUE:
+			return true;
+		case REDO :
 			return true;
 		case TODAY:
 			return true;
@@ -2880,11 +4625,15 @@ public class CommandInterpreter {
 			return Subcommand.TYPE.NAME;
 		case FINISH:
 			return Subcommand.TYPE.NAME;
+		case HELP:
+			return Subcommand.TYPE.HELP;
 		case REMOVE:
 			return Subcommand.TYPE.NAME;
 		case REPEAT:
 			return Subcommand.TYPE.NAME;
 		case SEARCH:
+			return Subcommand.TYPE.NAME;
+		case UNFINISH:
 			return Subcommand.TYPE.NAME;
 		default:
 			return Subcommand.TYPE.INVALID;
@@ -2897,9 +4646,7 @@ public class CommandInterpreter {
 		Subcommand.TYPE componentType = Subcommand
 				.determineComponentType(componentTypeString);
 
-		if (componentType != Subcommand.TYPE.FREQUENCY
-				&& componentType != Subcommand.TYPE.AND
-				&& componentType != Subcommand.TYPE.OR) {
+		if (!isNoArgSubcommand(componentType)) {
 			componentSentence = removeFirstWord(componentSentence);
 		}
 
@@ -2981,7 +4728,7 @@ public class CommandInterpreter {
 		return withoutUntilSecondQuote;
 	}
 
-	private boolean isQuotationComponent(Subcommand component) {
+	private boolean isQuotationSubcommand(Subcommand component) {
 		Subcommand.TYPE type = component.getType();
 
 		switch (type) {
@@ -3007,12 +4754,8 @@ public class CommandInterpreter {
 
 	private String getComponentData(String userCommand,
 			Subcommand.TYPE componentType) throws BadSubcommandArgException {
-		if (componentType == Subcommand.TYPE.START
-				|| componentType == Subcommand.TYPE.END
-				|| componentType == Subcommand.TYPE.DATE
-				|| componentType == Subcommand.TYPE.FREQUENCY
-				|| componentType == Subcommand.TYPE.AND
-				|| componentType == Subcommand.TYPE.OR) {
+		if (isNoQuoteSubcommand(componentType) || 
+				isNoArgSubcommand(componentType)) {
 			return getNoQuoteComponentData(userCommand);
 		}
 
@@ -3104,6 +4847,44 @@ public class CommandInterpreter {
 
 		return growingMatch;
 	}
+	
+	private boolean isNoArgSubcommand(Subcommand.TYPE componentType) {
+		switch (componentType) {
+			case FREE :
+				return true;
+			case FREQUENCY :
+				return true;
+			case HELP :
+				return true;
+			case AND :
+				return true;
+			case OR :
+				return true;
+			default :
+				return false;
+		}
+	}
+	
+	private boolean isNoQuoteSubcommand(Subcommand.TYPE type) {
+		switch (type) {
+			case START :
+				return true;
+			case END :
+				return true;
+			case DATE :
+				return true;
+			case ON :
+				return true;
+			case STARTTIME :
+				return true;
+			case ENDTIME :
+				return true;
+			case HELP :
+				return true;
+			default :
+				return false;
+		}
+	}
 
 	// -----------------------------------------------------------------------------
 	// ------------------ General Methods
@@ -3192,10 +4973,7 @@ import java.util.Scanner;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandArgException;
 import dataEncapsulation.BadSubcommandException;
-import dataEncapsulation.Date;
-import dataEncapsulation.Task;
 import dataManipulation.Command;
-import dataManipulation.TaskFactory;
 
 public class CommandInterpreterInteractiveTester {
 	public static void main(String[] args) {
@@ -3235,7 +5013,6 @@ public class CommandInterpreterInteractiveTester {
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -3243,9 +5020,6 @@ import org.junit.Test;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandArgException;
 import dataEncapsulation.BadSubcommandException;
-import dataEncapsulation.Date;
-import dataEncapsulation.Task;
-import dataEncapsulation.sortTaskByName;
 import dataManipulation.Add;
 import dataManipulation.ChangeDateType;
 import dataManipulation.Completed;
@@ -3266,12 +5040,384 @@ import dataManipulation.Subcommand;
 
 
 	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ExceptionHandler.java
+	 */
+
+
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.AbstractAction;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+import dataEncapsulation.ActionException;
+import dataEncapsulation.ActionException.ErrorLocation;
+import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.Task;
+import dataManipulation.MultiCommand;
+import dataManipulation.MultiEditor;
+import dataManipulation.MultiFinish;
+import dataManipulation.MultiRemove;
+import dataManipulation.MultiUnfinish;
+import dataManipulation.Repeat;
+import dataManipulation.Subcommand;
+import dataManipulation.TotalTaskList;
+import dataManipulation.UndoRedoList;
+
+public class ExceptionHandler {
+	
+	private JTextField userInput;
+	private JTextArea display;
+	private JLabel status;
+	private ActionToggler enterToggle;
+	
+	private static final String quitRequest = "0";
+	private static final String emptyString = " ";
+	
+	public ExceptionHandler(JTextField input, JLabel stat, 
+			JTextArea disp, ActionToggler toggle) {
+		userInput = input;
+		display = disp;
+		enterToggle = toggle;
+		status = stat;
+	}
+	
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ExceptionHandler.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ExceptionHandler.java
+	 */
+
+	public ArrayList<Task> getChoices(String input, List<Task> opts) throws BadSubcommandArgException {
+		input = formatInput(input);
+		
+		String choices[] = input.trim().split("\\s+");
+		ArrayList<Task> choiceList = new ArrayList<Task>();
+		try {
+			for(String s : choices) {
+				int i = (Integer.parseInt(s)) - 1;	// user choices start at 1
+				Task cur = opts.get(i);
+				choiceList.add(cur);
+			}
+		} catch (IndexOutOfBoundsException ex) {
+			throw new BadSubcommandArgException("The number you have entered is out of range, "
+					+ "please try again.");
+		} catch (Exception e) {
+			throw new BadSubcommandArgException("You have entered a non-numeric key, "
+					+ "please enter a number.");
+		}
+		
+		return choiceList;
+	}
+
+	private String formatInput(String input) throws BadSubcommandArgException {
+		if(input.contains(",")) {
+			input = input.replaceAll(",", " ");
+		}
+		
+		if (input.contains("-")) {
+			input = correctRange(input);
+		}
+		
+		if (hasRepeats(input)) {
+			throw new BadSubcommandArgException("You selected the same item "
+					+ "more than once, please select again or enter 0 to quit");
+		}
+		return input;
+	}
+	
+	private boolean hasRepeats(String input) {
+		String[] separatedNumbers = input.split("\\n+");
+		
+		for (int i = 0; i < separatedNumbers.length - 1; ++i) {
+			for (int j = i + 1; j < separatedNumbers.length; ++j) {
+				if (separatedNumbers[i].matches(separatedNumbers[j])) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	private String correctRange(String input) throws BadSubcommandArgException {
+		String dash = "-";
+		assert (input.contains(dash));
+		
+		String[] brokenRange = input.split(dash);
+		for (int i = 0; i < brokenRange.length - 1; ++i) {
+			String[] valuesLeft = brokenRange[i].split(dash);
+			String[] valuesRight = brokenRange[i + 1].split(dash);
+			String leftInt = getRightmostInt(valuesLeft[valuesLeft.length - 1].trim());
+			String rightInt = getLeftmostInt(valuesRight[valuesRight.length - 1].trim());
+			String range = makeRange(leftInt, rightInt);
+			input = mergeRange(input, range, leftInt, rightInt);
+		}
+		
+		return input;
+	}
+
+	private String getRightmostInt(String trim) throws BadSubcommandArgException {
+		if (trim == null) {
+			return trim;
+		} else if (trim.isEmpty()) {
+			throw new BadSubcommandArgException("formatting error: no"
+					+ "upper bound to your range");
+		}
+		String whitespace = "\\s+";
+		
+		if (!trim.contains("\t") && !trim.contains(" ")) {
+			return trim;
+		}
+		String[] split = trim.split(whitespace);
+		return split[split.length - 1];
+	}
+
+	private String getLeftmostInt(String trim) throws BadSubcommandArgException {
+		if (trim == null) {
+			return trim;
+		} else if (trim.isEmpty()) {
+			throw new BadSubcommandArgException("formatting error: no"
+					+ "lower bound to your range");
+		}
+		String whitespace = "\\s+";
+		
+		if (!trim.contains("\t") && !trim.contains(" ")) {
+			return trim;
+		}
+		String[] split = trim.split(whitespace);
+		return split[0];
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ExceptionHandler.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ExceptionHandler.java
+	 */
+
+	private String makeRange(String leftInt, String rightInt) throws BadSubcommandArgException {
+		try {	
+			int lower = Integer.parseInt(leftInt);
+			int higher = Integer.parseInt(rightInt);
+			String replacement = String.valueOf(lower);
+			
+			if (lower >= higher) {
+				throw new BadSubcommandArgException("range lower bound is higher "
+						+ "than range upper bound, please try again");
+			}
+			
+			for (int i = lower + 1; i <= higher; ++i) {
+				replacement = replacement + " " + i;
+			}
+			
+			return replacement;
+		} catch (Exception e) {
+			throw new BadSubcommandArgException("Non-numeric input found, "
+					+ "please try again");
+		}
+	}
+
+	private String mergeRange(String input, String range, String leftInt, 
+			String rightInt) throws BadSubcommandArgException {
+		String dash = "-";
+		String space = " ";
+		
+		assert (input.contains(dash));
+		
+		String toReplace = "\\s+" + leftInt + "\\s*" + dash + "\\s*" + 
+				rightInt + "\\s+";
+		String result = input.replaceAll(toReplace, space + range + space);
+		
+		if (!result.matches(input)) {
+			return result;
+		}	// else range must be at beginning or end
+		
+		// check beginning
+		toReplace = "^" + leftInt + "\\s*" + dash + "\\s*" + 
+				rightInt + "\\s+";
+		result = input.replaceAll(toReplace, range + space);
+		
+		if (!result.matches(input)) {
+			return result;
+		}	// else range must be at end
+		
+		toReplace = "\\s+" + leftInt + "\\s*" + dash + "\\s*" + 
+				rightInt + "$";
+		result = input.replaceAll(toReplace, space + range);
+		
+		if (!result.matches(input)) {
+			return result;
+		}	// else range must be at both
+		
+		toReplace = "^" + leftInt + "\\s*" + dash + "\\s*" + 
+				rightInt + "$";
+		result = input.replaceAll(toReplace, range);
+		
+		if (!result.matches(input)) {
+			return result;
+		}	else {
+			throw new BadSubcommandArgException("error in reading your request,"
+					+ " please try again or press 0 to exit");
+		}
+	}
+
+	@SuppressWarnings("serial")
+	class FurtherEditer extends AbstractAction {
+		List<Task> options;
+		List<Subcommand> subcommands;
+		
+		public FurtherEditer(List<Task> opts, List<Subcommand> subs) {
+			options = opts;
+			subcommands = subs;
+		}
+		
+		public void actionPerformed(ActionEvent ev)  {
+			status.setText(emptyString);
+			String userChoice = userInput.getText();
+			ArrayList<Task> choices = new ArrayList<Task>();
+			
+			if (userChoice.trim().matches(quitRequest)) {
+				status.setText("exit selected");
+				endExceptionHandling();
+				return;
+			}
+			
+			try {
+				choices = getChoices(userChoice, options);
+			} catch (Exception e) {
+				status.setText(e.getMessage());
+				return;
+			}
+			
+			try {
+				MultiEditor editor = new MultiEditor(choices, subcommands);
+				String message = editor.execute();
+				display.setText("Successfully edited: \n\n" + message);
+				UndoRedoList.getInstance().pushUndoCommand(editor);
+				endExceptionHandling();
+			} catch (Exception e) {
+				System.err.println(e.getMessage());
+				status.setText("error in reading your request,"
+						+ " please try again or press 0 to exit");
+			}
+		}
+	}
+	
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ExceptionHandler.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ExceptionHandler.java
+	 */
+
+	@SuppressWarnings("serial")
+	class FurtherDoer extends AbstractAction {
+		List<Task> options;
+		List<Subcommand> subcommands;
+		ErrorLocation actionType;
+		
+		public FurtherDoer(List<Task> opts, List<Subcommand> subs, ErrorLocation type) {
+			options = opts;
+			subcommands = subs;
+			actionType = type;
+		}
+		
+		@SuppressWarnings("rawtypes")
+		public MultiCommand getMulticommand(ArrayList<Task> choices) throws Exception {
+			switch (actionType) {
+			case DELETE :
+				return new MultiRemove(choices);
+			case FINISH :
+				return new MultiFinish(choices);
+			case UNFINISH :
+				return new MultiUnfinish(choices);
+			default :
+				endExceptionHandling();
+				throw new Exception("unable to execute request");
+			}
+		}
+		
+		public void actionPerformed(ActionEvent ev) {
+			status.setText(emptyString);
+			String userChoice = userInput.getText();
+			
+			if (userChoice.trim().matches(quitRequest)) {
+				status.setText("exit selected");
+				endExceptionHandling();
+				return;
+			}
+			
+			ArrayList<Task> choices = new ArrayList<Task>();
+			
+			try {
+				choices = getChoices(userChoice, options);
+			} catch (Exception e) {
+				status.setText(e.getMessage());
+				return;
+			}
+			
+			try {
+				@SuppressWarnings("rawtypes")
+				MultiCommand remover = getMulticommand(choices);
+				String message = remover.execute();
+			
+				display.setText(message);
+				userInput.setText("");
+				UndoRedoList.getInstance().pushUndoCommand(remover);	//Push command into UndoRedoList
+				endExceptionHandling();
+			} catch (Exception e) {
+				status.setText("error in processing your request,"
+						+ " please try again or press 0 to exit");
+	
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void endExceptionHandling() {
+		enterToggle.setMaster();
+		userInput.setText("");
+	}
+	
+	private void setDisplayText(String message) {
+		display.setText(message);
+		
+		int top = 0;
+		display.setCaretPosition(top);
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ExceptionHandler.java
+
+
+
+
+
+	/**
 	 * origin: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ezCWindow.java
 	 */
 
 
+import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.Collections;
 
 import javax.swing.AbstractAction;
@@ -3287,6 +5433,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
+import dataEncapsulation.TaskFileErrorException;
 import dataManipulation.TotalTaskList;
 import fileIo.FileIo;
 
@@ -3330,12 +5477,28 @@ public class ezCWindow extends JFrame {
 
 		try {
 			fileIo.initializeTaskList(totalTaskList);
+		} catch (TaskFileErrorException e) {
+			String errorMessage = e.getMessage() + "\n\n" + display.getText();
+			display.setText(errorMessage);
+			try {
+				fileIo.recover(e);
+			} catch (Exception failure) {
+				errorMessage = e.getMessage() + "\nAttempt failed.\n\n" 
+						+ messages.getUserCommandDisplay();
+				display.setText(errorMessage);
+			}
+			errorMessage = e.getMessage() + "\nAttempt succeeded.\n\n" 
+					+ messages.getUserCommandDisplay();
+			display.setText(errorMessage);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			String errorMessage = "There was an error in reading your file. "
+					+ "Please restart.";
+			display.setText(errorMessage);
 		}
 
 		pack();
+		
+		setAesthetics();
 	}
 
 	private void initializeActions() {
@@ -3343,29 +5506,24 @@ public class ezCWindow extends JFrame {
 				KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, 
 				Collections.emptySet());
 		
-		ActionToggler mainEnterToggle = new ActionToggler();
-		ActionToggler autocompleteEnterToggle = new ActionToggler();
+		ActionToggler enterToggle = new ActionToggler();
 		ActionToggler tabToggle = new ActionToggler();
 		ActionToggler escapeToggle = new ActionToggler();
 
-		AutocompleteAction tabAction = new AutocompleteAction(tabToggle, 
-				autocompleteEnterToggle, escapeToggle, userInput, status);
+		AutocompleteAction tabAction = new AutocompleteAction(status, userInput);
 		CommandHandlingAction enterAction = new CommandHandlingAction(status, 
-				display, userInput, mainEnterToggle);
+				display, userInput, enterToggle);
 		CancelAction escAction = new CancelAction();
 		
-		mainEnterToggle.initializeMaster(userInput, "ENTER", ENTER_ACTION, 
+		enterToggle.initializeMaster(userInput, "ENTER", ENTER_ACTION, 
 				enterAction);
-		autocompleteEnterToggle.initializeMaster(userInput, "ENTER", 
-				ENTER_ACTION, enterAction);
 		tabToggle.initializeMaster(userInput, "TAB", TAB_ACTION, tabAction);
 		escapeToggle.initializeMaster(userInput, "ESCAPE", CANCEL_ACTION, 
 				escAction);
 		
-		mainEnterToggle.setMaster();
+		enterToggle.setMaster();
 		tabToggle.setMaster();
 		escapeToggle.setMaster();
-		autocompleteEnterToggle.setMaster();
 	}
 
 	private void initializeLayout() {
@@ -3375,11 +5533,65 @@ public class ezCWindow extends JFrame {
 		initializeHorizontalGroup(layout);
 
 		initializeVerticalGroup(layout);
+		
+		//setAesthetics();
+	}
+
+	private void setAesthetics() {
+		setWindowText();
+		
+		Dimension screenDimensions = Toolkit.getDefaultToolkit().getScreenSize();
+		double screenWidth = screenDimensions.getWidth();
+		double screenHeight = screenDimensions.getHeight();
+		double scaler = 1.0/3.0;
+		
+		setWindowSize(scaler, screenWidth, screenHeight);
+		
+		setWindowPosition(scaler, screenWidth, screenHeight); 
+	}
+
+	private void setWindowText() {
+		status.setText(" ");
+		try {
+			display.setText(messages.getWelcomeMessage() +
+					messages.welcomeTaskDisplayForUser());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		int top = 0;
+		display.setCaretPosition(top);
+	}
+
+	private void setWindowPosition(double scaler, double screenWidth,
+			double screenHeight) {
+		int windowXPos= (int) (screenWidth*scaler/2);
+		int windowYPos = (int) (screenHeight*scaler/2);
+		this.setLocation(windowXPos, windowYPos);
+	}
+
+	private void setWindowSize(double scaler, double screenWidth,
+			double screenHeight) {
+		int windowWidth = (int) (screenWidth*2*scaler);
+		int windowHeight = (int) (screenHeight*2*scaler);
+		this.setSize(new Dimension(windowWidth, windowHeight));
+		
+		this.addComponentListener(new ComponentAdapter(){
+	        public void componentResized(ComponentEvent e){
+	            Dimension d= ezCWindow.this.getSize();
+	            Dimension minD= ezCWindow.this.getMinimumSize();
+	            if(d.width<minD.width)
+	                d.width=minD.width;
+	            if(d.height<minD.height)
+	                d.height=minD.height;
+	            ezCWindow.this.setSize(d);
+	        }
+	    });
 	}
 
 	private void initializeStaticMembers() {
 		userInput = new JTextField();
-		display = new JTextArea(messages.getUserHelpMessage());
+		display = new JTextArea();
 		status = new JLabel();
 		headerLabel = new JLabel();
 
@@ -3391,7 +5603,9 @@ public class ezCWindow extends JFrame {
 		display.setRows(5);
 		display.setWrapStyleWord(true);
 		display.setEditable(false);
-		scroller = new JScrollPane(display);
+		scroller = new JScrollPane(display,
+		         JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		         JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	}
 
 	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ezCWindow.java
@@ -3407,6 +5621,7 @@ public class ezCWindow extends JFrame {
 	class CancelAction extends AbstractAction {
 		public void actionPerformed(ActionEvent ev) {
 			userInput.setText("");
+			status.setText(" ");
 		}
 	}
 	

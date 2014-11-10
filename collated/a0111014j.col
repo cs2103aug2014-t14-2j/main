@@ -1,0 +1,2208 @@
+//@author: a0111014j
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\EditedPair.java
+	 */
+
+
+public class EditedPair {
+	
+	private Task preEdit;
+	private Task postEdit;
+
+	public EditedPair(Task preEdit, Task postEdit) {
+		this.preEdit = preEdit;
+		this.postEdit = postEdit;
+	}
+	
+	public Task getOld() {
+		return preEdit;
+	}
+	
+	public Task getNew() {
+		return postEdit;
+	}
+	
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\EditedPair.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+	 */
+
+	public boolean isEqualTask(Task other) {
+
+		if(this.name.equalsIgnoreCase(other.name)
+			&&
+			((!this.hasCategory && !other.hasCategory) || (this.category.equalsIgnoreCase(other.category)))
+			&&
+			((!this.hasLocation && !other.hasLocation) || (this.location.equalsIgnoreCase(other.location)))		
+			&&
+			((!this.hasNote && !other.hasNote) || (this.note.equalsIgnoreCase(other.note)))
+			&&
+			this.startdate.toString().equalsIgnoreCase(other.startdate.toString())) {
+			
+			if(this.hasDeadline && other.hasDeadline) {
+				
+				if((this.enddate.isEquals(other.enddate))
+					&&
+					this.starttime.compareTo(other.starttime) == 0
+					&&
+					this.endtime.compareTo(other.endtime) == 0) {
+					return true;
+				}
+				return false;
+			}
+			
+			else if(!this.hasDeadline && !other.hasDeadline) {
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataEncapsulation\Task.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Add.java
+	 */
+
+	public boolean addTaskToList(Task toAdd) {
+		boolean result = false;
+		Date today = new Date();
+
+		if(!toAdd.getHasDeadline() || !(toAdd.getEndDate().isBefore(today))) {
+			taskList.addNotCompleted(toAdd);
+			result = true;
+		}
+		else if(toAdd.getEndDate().isBefore(today) && !(toAdd.getIsComplete())) {
+			taskList.addOverdue(toAdd);
+			result = true;
+		}
+		else if((toAdd.getEndDate().isBefore(today) && toAdd.getIsComplete()) || toAdd.getIsComplete()) {
+			taskList.addCompleted(toAdd);
+			result = true;
+		}
+		return result;
+
+	}
+
+	public Task buildTask(List<Subcommand> taskAttributes) throws Exception {
+
+		assembleAttributes(taskAttributes);
+
+		Task toBeAdded = new Task(taskName, taskCategory, taskLocation, taskNote, taskStart, taskEnd, startTime, endTime);
+
+		return toBeAdded;
+
+	}
+
+	private void flushSubcommand() {
+		taskName = null;
+		taskCategory = null;
+		taskLocation = null;
+		taskNote = null;
+		taskStart = null;
+		taskEnd = null;
+		startTime = null;
+		taskEnd = null;
+	}
+
+	public static List<Subcommand> dismantleTask(Task taskToDismantle) throws BadSubcommandException, BadSubcommandArgException {
+
+		List<Subcommand> taskDetails = new ArrayList<Subcommand>();
+
+		taskDetails.add(new Subcommand(Subcommand.TYPE.NAME, taskToDismantle.getName()));
+		
+		if(taskToDismantle.hasCategory()) {
+			taskDetails.add(new Subcommand(Subcommand.TYPE.CATEGORY, taskToDismantle.getCategory()));
+		}
+		
+		if(taskToDismantle.getHasLocation()) { 
+			taskDetails.add(new Subcommand(Subcommand.TYPE.LOCATION, taskToDismantle.getLocation()));
+		}
+
+		taskDetails.add(new Subcommand(Subcommand.TYPE.START, taskToDismantle.getStartDate().toString()));
+
+		if(taskToDismantle.getHasDeadline()) {
+			taskDetails.add(new Subcommand(Subcommand.TYPE.END, taskToDismantle.getEndDate().toString()));
+		}
+		
+		if(taskToDismantle.hasStartTime()) {
+			taskDetails.add(new Subcommand(Subcommand.TYPE.STARTTIME, taskToDismantle.getStartTime().toString()));
+		}
+
+		if(taskToDismantle.hasEndTime()) {
+			taskDetails.add(new Subcommand(Subcommand.TYPE.ENDTIME, taskToDismantle.getEndTime().toString()));
+		}
+
+		if(taskToDismantle.getHasNote()) {
+			taskDetails.add(new Subcommand(Subcommand.TYPE.NOTE, taskToDismantle.getNote()));
+		}
+
+		return taskDetails;
+	}
+
+	private void assembleAttributes(List<Subcommand> taskAttributes) throws Exception {
+
+		for(Subcommand cc : taskAttributes) {
+
+			switch (cc.getType()) {
+
+			case NAME:	setTaskName(cc.getContents());
+			break;
+			
+			case TITLE:	setTaskName(cc.getContents());
+			break;
+
+			case CATEGORY:	setTaskCategory(cc.getContents());
+			break;
+
+			case LOCATION:	setTaskLocation(cc.getContents());
+			break;
+
+			case NOTE:	setTaskNote(cc.getContents());
+			break;
+			
+			case ON: setTaskStart(cc.getContents()); setTaskEnd(cc.getContents());
+			break;
+
+			case START:	setTaskStart(cc.getContents());
+			break;
+
+			case END:	setTaskEnd(cc.getContents());
+			break;
+
+			case STARTTIME: setTaskStartTime(cc.getContents());
+			break;
+
+			case ENDTIME:	setTaskEndTime(cc.getContents());
+			break;
+
+			default:
+				break;
+
+			}
+
+		}
+
+	}
+
+	private void setTaskEnd(String contents) throws Exception {
+		taskEnd = new Date().determineDate(contents);
+	}
+
+	private void setTaskStart(String contents) throws Exception {
+		taskStart = new Date().determineDate(contents);
+	}
+
+	private void setTaskNote(String contents) {
+		taskNote = contents;
+	}
+
+	private void setTaskLocation(String contents) {
+		taskLocation = contents;
+	}
+
+	private void setTaskCategory(String contents) {
+		taskCategory = contents;
+	}
+
+	private void setTaskName(String contents) {
+		taskName = contents;
+	}
+
+	private void setTaskStartTime(String contents) throws Exception {
+		startTime = new Time().determineTime(contents);
+	}
+
+	private void setTaskEndTime(String contents) throws Exception {
+		endTime = new Time().determineTime(contents);
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Add.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\AddTest.java
+	 */
+
+
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+
+import userInterface.CommandHandler;
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
+
+public class AddTest {
+
+	String taskName = null;
+	String taskCategory = null;
+	String taskLocation = null;
+	String taskNote = null;
+	Date taskStart = null;
+	Date taskEnd = null;
+	
+	@Test
+	public void testBuildTask() {
+		List<Subcommand> listCC = new ArrayList<Subcommand>();
+		listCC.add(new Subcommand(Subcommand.TYPE.NAME, "Buy Milk"));
+		listCC.add(new Subcommand(Subcommand.TYPE.CATEGORY, "Groceries"));
+		listCC.add(new Subcommand(Subcommand.TYPE.START, "01/01/2014"));
+		listCC.add(new Subcommand(Subcommand.TYPE.END, "02/01/2014"));
+		listCC.add(new Subcommand(Subcommand.TYPE.LOCATION, "Clementi"));
+		listCC.add(new Subcommand(Subcommand.TYPE.NOTE, "Meiji Chocolate Milk"));
+		
+		Task actual = new Add(listCC).buildTask(listCC);
+		Date startDate = Date.determineDate("01/01/2014");
+		Date endDate = Date.determineDate("02/01/2014");
+		Task expected = new Task("Buy Milk", "Groceries", "Clementi", "Meiji Chocolate Milk", startDate, endDate);
+		
+		assertEquals("Task name matches expected", expected.getName(), actual.getName());
+		assertEquals("Task location matches expected", expected.getLocation(), actual.getLocation());
+		assertEquals("Task note matches as expected", expected.getNote(), actual.getNote());
+		assertEquals("Task category matches as expected", expected.getCategory(), actual.getCategory());
+		assertEquals("Task start date matches as expected", expected.getStartDate().toString(), actual.getStartDate().toString());
+		assertEquals("Task end date matches as expected", expected.getEndDate().toString(), actual.getEndDate().toString());
+	}
+	
+	@Test
+	public void testAdd() throws Exception {
+		List<Subcommand> listCC = new ArrayList<Subcommand>();
+		listCC.add(new Subcommand(Subcommand.TYPE.NAME, "Buy Milk"));
+		listCC.add(new Subcommand(Subcommand.TYPE.CATEGORY, "Groceries"));
+		listCC.add(new Subcommand(Subcommand.TYPE.START, "01/01/2014"));
+		listCC.add(new Subcommand(Subcommand.TYPE.END, "02/01/2014"));
+		listCC.add(new Subcommand(Subcommand.TYPE.LOCATION, "Clementi"));
+		listCC.add(new Subcommand(Subcommand.TYPE.NOTE, "Meiji Chocolate Milk"));
+		Date startDate = Date.determineDate("01/01/2014");
+		Date endDate = Date.determineDate("02/01/2014");
+		Task expected = new Task("Buy Milk", "Groceries", "Clementi", "Meiji Chocolate Milk", startDate, endDate);
+		
+		Task actual = new Add(listCC).buildTask(listCC);
+		Command addTask = new Add(listCC);
+		CommandHandler.executeCommand(addTask);
+		TotalTaskList taskList = TotalTaskList.getInstance();
+		actual = taskList.getList().get(0);
+		
+		assertEquals("Task name matches expected", expected.getName(), actual.getName());
+		assertEquals("Task location matches expected", expected.getLocation(), actual.getLocation());
+		assertEquals("Task note matches as expected", expected.getNote(), actual.getNote());
+		assertEquals("Task category matches as expected", expected.getCategory(), actual.getCategory());
+		assertEquals("Task start date matches as expected", expected.getStartDate().toString(), actual.getStartDate().toString());
+		assertEquals("Task end date matches as expected", expected.getEndDate().toString(), actual.getEndDate().toString());
+	}
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\AddTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\CombinedAddEditRemoveUndoTest.java
+	 */
+
+
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+
+import dataEncapsulation.Task;
+
+public class CombinedAddEditRemoveUndoTest {
+
+	// TEST CASE 1:
+	// add "Buy milk"
+	// edit "Buy milk" category "Groceries"
+	// RESULT: Task: Buy milk, Category: Groceries
+	
+	@Test
+	public void testCaseOne() throws Exception {
+		
+		// ADDING "Buy Milk"
+		
+		List<Subcommand> Subcommands = new ArrayList<Subcommand>();
+		Subcommands.add(new Subcommand(Subcommand.TYPE.NAME, "Buy Milk"));
+		
+		Command addTestCaseOne = new Add(Subcommands);
+		addTestCaseOne.execute();
+		
+		// EDITING category "Groceries"
+		
+		Subcommands.add(new Subcommand(Subcommand.TYPE.CATEGORY, "Groceries"));
+		
+		Command editTestCaseOne = new Edit(Subcommands);
+		editTestCaseOne.execute();
+		
+		Task result = TotalTaskList.getInstance().getList().get(0);
+		Task expected = new Task("Buy Milk", "Groceries");
+		
+		// CHECKING ADDING AND EDITING
+		
+		assertEquals("Task name matches expected", expected.getName(), result.getName());
+		assertEquals("Task category matches as expected", expected.getCategory(), result.getCategory());
+	
+	}
+	
+	// TEST CASE 2:
+	// add "Buy Chicken"
+	// edit "Buy Chicken" category "Groceries"
+	// edit "Buy Chicken" location "Wet Market"
+	// edit "Buy Chicken" note "Diced chicken"
+	
+	// add "Buy Curry"
+	// edit "Buy Curry" category "Spices"
+	// edit "Buy Curry" location "Little India"
+	// edit "Buy Curry" note "Say hi to Mr. Muthu"
+	
+	// remove "Buy Chicken"
+	
+	@Test
+	public void testCaseTwo() {
+		
+		// ADDING "Buy Chicken"
+		
+		List<Subcommand> Subcommands = new ArrayList<Subcommand>();
+		Subcommands.add(new Subcommand(Subcommand.TYPE.NAME, "Buy Chicken"));
+				
+		Command addTestCaseTwo = new Add(Subcommands);
+		CommandHandler.executeCommand(addTestCaseTwo);
+				
+		// EDITING category "Groceries"
+				
+		Subcommands.add(new Subcommand(Subcommand.TYPE.CATEGORY, "Groceries"));
+				
+		Command editTestCaseTwo = new Edit(Subcommands);
+		CommandHandler.executeCommand(editTestCaseTwo);
+		
+		// EDITING location "Wet Market"
+		
+		Subcommands.add(new Subcommand(Subcommand.TYPE.LOCATION, "Wet Market"));
+		
+		Command editTestCaseTwoOne = new Edit(Subcommands);
+		CommandHandler.executeCommand(editTestCaseTwoOne);
+		
+		// EDITING note "Diced chicken"
+		
+		Subcommands.add(new Subcommand(Subcommand.TYPE.NOTE, "Diced chicken"));
+		
+		Command editTestCaseTwoTwo = new Edit(Subcommands);
+		CommandHandler.executeCommand(editTestCaseTwoTwo);
+		
+		// ADDING "Buy Curry"
+		
+		List<Subcommand> subcommandsTwo = new ArrayList<Subcommand>();
+		subcommandsTwo.add(new Subcommand(Subcommand.TYPE.NAME, "Buy Curry"));
+
+		Command addTestCaseTwoOne = new Add(subcommandsTwo);
+		CommandHandler.executeCommand(addTestCaseTwoOne);
+
+		// EDITING category "Spices"
+
+		subcommandsTwo.add(new Subcommand(Subcommand.TYPE.CATEGORY, "Spices"));
+
+		Command editTestCaseTwoThree = new Edit(subcommandsTwo);
+		CommandHandler.executeCommand(editTestCaseTwoThree);
+
+		// EDITING location "Little India"
+
+		subcommandsTwo.add(new Subcommand(Subcommand.TYPE.LOCATION, "Little India"));
+
+		Command editTestCaseTwoFour = new Edit(subcommandsTwo);
+		CommandHandler.executeCommand(editTestCaseTwoFour);
+
+		// EDITING note "Say hi to Mr. Muthu"
+
+		subcommandsTwo.add(new Subcommand(Subcommand.TYPE.NOTE, "Say hi to Mr. Muthu"));
+
+		Command editTestCaseTwoFive = new Edit(subcommandsTwo);
+		CommandHandler.executeCommand(editTestCaseTwoFive);
+				
+		Task resultOne = TotalTaskList.getInstance().getList().get(1);
+		Task resultTwo = TotalTaskList.getInstance().getList().get(2);
+		Task expectedOne = new Task("Buy Chicken", "Groceries", "Wet Market", "Diced chicken");
+		Task expectedTwo = new Task("Buy Curry", "Spices", "Little India", "Say hi to Mr. Muthu");
+				
+		// CHECKING ADDING AND EDITING
+		
+		assertEquals("Task name matches expected", expectedOne.getName(), resultOne.getName());
+		assertEquals("Task category matches as expected", expectedOne.getCategory(), resultOne.getCategory());
+		assertEquals("Task location matches expected", expectedOne.getLocation(), resultOne.getLocation());
+		assertEquals("Task note matches expected", expectedOne.getNote(), resultOne.getNote());
+		
+		assertEquals("Task name matches expected", expectedTwo.getName(), resultTwo.getName());
+		assertEquals("Task category matches as expected", expectedTwo.getCategory(), resultTwo.getCategory());
+		assertEquals("Task location matches expected", expectedTwo.getLocation(), resultTwo.getLocation());
+		assertEquals("Task note matches expected", expectedTwo.getNote(), resultTwo.getNote());
+		
+		// REMOVING "Buy Chicken"
+		
+		List<Subcommand> removeChicken = new ArrayList<Subcommand>();
+		removeChicken.add(new Subcommand(Subcommand.TYPE.NAME, "Buy Chicken"));
+		Command removeResultOne = new Remove(removeChicken);
+		CommandHandler.executeCommand(removeResultOne);
+		
+		// CHECKING REMOVE
+		
+		assertEquals("TotalTaskList size is 2", 2, TotalTaskList.getInstance().getList().size());
+		Task remainingTask = TotalTaskList.getInstance().getList().get(1);
+		
+		assertEquals("Task name matches expected", expectedTwo.getName(), remainingTask.getName());
+		assertEquals("Task category matches as expected", expectedTwo.getCategory(), remainingTask.getCategory());
+		assertEquals("Task location matches expected", expectedTwo.getLocation(), remainingTask.getLocation());
+		assertEquals("Task note matches expected", expectedTwo.getNote(), remainingTask.getNote());
+		
+	}
+	
+	@Test
+	public void testCaseThree() {
+		
+		// CLEARING TOTAL TASK LIST
+		TotalTaskList.getInstance().getList().clear();
+		
+		// ADDING "Buy Curry"
+
+		List<Subcommand> subcommand = new ArrayList<Subcommand>();
+		subcommand.add(new Subcommand(Subcommand.TYPE.NAME, "Buy Curry"));
+
+		Command addTestCaseTwoOne = new Add(subcommand);
+		CommandHandler.executeCommand(addTestCaseTwoOne);
+
+		// EDITING category "Spices"
+
+		subcommand.add(new Subcommand(Subcommand.TYPE.CATEGORY, "Spices"));
+
+		Command editTestCaseTwoThree = new Edit(subcommand);
+		CommandHandler.executeCommand(editTestCaseTwoThree);
+
+		// EDITING location "Little India"
+
+		subcommand.add(new Subcommand(Subcommand.TYPE.LOCATION, "Little India"));
+
+		Command editTestCaseTwoFour = new Edit(subcommand);
+		CommandHandler.executeCommand(editTestCaseTwoFour);
+
+		// EDITING note "Say hi to Mr. Muthu"
+		/**
+		 * Instead of making the subcommand and command like you are below
+		 * 
+		 * subcommand.add(new Subcommand(Subcommand.TYPE.NOTE, "Say hi to Mr. Muthu"));
+		 * Command editTestCaseTwoFive = new Edit(subcommand);
+		 * 
+		 * You need to say
+		 * 
+		 * String editCommand = "edit /"Buy Curry/" note "Say hi to Mr. Muthu";
+		 * Command editTestCaseTwoFive = CommandInterpreter.getInstance().formCommand(editCommand);
+		 * 
+		 * etc. Don't manually make the commands. Put them through Command Interpreter
+		 * so we can get a full view of how well the program works.
+		 * 
+		 */
+
+		subcommand.add(new Subcommand(Subcommand.TYPE.NOTE, "Say hi to Mr. Muthu"));
+		
+		Command editTestCaseTwoFive = new Edit(subcommand);
+		CommandHandler.executeCommand(editTestCaseTwoFive);
+
+		Task result = TotalTaskList.getInstance().getList().get(0);
+		Task expected = new Task("Buy Curry", "Spices", "Little India", "Say hi to Mr. Muthu");
+		
+		// CHECKING ADDING AND EDITING
+		
+		assertEquals("Task name matches expected", expected.getName(), result.getName());
+		assertEquals("Task category matches as expected", expected.getCategory(), result.getCategory());
+		assertEquals("Task location matches expected", expected.getLocation(), result.getLocation());
+		assertEquals("Task note matches expected", expected.getNote(), result.getNote());
+		
+		// UNDO-ING LAST COMMAND: EDITING note "Say hi to Mr. Muthu"
+		
+		List<Subcommand> blank = new ArrayList<Subcommand>();
+		Command undoOnce = new Undo(blank);
+		CommandHandler.executeCommand(undoOnce);
+		
+		// CHECKING FIRST UNDO CALL
+		
+		Task resultUndoOne = TotalTaskList.getInstance().getList().get(0);
+		Task expectedUndoOne = new Task("Buy Curry", "Spices", "Little India");
+		
+		assertEquals("Task name matches expected", expectedUndoOne.getName(), resultUndoOne.getName());
+		assertEquals("Task category matches as expected", expectedUndoOne.getCategory(), resultUndoOne.getCategory());
+		assertEquals("Task location matches expected", expectedUndoOne.getLocation(), resultUndoOne.getLocation());
+		assertEquals("Task note matches expected", expectedUndoOne.getNote(), resultUndoOne.getNote());
+		
+		// UNDO-ING SECOND LAST COMMAND: EDITING location "Little India"
+		
+		Command undoTwice = new Undo(blank);
+		CommandHandler.executeCommand(undoTwice);
+		
+		// CHECKING SECOND UNDO CALL
+		
+		Task resultUndoTwo = TotalTaskList.getInstance().getList().get(0);
+		Task expectedUndoTwo = new Task("Buy Curry", "Spices");
+
+		assertEquals("Task name matches expected", expectedUndoTwo.getName(), resultUndoTwo.getName());
+		assertEquals("Task category matches as expected", expectedUndoTwo.getCategory(), resultUndoTwo.getCategory());
+		assertEquals("Task location matches expected", expectedUndoTwo.getLocation(), resultUndoTwo.getLocation());
+		assertEquals("Task note matches expected", expectedUndoTwo.getNote(), resultUndoTwo.getNote());
+		
+		// UNDO-ING THIRD LAST COMMAND: EDITING category "Spices"
+		
+		Command undoThrice = new Undo(blank);
+		CommandHandler.executeCommand(undoThrice);
+		
+		// CHECKING THIRD UNDO CALL
+		
+		Task resultUndoThree = TotalTaskList.getInstance().getList().get(0);
+		Task expectedUndoThree = new Task("Buy Curry", "no category");
+
+		assertEquals("Task name matches expected", expectedUndoThree.getName(), resultUndoThree.getName());
+		assertEquals("Task category matches as expected", expectedUndoThree.getCategory(), resultUndoThree.getCategory());
+		assertEquals("Task location matches expected", expectedUndoThree.getLocation(), resultUndoThree.getLocation());
+		assertEquals("Task note matches expected", expectedUndoThree.getNote(), resultUndoThree.getNote());
+		
+		// UNDO-ING FOURTH LAST COMMAND: ADDING "Buy Curry"
+		
+		Command undoFinal = new Undo(blank);
+		CommandHandler.executeCommand(undoFinal);
+		
+		// CHECKING THIRD UNDO CALL
+
+		assertEquals("TotalTaskList size is 0", 0, TotalTaskList.getInstance().getList().size());		
+	}
+	
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\CombinedAddEditRemoveUndoTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Edit.java
+	 */
+
+	private Task getTaskToEdit() throws Exception {
+
+		List<Subcommand> nameOfTaskToEdit = new ArrayList<Subcommand>();
+		nameOfTaskToEdit.add(subcommands.get(0));
+
+		List<Task> tasks = ExactMatchSearcher.literalSearch(nameOfTaskToEdit, taskList.getNotCompleted());
+		if(tasks.size() == 0) {
+			throw new Exception("The task you wish to edit does not exist. Please check the name of your task again.");
+		}
+		if(tasks.size() > 1) {
+			ActionException moreThanOne = new ActionException(tasks, ActionException.ErrorLocation.EDIT, subcommands);
+			throw moreThanOne;
+		}
+		else {
+			return tasks.get(0);
+		}
+
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Edit.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Edit.java
+	 */
+
+	private static Task setTaskAttributes(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
+
+		for(Subcommand cc : taskAttributes) {
+
+			switch (cc.getType()) {
+
+			case TITLE:	toEdit.setName(cc.getContents());
+			break;
+
+			case CATEGORY:	toEdit.setCategory(cc.getContents());
+			break;
+
+			case LOCATION:	toEdit.setLocation(cc.getContents());
+			break;
+
+			case STARTTIME:	toEdit.setStartTime(new Time().determineTime(cc.getContents()));
+			break;
+
+			case ENDTIME:	toEdit.setEndTime(new Time().determineTime(cc.getContents()));
+			break;
+
+			case START :	toEdit.setStartDate(new Date().determineDate(cc.getContents()));
+			break;
+
+			case END:	toEdit.setEndDate(new Date().determineDate(cc.getContents()));
+			break;
+
+			case NOTE:	toEdit.setNote(cc.getContents());
+			break;
+
+			default:
+				break;
+			}
+		}
+
+		return toEdit;
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Edit.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Edit.java
+	 */
+
+	@Override
+	protected void checkValidity() throws BadSubcommandException {
+		super.checkValidity();
+		checkForNoDuplicateSubcommands();
+	}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Edit.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\EditTest.java
+	 */
+
+
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
+
+public class EditTest {
+
+	@Test
+	public void testEdit() throws Exception {
+		
+		List<Subcommand> listCC = new ArrayList<Subcommand>();
+		listCC.add(new Subcommand(Subcommand.TYPE.NAME, "Buy Milk"));
+		listCC.add(new Subcommand(Subcommand.TYPE.TITLE, "Buy Chicken"));
+		listCC.add(new Subcommand(Subcommand.TYPE.CATEGORY, "Groceries"));
+		listCC.add(new Subcommand(Subcommand.TYPE.START, "01/01/2014"));
+		listCC.add(new Subcommand(Subcommand.TYPE.END, "02/01/2014"));
+		listCC.add(new Subcommand(Subcommand.TYPE.LOCATION, "Clementi"));
+		listCC.add(new Subcommand(Subcommand.TYPE.NOTE, "Meiji Chocolate Milk"));
+		
+		Date startDate = new Date().determineDate("01/01/2014");
+		Date endDate = new Date().determineDate("02/01/2014");
+		Task editTaskExceptName = new Task("Buy Milk", "Groceries", "Clementi", "Meiji Chocolate Milk", startDate, endDate);
+		Task actual = setTaskAttributes(editTaskExceptName, listCC);
+		
+		Task expected = new Task("Buy Chicken", "Groceries", "Clementi", "Meiji Chocolate Milk", startDate, endDate);
+		
+		assertEquals("Task name matches expected", expected.getName(), actual.getName());
+		assertEquals("Task location matches expected", expected.getLocation(), actual.getLocation());
+		assertEquals("Task note matches as expected", expected.getNote(), actual.getNote());
+		assertEquals("Task category matches as expected", expected.getCategory(), actual.getCategory());
+		assertEquals("Task start date matches as expected", expected.getStartDate().toString(), actual.getStartDate().toString());
+		assertEquals("Task end date matches as expected", expected.getEndDate().toString(), actual.getEndDate().toString());
+		
+	}
+	
+	private Task setTaskAttributes(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
+		
+		for(Subcommand cc : taskAttributes) {
+
+			switch (cc.getType()) {
+
+			case TITLE:	toEdit.setName(cc.getContents());
+						break;
+
+			case CATEGORY:	toEdit.setCategory(cc.getContents());
+							break;
+
+			case LOCATION:	toEdit.setLocation(cc.getContents());
+							break;
+
+			case END:	toEdit.setEndDate(new Date().determineDate(cc.getContents()));
+						break;
+
+			case NOTE:	toEdit.setNote(cc.getContents());
+						break;
+
+			default:
+				break;
+			}
+		}
+			
+			return toEdit;
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\EditTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Help.java
+	 */
+
+package dataManipulation;
+
+import java.util.List;
+
+import userInterface.ezCMessages;
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
+import dataManipulation.CommandType.COMMAND_TYPE;
+
+public class Help extends Command {
+
+	public Help(List<Subcommand> commandComponents) 
+			throws BadCommandException, BadSubcommandException {
+		super(COMMAND_TYPE.HELP, commandComponents);
+		}
+
+	@Override
+	public String execute() {
+		
+		switch(subcommands.get(0).getContents()) {
+			
+			case "add" :
+				return ezCMessages.getInstance().getAddHelp();
+			case "all" :
+				return ezCMessages.getInstance().getAllHelp();
+			case "complete" :
+				return ezCMessages.getInstance().getCompletedHelp();
+			case "completed" :
+				return ezCMessages.getInstance().getCompletedHelp();
+			case "date" :
+				return ezCMessages.getInstance().getDateHelp();	
+			case "edit" :
+				return ezCMessages.getInstance().getEditHelp();
+			case "finish" :
+				return ezCMessages.getInstance().getFinishHelp();
+			case "list" :
+				return ezCMessages.getInstance().getUserCommandDisplay();
+			case "redo" :
+				return ezCMessages.getInstance().getRedoHelp();
+			case "remove" :
+				return ezCMessages.getInstance().getRemoveHelp();
+			case "repeat" :
+				return ezCMessages.getInstance().getRepeatHelp();
+			case "search" :
+				return ezCMessages.getInstance().getSearchHelp();
+			case "time" :
+				return ezCMessages.getInstance().getTimeHelp();
+			case "today" :
+				return ezCMessages.getInstance().getTodayHelp();
+			case "undo" :
+				return ezCMessages.getInstance().getUndoHelp();
+			case "unfinish" :
+				return ezCMessages.getInstance().getUnfinishHelp();
+			default :
+				break;
+		
+		}
+		return null;
+	}
+
+	@Override
+	protected void checkValidity() throws BadSubcommandException {
+		super.checkValidity();
+		checkForNoDuplicateSubcommands();
+	}
+
+	@Override
+	public String undo() throws Exception {
+		return null;
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Help.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Redo.java
+	 */
+
+
+package dataManipulation;
+
+import java.util.List;
+
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.NoResultException;
+import dataManipulation.CommandType.COMMAND_TYPE;
+
+public class Redo extends Command {
+	
+	private String returnMessage;
+	
+	public Redo(List<Subcommand> commandComponents)
+			throws IllegalArgumentException, BadCommandException, BadSubcommandException {
+		super(COMMAND_TYPE.REDO, commandComponents);
+	}
+
+	@Override
+	public String execute() throws Exception {
+		if(UndoRedoList.getInstance().isRedoStackEmpty()) {
+			throw new NoResultException("there is nothing to redo");
+		}
+		
+		Command popped = UndoRedoList.getInstance().popRedoCommand();
+		returnMessage = popped.execute();
+		UndoRedoList.getInstance().pushUndoCommand(popped);
+			
+		return returnMessage;
+	}
+
+	@Override
+	protected void checkValidity() throws BadSubcommandException {
+		checkForNoComponents();
+	}
+
+	@Override
+	public String undo() throws Exception {
+		return null;
+	}
+	
+}
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Redo.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Remove.java
+	 */
+
+	public Task remove(List<Subcommand> cc) throws Exception {
+		
+		int indexOfDeletionList = initializeTasksFound(cc);
+		
+		if (tasksFound.size() > 1) {
+			ActionException moreThanOne = new ActionException(tasksFound, ActionException.ErrorLocation.DELETE,
+											cc);
+			throw moreThanOne;
+		} else if (tasksFound.isEmpty()) {
+			throw new NoResultException(NO_MATCH_MESSAGE);
+		}
+		taskToRemove = tasksFound.get(0);
+		taskRemoved = taskToRemove;
+		doDeleteTask(taskToRemove, indexOfDeletionList);
+		return taskRemoved;
+		
+	}
+	
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Remove.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Remove.java
+	 */
+
+	private Task findLiteralMatch(List<Subcommand> subcommands, 
+			List<Task> listToDeleteFrom) throws BadCommandException, 
+			BadSubcommandException, BadSubcommandArgException, Exception {
+		Task match = (new Add(subcommands)).buildTask(subcommands);
+		for (int i = 0; i < listToDeleteFrom.size(); ++i) {
+			if (match.isEqualTask(listToDeleteFrom.get(i))) {
+				return listToDeleteFrom.get(i);
+			}
+		}
+		
+		throw new NoResultException(NO_MATCH_MESSAGE);
+	}
+
+	private int initializeTasksFound(List<Subcommand> cc)
+			throws BadSubcommandException, BadSubcommandArgException,
+			BadCommandException {
+		tasksFound = new ArrayList<Task>();
+		List<Task> currentTasks = TotalTaskList.getInstance().getList();
+		List<Task> overdueTasks = TotalTaskList.getInstance().getOverdue();
+		List<List<Task>> categorizedTasks = new ArrayList<List<Task>>();
+		categorizedTasks.add(currentTasks);
+		categorizedTasks.add(overdueTasks);
+		int j = 0;
+		
+		for(int i = 0; i < categorizedTasks.size(); i++) {
+			List<Task> tasksThusFar = ExactMatchSearcher.literalSearch(cc, categorizedTasks.get(i));
+			if(tasksThusFar.size() != 0) {
+				tasksFound.addAll(tasksThusFar);
+				j = i;
+			}
+			
+		}
+		return j;
+	}
+	
+	public static Task doDeleteTask(Task toRemove, int i) throws NoResultException {
+		List<Task> toDeleteFrom = getDeletionList(i);
+		toDeleteFrom.remove(toRemove);
+		
+		return toRemove;
+	}
+	
+	private static List<Task> getDeletionList(int index) throws NoResultException {
+		switch(index) {
+		
+		case 0 :
+			return TotalTaskList.getInstance().getList();
+			
+		case 1 :
+			return TotalTaskList.getInstance().getOverdue();
+			
+		default:
+			throw new NoResultException(NO_MATCH_MESSAGE);
+			
+		}
+	}
+	
+	private void updateFile() {
+		FileIo stream = FileIo.getInstance();
+		stream.rewriteFile();
+	}
+	
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Remove.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\RemoveTest.java
+	 */
+
+
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+
+import userInterface.CommandHandler;
+import userInterface.ezCMessages;
+import dataEncapsulation.Date;
+import dataEncapsulation.Task;
+import dataManipulation.Add;
+import dataManipulation.Command;
+import dataManipulation.Subcommand;
+
+public class RemoveTest {
+
+	@Test
+	public void testRemove() throws Exception {
+
+		List<Subcommand> listCC = new ArrayList<Subcommand>();
+		listCC.add(new Subcommand(Subcommand.TYPE.NAME, "Buy Milk"));
+		listCC.add(new Subcommand(Subcommand.TYPE.CATEGORY, "Groceries"));
+		listCC.add(new Subcommand(Subcommand.TYPE.START, "01/01/2014"));
+		listCC.add(new Subcommand(Subcommand.TYPE.END, "02/01/2014"));
+		listCC.add(new Subcommand(Subcommand.TYPE.LOCATION, "Clementi"));
+		listCC.add(new Subcommand(Subcommand.TYPE.NOTE, "Meiji Chocolate Milk"));
+
+		List<Subcommand> listCC2 = new ArrayList<Subcommand>();
+		List<Subcommand> listCC2a = new ArrayList<Subcommand>();
+		listCC2.add(new Subcommand(Subcommand.TYPE.NAME, "Buy Chicken"));
+		listCC2.add(new Subcommand(Subcommand.TYPE.CATEGORY, "Groceries"));
+		listCC2.add(new Subcommand(Subcommand.TYPE.START, "01/01/2014"));
+		listCC2.add(new Subcommand(Subcommand.TYPE.END, "02/01/2014"));
+		listCC2.add(new Subcommand(Subcommand.TYPE.LOCATION, "Clementi"));
+		listCC2.add(new Subcommand(Subcommand.TYPE.NOTE,
+				"Raw chicken breast YUM YUM"));
+
+		List<Subcommand> listCC3 = new ArrayList<Subcommand>();
+		listCC3.add(new Subcommand(Subcommand.TYPE.NAME, "Buy Milk"));
+		listCC3.add(new Subcommand(Subcommand.TYPE.CATEGORY, "Groceries"));
+		listCC3.add(new Subcommand(Subcommand.TYPE.START, "01/01/2014"));
+		listCC3.add(new Subcommand(Subcommand.TYPE.END, "02/01/2014"));
+		listCC3.add(new Subcommand(Subcommand.TYPE.LOCATION, "Pasir Ris"));
+		listCC3.add(new Subcommand(Subcommand.TYPE.NOTE, "I love milk!"));
+
+		Date startDate = Date.determineDate("01/01/2014");
+		Date endDate = Date.determineDate("02/01/2014");
+
+		Task taskOne = new Task("Buy Milk", "Groceries", "Clementi",
+				"Meiji Chocolate Milk", startDate, endDate);
+
+		/*
+		 * Use case #1 - user wants to remove a task.
+		 */
+		Command addOne = new Add(listCC);
+		CommandHandler.executeCommand(addOne);
+
+		Command addTwo = new Add(listCC2);
+		CommandHandler.executeCommand(addTwo); 
+
+		Command removeTwo = new Remove(listCC2);
+		CommandHandler.executeCommand(removeTwo);
+
+		ArrayList<Task> atL = TotalTaskList.getInstance().getList();
+		assertEquals(taskOne.toString(), ezCMessages.getInstance()
+				.getStringOfTasks(atL));
+
+		/*
+		 * Use case #2 - user wants to delete the "Buy Milk" task in Pasir Ris
+		 * and keep the one in Clementi.
+		 */ 
+		Command addThree = new Add(listCC3);
+		CommandHandler.executeCommand(addThree);
+
+		Command removeThree = new Remove(listCC2);
+		CommandHandler.executeCommand(removeThree);
+
+		ArrayList<Task> atL2 = TotalTaskList.getInstance().getList();
+		assertEquals(taskOne.toString(), ezCMessages.getInstance()
+				.getStringOfTasks(atL2)); 
+
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\RemoveTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\TotalTaskList.java
+	 */
+
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import dataEncapsulation.Task;
+import dataEncapsulation.sortTaskByEndDate;
+
+public class TotalTaskList {
+	private List<Task> overdue;	// List of overdue tasks
+	private List<Task> completed;	// List of completed tasks
+	private List<Task> notCompleted;	// List of uncompleted, not yet overdue tasks
+	private static TotalTaskList ttl;
+	
+	private TotalTaskList() {
+		notCompleted = new ArrayList<Task>();
+		overdue = new ArrayList<Task>();
+		completed = new ArrayList<Task>();
+	}
+	
+	public static TotalTaskList getInstance() {
+		if (ttl == null) {
+			ttl= new TotalTaskList();
+		}
+		
+		return ttl;
+	}
+	
+	public void addNotCompleted(Task newTask) {
+		notCompleted.add(newTask);
+		Collections.sort(notCompleted, new sortTaskByEndDate());
+	}
+	
+	public void addCompleted(Task doneTask) {
+		completed.add(doneTask);
+		Collections.sort(completed, new sortTaskByEndDate());
+	}
+	
+	public void addOverdue(Task smellyTask) {
+		overdue.add(smellyTask);
+		Collections.sort(overdue, new sortTaskByEndDate());
+	}
+	
+	public void removeNotCompleted(Task badTask) {
+		notCompleted.remove(badTask);
+	}
+	
+	public void removeCompleted(Task badDoneTask) {
+		completed.remove(badDoneTask);
+	}
+	
+	public void removeOverdue(Task badSmellyTask) {
+		overdue.remove(badSmellyTask);
+	}
+	
+	public List<Task> getNotCompleted() {
+		List<Task> totalNotComplete = new ArrayList<Task>();
+		totalNotComplete.addAll(notCompleted);
+		totalNotComplete.addAll(overdue);
+		return totalNotComplete;
+	}
+	
+	public List<Task> getList() {
+		return notCompleted;
+	}
+	
+	public List<Task> getCompleted() {
+		return completed;
+	}
+	
+	public List<Task> getOverdue() {
+		return overdue;
+	}
+	
+	public List<Task> getAllTasks() {
+		List<Task> totalList = new ArrayList<Task>();
+		totalList.addAll(overdue);
+		totalList.addAll(notCompleted);
+		totalList.addAll(completed);
+		return totalList;
+	}
+
+	public void update() throws Exception {
+		for (int i = 0; i < notCompleted.size(); ++i) {
+			if (notCompleted.get(i).isOverdue()) {
+				overdue.add(notCompleted.get(i));
+				notCompleted.remove(i);
+			} else {
+				return;	// tasks are sorted, so no need to keep searching
+			}
+		}
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\TotalTaskList.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Undo.java
+	 */
+
+
+package dataManipulation;
+
+import java.util.List;
+
+import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.NoResultException;
+import dataManipulation.CommandType.COMMAND_TYPE;
+
+public class Undo extends Command {
+	
+	public Undo(List<Subcommand> commandComponents)
+			throws IllegalArgumentException, BadCommandException, BadSubcommandException {
+		super(COMMAND_TYPE.UNDO, commandComponents);
+	}
+
+	@Override
+	public String execute() throws Exception {
+		
+		if(UndoRedoList.getInstance().isUndoStackEmpty()) {
+			throw new NoResultException("There are no commands to undo.");
+		}
+		
+		String response = null;
+		
+		do {
+			
+			Command popped = UndoRedoList.getInstance().popUndoCommand();
+			response = popped.undo();
+			if(response != null) {
+				UndoRedoList.getInstance().pushRedoCommand(popped);
+			}
+			
+		} while(response == null && !UndoRedoList.getInstance().isUndoStackEmpty());
+		
+		
+		if (response == null) {
+			throw new NoResultException("there is nothing to undo");
+		} else if (response.isEmpty()){
+			throw new NoResultException("there is nothing to undo");
+		}
+		
+		return response;
+		
+	}
+
+	@Override
+	public String undo() throws Exception {
+		return null;
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\Undo.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\UndoRedoList.java
+	 */
+
+
+package dataManipulation;
+
+import java.util.Stack;
+
+public class UndoRedoList {
+	
+	private Stack<Command> undoCommandStack;
+	private Stack<Command> redoCommandStack;
+	private static UndoRedoList url;
+
+	private UndoRedoList() {
+		
+		undoCommandStack = new Stack<Command>();
+		redoCommandStack = new Stack<Command>();
+		
+	}
+	
+	public static UndoRedoList getInstance() {
+		
+		if(url == null) {
+			url = new UndoRedoList();
+		}
+
+			return url;
+			
+	}
+	
+	public void pushUndoCommand(Command commandToUndo) {
+		
+		undoCommandStack.add(commandToUndo);
+		
+	}
+	
+	public Command popUndoCommand() {
+		
+		return undoCommandStack.pop();
+		
+	}
+	
+	public Command peekUndoCommand() {
+		
+		return undoCommandStack.peek();
+		
+	}
+	
+	public void pushRedoCommand(Command commandToRedo) {
+		
+		redoCommandStack.add(commandToRedo);
+		
+	}
+	
+	public Command popRedoCommand() {
+		
+		return redoCommandStack.pop();
+		
+	}
+	
+	public Command peekRedoCommand() {
+		
+		return redoCommandStack.peek();
+		
+	}
+	
+	public boolean isUndoStackEmpty() {
+		
+		if(undoCommandStack.size() == 0) {
+			return true;
+		}
+		
+		return false;
+		
+	}
+	
+public boolean isRedoStackEmpty() {
+		
+		if(redoCommandStack.size() == 0) {
+			return true;
+		}
+		
+		return false;
+		
+	}
+
+}
+
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\dataManipulation\UndoRedoList.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\powerSearch\ExactMatchSearcher.java
+	 */
+
+	 * 
+	 * exactTaskSearch takes in a List<Subcommand> and List<Task> to find an exact
+	 * task in the list of tasks and returns a TASK if there is an exact match or
+	 * returns a NULL if no such exact task exists
+	 * 
+	 */
+	
+	@SuppressWarnings("static-access")
+	public static List<Task> literalSearch(List<Subcommand> subcommandsToSearch, List<Task> totalList) throws BadSubcommandException, BadSubcommandArgException, BadCommandException {
+		
+		List<Task> listOfMatches = new ArrayList<Task>();
+		
+		
+		for(Task t : totalList) {
+			boolean matches = true;
+			
+			List<Subcommand> subsOfT = new Add(subcommandsToSearch).dismantleTask(t); 
+			
+			for(Subcommand s : subcommandsToSearch) {
+				
+				for(Subcommand st : subsOfT) {
+					
+					if(s.getType() == st.getType()) {
+						if(!s.getContents().equalsIgnoreCase(st.getContents())) {
+							matches = false;
+							break;
+						}
+			
+					}
+				
+				}
+				
+				if (matches == false) {
+					break;
+				}
+				
+			}
+			
+			if(matches == true) {
+				listOfMatches.add(t);
+			}
+			
+		}
+		
+		return listOfMatches;
+		
+	}
+
+	private static ArrayList<Task> simpleSearchStartTime(String key) throws Exception{
+		ArrayList<Task> answer = new ArrayList<Task>();
+		Time comp = new Time();
+		comp = comp.determineTime(key);
+		for (int i = 0; i < taskList.size(); ++i) {
+			if (comp.compareTo(taskList.get(i).getStartTime())==0) {
+				answer.add(taskList.get(i));
+			}
+		}
+		return answer;
+	}
+
+	private static ArrayList<Task> simpleSearchEndTime(String key) throws Exception{
+		ArrayList<Task> answer = new ArrayList<Task>();
+		Time comp = new Time();
+		comp = comp.determineTime(key);
+		for (int i = 0; i < taskList.size(); ++i) {
+			if (comp.compareTo(taskList.get(i).getEndTime())==0) {
+				answer.add(taskList.get(i));
+			}
+		}
+		return answer;
+	}
+
+
+	private static ArrayList<Task> simpleSearchName(String key){
+		ArrayList<Task> answer = new ArrayList<Task>();
+		CharSequence temp = key;
+		for (int i = 0; i < taskList.size(); ++i) {
+			if (key.toLowerCase().equals(taskList.get(i).getName().toLowerCase())) {
+				answer.add(taskList.get(i));
+			}
+			else if(taskList.get(i).getName().toLowerCase().contains(temp)){
+				answer.add(taskList.get(i));
+			}
+		}
+		return answer;
+	}
+
+	private static ArrayList<Task> simpleSearchCategory(String key) {
+		ArrayList<Task> answer = new ArrayList<Task>();
+		CharSequence temp = key;
+		for (int i = 0; i < taskList.size(); ++i) {
+			if (key.toLowerCase().equals(taskList.get(i).getCategory().toLowerCase())) {
+				answer.add(taskList.get(i));
+			}
+			else if(taskList.get(i).getCategory().toLowerCase().contains(temp)){
+				answer.add(taskList.get(i));
+			}
+		}
+		return answer;
+	}
+
+	private static ArrayList<Task> simpleSearchLocation(String key){
+		ArrayList<Task> answer = new ArrayList<Task>();
+		CharSequence temp = key;
+		for (int i = 0; i < taskList.size(); ++i) {
+			if(taskList.get(i).getHasLocation()){
+				if (key.toLowerCase().equals(taskList.get(i).getLocation().toLowerCase())) {
+					answer.add(taskList.get(i));
+				}
+				else if(taskList.get(i).getLocation().toLowerCase().contains(temp)){
+					answer.add(taskList.get(i));
+				}
+			}
+		}
+		return answer;
+	}
+
+	private static ArrayList<Task> simpleSearchNote(String key) {
+		ArrayList<Task> answer = new ArrayList<Task>();
+		CharSequence temp = key;
+		key = key.toLowerCase();
+		for (int i = 0; i < taskList.size(); ++i) {
+			if(taskList.get(i).getHasNote()){
+				if (taskList.get(i).getNote().toLowerCase().contains(key.subSequence(0, key.length()))) {
+					answer.add(taskList.get(i));
+				}
+				else if(taskList.get(i).getNote().toLowerCase().contains(temp)){
+					answer.add(taskList.get(i));
+				}
+			}
+		}
+		return answer;
+	}
+
+	private static ArrayList<Task> simpleSearchDate(String comm) throws Exception {
+		ArrayList<Task> tasksedited = new ArrayList<Task>();
+		Date lookfordate = new Date(); //create the Date class which he is looking for
+		lookfordate = lookfordate.determineDate(comm);
+		int i;
+		for(i=0; i<taskList.size(); i++){
+			if(taskList.get(i).getHasDeadline()){
+				if((lookfordate.isBefore(taskList.get(i).getEndDate()) && taskList.get(i).getStartDate().isBefore(lookfordate)) || lookfordate.isEquals(taskList.get(i).getEndDate()) || lookfordate.isEquals(taskList.get(i).getStartDate())){
+					tasksedited.add(taskList.get(i)); //supposed to show all the tasks that have an endDate after the date searched for
+				}
+			}
+			else if(lookfordate.isEquals(taskList.get(i).getStartDate())){
+				tasksedited.add(taskList.get(i));
+			}
+		}
+		return tasksedited;
+	}
+
+	private static ArrayList<Task> simpleSearchEndDate(String comm) throws Exception {
+		ArrayList<Task> tasksedited = new ArrayList<Task>();
+		Date lookfordate = new Date(); //create the Date class which he is looking for
+		lookfordate = lookfordate.determineDate(comm);
+		int i;
+		for(i=0; i<taskList.size(); i++){
+			if(lookfordate.isEquals(taskList.get(i).getEndDate())){
+				tasksedited.add(taskList.get(i)); //supposed to show all the tasks that have an endDate after the date searched for
+			}
+		}
+		return tasksedited;
+	}
+
+	public static ArrayList<Task> simpleSearchDate(Date lookfordate, List<Task> list) {
+		ArrayList<Task> tasksedited = new ArrayList<Task>();
+		int i;
+		for(i=0; i<list.size(); i++){
+			if((lookfordate.isBefore(list.get(i).getEndDate()) && list.get(i).getStartDate().isBefore(lookfordate)) || lookfordate.isEquals(list.get(i).getEndDate()) || lookfordate.isEquals(list.get(i).getStartDate())){
+				tasksedited.add(list.get(i)); //supposed to show all the tasks that have an endDate after the date searched for
+			}
+		}
+		return tasksedited;
+	}
+
+	private static ArrayList<Task> simpleSearchStartDate(String comm) throws Exception {
+		ArrayList<Task> tasksedited = new ArrayList<Task>();
+		Date lookfordate = new Date(); //create the Date class which he is looking for
+		lookfordate = lookfordate.determineDate(comm);
+		int i;
+		for(i=0; i<taskList.size(); i++){
+			if(lookfordate.isEquals(taskList.get(i).getStartDate())){
+				tasksedited.add(taskList.get(i)); //supposed to show all the tasks that have an endDate after the date searched for
+			}
+		}
+		return tasksedited;
+	}
+
+	public static boolean isTaskDuplicate(Task taskToCheck) {
+
+		List<List<Task>> categorizedList = new ArrayList<List<Task>>();
+        categorizedList.add(TotalTaskList.getInstance().getList());
+        categorizedList.add(TotalTaskList.getInstance().getOverdue());
+
+		for(List<Task> lt : categorizedList) {
+			
+			if(lt.size() != 0) {
+				for(Task t : lt) {
+					
+					if(t.isEqualTask(taskToCheck)) {
+						return true;
+					}
+					
+				}
+			}
+		}
+		return false;
+	}
+}
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\powerSearch\ExactMatchSearcher.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ezCMessages.java
+	 */
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import dataEncapsulation.Date;
+import dataEncapsulation.NoResultException;
+import dataEncapsulation.Task;
+import dataManipulation.Subcommand;
+import dataManipulation.Today;
+import dataManipulation.TotalTaskList;
+
+/**
+ * Holds all of the messages associated with the program.
+ * 
+ * Should not contain any action methods - only access methods
+ *
+ */
+public class ezCMessages {
+	private static ezCMessages messages;
+	
+	private ezCMessages() {}
+	
+	public static ezCMessages getInstance() {
+		if (messages == null) {
+			messages = new ezCMessages();
+		}
+		
+		return messages;
+	}
+	
+	private final String TAB = "\t";
+	private final String NEW_LINE = System.getProperty("line.separator");
+	private final String MESSAGE_WELCOME = "Welcome to ezC Task Manager!\n\n";
+	
+	private final String MESSAGE_DISPLAY_COMMANDS = 
+			"Here are a list of available commands (Non case-sensitive) in the format: \n\n"
+			
+			+ "( COMMAND ) - What the command does\n"
+			+ "[SUBCOMMAND, SUBCOMMAND, SUBCOMMAND, ...] (If any)\n\n"
+			
+			+ "( Add ) - Adds a task to the task list.\n"
+			+ "[category, location, note, start, end, from, to]\n\n"
+			
+			+ "( All ) - Displays all your tasks pending completion, or have no deadline.\n\n"
+			
+			+ "( Completed ) - Displays all your tasks which have been completed.\n\n"
+			
+			+ "( Edit ) - Edits a task in your current task list.\n"
+			+ "[title, category, location, note, start, end, from, to]\n\n"
+			
+			+ "( Finish ) - Marks a task as completed in your task list.\n\n"
+			
+			+ "( Redo ) - Redoes your previous undo call.\n\n"
+			
+			+ "( Remove ) - Removes a task from the current list of tasks.\n"
+			+ "[category, location, note, start, end, from, to]\n\n"
+			
+			+ "( Repeat ) - Repeats a task by a certain frequency.\n"
+			+ "[daily, weekly, monthly, annually, once]\n\n"
+			
+			+ "( Search ) - Searches for a task in the task list.\n"
+			+ "\n\n"
+			
+			+ "( Today ) - Displays all the tasks for today.\n\n"
+			
+			+ "( Undo ) - Undoes a command that was previously entered.\n\n"
+			
+			+ "( Unfinish ) - Marks a task as uncompleted.\n\n"
+			
+			+ "Please type \'help <name of command>\' for more information about the command.\n"
+			+ "Alternatively, please type \'help\' to display this list again."; 
+	
+	private final String ADD_HELP = "Further help for the command: ADD\n\n"
+			
+			+ "Command: Add\n"
+			+ "Subcommands: category / location / note / start / end / from / to\n\n"
+			
+			+ "Adds a task to your current list of tasks. "
+			+ "This task will not be added if a similar task "
+			+ "already exists inside the task list.\n\n"
+			
+			+ "NOTE: Subcommands are optional for the command ADD.\n\n"
+			
+			+ "Format ( COMMAND ) / [SUBCOMMAND]: \n\n"
+			
+			+ "( add ) \"title of task\" [category] \"title of category\" "
+			+ "[location] \"title of location\" [note] \"any additional task notes\" "
+			+ "[start] dd/mm/yy [end] dd/mm/yy [from] starttime [to] endtime\n\n"
+			
+			+ "e.g. add \"Buy chocolate milk\" category \"Groceries\" "
+			+ "location \"Big Wig Supermarket\" note \"Milk for cereal\" start 12/3/14 "
+			+ "end 12/3/14 from 1pm to 2pm";
+	
+	private final String ALL_HELP = "Further help for the command: ALL\n\n"
+			
+			+ "Command: All\n"
+			+ "Subcommands: NIL\n\n"
+			
+			+ "Displays all the tasks which are either incomplete and/or overdue.\n\n"
+			
+			+ "Format ( COMMAND ): \n\n"
+			
+			+ "( all )\n\n"
+			
+			+ "e.g. all";
+	
+	private final String EDIT_HELP = "Further help for the command: EDIT\n\n"
+			
+			+ "Command: Edit\n"
+			+ "Subcommands: title / category / location / note / start / end / from / to\n\n"
+			
+			+ "Edits a task from your current list of tasks. This task will not be edited if "
+			+ "the edited version already exists as a similar task in the task list. "
+			+ "If more than one such task exists for editing, a list will be presented "
+			+ "for selection.\n\n"
+			
+			+ "NOTE: Only one subcommand can be used for the command EDIT.\n\n"
+			
+			+ "Format ( COMMAND ) / [SUBCOMMAND]:\n\n"
+			
+			+ "( edit ) \"title of task\" [title] \"new title of task\" "
+			+ "OR [category] \"title of category\" OR "
+			+ "[location] \"title of location\" OR [note] \"any additional task notes\" "
+			+ "OR [start] dd/mm/yy OR [end] dd/mm/yy OR [from] starttime OR [to] endtime\n\n"
+			
+			+ "e.g. edit \"Buy chocolate milk\" title \"Buy strawberry yoghurt\"\n"
+			+ "e.g. edit \"Buy chocolate milk\" location \"Uncle Kumar's Convenience Store\"";
+	
+	private final String FINISH_HELP = "Further help for the command: FINISH\n\n"
+			
+			+ "Command: Finish\n"
+			+ "Subcommands: NIL\n\n"
+			
+			+ "Marks a task, which was previously uncompleted, as completed. "
+			+ "This task is then placed into the \"Completed\" list.\n\n"
+			
+			+ "NOTE: Only the task's title can be specified.\n\n"
+			
+			+ "Format [ COMMAND ]:\n\n"
+			
+			+ "( finish ) \"title of task\"\n\n"
+			
+			+ "e.g. finish \"Buy chocolate milk\"";
+	
+	private final String REDO_HELP = "Further help for the command: REDO\n\n"
+			
+			+ "Command: Redo\n"
+			+ "Subcommands: NIL\n\n"
+			
+			+ "Redoes the previous command that was undone. Does nothing if no commands "
+			+ "were undone.\n\n"
+			
+			+ "Format ( COMMAND ):\n\n"
+			
+			+ "( redo )\n\n"
+			
+			+ "e.g. redo";
+	
+	private final String REMOVE_HELP = "Further help for the command: REMOVE\n\n"
+			
+			+ "Command: Remove\n"
+			+ "Subcommands: category / location / note / start / end / from / to\n\n"
+			
+			+ "Removes a task to your current list of tasks. "
+			+ "This task will not be removed if there does not exist such a task. "
+			+ "If there are similar tasks in the list due to inspecific input, "
+			+ "a list of tasks will be displayed for the user to select which "
+			+ "exactly they want to delete.\n\n"
+			
+			+ "NOTE: Subcommands are optional for the command ADD.\n\n"
+			
+			+ "Format ( COMMAND ) / [SUBCOMMAND]: \n\n"
+			
+			+ "( remove ) \"title of task\" [category] \"title of category\" "
+			+ "[location] \"title of location\" [note] \"any additional task notes\" "
+			+ "[start] dd/mm/yy [end] dd/mm/yy [from] starttime [to] endtime\n\n"
+			
+			+ "e.g. remove \"Buy chocolate milk\" category \"Groceries\" "
+			+ "location \"Big Wig Supermarket\" note \"Milk for cereal\" start 12/3/14 "
+			+ "end 12/3/14 from 1pm to 2pm";
+	
+	private final String REPEAT_HELP = "Further help for the command: REPEAT\n\n"
+			
+			+ "Command: Repeat\n"
+			+ "Subcommands: once / daily / weekly / monthly / annually / start / end\n\n"
+			
+			+ "Repeats a task based on a frequency provided by the user, for a given "
+			+ "period of time provided by the user.\n\n"
+			
+			+ "NOTE: The subcommands [start], [end] and a frequency are required.\n\n"
+			
+			+ "Format ( COMMAND ) / [SUBCOMMAND]:\n\n"
+			
+			+ "( repeat ) \"title of task\" [once] OR [daily] OR [weekly] OR [monthly] OR "
+			+ "[annually] [start] startdate [end] enddate\n\n"
+			
+			+ "e.g. repeat \"Buy chocolate milk\" weekly start 10/11/14 end 20/5/15\n"
+			+ "e.g. repeat \"Buy chocolate milk\" annually start 7/2/15 end 2/10/21";
+	
+	private final String SEARCH_HELP = "Further help for the command: SEARCH\n\n"
+			
+			+ "Command: Search\n"
+			+ "Subcommands: title / category / location / note / start / end / from / to / and / & / or / |\n\n"
+			
+			+ "Searches for a task by any field and returns any tasks with the included field.\n\n"
+			
+			+ "NOTE: At least one search field is required. [and], [&], [or] and [|] are optional.\n\n"
+			
+			+ "Format ( COMMAND ) / [SUBCOMMAND]:\n\n"
+			
+			+ "( search ) [title] \"title of task\" [and / or] [category] \"category of task\" [and / or] [location] "
+			+ "\"location of task\" [and / or] [note] \"notes in task\" [and / or] [start] startdate [and / or] [end] enddate "
+			+ "[and / or] [from] starttime [and / or] [to] endtime\n\n"
+			
+			+ "e.g. search title \"Buy chocolate milk\" and category \"Breakfast\"\n"
+			+ "e.g. search location \"Singapore\" | category \"Singaporean Food\"\n"
+			+ "e.g. search start 25/12/14 & category \"Holiday Festivals\"\n"
+			+ "e.g. search category \"Homework\" & to 2359 or title \"CS2103 Stuff\"";
+	
+	private final String TODAY_HELP = "Further help for the command: TODAY\n\n"
+			
+			+ "Command: Today\n"
+			+ "Subcommands: NIL\n\n"
+			
+			+ "Displays all the tasks which are either due today, or currently ongoing.\n\n"
+			
+			+ "Format ( COMMAND ): \n\n"
+			
+			+ "( today )\n\n"
+			
+			+ "e.g. today";
+	
+	private final String UNDO_HELP = "Further help for the command: UNDO\n\n"
+			
+			+ "Command: Undo\n"
+			+ "Subcommands: NIL\n\n"
+			
+			+ "Undoes the previous command. Does nothing if no task-changing commands "
+			+ "were entered at all.\n\n"
+			
+			+ "Format ( COMMAND ):\n\n"
+			
+			+ "( undo )\n\n"
+			
+			+ "e.g. undo";
+	
+	private final String UNFINISH_HELP = "Further help for the command: UNFINISH\n\n"
+			
+			+ "Command: Unfinish\n"
+			+ "Subcommands: NIL\n\n"
+			
+			+ "Marks a task, which was previously completed, as uncompleted. "
+			+ "This task is then placed into the current list of tasks, or the "
+			+ "overdue list, depending on the end time of this task.\n\n"
+			
+			+ "NOTE: Only the task's title can be specified.\n\n"
+			
+			+ "Format ( COMMAND ):\n\n"
+			
+			+ "( unfinish ) \"title of task\"\n\n"
+			
+			+ "e.g. unfinish \"Buy chocolate milk\"";
+	
+	private final String DATE_HELP = "Further help for dates:\n\n"
+			
+			+ "Commands related to date: Change date type <m/d> OR <d/m>\n"
+			+ "Subcommands related to date: start / end\n\n"
+			
+			+ "Format ( COMMAND ) / [SUBCOMMAND]:\n\n"
+			
+			+ "This command allows you to change the date format between the middle-endian "
+			+ "format (mm/dd/yy) and the little-endian format (dd/mm/yy)."
+			
+			+ "( change date type ) m/d\n\n"
+			
+			+ "e.g. change date type m/d\n"
+			+ "e.g. change date type d/m\n\n"
+			
+			+ "[start]: It is the subcommand to indicate the date that you wish to have "
+			+ "the task start from. If this date is not stated, the task will be created "
+			+ "based on today's date instead.\n\n"
+			
+			+ "e.g. start 6/12/14\n"
+			+ "e.g. start tomorrow\n"
+			+ "e.g. start today\n"
+			+ "e.g. start wednesday\n"
+			
+			+ "[end]: It is the subcommand to indicate the date that you would like the "
+			+ "task to end on. Any time past this date would have the task shift into the "
+			+ "overdue task list.\n\n"
+			
+			+ "e.g. end 7/12/14\n"
+			+ "e.g. end today\n"
+			+ "e.g. end tomorrow\n"
+			+ "e.g. end sunday";
+	
+	private final String TIME_HELP = "Further help for time:\n\n"
+			
+			+ "Subcommands related to time: from / to\n\n"
+			
+			+ "NOTE: For format of use, please refer to ADD / EDIT / REPEAT / SEARCH / REMOVE\n\n"
+			
+			+ "Format [SUBCOMMAND]:\n\n"
+			
+			+ "[from]: It is the subcommand to indicate the time which the task will commence from.\n\n"
+			
+			+ "e.g. from 1pm\n"
+			+ "e.g. from 3:00am\n"
+			+ "e.g. from 05:00\n"
+			+ "e.g. from 1700\n\n"
+			
+			+ "[end]: It is the subcommand to indicate the time which the task will end at, "
+			+ "after which the task will be moved to the overdue task list.\n\n"
+			
+			+ "e.g. end 2am\n"
+			+ "e.g. end 5:00pm\n"
+			+ "e.g. end 20:00\n"
+			+ "e.g. end 0600";
+	
+	private final String COMPLETED_HELP = "Further help for the command: COMPLETE / COMPLETED\n\n"
+			
+			+ "Command: Completed\n"
+			+ "Subcommands: NIL\n\n"
+			
+			+ "Displays all the tasks that have ever been completed.\n\n"
+			
+			+ "Format ( COMMAND ):\n\n"
+			
+			+ "( completed )\n\n"
+			
+			+ "e.g. completed";
+	
+	public final String ALL_TASKS_LIST_MESSAGE = "[ ALL-TASKS LIST ]:\n\n"
+			
+			+ "All current on-going task(s):" + NEW_LINE + NEW_LINE;
+	
+	public final String OVERDUE_TASKS_LIST_MESSAGE = "[ OVERDUE-TASKS LIST ]:\n\n"
+			
+			+ "All current overdue task(s):" + NEW_LINE + NEW_LINE;
+	
+	public final String TODAY_TASKS_LIST_MESSAGE = "[ TODAY'S TASKS LIST ]:\n\n"
+			
+			+ "All task(s) that are on-going for today:" + NEW_LINE + NEW_LINE;
+	
+	public final String COMPLETED_TASKS_LIST_MESSAGE = "[ COMPLETED TASKS LIST ]:\n\n"
+			
+			+ "All task(s) that have been completed up till date:" + NEW_LINE + NEW_LINE;
+	
+	public String getAddHelp() {
+		return ADD_HELP;
+	}
+	
+	public String getAllHelp() {
+		return ALL_HELP;
+	}
+	
+	public String getCompletedHelp() {
+		return COMPLETED_HELP;
+	}
+	
+	public String getDateHelp() {
+		return DATE_HELP;
+	}
+	
+	public String getEditHelp() {
+		return EDIT_HELP;
+	}
+	
+	public String getFinishHelp() {
+		return FINISH_HELP;
+	}
+	
+	public String getRemoveHelp() {
+		return REMOVE_HELP;
+	}
+	
+	public String getRepeatHelp() {
+		return REPEAT_HELP;
+	}
+	
+	public String getSearchHelp() {
+		return SEARCH_HELP;
+	}
+	
+	public String getTimeHelp() {
+		return TIME_HELP;
+	}
+	
+	public String getTodayHelp() {
+		return TODAY_HELP;
+	}
+	
+	public String getUndoHelp() {
+		return UNDO_HELP;
+	}
+	
+	public String getRedoHelp() {
+		return REDO_HELP;
+	}
+	
+	public String getUnfinishHelp() {
+		return UNFINISH_HELP;
+	}
+	
+	public String getTab() {
+		return TAB;
+	}
+	
+	public String getNewLine() {
+		return NEW_LINE;
+	}
+	
+	public String getUserCommandDisplay() {
+		return MESSAGE_DISPLAY_COMMANDS;
+	}
+	
+	public String getWelcomeMessage() {
+		return MESSAGE_WELCOME;
+	}
+	
+	public String getAllTasksListMessage() {
+		return ALL_TASKS_LIST_MESSAGE;
+	}
+	
+	public String getOverdueTasksListMessage() {
+		return OVERDUE_TASKS_LIST_MESSAGE;
+	}
+	
+	public String getTodayTasksListMessage() {
+		return TODAY_TASKS_LIST_MESSAGE;
+	}
+	
+	public String getCompletedTasksListMessage() {
+		return COMPLETED_TASKS_LIST_MESSAGE;
+	}
+	
+	public String getAddMessage(Task newTask) {
+		String message = "Your task:" + NEW_LINE + NEW_LINE + newTask.toPrint() + 
+				NEW_LINE + "has been successfully added.";
+		return message;
+	}
+	public String getDeleteMessage(Task deletedTask) {
+		String message = "Your task: " + NEW_LINE + NEW_LINE + deletedTask.toPrint() + 
+				NEW_LINE + "has been successfully deleted." + NEW_LINE;
+		return message;
+	}
+	public String getEditMessage(Task original, Task edited) {
+		String message = "Your original task: " + NEW_LINE + NEW_LINE + original.toPrint() 
+				+ NEW_LINE + "was successfully edited to:" + 
+				NEW_LINE + NEW_LINE + edited.toPrint() + NEW_LINE;
+		return message;
+	}
+	public String getUndoEditMessage(Task undidFrom, Task undidTo) {
+		String message = "Your task was successfully undone from: " 
+				+ NEW_LINE + NEW_LINE + undidFrom.toPrint()
+				+ NEW_LINE + "to: " + NEW_LINE + NEW_LINE + undidTo.toPrint();
+		return message;
+	}
+	public String getUndoRepeatMessage(Task taskUnrepeated) {
+		String message = "Your task: " + NEW_LINE + NEW_LINE + taskUnrepeated.toPrint() +
+				NEW_LINE +  "has been successfully unrepeated.";
+		return message;
+	}
+	
+	public String getErrorMessage(Exception e) {
+		String opening = "ERROR: ";
+		String errorMessage = e.getMessage();
+		String totalMessage = opening + errorMessage + NEW_LINE;
+		
+		return totalMessage;
+	}
+	
+	public String getStringOfTasks(List<Task> tasks) throws NoResultException {
+		if (tasks == null || tasks.isEmpty()) {
+			throw new NoResultException("There are no tasks in this list.");
+		}
+		
+		String allTasks = makePrintableTask(tasks.get(0));
+		
+		for (int i = 1; i < tasks.size(); ++i) {
+			Task nextTask = tasks.get(i);
+			String taskToPrint = makePrintableTask(nextTask);
+			allTasks = allTasks + NEW_LINE + NEW_LINE + taskToPrint;
+		}
+		
+		return allTasks;
+	}
+	
+	public String welcomeTaskDisplayForUser() throws Exception {
+		List<Task> overdueList = TotalTaskList.getInstance().getOverdue();
+		List<Subcommand> dummySubC = new ArrayList<Subcommand>();
+		
+		if(overdueList.size() == 0) {
+			try {
+				String todayTasks = new Today(dummySubC).execute();
+				String currentTasks = "Your current ongoing task(s) are:" + NEW_LINE + NEW_LINE;
+				currentTasks += todayTasks;
+				return currentTasks;
+			} catch (Exception e){
+				return MESSAGE_DISPLAY_COMMANDS;
+			}
+		}
+		else {
+			String overdueTasks = "You currently have " + overdueList.size() + " task(s) overdue:" 
+					+ NEW_LINE + NEW_LINE;
+			String listOfOverdueTasks = getStringOfTasks(overdueList);
+			overdueTasks += listOfOverdueTasks;
+			
+			return overdueTasks;
+		}
+		
+	}
+	
+	public String makePrintableTask(Task task) {
+		String firstLine = task.getName();
+		String secondLine = new String();
+		Date today = new Date();
+		
+		String tab = "    ";
+		
+		firstLine = task.getName();
+		
+		if (task.hasCategory()) {
+			firstLine = firstLine + tab + "Category: " + task.getCategory();
+		}
+		
+		if (!task.getHasDeadline()) {
+			if (task.getStartDate().isBefore(today)) {
+				firstLine = firstLine + tab + "Started " + task.getStartDate();
+			} else {
+				firstLine = firstLine + tab + "Starting " + task.getStartDate();
+			}
+		} else if (task.getStartDate().isEquals(task.getEndDate())) {
+			firstLine = firstLine + tab + "On " + task.getStartDate().toPrint();
+		} else if (today.isBefore(task.getStartDate())) {
+			firstLine = firstLine + tab + "From " + task.getStartDate().toPrint() + " to " + task.getEndDate().toPrint();
+		} else {
+			firstLine = firstLine + tab + "Due " + task.getEndDate().toPrint();
+		}
+		
+		if (task.hasStartTime()) {
+			firstLine = firstLine + tab + task.getStartTime().toString() + " to " + task.getEndTime().toString();
+		} else {
+			if (!task.getHasDeadline()) {
+				firstLine = firstLine + tab + "No Deadline";
+			}
+		}
+		
+		if (task.isCompleted()) {
+			firstLine = firstLine + tab + "Complete";
+		} else {
+			firstLine = firstLine + tab + "Incomplete";
+		}
+		
+		if (task.getHasLocation()) {
+			secondLine = secondLine + tab + "Location: " + task.getLocation();
+		}
+		
+		if (task.getHasNote()) {
+			secondLine = secondLine + tab + "Note: " + task.getNote();
+		}
+		
+		return firstLine + tab + secondLine;
+	}
+	
+	public String getFinishMessage(Task completed) {
+		String name = completed.getName();
+		String totalMessage = name + " was completed" + NEW_LINE;
+		return totalMessage;
+	}
+	
+	public String getUnfinishMessage(Task incomplete) {
+		String name = incomplete.getName();
+		String totalMessage = name + " was marked as incomplete" + NEW_LINE;
+		return totalMessage;
+	}
+
+	public String getChangeDateTypeMessage(String type) {
+		String message = "changed date type to " + type;
+		return message;
+	}
+
+	public String getNumberedStringOfTasks(List<Task> tasks) {
+		if (tasks == null || tasks.isEmpty()) {
+			return "nothing to print" + NEW_LINE;
+		}
+		
+		String allTasks = "1. " + makePrintableTask(tasks.get(0));
+		
+		for (int i = 1; i < tasks.size(); ++i) {
+			Task nextTask = tasks.get(i);
+			int number = i + 1;
+			String taskToPrint = number + ". " + makePrintableTask(nextTask);
+			allTasks = allTasks + NEW_LINE + NEW_LINE + taskToPrint;
+		}
+		
+		return allTasks;
+	}
+}
+	// End of segment: C:\Users\Kiri\Documents\ezC\name\src\userInterface\ezCMessages.java
+
+
+
+
+

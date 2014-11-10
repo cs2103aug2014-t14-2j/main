@@ -20,9 +20,9 @@
 		//Add the group v2 tp the group v1
 		v1.addGroup(v2);
 		v1.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
+		v1.addComponent(status);
 		v1.addComponent(scroller, GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE);
 		v1.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
-		v1.addComponent(status);
 		v1.addContainerGap();
 
 		//Add the group v1 to the group vGroup
