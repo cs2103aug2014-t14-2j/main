@@ -30,7 +30,8 @@ public abstract class MultiCommand<T extends Command> extends Command {
 	}
 	
 	abstract T makeCommand(List<Subcommand> choices) 
-			throws BadCommandException, BadSubcommandException;
+			throws BadCommandException, BadSubcommandException, 
+			BadSubcommandArgException;
 	
 	abstract String specializedExecute(T command) throws Exception;
 

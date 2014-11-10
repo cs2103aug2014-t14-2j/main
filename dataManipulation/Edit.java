@@ -35,8 +35,13 @@ public class Edit extends Command {
 	private Task posteditCopy = null;
 
 	public Edit(List<Subcommand> commandComponents)
-			throws BadCommandException, BadSubcommandException {
+			throws BadCommandException, BadSubcommandException, 
+			BadSubcommandArgException {
 		super(COMMAND_TYPE.EDIT, commandComponents);
+		boolean hasDateSubcommand = hasSubcommandType(Subcommand.TYPE.DATE);
+		if (hasDateSubcommand) {
+			parseDateToStartAndEnd();
+		}
 	}
 
 	@Override

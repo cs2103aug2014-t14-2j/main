@@ -17,8 +17,13 @@ import fileIo.FileIo;
 public class Finish extends Command {
 
 	public Finish(List<Subcommand> commandComponents) 
-			throws BadCommandException, BadSubcommandException {
+			throws BadCommandException, BadSubcommandException, 
+			BadSubcommandArgException {
 		super(COMMAND_TYPE.FINISH, commandComponents);
+		boolean hasDateSubcommand = hasSubcommandType(Subcommand.TYPE.DATE);
+		if (hasDateSubcommand) {
+			parseDateToStartAndEnd();
+		}
 	}
 	
 	@Override

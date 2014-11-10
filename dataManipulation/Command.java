@@ -3,6 +3,7 @@ package dataManipulation;
 import java.util.List;
 
 import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
 import dataEncapsulation.BadSubcommandException;
 import dataManipulation.CommandType.COMMAND_TYPE;
 
@@ -111,5 +112,23 @@ public abstract class Command {
 		}
 		
 		return fullMessage;
+	}
+	
+	protected void parseDateToStartAndEnd() throws BadSubcommandException, BadSubcommandArgException {
+		int index = 0;
+		for (; index < subcommands.size(); ++index) {
+			if (subcommands.get(index).getType() == Subcommand.TYPE.DATE) {
+				break;
+			}
+		}
+
+		Subcommand date = subcommands.get(index);
+		String dateString = date.getContents();
+		Subcommand start = new Subcommand(Subcommand.TYPE.START, dateString);
+		Subcommand end = new Subcommand(Subcommand.TYPE.END, dateString);
+
+		subcommands.remove(index);
+		subcommands.add(start);
+		subcommands.add(end);
 	}
 }
