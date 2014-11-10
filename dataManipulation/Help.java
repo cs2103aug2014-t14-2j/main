@@ -23,10 +23,14 @@ public class Help extends Command {
 				return ezCMessages.getInstance().getAddHelp();
 			case "all" :
 				return ezCMessages.getInstance().getAllHelp();
+			case "complete" :
+				return ezCMessages.getInstance().getCompletedHelp();
+			case "completed" :
+				return ezCMessages.getInstance().getCompletedHelp();
+			case "date" :
+				return ezCMessages.getInstance().getDateHelp();	
 			case "edit" :
 				return ezCMessages.getInstance().getEditHelp();
-			case "date" :
-				return ezCMessages.getInstance().getDateHelp();
 			case "finish" :
 				return ezCMessages.getInstance().getFinishHelp();
 			case "list" :

@@ -59,6 +59,7 @@ public class ExactMatchSearcher {
 	 * 
 	 */
 	
+	@SuppressWarnings("static-access")
 	public static List<Task> literalSearch(List<Subcommand> subcommandsToSearch, List<Task> totalList) throws BadSubcommandException, BadSubcommandArgException, BadCommandException {
 		
 		List<Task> listOfMatches = new ArrayList<Task>();

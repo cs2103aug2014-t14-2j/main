@@ -22,7 +22,12 @@ public class Overdue extends Command{
 		TotalTaskList totalList = TotalTaskList.getInstance();
 		totalList.update();
 		List<Task> overdueTasks = totalList.getOverdue();
-		return getStringOfAllTasks(overdueTasks);
+		
+		ezCMessages overdueTasksMessage = ezCMessages.getInstance();
+		String displayOverdueTasks = overdueTasksMessage.getOverdueTasksListMessage();
+		displayOverdueTasks += getStringOfAllTasks(overdueTasks);
+		
+		return displayOverdueTasks;
 	}
 
 	private String getStringOfAllTasks(List<Task> list) throws NoResultException {

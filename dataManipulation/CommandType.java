@@ -182,7 +182,7 @@ public class CommandType {
 	}
 	
 	private List<String> getHelpSubcommands() {
-List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<String>();
 		
 		for (Subcommand.HELP_KEY type : Subcommand.HELP_KEY.values()) {
 			list.add(type.toString());
@@ -334,6 +334,8 @@ List<String> list = new ArrayList<String>();
 		case HELP :
 			return true;
 		case DATE :
+			return true;
+		case COMPLETED :
 			return true;
 		default :
 			return false;

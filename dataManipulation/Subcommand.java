@@ -53,7 +53,7 @@ public class Subcommand {
 	// All keywords for the help type
 	public enum HELP_KEY {
 		ADD, ALL, EDIT, FINISH, LIST, REDO, REMOVE, REPEAT, SEARCH, TODAY, UNDO, UNFINISH,
-		DATE, TIME;
+		DATE, TIME, COMPLETE, COMPLETED;
 		
 		@Override
 		public String toString() {
@@ -159,6 +159,10 @@ public class Subcommand {
 		} else if (contents.equals(HELP_KEY.DATE.toString())) {
 			isValid = true;
 		} else if (contents.equals(HELP_KEY.LIST.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.COMPLETE.toString())) {
+			isValid = true;
+		} else if (contents.equals(HELP_KEY.COMPLETED.toString())) {
 			isValid = true;
 		} else if (contents.equals(HELP_KEY.REDO.toString())) {
 			isValid = true;

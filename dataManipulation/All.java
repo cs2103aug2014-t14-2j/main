@@ -18,9 +18,14 @@ public class All extends Command {
 
 	@Override
 	public String execute() throws NoResultException {
+		ezCMessages allTasksMessage = ezCMessages.getInstance();
+		String displayAllTasks = allTasksMessage.getAllTasksListMessage();
+		
 		List<Task> allTasks = getAllUncompletedTasks();
 		String stringTasks = getStringOfAllTasks(allTasks);
-		return stringTasks;
+		
+		displayAllTasks += stringTasks;
+		return displayAllTasks;
 	}
 
 	private List<Task> getAllUncompletedTasks() {

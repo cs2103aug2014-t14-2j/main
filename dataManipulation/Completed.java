@@ -20,7 +20,12 @@ public class Completed extends Command {
 	public String execute() throws NoResultException {
 		List<Task> allTasks = getAllCompletedTasks();
 		String stringTasks = getStringOfAllTasks(allTasks);
-		return stringTasks;
+		
+		ezCMessages completedTasksMessage = ezCMessages.getInstance();
+		String displayCompletedTasks = completedTasksMessage.getCompletedTasksListMessage();
+		displayCompletedTasks += stringTasks;
+		
+		return displayCompletedTasks;
 	}
 
 	private List<Task> getAllCompletedTasks() {

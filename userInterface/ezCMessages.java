@@ -35,6 +35,7 @@ public class ezCMessages {
 	
 	private final String MESSAGE_DISPLAY_COMMANDS = 
 			"Here are a list of available commands (Non case-sensitive) in the format: \n\n"
+			
 			+ "( COMMAND ) - What the command does\n"
 			+ "[SUBCOMMAND, SUBCOMMAND, SUBCOMMAND, ...] (If any)\n\n"
 			
@@ -42,6 +43,8 @@ public class ezCMessages {
 			+ "[category, location, note, start, end, from, to]\n\n"
 			
 			+ "( All ) - Displays all your tasks pending completion, or have no deadline.\n\n"
+			
+			+ "( Completed ) - Displays all your tasks which have been completed.\n\n"
 			
 			+ "( Edit ) - Edits a task in your current task list.\n"
 			+ "[title, category, location, note, start, end, from, to]\n\n"
@@ -66,9 +69,10 @@ public class ezCMessages {
 			+ "( Unfinish ) - Marks a task as uncompleted.\n\n"
 			
 			+ "Please type \'help <name of command>\' for more information about the command.\n"
-			+ "Alternatively, please type \'help list\' to display this list again."; 
+			+ "Alternatively, please type \'help\' to display this list again."; 
 	
 	private final String ADD_HELP = "Further help for the command: ADD\n\n"
+			
 			+ "Command: Add\n"
 			+ "Subcommands: category / location / note / start / end / from / to\n\n"
 			
@@ -89,6 +93,7 @@ public class ezCMessages {
 			+ "end 12/3/14 from 1pm to 2pm";
 	
 	private final String ALL_HELP = "Further help for the command: ALL\n\n"
+			
 			+ "Command: All\n"
 			+ "Subcommands: NIL\n\n"
 			
@@ -101,6 +106,7 @@ public class ezCMessages {
 			+ "e.g. all";
 	
 	private final String EDIT_HELP = "Further help for the command: EDIT\n\n"
+			
 			+ "Command: Edit\n"
 			+ "Subcommands: title / category / location / note / start / end / from / to\n\n"
 			
@@ -122,6 +128,7 @@ public class ezCMessages {
 			+ "e.g. edit \"Buy chocolate milk\" location \"Uncle Kumar's Convenience Store\"";
 	
 	private final String FINISH_HELP = "Further help for the command: FINISH\n\n"
+			
 			+ "Command: Finish\n"
 			+ "Subcommands: NIL\n\n"
 			
@@ -137,6 +144,7 @@ public class ezCMessages {
 			+ "e.g. finish \"Buy chocolate milk\"";
 	
 	private final String REDO_HELP = "Further help for the command: REDO\n\n"
+			
 			+ "Command: Redo\n"
 			+ "Subcommands: NIL\n\n"
 			
@@ -150,6 +158,7 @@ public class ezCMessages {
 			+ "e.g. redo";
 	
 	private final String REMOVE_HELP = "Further help for the command: REMOVE\n\n"
+			
 			+ "Command: Remove\n"
 			+ "Subcommands: category / location / note / start / end / from / to\n\n"
 			
@@ -175,6 +184,7 @@ public class ezCMessages {
 	private final String SEARCH_HELP = "";
 	
 	private final String TODAY_HELP = "Further help for the command: TODAY\n\n"
+			
 			+ "Command: Today\n"
 			+ "Subcommands: NIL\n\n"
 			
@@ -187,6 +197,7 @@ public class ezCMessages {
 			+ "e.g. today";
 	
 	private final String UNDO_HELP = "Further help for the command: UNDO\n\n"
+			
 			+ "Command: Undo\n"
 			+ "Subcommands: NIL\n\n"
 			
@@ -272,6 +283,35 @@ public class ezCMessages {
 			+ "e.g. end 20:00\n"
 			+ "e.g. end 0600";
 	
+	private final String COMPLETED_HELP = "Further help for the command: COMPLETE / COMPLETED\n\n"
+			
+			+ "Command: Completed\n"
+			+ "Subcommands: NIL\n\n"
+			
+			+ "Displays all the tasks that have ever been completed.\n\n"
+			
+			+ "Format ( COMMAND ):\n\n"
+			
+			+ "( completed )\n\n"
+			
+			+ "e.g. completed";
+	
+	public final String ALL_TASKS_LIST_MESSAGE = "[ ALL-TASKS LIST ]:\n\n"
+			
+			+ "All current on-going task(s):" + NEW_LINE + NEW_LINE;
+	
+	public final String OVERDUE_TASKS_LIST_MESSAGE = "[ OVERDUE-TASKS LIST ]:\n\n"
+			
+			+ "All current overdue task(s):" + NEW_LINE + NEW_LINE;
+	
+	public final String TODAY_TASKS_LIST_MESSAGE = "[ TODAY'S TASKS LIST ]:\n\n"
+			
+			+ "All task(s) that are on-going for today:" + NEW_LINE + NEW_LINE;
+	
+	public final String COMPLETED_TASKS_LIST_MESSAGE = "[ COMPLETED TASKS LIST ]:\n\n"
+			
+			+ "All task(s) that have been completed up till date:" + NEW_LINE + NEW_LINE;
+	
 	public String getAddHelp() {
 		return ADD_HELP;
 	}
@@ -338,6 +378,18 @@ public class ezCMessages {
 	
 	public String getWelcomeMessage() {
 		return MESSAGE_WELCOME;
+	}
+	
+	public String getAllTasksListMessage() {
+		return ALL_TASKS_LIST_MESSAGE;
+	}
+	
+	public String getOverdueTasksListMessage() {
+		return OVERDUE_TASKS_LIST_MESSAGE;
+	}
+	
+	public String getTodayTasksListMessage() {
+		return TODAY_TASKS_LIST_MESSAGE;
 	}
 	
 	public String getAddMessage(Task newTask) {

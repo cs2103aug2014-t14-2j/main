@@ -125,6 +125,8 @@ public class CommandInterpreter {
 
 		if (isChangeDateType(splitInput)) {
 			return true;
+		} else if (input.equalsIgnoreCase("help")) {
+			return true;
 		} else {
 			return false;
 		}
@@ -190,6 +192,13 @@ public class CommandInterpreter {
 			throws BadCommandException, BadSubcommandException, 
 			BadSubcommandArgException {
 		input = input.toLowerCase();
+		
+		if (input.matches("help")) {
+			List<Subcommand> helpList = new ArrayList<Subcommand>();
+			Subcommand listSubC = new Subcommand(Subcommand.TYPE.HELP, "list");
+			helpList.add(listSubC);
+			return new Help(helpList);
+		}
 
 		String[] splitInput = splitString(input);
 		int lastPosition = splitInput.length - 1;

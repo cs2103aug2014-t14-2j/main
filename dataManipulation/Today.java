@@ -3,6 +3,7 @@ package dataManipulation;
 import java.util.ArrayList;
 import java.util.List;
 
+import userInterface.ezCMessages;
 import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Date;
@@ -25,7 +26,11 @@ public class Today extends Command {
 		Search searchCommand = new Search(toSearch);
 		String response = searchCommand.execute();
 		
-		return response;
+		ezCMessages todayTasksMessage = ezCMessages.getInstance();
+		String displayTodayTasks = todayTasksMessage.getTodayTasksListMessage();
+		displayTodayTasks += response;
+		
+		return displayTodayTasks;
 	}
 
 	@Override
