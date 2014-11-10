@@ -90,6 +90,7 @@ public class Repeat extends Command {
 				makeRepeat(ld);
 			}
 		} else if (freq.equals(FREQUENCY.ONCE.toString())) {
+
 			LocalDate s = LocalDate.parse(ldParse(start));
 			makeRepeat(s);
 		} else {
@@ -322,7 +323,7 @@ public class Repeat extends Command {
 				break;
 			case NAME:
 				break;
-			case START:
+			case ON:
 				break;
 			default:
 				throw new BadSubcommandException("invalid subcommand");
