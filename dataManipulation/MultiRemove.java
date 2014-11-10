@@ -44,7 +44,7 @@ public class MultiRemove extends MultiCommand<Remove> {
 
 	@Override
 	Remove makeCommand(List<Subcommand> choices) 
-			throws BadCommandException, BadSubcommandException {
+			throws BadCommandException, BadSubcommandException, BadSubcommandArgException {
 		return new Remove(choices);
 	}
 
