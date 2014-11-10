@@ -282,13 +282,13 @@ public class ezCMessages {
 	}
 	public String getDeleteMessage(Task deletedTask) {
 		String message = "Your task: " + NEW_LINE + NEW_LINE + deletedTask.toPrint() + 
-				NEW_LINE + "has been successfully deleted.";
+				NEW_LINE + "has been successfully deleted." + NEW_LINE;
 		return message;
 	}
 	public String getEditMessage(Task original, Task edited) {
 		String message = "Your original task: " + NEW_LINE + NEW_LINE + original.toPrint() 
 				+ NEW_LINE + "was successfully edited to:" + 
-				NEW_LINE + NEW_LINE + edited.toPrint();
+				NEW_LINE + NEW_LINE + edited.toPrint() + NEW_LINE;
 		return message;
 	}
 	public String getUndoEditMessage(Task undidFrom, Task undidTo) {
