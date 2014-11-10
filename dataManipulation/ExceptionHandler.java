@@ -358,7 +358,7 @@ public class ExceptionHandler {
 			} catch (Exception e) {
 				status.setText("error in processing your request,"
 						+ " please try again or press 0 to exit");
-				System.out.println(e.getMessage());
+	
 				e.printStackTrace();
 			}
 		}

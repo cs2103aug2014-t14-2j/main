@@ -1,4 +1,9 @@
 package powerSearch;
+/**
+ * 
+ * @author A0115696W
+ * 
+ */
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,12 +80,9 @@ public class SlotSearch {
 			boolean taskStartsToday = d.isEquals(start);
 			boolean taskEndsAfterToday = d.isBefore(end) || taskEndsToday;
 			boolean taskStartsBeforeToday = start.isBefore(d) || taskStartsToday;
-			System.out.println("Task t = " + t.getName());
 			if (taskEndsToday && taskStartsToday ) { //single day task
-				System.out.println("single day task");
 				results.add(t);
 			} else if (taskEndsAfterToday && taskStartsBeforeToday) {
-				System.out.println("running task");
 				longTermTasks.add(t);
 			}
 		}
@@ -89,7 +91,6 @@ public class SlotSearch {
 	}	
 	
 	private static String runningTasks(List<Task> ltt, Date today) {
-		System.out.println("ltt: " + ltt.size());
 		String res = "";
 		Collections.sort(ltt, new StartComparator());
 		for (int i=0; i<ltt.size(); i++) {

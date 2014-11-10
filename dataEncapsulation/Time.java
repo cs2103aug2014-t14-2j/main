@@ -2,7 +2,9 @@ package dataEncapsulation;
 
 /**
  * 
- * @author yuiwei Expects input that is: > 24hour: 0000-2359 OR 00:00-23:59 >
+ * @author A0115696W 
+ * 
+ * Expects input that is: > 24hour: 0000-2359 OR 00:00-23:59 >
  *         12hour: 12:00AM - 11:59PM OR 12am-11pm
  */
 
@@ -15,7 +17,7 @@ public class Time {
 
 	public Time(int hrs, int mins) throws Exception {
 		if (!isValidTime(hrs, mins)) {
-			throw new Exception("INVALID TIME.");
+			throw new Exception("");
 		}
 		hours = hrs;
 		minutes = mins;
