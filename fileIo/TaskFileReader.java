@@ -25,8 +25,6 @@ import dataEncapsulation.Time;
  *
  */
 
-//@author A0126720N
-
 public class TaskFileReader {
 	private static TaskFileReader tfr;
 	

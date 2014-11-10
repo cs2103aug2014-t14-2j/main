@@ -224,9 +224,7 @@ public class CommandInterpreter {
 		List<Subcommand> components = new ArrayList<Subcommand>();
 
 		// Search and Sort must label their first subcommands
-		if (commandType == COMMAND_TYPE.SORT) {
-			handleSort(string, components);
-		} else if (commandType == COMMAND_TYPE.SEARCH) {
+		if (commandType == COMMAND_TYPE.SEARCH) {
 			handleSearch(string, commandType, components);
 		} else {
 			string = handleInitialTitle(string, commandType, components);
