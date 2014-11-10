@@ -1,6 +1,9 @@
+//@A0111014J
 /**
  * 
- * @author nellystix
+ * This class consists of the methods that will allow the user to utilize the command edit() 
+ * to edit tasks, as well as contain the method undo() for this command that will undo this
+ * command's execution.
  * 
  **/
 
