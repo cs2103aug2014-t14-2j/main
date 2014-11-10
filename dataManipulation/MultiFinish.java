@@ -16,7 +16,7 @@ public class MultiFinish extends MultiCommand<Finish> {
 
 	@Override
 	Finish makeCommand(List<Subcommand> choices) throws BadCommandException,
-			BadSubcommandException {
+			BadSubcommandException, BadSubcommandArgException {
 		return new Finish(choices);
 	}
 

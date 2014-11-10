@@ -244,24 +244,6 @@ public class Add extends Command {
 		}
 	}
 
-	private void parseDateToStartAndEnd() throws BadSubcommandException, BadSubcommandArgException {
-		int index = 0;
-		for (; index < subcommands.size(); ++index) {
-			if (subcommands.get(index).getType() == Subcommand.TYPE.DATE) {
-				break;
-			}
-		}
-
-		Subcommand date = subcommands.get(index);
-		String dateString = date.getContents();
-		Subcommand start = new Subcommand(Subcommand.TYPE.START, dateString);
-		Subcommand end = new Subcommand(Subcommand.TYPE.END, dateString);
-
-		subcommands.remove(index);
-		subcommands.add(start);
-		subcommands.add(end);
-	}
-
 	@Override
 	public String undo() throws Exception {
 		

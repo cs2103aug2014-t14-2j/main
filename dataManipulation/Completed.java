@@ -1,6 +1,5 @@
 package dataManipulation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import userInterface.ezCMessages;
@@ -25,7 +24,6 @@ public class Completed extends Command {
 	}
 
 	private List<Task> getAllCompletedTasks() {
-		List<Task> completed = new ArrayList<Task>();
 		TotalTaskList totalList = TotalTaskList.getInstance();
 		return totalList.getCompleted();
 	}

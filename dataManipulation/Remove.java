@@ -24,8 +24,13 @@ public class Remove extends Command {
 	private static final String NO_MATCH_MESSAGE = "The task that you are trying to delete cannot be found.";
 
 	public Remove(List<Subcommand> commandComponents)
-			throws BadCommandException, BadSubcommandException {
+			throws BadCommandException, BadSubcommandException, 
+			BadSubcommandArgException {
 		super(COMMAND_TYPE.REMOVE, commandComponents);
+		boolean hasDateSubcommand = hasSubcommandType(Subcommand.TYPE.DATE);
+		if (hasDateSubcommand) {
+			parseDateToStartAndEnd();
+		}
 	}
 
 	@Override
