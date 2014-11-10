@@ -27,6 +27,7 @@ import dataManipulation.Sort;
 import dataManipulation.Subcommand;
 import dataManipulation.Today;
 import dataManipulation.Undo;
+import dataManipulation.Unfinish;
 
 public class CommandInterpreter {
 	private static CommandInterpreter commandInterpreter;
@@ -110,6 +111,8 @@ public class CommandInterpreter {
 			return new Today(subcommands);
 		case UNDO:
 			return new Undo(subcommands);
+		case UNFINISH:
+			return new Unfinish(subcommands);
 		default:
 			throw new BadCommandException("invalid command type");
 		}
@@ -353,6 +356,8 @@ public class CommandInterpreter {
 		case REPEAT:
 			return Subcommand.TYPE.NAME;
 		case SEARCH:
+			return Subcommand.TYPE.NAME;
+		case UNFINISH:
 			return Subcommand.TYPE.NAME;
 		default:
 			return Subcommand.TYPE.INVALID;
