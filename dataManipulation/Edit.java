@@ -38,8 +38,9 @@ public class Edit extends Command {
 	@Override
 	public String execute() throws Exception {
 		try {
-		
-			trueTask = getTaskToEdit();
+			if (trueTask == null) {
+				trueTask = getTaskToEdit();
+			}
 	
 			return executeMainEdit();
 		} catch (BadSubcommandArgException repeatException) {
@@ -76,12 +77,17 @@ public class Edit extends Command {
 	}
 	
 	private String executeMainEdit() throws Exception {
-		preeditCopy = new Task(trueTask);
+		if (preeditCopy != null) {
+			preeditCopy = new Task(trueTask);
+		}
 		Task temp = new Task(trueTask);
 		setTaskAttributes(temp, subcommands);
 
 		addEditedTask(temp, trueTask);
-		posteditCopy = new Task(trueTask);
+		
+		if (posteditCopy != null) {
+			posteditCopy = new Task(trueTask);
+		}
 
 		FileIo.getInstance().rewriteFile();
 		String editComplete = messages.getEditMessage(preeditCopy, trueTask);

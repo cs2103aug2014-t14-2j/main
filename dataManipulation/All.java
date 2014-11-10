@@ -1,6 +1,5 @@
 package dataManipulation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import userInterface.ezCMessages;
@@ -25,18 +24,10 @@ public class All extends Command {
 	}
 
 	private List<Task> getAllUncompletedTasks() {
-		List<Task> uncompleted = new ArrayList<Task>();
 		TotalTaskList totalList = TotalTaskList.getInstance();
-		List<Task> allTasks = totalList.getList();
+		List<Task> tasks = totalList.getNotCompleted();
 		
-		for (int i = 0; i < allTasks.size(); ++i) {
-			Task currentTask = allTasks.get(i);
-			if (!currentTask.isCompleted()) {
-				uncompleted.add(currentTask);
-			}
-		}
-		
-		return uncompleted;
+		return tasks;
 	}
 
 	private String getStringOfAllTasks(List<Task> list) throws NoResultException {

@@ -261,7 +261,7 @@ public class Autocomplete {
 		sentence = sentence.trim();
 		String lastWord = getLastWord(sentence);
 		Subcommand.TYPE type = Subcommand.determineComponentType(lastWord);
-		if (type != Subcommand.TYPE.INVALID ) {
+		if (type != Subcommand.TYPE.INVALID && type != Subcommand.TYPE.HELP) {
 			return true;
 		} else if (checkForNameType(lastWord, sentence) == Subcommand.TYPE.NAME) {
 			return true;
@@ -309,6 +309,10 @@ public class Autocomplete {
 	}
 
 	private COMMAND_TYPE getCommandType(String toComplete) {
+		if (toComplete.trim().startsWith(COMMAND_TYPE.CHANGE_DATE_TYPE.toString())) {
+			return COMMAND_TYPE.CHANGE_DATE_TYPE;
+		}
+		
 		String commandString = getFirstWord(toComplete);
 		
 		try {
