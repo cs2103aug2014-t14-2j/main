@@ -128,6 +128,8 @@ public class CommandType {
 			return getAddSubcommands();
 		case CHANGE_DATE_TYPE :
 			return getChangeDateTypeSubcommands();
+		case HELP :
+			return getHelpSubcommands();
 		case EDIT :
 			return getEditSubcommands();
 		case FINISH :
@@ -144,7 +146,7 @@ public class CommandType {
 			return new ArrayList<String>();
 		}
 	}
-	
+
 	private List<String> getAddSubcommands() {
 		List<String> list = new ArrayList<String>();
 		list.add(Subcommand.TYPE.DATE.toString());
@@ -177,6 +179,16 @@ public class CommandType {
 
 	private List<String> getFinishSubcommands() {
 		return getAddSubcommands();
+	}
+	
+	private List<String> getHelpSubcommands() {
+List<String> list = new ArrayList<String>();
+		
+		for (Subcommand.HELP_KEY type : Subcommand.HELP_KEY.values()) {
+			list.add(type.toString());
+		}
+		
+		return list;
 	}
 
 	private List<String> getRemoveSubcommands() {

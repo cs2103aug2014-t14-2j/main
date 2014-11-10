@@ -126,7 +126,9 @@ public class Autocomplete {
 	private TYPE getSubcommandType(String sentence) {
 		Subcommand.TYPE type = getLastWordSubcommandType(sentence);
 		
-		if (type == Subcommand.TYPE.INVALID) {
+		// HELP matches the names of command types, so word is either "Help" 
+		// or a command key work
+		if (type == Subcommand.TYPE.HELP) {
 			String lastWord = getLastWord(sentence.trim());
 			type = checkForNameType(lastWord, sentence);
 		}
@@ -142,18 +144,18 @@ public class Autocomplete {
 		withoutLast = withoutLast.trim();
 		
 		if (withoutLast.equals(firstWord) && !withoutLast.isEmpty()) {
-			return Subcommand.TYPE.INVALID;
+			return Subcommand.TYPE.HELP;
 		}
 		
 		if (!withoutLast.isEmpty()) {
-			return Subcommand.TYPE.INVALID;
+			return Subcommand.TYPE.HELP;
 		}
 		
 		COMMAND_TYPE commandType = getCommandType(sentence);
 		if (isNameType(commandType)) {
 			return Subcommand.TYPE.NAME;
 		} else {
-			return Subcommand.TYPE.INVALID;
+			return Subcommand.TYPE.HELP;
 		}
 	}
 
