@@ -184,7 +184,7 @@ public class ExceptionHandler {
 			
 			return replacement;
 		} catch (Exception e) {
-			throw new BadSubcommandArgException("non-numeric input found, "
+			throw new BadSubcommandArgException("Non-numeric input found, "
 					+ "please try again");
 		}
 	}
