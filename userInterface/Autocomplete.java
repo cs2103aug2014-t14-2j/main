@@ -74,6 +74,15 @@ public class Autocomplete {
 		String quote = getLastQuote(toComplete);
 		String lastWordRemoved = removeLastWord(toComplete, quote);
 		Subcommand.TYPE subcommandType = getSubcommandType(lastWordRemoved);
+		
+		if (subcommandType == Subcommand.TYPE.INVALID) {
+			if (isAwaitingDateKeyword(toComplete)) {
+				subcommandType = Subcommand.TYPE.DATE;
+				quote = getLastWord(toComplete);
+				lastWordRemoved = removeLastWord(toComplete, quote) + " ";
+			}
+		}
+		
 		SuffixTree tree = getSubcommandArgTree(subcommandType);
 		
 		List<String> lastWordReplacements = getMatch(tree, quote);
@@ -227,7 +236,7 @@ public class Autocomplete {
 			if (!isLastWordASubcommand) {
 				return false;
 			} else {
-				return doesLastSubcommandNeedArg(toComplete);
+				return doesLastSubcommandNeedArg(toComplete) || isAwaitingDateKeyword(toComplete);
 			}
 		} else {
 			return true;	// one unmatched quote
@@ -237,6 +246,8 @@ public class Autocomplete {
 	private boolean doesLastSubcommandNeedArg(String sentence) {
 		Subcommand.TYPE type = getLastWordSubcommandType(sentence);
 		switch (type) {
+			case COMPLETED :
+				return false;
 			case FREE :
 				return false;
 			case FREQUENCY :
@@ -258,15 +269,37 @@ public class Autocomplete {
 	}
 
 	private boolean isLastWordSubcommand(String sentence) {
-		sentence = sentence.trim();
-		String lastWord = getLastWord(sentence);
+		String trimmedSentence = sentence.trim();
+		String lastWord = getLastWord(trimmedSentence);
 		Subcommand.TYPE type = Subcommand.determineComponentType(lastWord);
 		if (type != Subcommand.TYPE.INVALID && type != Subcommand.TYPE.HELP) {
 			return true;
-		} else if (checkForNameType(lastWord, sentence) == Subcommand.TYPE.NAME) {
+		} else if (checkForNameType(lastWord, trimmedSentence) == Subcommand.TYPE.NAME) {
+			return true;
+		} else if (isAwaitingDateKeyword(sentence)) {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	private boolean isAwaitingDateKeyword(String sentence) {
+		String lastWord = getLastWord(sentence);
+		String withoutLastWord = removeLastMatch(lastWord, sentence).trim();
+		String secondToLastWord = getLastWord(withoutLastWord);
+		return isDate(secondToLastWord);
+	}
+	
+	private boolean isDate(String maybeDate) {
+		switch (maybeDate.toLowerCase()) {
+			case "date" :
+				return true;
+			case "start" :
+				return true;
+			case "end" :
+				return true;
+			default :
+				return false;
 		}
 	}
 
