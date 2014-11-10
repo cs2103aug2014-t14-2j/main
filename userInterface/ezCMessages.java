@@ -218,7 +218,7 @@ public class ezCMessages {
 			+ "e.g. search title \"Buy chocolate milk\" and category \"Breakfast\"\n"
 			+ "e.g. search location \"Singapore\" | category \"Singaporean Food\"\n"
 			+ "e.g. search start 25/12/14 & category \"Holiday Festivals\"\n"
-			+ "e.g. search category \"Homework\" & to 2359 | title \"CS2103 Stuff\"";
+			+ "e.g. search category \"Homework\" & to 2359 or title \"CS2103 Stuff\"";
 	
 	private final String TODAY_HELP = "Further help for the command: TODAY\n\n"
 			
