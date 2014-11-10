@@ -52,7 +52,8 @@ public class Subcommand {
 	
 	// All keywords for the help type
 	public enum HELP_KEY {
-		ADD, ALL, EDIT, FINISH, LIST, REDO, REMOVE, REPEAT, SEARCH, TODAY, UNDO, UNFINISH;
+		ADD, ALL, EDIT, FINISH, LIST, REDO, REMOVE, REPEAT, SEARCH, TODAY, UNDO, UNFINISH,
+		DATE, TIME;
 		
 		@Override
 		public String toString() {
