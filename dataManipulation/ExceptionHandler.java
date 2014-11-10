@@ -12,7 +12,10 @@ import javax.swing.JTextField;
 import userInterface.ActionToggler;
 import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
+import dataEncapsulation.ActionException.ErrorLocation;
+import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandArgException;
+import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Task;
 
 public class ExceptionHandler {
@@ -46,10 +49,6 @@ public class ExceptionHandler {
 		setDisplayText(message);
 		
 		switch(e.getLocation()) {
-		case DELETE:
-			FurtherDeleter furtherDeleter = new FurtherDeleter(opts, cc);
-			enterToggle.initializeLesser(furtherDeleter);
-			break;
 		case EDIT:
 			FurtherEditer furtherEditer = new FurtherEditer(opts, cc);
 			enterToggle.initializeLesser(furtherEditer);
@@ -57,8 +56,10 @@ public class ExceptionHandler {
 		case REPEAT: 
 			FurtherRepeater furtherRepeater = new FurtherRepeater(opts, cc);
 			enterToggle.initializeLesser(furtherRepeater);
-			break;			
+			break;
 		default:
+			FurtherDoer furtherDeleter = new FurtherDoer(opts, cc, e.getLocation());
+			enterToggle.initializeLesser(furtherDeleter);
 			break;
 		}
 		
@@ -321,13 +322,30 @@ public class ExceptionHandler {
 	}
 	
 	@SuppressWarnings("serial")
-	class FurtherDeleter extends AbstractAction {
+	class FurtherDoer extends AbstractAction {
 		List<Task> options;
 		List<Subcommand> subcommands;
+		ErrorLocation actionType;
 		
-		public FurtherDeleter(List<Task> opts, List<Subcommand> subs) {
+		public FurtherDoer(List<Task> opts, List<Subcommand> subs, ErrorLocation type) {
 			options = opts;
 			subcommands = subs;
+			actionType = type;
+		}
+		
+		@SuppressWarnings("rawtypes")
+		public MultiCommand getMulticommand(ArrayList<Task> choices) throws Exception {
+			switch (actionType) {
+			case DELETE :
+				return new MultiRemove(choices);
+			case FINISH :
+				return new MultiFinish(choices);
+			case UNFINISH :
+				return new MultiUnfinish(choices);
+			default :
+				endExceptionHandling();
+				throw new Exception("unable to execute request");
+			}
 		}
 		
 		public void actionPerformed(ActionEvent ev) {
@@ -350,7 +368,8 @@ public class ExceptionHandler {
 			}
 			
 			try {
-				MultiRemove remover = new MultiRemove(choices);
+				@SuppressWarnings("rawtypes")
+				MultiCommand remover = getMulticommand(choices);
 				String message = remover.execute();
 			
 				display.setText(message);

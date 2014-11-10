@@ -113,6 +113,7 @@ public class Repeat extends Command {
 
 	private void initializerepeatSubcommands() throws BadSubcommandException,
 			BadSubcommandArgException {
+
 		repeatSubcommands = new ArrayList<Subcommand>();
 		repeatName = t.getName();
 		repeatCategory = t.getCategory();
@@ -133,7 +134,6 @@ public class Repeat extends Command {
 		repeatSubcommands.add(sc);
 		sc = new Subcommand(TYPE.ENDTIME, repeatEnd.toString());
 		repeatSubcommands.add(sc);
-
 	}
 
 	private void assembleCCs(List<Subcommand> ccs) throws Exception {
@@ -385,11 +385,15 @@ public class Repeat extends Command {
 
 	public String furtherRepeat(Task ta, List<Subcommand> sco) throws Exception {
 		repeatedTasks = new ArrayList<Task>();
+		t = ta;
+		hasFour = false;
 		assembleCCs(sco);
 		initializerepeatSubcommands();
 		getTaskDuration();
 		getSubcommands();
-		checkStartEnd();
+		if (hasFour) {
+			checkStartEnd();
+		}
 
 		if (freq.equals(FREQUENCY.DAILY.toString())) {
 			List<LocalDate> daysHappening_daily = repeatStartDates_daily(start,
@@ -425,7 +429,7 @@ public class Repeat extends Command {
 				makeRepeat(ld);
 			}
 		} else if (freq.equals(FREQUENCY.ONCE.toString())) {
-			;
+			makeRepeat(s);
 		} else {
 			// THROW ERROR OR STRING
 		}

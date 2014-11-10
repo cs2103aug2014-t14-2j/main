@@ -6,7 +6,9 @@ import powerSearch.ExactMatchSearcher;
 import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.BadCommandException;
+import dataEncapsulation.BadSubcommandArgException;
 import dataEncapsulation.BadSubcommandException;
+import dataEncapsulation.NoResultException;
 import dataEncapsulation.Task;
 import dataEncapsulation.ActionException.ErrorLocation;
 import dataManipulation.CommandType.COMMAND_TYPE;
@@ -18,11 +20,11 @@ public class Unfinish extends Command {
 			throws BadCommandException, BadSubcommandException {
 		super(COMMAND_TYPE.UNFINISH, commandComponents);
 	}
-	
+
 	@Override
 	public String undo() throws Exception {
 		Finish reverse = new Finish(subcommands);
-		return reverse.execute();
+		return reverse.literalFinish();
 	}
 
 	@Override
@@ -33,7 +35,7 @@ public class Unfinish extends Command {
 		rewriteFile();
 		return stringTask;
 	}
-	
+
 	private void rewriteFile() {
 		FileIo IoStream = FileIo.getInstance();
 		IoStream.rewriteFile();
@@ -49,7 +51,7 @@ public class Unfinish extends Command {
 		}
 		Task toUncomplete = taskToBeMarked.get(0);
 		unfinishTask(toUncomplete);
-		
+
 		return toUncomplete;
 	}
 
@@ -60,7 +62,7 @@ public class Unfinish extends Command {
 		if (!wasSuccess) {
 			throw new Exception("no match found");
 		}
-		
+
 		toUncomplete.setIncomplete();
 		if (toUncomplete.isOverdue()) {
 			masterList.addOverdue(toUncomplete);
@@ -68,12 +70,46 @@ public class Unfinish extends Command {
 			masterList.addNotCompleted(toUncomplete);
 		}
 	}
-	
+
 
 	@Override
 	protected void checkValidity() throws BadSubcommandException {
 		super.checkValidity();
 		checkForNoDuplicateSubcommands();
 	}
+
+	public String literalUnfinish() throws BadCommandException, 
+	BadSubcommandException, BadSubcommandArgException, Exception {
+		TotalTaskList list = TotalTaskList.getInstance();
+		List<Task> completed = list.getCompleted();
+		Task perfectMatch = findLiteralMatch(subcommands, completed);
+
+		completed.remove(perfectMatch);
+		perfectMatch.setIncomplete();
+		list.addNotCompleted(perfectMatch);
+		list.update();
+
+		ezCMessages messages = ezCMessages.getInstance();
+		return messages.getUnfinishMessage(perfectMatch);
+	}
+
+	private Task findLiteralMatch(List<Subcommand> subcommands, List<Task> list) 
+			throws BadCommandException, 
+			BadSubcommandException, BadSubcommandArgException, Exception {
+
+		Task match = (new Add(subcommands)).buildTask(subcommands);
+		TotalTaskList totalList = TotalTaskList.getInstance();
+		List<Task> currentTasks = totalList.getCompleted();
+
+		for (int i = 0; i < currentTasks.size(); ++i) {
+			Task current = currentTasks.get(i);
+			if (current.isEqualTask(match)) {
+				return current;
+			}
+		}
+
+		throw new NoResultException("The task that you are trying to finish cannot be found.");
+	}
+
 
 }
