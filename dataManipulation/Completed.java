@@ -27,16 +27,7 @@ public class Completed extends Command {
 	private List<Task> getAllCompletedTasks() {
 		List<Task> completed = new ArrayList<Task>();
 		TotalTaskList totalList = TotalTaskList.getInstance();
-		List<Task> allTasks = totalList.getList();
-		
-		for (int i = 0; i < allTasks.size(); ++i) {
-			Task currentTask = allTasks.get(i);
-			if (currentTask.isCompleted()) {
-				completed.add(currentTask);
-			}
-		}
-		
-		return completed;
+		return totalList.getCompleted();
 	}
 
 	private String getStringOfAllTasks(List<Task> list) throws NoResultException {

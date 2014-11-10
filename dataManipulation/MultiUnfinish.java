@@ -22,7 +22,7 @@ public class MultiUnfinish extends MultiCommand<Unfinish> {
 
 	@Override
 	String specializedExecute(Unfinish command) throws Exception {
-		return command.execute();
+		return command.literalUnfinish();
 	}
 
 
