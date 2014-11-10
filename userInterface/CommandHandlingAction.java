@@ -12,7 +12,6 @@ import javax.swing.JTextField;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.NoResultException;
 import dataManipulation.Command;
-import dataManipulation.ExceptionHandler;
 import dataManipulation.UndoRedoList;
 
 @SuppressWarnings("serial")
