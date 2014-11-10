@@ -260,11 +260,13 @@ public class ExceptionHandler {
 			}
 			
 			try {
-				MultiRemove remover = new MultiRemove(choices);
-				String message = remover.execute();
-				display.setText("Successfully edited: \n" + message);
+				MultiEditor editor = new MultiEditor(choices, subcommands);
+				String message = editor.execute();
+				display.setText("Successfully edited: \n\n" + message);
+				UndoRedoList.getInstance().pushUndoCommand(editor);
 				endExceptionHandling();
 			} catch (Exception e) {
+				System.err.println(e.getMessage());
 				status.setText("error in reading your request,"
 						+ " please try again or press 0 to exit");
 			}

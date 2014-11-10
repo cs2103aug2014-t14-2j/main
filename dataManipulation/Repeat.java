@@ -278,10 +278,10 @@ public class Repeat extends Command {
 		try {
 			checkForNoDuplicateSubcommands();
 			checkRepeatFourComponents();
-			checkFrequencyIsNotOnly();
+			checkFrequencyIsNotOnce();
 		} catch (Exception e) {
-			checkRepeatFourComponents();
-			checkFrequencyIsOnly();
+			checkRepeatThreeComponents();
+			checkFrequencyIsOnce();
 		}
 
 	}
@@ -306,7 +306,7 @@ public class Repeat extends Command {
 			}
 		}
 	}
-	protected void checkRepeatTwoComponents() throws BadSubcommandException {
+	protected void checkRepeatThreeComponents() throws BadSubcommandException {
 		checkForComponentAmount(3);
 
 		for (int i = 0; i < subcommands.size(); ++i) {
@@ -314,7 +314,7 @@ public class Repeat extends Command {
 
 			switch (component.getType()) {
 			case FREQUENCY: // valid
-				if (component.getContents().
+				if (!component.getContents().
 						equalsIgnoreCase(FREQUENCY.ONCE.toString())) {
 					throw new BadSubcommandException("can only leave off end "
 							+ "date for \"once\"");
@@ -330,7 +330,7 @@ public class Repeat extends Command {
 		}
 	}
 
-	protected void checkFrequencyIsNotOnly() throws BadSubcommandException {
+	protected void checkFrequencyIsNotOnce() throws BadSubcommandException {
 		for (int i = 0; i < subcommands.size(); ++i) {
 			Subcommand component = subcommands.get(i);
 
@@ -343,7 +343,7 @@ public class Repeat extends Command {
 		}
 	}
 
-	protected void checkFrequencyIsOnly() throws BadSubcommandException {
+	protected void checkFrequencyIsOnce() throws BadSubcommandException {
 		for (int i = 0; i < subcommands.size(); ++i) {
 			Subcommand component = subcommands.get(i);
 

@@ -266,6 +266,26 @@ public class Task {
 		this.setEndTime(new Time(23, 59));
 		setIfOverdue();
 	}
+	
+	public void setEqualTo(Task other) {
+		startdate = other.startdate;
+		enddate = other.enddate;
+		name = other.name;
+		location = other.location;
+		note = other.note;
+		category = other.category;
+		starttime = other.starttime;
+		endtime = other.endtime;
+
+		hasDeadline = other.hasDeadline;
+		isComplete = other.isComplete;
+		hasNote = other.hasNote;
+		hasLocation = other.hasLocation;
+		hasStartTime = other.hasStartTime;
+		hasEndTime = other.hasEndTime;
+		isOverdue = other.isOverdue;
+		hasCategory = other.hasCategory;
+	}
 
 	private void setIfOverdue() throws Exception {
 		if (!hasDeadline) {

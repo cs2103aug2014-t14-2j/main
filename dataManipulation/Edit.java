@@ -26,8 +26,8 @@ public class Edit extends Command {
 	private TotalTaskList taskList = TotalTaskList.getInstance();
 	private ezCMessages messages = ezCMessages.getInstance();
 
-	private Task trueTask;
-	private Task preeditCopy;
+	private Task trueTask = null;
+	private Task preeditCopy = null;
 	private Task posteditCopy = null;
 
 	public Edit(List<Subcommand> commandComponents)
@@ -37,65 +37,63 @@ public class Edit extends Command {
 
 	@Override
 	public String execute() throws Exception {
-		if (posteditCopy != null) {
-			List<Subcommand> oldAttributes = Add.dismantleTask(posteditCopy);
-			setTaskAttributes(trueTask, oldAttributes);
-			FileIo.getInstance().rewriteFile();
-			String editComplete = messages.getEditMessage(preeditCopy, trueTask);
-			return editComplete;
+		try {
+			if (trueTask == null) {
+				trueTask = getTaskToEdit();
+			}
+	
+			return executeMainEdit();
+		} catch (BadSubcommandArgException repeatException) {
+			if (posteditCopy != null) {
+				throw new BadSubcommandArgException("Another task matches the "
+						+ "changes you want to go back to");
+			} else {
+				throw new BadSubcommandArgException("Another task matches the "
+						+ "changes you want to make");
+			}
 		}
-		
-		trueTask = getTaskToEdit();
+	}
+	
+	public Task getTask() {
+		return trueTask;
+	}
 
-		preeditCopy = new Task(trueTask);
+	public String furtherEdit(Task toEdit) throws Exception {
+
+		trueTask = toEdit;
+		
+		try {
+			String result = executeMainEdit();
+			return result;
+		} catch (BadSubcommandArgException repeatException) {
+			if (posteditCopy != null) {
+				throw new BadSubcommandArgException("Another task matches the "
+						+ "changes you want to go back to");
+			} else {
+				throw new BadSubcommandArgException("Another task matches the "
+						+ "changes you want to make");
+			}
+		}
+	}
+	
+	private String executeMainEdit() throws Exception {
+		if (preeditCopy != null) {
+			preeditCopy = new Task(trueTask);
+		}
 		Task temp = new Task(trueTask);
 		setTaskAttributes(temp, subcommands);
 
 		addEditedTask(temp, trueTask);
-		posteditCopy = new Task(trueTask);
+		
+		if (posteditCopy != null) {
+			posteditCopy = new Task(trueTask);
+		}
 
 		FileIo.getInstance().rewriteFile();
 		String editComplete = messages.getEditMessage(preeditCopy, trueTask);
 		return editComplete;
-
 	}
 
-	/**
-	 * takes a task and a list of subcommands and changes the task's subcommands to equal those
-	 * specified while leaving the others the same. Saves returns a copy of the task to be
-	 * edited
-	 * @param task
-	 * @param subcoms
-	 * @return
-	 * @throws BadSubcommandException
-	 * @throws BadSubcommandArgException
-	 * @throws BadCommandException
-	 * @throws Exception
-	 */
-	private Task makeTasksAttributesEqual(Task task, List<Subcommand> subcoms) throws BadSubcommandException,
-		BadSubcommandArgException, BadCommandException, Exception {
-		List<Subcommand> taskToEditSubcommands = Add.dismantleTask(task);
-		Task copy = new Add(taskToEditSubcommands).buildTask(taskToEditSubcommands);
-		System.out.println("got past add");
-		task = editTask(task, subcoms);
-		return copy;
-	}
-
-	private Task makeTasksAttributesEqual(Task task, Task toCopy) throws BadSubcommandException,
-		BadSubcommandArgException, BadCommandException, Exception {
-		List<Subcommand> subcommandCopy = Add.dismantleTask(toCopy);
-		return makeTasksAttributesEqual(task, subcommandCopy);
-	}
-
-	public Task furtherEdit(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
-
-		Task postEdit = editTask(toEdit, subcommands);
-
-		addEditedTask(toEdit, postEdit);
-
-		return postEdit;
-
-	}
 
 	private Task getTaskToEdit() throws Exception {
 
@@ -114,20 +112,6 @@ public class Edit extends Command {
 			return tasks.get(0);
 		}
 
-	}
-
-	private Task editTask(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
-
-		Task editedTask = setTaskAttributes(toEdit, taskAttributes);
-
-		if(ExactMatchSearcher.isTaskDuplicate(editedTask)) {
-			System.out.println("duplicate");
-			ActionException moreThanOne = new ActionException(taskList.getAllTasks(), ActionException.ErrorLocation.EDIT, taskAttributes);
-			throw moreThanOne;
-		}
-		else {
-			return editedTask;
-		}
 	}
 
 	private static Task setTaskAttributes(Task toEdit, List<Subcommand> taskAttributes) throws Exception {
@@ -175,9 +159,7 @@ public class Edit extends Command {
 			throw new BadSubcommandArgException("Task you want to create already exists");
 		}
 		
-		copy = new Task(toEditAndAdd);
-		setTaskAttributes(toEditAndAdd, subcommands);
-
+		toEditAndAdd.setEqualTo(copy);
 		taskList.update();
 	}
 
@@ -189,14 +171,13 @@ public class Edit extends Command {
 
 	@Override
 	public String undo() throws Exception {
-		List<Subcommand> oldAttributes = Add.dismantleTask(preeditCopy);
-		List<Subcommand> newAttributes = Add.dismantleTask(posteditCopy);
-		trueTask = new Add(oldAttributes).buildTask(oldAttributes);
+		if (preeditCopy == null) {
+			return "cannot undo because original edit was not successful";
+		}
 		
-		Command removeOldTask = new Remove(newAttributes);
-		removeOldTask.execute();
-        Command addNewTask = new Add(oldAttributes);
-        addNewTask.execute();
+		trueTask.setEqualTo(preeditCopy);
+		FileIo.getInstance().rewriteFile();
+		taskList.update();
         
 		ezCMessages messages = ezCMessages.getInstance();
         String returnMessage = messages.getUndoEditMessage(posteditCopy, trueTask);
