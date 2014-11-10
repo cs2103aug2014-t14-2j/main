@@ -127,8 +127,6 @@ public class Task {
 		setIfOverdue();
 	}
 
-
-
 	//has every field except TIME
 	public Task(String name, String first_category, String location, String note, Date start, Date end) throws Exception {
 		this.setName(name);
@@ -546,29 +544,35 @@ public class Task {
 	 * @author Nelson / A0111014J
 	 */
 	public boolean isEqualTask(Task other) {
-		
 
 		if(this.name.equalsIgnoreCase(other.name)
-				&&
-				((!this.hasCategory && !other.hasCategory) || (this.category.equalsIgnoreCase(other.category)))
-				&&
-				((!this.hasLocation && !other.hasLocation) || (this.location.equalsIgnoreCase(other.location)))
-				&&
-				((!this.hasNote && !other.hasNote) || (this.note.equalsIgnoreCase(other.note)))
-				&&
-				this.startdate.toString().equalsIgnoreCase(other.startdate.toString())
-				&&
-				((!this.hasDeadline && !other.hasDeadline) || (this.enddate.isEquals(other.enddate)))
-				&&
-				this.starttime.compareTo(other.starttime) == 0
-				&&
-				this.endtime.compareTo(other.endtime) == 0) {
-			return true;
-		}
-		else {
+			&&
+			((!this.hasCategory && !other.hasCategory) || (this.category.equalsIgnoreCase(other.category)))
+			&&
+			((!this.hasLocation && !other.hasLocation) || (this.location.equalsIgnoreCase(other.location)))		
+			&&
+			((!this.hasNote && !other.hasNote) || (this.note.equalsIgnoreCase(other.note)))
+			&&
+			this.startdate.toString().equalsIgnoreCase(other.startdate.toString())) {
+			
+			if(this.hasDeadline && other.hasDeadline) {
+				
+				if((this.enddate.isEquals(other.enddate))
+					&&
+					this.starttime.compareTo(other.starttime) == 0
+					&&
+					this.endtime.compareTo(other.endtime) == 0) {
+					return true;
+				}
+				return false;
+			}
+			
+			else if(!this.hasDeadline && !other.hasDeadline) {
+				return true;
+			}
 			return false;
 		}
-
+		return false;
 	}
 
 	/*
