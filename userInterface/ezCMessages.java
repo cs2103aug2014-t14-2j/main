@@ -200,6 +200,7 @@ public class ezCMessages {
 			+ "e.g. undo";
 	
 	private final String UNFINISH_HELP = "Further help for the command: UNFINISH\n\n"
+			
 			+ "Command: Unfinish\n"
 			+ "Subcommands: NIL\n\n"
 			
@@ -216,6 +217,7 @@ public class ezCMessages {
 			+ "e.g. unfinish \"Buy chocolate milk\"";
 	
 	private final String DATE_HELP = "Further help for dates:\n\n"
+			
 			+ "Commands related to date: Change date type <m/d> OR <d/m>\n"
 			+ "Subcommands related to date: start / end\n\n"
 			
@@ -233,9 +235,42 @@ public class ezCMessages {
 			+ "the task start from. If this date is not stated, the task will be created "
 			+ "based on today's date instead.\n\n"
 			
+			+ "e.g. start 6/12/14\n"
+			+ "e.g. start tomorrow\n"
+			+ "e.g. start today\n"
+			+ "e.g. start wednesday\n"
+			
 			+ "[end]: It is the subcommand to indicate the date that you would like the "
 			+ "task to end on. Any time past this date would have the task shift into the "
-			+ "overdue task list.";
+			+ "overdue task list.\n\n"
+			
+			+ "e.g. end 7/12/14\n"
+			+ "e.g. end today\n"
+			+ "e.g. end tomorrow\n"
+			+ "e.g. end sunday";
+	
+	private final String TIME_HELP = "Further help for time:\n\n"
+			
+			+ "Subcommands related to time: from / to\n\n"
+			
+			+ "NOTE: For format of use, please refer to ADD / EDIT / REPEAT / SEARCH / REMOVE\n\n"
+			
+			+ "Format [SUBCOMMAND]:\n\n"
+			
+			+ "[from]: It is the subcommand to indicate the time which the task will commence from.\n\n"
+			
+			+ "e.g. from 1pm\n"
+			+ "e.g. from 3:00am\n"
+			+ "e.g. from 05:00\n"
+			+ "e.g. from 1700\n\n"
+			
+			+ "[end]: It is the subcommand to indicate the time which the task will end at, "
+			+ "after which the task will be moved to the overdue task list.\n\n"
+			
+			+ "e.g. end 2am\n"
+			+ "e.g. end 5:00pm\n"
+			+ "e.g. end 20:00\n"
+			+ "e.g. end 0600";
 	
 	public String getAddHelp() {
 		return ADD_HELP;
@@ -267,6 +302,10 @@ public class ezCMessages {
 	
 	public String getSearchHelp() {
 		return SEARCH_HELP;
+	}
+	
+	public String getTimeHelp() {
+		return TIME_HELP;
 	}
 	
 	public String getTodayHelp() {
