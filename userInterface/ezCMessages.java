@@ -35,35 +35,35 @@ public class ezCMessages {
 	
 	private final String MESSAGE_DISPLAY_COMMANDS = 
 			"Here are a list of available commands (Non case-sensitive) in the format: \n\n"
-			+ "(Command) - What the command does\n"
-			+ "[subcommand, subcommand, subcommand, ...] (If any)\n\n"
+			+ "( COMMAND ) - What the command does\n"
+			+ "[SUBCOMMAND, SUBCOMMAND, SUBCOMMAND, ...] (If any)\n\n"
 			
-			+ "(Add) - Adds a task to the task list.\n"
+			+ "( Add ) - Adds a task to the task list.\n"
 			+ "[category, location, note, start, end, from, to]\n\n"
 			
-			+ "(All) - Displays all your tasks pending completion, or have no deadline.\n\n"
+			+ "( All ) - Displays all your tasks pending completion, or have no deadline.\n\n"
 			
-			+ "(Edit) - Edits a task in your current task list.\n"
+			+ "( Edit ) - Edits a task in your current task list.\n"
 			+ "[title, category, location, note, start, end, from, to]\n\n"
 			
-			+ "(Finish) - Marks a task as completed in your task list.\n\n"
+			+ "( Finish ) - Marks a task as completed in your task list.\n\n"
 			
-			+ "(Redo) - Redoes your previous undo call.\n\n"
+			+ "( Redo ) - Redoes your previous undo call.\n\n"
 			
-			+ "(Remove) - Removes a task from the current list of tasks.\n"
+			+ "( Remove ) - Removes a task from the current list of tasks.\n"
 			+ "[category, location, note, start, end, from, to]\n\n"
 			
-			+ "(Repeat) - Repeats a task by a certain frequency.\n"
+			+ "( Repeat ) - Repeats a task by a certain frequency.\n"
 			+ "[daily, weekly, monthly, annually, once]\n\n"
 			
-			+ "(Search) - Searches for a task in the task list.\n"
+			+ "( Search ) - Searches for a task in the task list.\n"
 			+ "\n\n"
 			
-			+ "(Today) - Displays all the tasks for today.\n\n"
+			+ "( Today ) - Displays all the tasks for today.\n\n"
 			
-			+ "(Undo) - Undoes a command that was previously entered.\n\n"
+			+ "( Undo ) - Undoes a command that was previously entered.\n\n"
 			
-			+ "(Unfinish) - Marks a task as uncompleted.\n\n"
+			+ "( Unfinish ) - Marks a task as uncompleted.\n\n"
 			
 			+ "Please type \'help <name of command>\' for more information about the command.\n"
 			+ "Alternatively, please type \'help list\' to display this list again."; 
@@ -78,9 +78,9 @@ public class ezCMessages {
 			
 			+ "Note: Subcommands are optional for the command ADD.\n\n"
 			
-			+ "Format (command) / [subcommand]: \n\n"
+			+ "Format ( COMMAND ) / [SUBCOMMAND]: \n\n"
 			
-			+ "(add) \"title of task\" [category] \"title of category\" "
+			+ "( add ) \"title of task\" [category] \"title of category\" "
 			+ "[location] \"title of location\" [note] \"any additional task notes\" "
 			+ "[start] dd/mm/yy [end] dd/mm/yy [from] starttime [to] endtime\n\n"
 			
@@ -94,9 +94,9 @@ public class ezCMessages {
 			
 			+ "Displays all the tasks which are either incomplete and/or overdue.\n\n"
 			
-			+ "Format (command): \n\n"
+			+ "Format ( COMMAND ): \n\n"
 			
-			+ "(all)\n\n"
+			+ "( all )\n\n"
 			
 			+ "e.g. all";
 	
@@ -111,9 +111,9 @@ public class ezCMessages {
 			
 			+ "Note: Only one subcommand can be used for the command EDIT.\n\n"
 			
-			+ "Format (command) / [subcommand]:\n\n"
+			+ "Format ( COMMAND ) / [SUBCOMMAND]:\n\n"
 			
-			+ "(edit) \"title of task\" [title] \"new title of task\" "
+			+ "( edit ) \"title of task\" [title] \"new title of task\" "
 			+ "OR [category] \"title of category\" OR "
 			+ "[location] \"title of location\" OR [note] \"any additional task notes\" "
 			+ "OR [start] dd/mm/yy OR [end] dd/mm/yy OR [from] starttime OR [to] endtime\n\n"
@@ -130,9 +130,9 @@ public class ezCMessages {
 			
 			+ "Note: Only the task's title can be specified.\n\n"
 			
-			+ "Format [command]:\n\n"
+			+ "Format [ COMMAND ]:\n\n"
 			
-			+ "(finish) \"title of task\"\n\n"
+			+ "( finish ) \"title of task\"\n\n"
 			
 			+ "e.g. finish \"Buy chocolate milk\"";
 	
@@ -143,9 +143,9 @@ public class ezCMessages {
 			+ "Redoes the previous command that was undone. Does nothing if no commands "
 			+ "were undone.\n\n"
 			
-			+ "Format (command):\n\n"
+			+ "Format ( COMMAND ):\n\n"
 			
-			+ "(redo)\n\n"
+			+ "( redo )\n\n"
 			
 			+ "e.g. redo";
 	
@@ -161,9 +161,9 @@ public class ezCMessages {
 			
 			+ "Note: Subcommands are optional for the command ADD.\n\n"
 			
-			+ "Format (command) / [subcommand]: \n\n"
+			+ "Format ( COMMAND ) / [SUBCOMMAND]: \n\n"
 			
-			+ "(remove) \"title of task\" [category] \"title of category\" "
+			+ "( remove ) \"title of task\" [category] \"title of category\" "
 			+ "[location] \"title of location\" [note] \"any additional task notes\" "
 			+ "[start] dd/mm/yy [end] dd/mm/yy [from] starttime [to] endtime\n\n"
 			
@@ -180,9 +180,9 @@ public class ezCMessages {
 			
 			+ "Displays all the tasks which are either due today, or currently ongoing.\n\n"
 			
-			+ "Format (command): \n\n"
+			+ "Format ( COMMAND ): \n\n"
 			
-			+ "(today)\n\n"
+			+ "( today )\n\n"
 			
 			+ "e.g. today";
 	
@@ -193,9 +193,9 @@ public class ezCMessages {
 			+ "Undoes the previous command. Does nothing if no task-changing commands "
 			+ "were entered at all.\n\n"
 			
-			+ "Format (command):\n\n"
+			+ "Format ( COMMAND ):\n\n"
 			
-			+ "(undo)\n\n"
+			+ "( undo )\n\n"
 			
 			+ "e.g. undo";
 	
@@ -209,11 +209,33 @@ public class ezCMessages {
 			
 			+ "Note: Only the task's title can be specified.\n\n"
 			
-			+ "Format (command):\n\n"
+			+ "Format ( COMMAND ):\n\n"
 			
-			+ "(unfinish) \"title of task\"\n\n"
+			+ "( unfinish ) \"title of task\"\n\n"
 			
 			+ "e.g. unfinish \"Buy chocolate milk\"";
+	
+	private final String DATE_HELP = "Further help for dates:\n\n"
+			+ "Commands related to date: Change date type <m/d> OR <d/m>\n"
+			+ "Subcommands related to date: start / end\n\n"
+			
+			+ "Format ( COMMAND ) / [SUBCOMMAND]:\n\n"
+			
+			+ "This command allows you to change the date format between the middle-endian "
+			+ "format (mm/dd/yy) and the little-endian format (dd/mm/yy)."
+			
+			+ "( change date type ) m/d\n\n"
+			
+			+ "e.g. change date type m/d\n"
+			+ "e.g. change date type d/m\n\n"
+			
+			+ "[start]: It is the subcommand to indicate the date that you wish to have "
+			+ "the task start from. If this date is not stated, the task will be created "
+			+ "based on today's date instead.\n\n"
+			
+			+ "[end]: It is the subcommand to indicate the date that you would like the "
+			+ "task to end on. Any time past this date would have the task shift into the "
+			+ "overdue task list.";
 	
 	public String getAddHelp() {
 		return ADD_HELP;
@@ -221,6 +243,10 @@ public class ezCMessages {
 	
 	public String getAllHelp() {
 		return ALL_HELP;
+	}
+	
+	public String getDateHelp() {
+		return DATE_HELP;
 	}
 	
 	public String getEditHelp() {
@@ -267,13 +293,13 @@ public class ezCMessages {
 		return NEW_LINE;
 	}
 	
+	public String getUserCommandDisplay() {
+		return MESSAGE_DISPLAY_COMMANDS;
+	}
+	
 	public String getWelcomeMessage() {
 		return MESSAGE_WELCOME;
 	}
-	
-	public String getUserCommandDisplay() {
-		return MESSAGE_DISPLAY_COMMANDS;
-	} 
 	
 	public String getAddMessage(Task newTask) {
 		String message = "Your task:" + NEW_LINE + NEW_LINE + newTask.toPrint() + 
