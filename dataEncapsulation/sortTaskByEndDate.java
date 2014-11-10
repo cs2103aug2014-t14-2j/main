@@ -87,7 +87,7 @@ public class sortTaskByEndDate implements Comparator<Task> {
 		
 }
 
-//@author A0108297X unused
+//@author A0108297X-unused
 /*
  *         public int compare(Task o1, Task o2) {
             Task s1 =  o1;

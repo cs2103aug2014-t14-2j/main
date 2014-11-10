@@ -1,5 +1,7 @@
 package dataEncapsulation;
 
+//@author A0115696W 
+
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;

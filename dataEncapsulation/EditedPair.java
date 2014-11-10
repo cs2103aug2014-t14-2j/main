@@ -1,5 +1,6 @@
 package dataEncapsulation;
 
+//@author A0111014J
 
 public class EditedPair {
 	
