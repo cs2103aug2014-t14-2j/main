@@ -25,6 +25,8 @@ public class Help extends Command {
 				return ezCMessages.getInstance().getAllHelp();
 			case "edit" :
 				return ezCMessages.getInstance().getEditHelp();
+			case "date" :
+				return ezCMessages.getInstance().getDateHelp();
 			case "finish" :
 				return ezCMessages.getInstance().getFinishHelp();
 			case "list" :
@@ -37,6 +39,8 @@ public class Help extends Command {
 				return ezCMessages.getInstance().getRepeatHelp();
 			case "search" :
 				return ezCMessages.getInstance().getSearchHelp();
+			case "time" :
+				return ezCMessages.getInstance().getTimeHelp();
 			case "today" :
 				return ezCMessages.getInstance().getTodayHelp();
 			case "undo" :
