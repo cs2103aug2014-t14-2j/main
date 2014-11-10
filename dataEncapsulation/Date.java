@@ -139,14 +139,15 @@ public class Date {
 	public static boolean isFormatDm() {
 		return dmFormat;
 	}
-
+	
+	//@author A0115696W
 	/**
 	 * Reads a String and outputs the correct Date object.
 	 * Accepted formats:
 	 * 		November 5, 2014
 	 * 		5/11/2014
 	 * 		2014-11-5
-	 * @author Yui Wei / A0115696W
+	 * Yui Wei
 	 */
 	public Date determineDate(String dateString) throws Exception {
 		Date tdy = new Date();
@@ -340,10 +341,9 @@ public class Date {
 		}
 		return answer + " " + this.getDay() + ", " + this.getYear();
 	}
-
+	
 	public String toPrint() {
 		String answer = new String();
-		String day = new String();
 		/*
 		switch (cal.get(Calendar.DAY_OF_WEEK_IN_MONTH)) {
 		case Calendar.MONDAY:
@@ -425,7 +425,7 @@ public class Date {
 		return year;
 	}
 	
-	
+	//@author A0115696W
 	/**
 	 * @author yuiwei / A0115696W
 	 * @param inDateFormat
