@@ -80,7 +80,7 @@ public class ezCMessages {
 			+ "This task will not be added if a similar task "
 			+ "already exists inside the task list.\n\n"
 			
-			+ "Note: Subcommands are optional for the command ADD.\n\n"
+			+ "NOTE: Subcommands are optional for the command ADD.\n\n"
 			
 			+ "Format ( COMMAND ) / [SUBCOMMAND]: \n\n"
 			
@@ -115,7 +115,7 @@ public class ezCMessages {
 			+ "If more than one such task exists for editing, a list will be presented "
 			+ "for selection.\n\n"
 			
-			+ "Note: Only one subcommand can be used for the command EDIT.\n\n"
+			+ "NOTE: Only one subcommand can be used for the command EDIT.\n\n"
 			
 			+ "Format ( COMMAND ) / [SUBCOMMAND]:\n\n"
 			
@@ -135,7 +135,7 @@ public class ezCMessages {
 			+ "Marks a task, which was previously uncompleted, as completed. "
 			+ "This task is then placed into the \"Completed\" list.\n\n"
 			
-			+ "Note: Only the task's title can be specified.\n\n"
+			+ "NOTE: Only the task's title can be specified.\n\n"
 			
 			+ "Format [ COMMAND ]:\n\n"
 			
@@ -168,7 +168,7 @@ public class ezCMessages {
 			+ "a list of tasks will be displayed for the user to select which "
 			+ "exactly they want to delete.\n\n"
 			
-			+ "Note: Subcommands are optional for the command ADD.\n\n"
+			+ "NOTE: Subcommands are optional for the command ADD.\n\n"
 			
 			+ "Format ( COMMAND ) / [SUBCOMMAND]: \n\n"
 			
@@ -180,8 +180,43 @@ public class ezCMessages {
 			+ "location \"Big Wig Supermarket\" note \"Milk for cereal\" start 12/3/14 "
 			+ "end 12/3/14 from 1pm to 2pm";
 	
-	private final String REPEAT_HELP = "";
-	private final String SEARCH_HELP = "";
+	private final String REPEAT_HELP = "Further help for the command: REPEAT\n\n"
+			
+			+ "Command: Repeat\n"
+			+ "Subcommands: once / daily / weekly / monthly / annually / start / end\n\n"
+			
+			+ "Repeats a task based on a frequency provided by the user, for a given "
+			+ "period of time provided by the user.\n\n"
+			
+			+ "NOTE: The subcommands [start], [end] and a frequency are required.\n\n"
+			
+			+ "Format ( COMMAND ) / [SUBCOMMAND]:\n\n"
+			
+			+ "( repeat ) \"title of task\" [once] OR [daily] OR [weekly] OR [monthly] OR "
+			+ "[annually] [start] startdate [end] enddate\n\n"
+			
+			+ "e.g. repeat \"Buy chocolate milk\" weekly start 10/11/14 end 20/5/15\n"
+			+ "e.g. repeat \"Buy chocolate milk\" annually start 7/2/15 end 2/10/21";
+	
+	private final String SEARCH_HELP = "Further help for the command: SEARCH\n\n"
+			
+			+ "Command: Search\n"
+			+ "Subcommands: title / category / location / note / start / end / from / to / and / & / or / |\n\n"
+			
+			+ "Searches for a task by any field and returns any tasks with the included field.\n\n"
+			
+			+ "NOTE: At least one search field is required. [and], [&], [or] and [|] are optional.\n\n"
+			
+			+ "Format ( COMMAND ) / [SUBCOMMAND]:\n\n"
+			
+			+ "( search ) [title] \"title of task\" [and / or] [category] \"category of task\" [and / or] [location] "
+			+ "\"location of task\" [and / or] [note] \"notes in task\" [and / or] [start] startdate [and / or] [end] enddate "
+			+ "[and / or] [from] starttime [and / or] [to] endtime\n\n"
+			
+			+ "e.g. search title \"Buy chocolate milk\" and category \"Breakfast\"\n"
+			+ "e.g. search location \"Singapore\" | category \"Singaporean Food\"\n"
+			+ "e.g. search start 25/12/14 & category \"Holiday Festivals\"\n"
+			+ "e.g. search category \"Homework\" & to 2359 | title \"CS2103 Stuff\"";
 	
 	private final String TODAY_HELP = "Further help for the command: TODAY\n\n"
 			
@@ -219,7 +254,7 @@ public class ezCMessages {
 			+ "This task is then placed into the current list of tasks, or the "
 			+ "overdue list, depending on the end time of this task.\n\n"
 			
-			+ "Note: Only the task's title can be specified.\n\n"
+			+ "NOTE: Only the task's title can be specified.\n\n"
 			
 			+ "Format ( COMMAND ):\n\n"
 			
