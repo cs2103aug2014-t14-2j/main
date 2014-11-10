@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import powerSearch.ExactMatchSearcher;
+import userInterface.Autocomplete;
 import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.BadCommandException;
@@ -89,11 +90,19 @@ public class Edit extends Command {
 			posteditCopy = new Task(trueTask);
 		}
 
+		updateAutocomplete();
 		FileIo.getInstance().rewriteFile();
 		String editComplete = messages.getEditMessage(preeditCopy, trueTask);
 		return editComplete;
 	}
 
+
+	private void updateAutocomplete() {
+		Autocomplete autocomplete = Autocomplete.getInstance();
+		autocomplete.addCategory(trueTask.getCategory());
+		autocomplete.addTitle(trueTask.getName());
+		autocomplete.addLocation(trueTask.getLocation());
+	}
 
 	private Task getTaskToEdit() throws Exception {
 
