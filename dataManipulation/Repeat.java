@@ -389,7 +389,8 @@ public class Repeat extends Command {
 		for (Command cmd : adds) {
 			cmd.undo();
 		}
-		String x = ezCMessages.getUndoRepeatMessage(t);
+		ezCMessages messages = ezCMessages.getInstance();
+		String x = messages.getUndoRepeatMessage(t);
 		return x;
 	}
 
