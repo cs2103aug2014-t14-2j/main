@@ -156,6 +156,8 @@ public class Subcommand {
 			isValid = true;
 		} else if (contents.equals(HELP_KEY.FINISH.toString())) {
 			isValid = true;
+		} else if (contents.equals(HELP_KEY.DATE.toString())) {
+			isValid = true;
 		} else if (contents.equals(HELP_KEY.LIST.toString())) {
 			isValid = true;
 		} else if (contents.equals(HELP_KEY.REDO.toString())) {
@@ -166,6 +168,8 @@ public class Subcommand {
 			isValid = true;
 		} else if (contents.equals(HELP_KEY.SEARCH.toString())) {
 			isValid = true;
+		} else if (contents.equals(HELP_KEY.TIME.toString())) {
+			isValid = true;
 		} else if (contents.equals(HELP_KEY.TODAY.toString())) {
 			isValid = true;
 		} else if (contents.equals(HELP_KEY.UNDO.toString())) {
@@ -175,7 +179,7 @@ public class Subcommand {
 		}
 		
 		if (!isValid) {
-			throw new BadSubcommandArgException("There is no help feature for your command.");
+			throw new BadSubcommandArgException("There is no help feature for the command you have input.");
 		}
 	}
 
@@ -312,6 +316,8 @@ public class Subcommand {
 			return TYPE.HELP;
 		case ("start") :
 			return TYPE.START;
+		case ("time") :
+			return TYPE.HELP;
 		case ("title") :
 			return TYPE.TITLE;
 		case ("to") : 
