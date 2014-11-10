@@ -11,15 +11,15 @@ import dataManipulation.CommandType.COMMAND_TYPE;
 
 public abstract class MultiCommand<T extends Command> extends Command {
 
-	private List<T> commands = new ArrayList<T>();
+	protected List<T> commands = new ArrayList<T>();
 	
 	public MultiCommand(List<Task> choices) throws BadCommandException,
 			BadSubcommandException, BadSubcommandArgException {
 		super(COMMAND_TYPE.INVALID, new ArrayList<Subcommand>());
-		initializeRemovers(choices);
+		initializeCommands(choices);
 	}
 
-	private void initializeRemovers(List<Task> choices) throws 
+	private void initializeCommands(List<Task> choices) throws 
 	BadSubcommandException, BadSubcommandArgException, BadCommandException {
 		for (Task t : choices) {
 			List<Subcommand> choiceSubcommands = 

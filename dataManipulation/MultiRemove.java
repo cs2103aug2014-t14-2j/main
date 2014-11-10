@@ -1,6 +1,5 @@
 package dataManipulation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import dataEncapsulation.BadCommandException;
@@ -9,8 +8,6 @@ import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Task;
 
 public class MultiRemove extends MultiCommand<Remove> {
-
-	private List<Remove> removers = new ArrayList<Remove>();
 	
 	public MultiRemove(List<Task> choices) throws BadCommandException,
 			BadSubcommandException, BadSubcommandArgException {
@@ -20,7 +17,7 @@ public class MultiRemove extends MultiCommand<Remove> {
 	@Override
 	public String execute() throws Exception {
 		String message = "";
-		for (Remove remove : removers) {
+		for (Remove remove : commands) {
 			String toReport = remove.executeRemoveLiteral();
 			message = appendReport(message, toReport);
 		}
@@ -30,7 +27,7 @@ public class MultiRemove extends MultiCommand<Remove> {
 	@Override
 	public String undo() throws Exception {
 		String message = "";
-		for (Remove remove : removers) {
+		for (Remove remove : commands) {
 			String toReport = remove.undo();
 			message = appendReport(message, toReport);
 		}

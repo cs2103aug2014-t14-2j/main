@@ -1,4 +1,4 @@
-package dataManipulation;
+package userInterface;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -9,14 +9,19 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import userInterface.ActionToggler;
-import userInterface.ezCMessages;
 import dataEncapsulation.ActionException;
 import dataEncapsulation.ActionException.ErrorLocation;
-import dataEncapsulation.BadCommandException;
 import dataEncapsulation.BadSubcommandArgException;
-import dataEncapsulation.BadSubcommandException;
 import dataEncapsulation.Task;
+import dataManipulation.MultiCommand;
+import dataManipulation.MultiEditor;
+import dataManipulation.MultiFinish;
+import dataManipulation.MultiRemove;
+import dataManipulation.MultiUnfinish;
+import dataManipulation.Repeat;
+import dataManipulation.Subcommand;
+import dataManipulation.TotalTaskList;
+import dataManipulation.UndoRedoList;
 
 public class ExceptionHandler {
 	
