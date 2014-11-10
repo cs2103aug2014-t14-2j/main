@@ -16,7 +16,7 @@ public class MultiUnfinish extends MultiCommand<Unfinish> {
 
 	@Override
 	Unfinish makeCommand(List<Subcommand> choices) throws BadCommandException,
-			BadSubcommandException {
+			BadSubcommandException, BadSubcommandArgException {
 		return new Unfinish(choices);
 	}
 
