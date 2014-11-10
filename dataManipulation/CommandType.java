@@ -330,9 +330,13 @@ List<String> list = new ArrayList<String>();
 	}
 	
 	private boolean isHelpType(TYPE subcommandType) {
-		if (subcommandType == Subcommand.TYPE.HELP) {
+		switch (subcommandType) {
+		case HELP :
 			return true;
+		case DATE :
+			return true;
+		default :
+			return false;
 		}
-		return false;
 	}
 }
