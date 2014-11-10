@@ -77,7 +77,7 @@ public class Edit extends Command {
 	}
 	
 	private String executeMainEdit() throws Exception {
-		if (preeditCopy != null) {
+		if (preeditCopy == null) {
 			preeditCopy = new Task(trueTask);
 		}
 		Task temp = new Task(trueTask);
@@ -85,7 +85,7 @@ public class Edit extends Command {
 
 		addEditedTask(temp, trueTask);
 		
-		if (posteditCopy != null) {
+		if (posteditCopy == null) {
 			posteditCopy = new Task(trueTask);
 		}
 
